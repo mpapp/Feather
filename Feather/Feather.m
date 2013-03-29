@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import "Cushion.h"
+#import "Feather.h"
 
 @implementation Cushion
 
