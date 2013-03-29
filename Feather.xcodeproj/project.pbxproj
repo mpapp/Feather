@@ -9,12 +9,12 @@
 /* Begin PBXBuildFile section */
 		5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
 		5FDB33111705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB330F1705CB950049EBB5 /* InfoPlist.strings */; };
-		5FDB33151705CB950049EBB5 /* Cushion.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33141705CB950049EBB5 /* Cushion.m */; };
+		5FDB33151705CB950049EBB5 /* Feather.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33141705CB950049EBB5 /* Feather.m */; };
 		5FDB331D1705CB950049EBB5 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB331C1705CB950049EBB5 /* SenTestingKit.framework */; };
 		5FDB331E1705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
-		5FDB33211705CB950049EBB5 /* Cushion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33031705CB950049EBB5 /* Cushion.framework */; };
+		5FDB33211705CB950049EBB5 /* Feather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33031705CB950049EBB5 /* Feather.framework */; };
 		5FDB33271705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB33251705CB950049EBB5 /* InfoPlist.strings */; };
-		5FDB332A1705CB950049EBB5 /* CushionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33291705CB950049EBB5 /* CushionTests.m */; };
+		5FDB332A1705CB950049EBB5 /* FeatherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33291705CB950049EBB5 /* FeatherTests.m */; };
 		5FDB33351705CBD90049EBB5 /* MPManagedObjectsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33331705CBD90049EBB5 /* MPManagedObjectsController.h */; };
 		5FDB33361705CBD90049EBB5 /* MPManagedObjectsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33341705CBD90049EBB5 /* MPManagedObjectsController.m */; };
 		5FDB33381705CBE10049EBB5 /* MPManuscriptCategoriesController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33371705CBE10049EBB5 /* MPManuscriptCategoriesController.h */; };
@@ -87,7 +87,7 @@
 			containerPortal = 5FDB32F91705CB950049EBB5 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 5FDB33021705CB950049EBB5;
-			remoteInfo = Cushion;
+			remoteInfo = Feather;
 		};
 		5FDB33761705CC960049EBB5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -253,22 +253,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5FDB33031705CB950049EBB5 /* Cushion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Cushion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FDB33031705CB950049EBB5 /* Feather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Feather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FDB33061705CB950049EBB5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		5FDB33091705CB950049EBB5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		5FDB330A1705CB950049EBB5 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		5FDB330B1705CB950049EBB5 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		5FDB330E1705CB950049EBB5 /* Cushion-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Cushion-Info.plist"; sourceTree = "<group>"; };
+		5FDB330E1705CB950049EBB5 /* Feather-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Feather-Info.plist"; sourceTree = "<group>"; };
 		5FDB33101705CB950049EBB5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5FDB33121705CB950049EBB5 /* Cushion-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Cushion-Prefix.pch"; sourceTree = "<group>"; };
-		5FDB33131705CB950049EBB5 /* Cushion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cushion.h; sourceTree = "<group>"; };
-		5FDB33141705CB950049EBB5 /* Cushion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Cushion.m; sourceTree = "<group>"; };
-		5FDB331B1705CB950049EBB5 /* CushionTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CushionTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FDB33121705CB950049EBB5 /* Feather-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Feather-Prefix.pch"; sourceTree = "<group>"; };
+		5FDB33131705CB950049EBB5 /* Feather.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Feather.h; sourceTree = "<group>"; };
+		5FDB33141705CB950049EBB5 /* Feather.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Feather.m; sourceTree = "<group>"; };
+		5FDB331B1705CB950049EBB5 /* FeatherTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeatherTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FDB331C1705CB950049EBB5 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		5FDB33241705CB950049EBB5 /* CushionTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CushionTests-Info.plist"; sourceTree = "<group>"; };
+		5FDB33241705CB950049EBB5 /* FeatherTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FeatherTests-Info.plist"; sourceTree = "<group>"; };
 		5FDB33261705CB950049EBB5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5FDB33281705CB950049EBB5 /* CushionTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CushionTests.h; sourceTree = "<group>"; };
-		5FDB33291705CB950049EBB5 /* CushionTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CushionTests.m; sourceTree = "<group>"; };
+		5FDB33281705CB950049EBB5 /* FeatherTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeatherTests.h; sourceTree = "<group>"; };
+		5FDB33291705CB950049EBB5 /* FeatherTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeatherTests.m; sourceTree = "<group>"; };
 		5FDB33331705CBD90049EBB5 /* MPManagedObjectsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPManagedObjectsController.h; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPManagedObjectsController.h"; sourceTree = "<group>"; };
 		5FDB33341705CBD90049EBB5 /* MPManagedObjectsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPManagedObjectsController.m; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPManagedObjectsController.m"; sourceTree = "<group>"; };
 		5FDB33371705CBE10049EBB5 /* MPManuscriptCategoriesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPManuscriptCategoriesController.h; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPManuscriptCategoriesController.h"; sourceTree = "<group>"; };
@@ -354,7 +354,7 @@
 			files = (
 				5FDB331D1705CB950049EBB5 /* SenTestingKit.framework in Frameworks */,
 				5FDB331E1705CB950049EBB5 /* Cocoa.framework in Frameworks */,
-				5FDB33211705CB950049EBB5 /* Cushion.framework in Frameworks */,
+				5FDB33211705CB950049EBB5 /* Feather.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -364,8 +364,8 @@
 		5FDB32F71705CB950049EBB5 = {
 			isa = PBXGroup;
 			children = (
-				5FDB330C1705CB950049EBB5 /* Cushion */,
-				5FDB33221705CB950049EBB5 /* CushionTests */,
+				5FDB330C1705CB950049EBB5 /* Feather */,
+				5FDB33221705CB950049EBB5 /* FeatherTests */,
 				5FDB33051705CB950049EBB5 /* Frameworks */,
 				5FDB33041705CB950049EBB5 /* Products */,
 				5FDB335D1705CC960049EBB5 /* TouchDB.xcodeproj */,
@@ -376,8 +376,8 @@
 		5FDB33041705CB950049EBB5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5FDB33031705CB950049EBB5 /* Cushion.framework */,
-				5FDB331B1705CB950049EBB5 /* CushionTests.octest */,
+				5FDB33031705CB950049EBB5 /* Feather.framework */,
+				5FDB331B1705CB950049EBB5 /* FeatherTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -404,7 +404,7 @@
 			name = "Other Frameworks";
 			sourceTree = "<group>";
 		};
-		5FDB330C1705CB950049EBB5 /* Cushion */ = {
+		5FDB330C1705CB950049EBB5 /* Feather */ = {
 			isa = PBXGroup;
 			children = (
 				5FDB33D61705D0F20049EBB5 /* External */,
@@ -439,20 +439,8 @@
 				5FDB34A91705E48B0049EBB5 /* MPException.m */,
 				5FDB334F1705CC300049EBB5 /* MPSnapshot+Protected.h */,
 				5FDB33571705CC500049EBB5 /* MPCachingObject.h */,
-				5FDB33131705CB950049EBB5 /* Cushion.h */,
-				5FDB33141705CB950049EBB5 /* Cushion.m */,
-				5FDB34EE1705EFDE0049EBB5 /* NSError+Manuscripts.h */,
-				5FDB34EF1705EFDF0049EBB5 /* NSError+Manuscripts.m */,
-				5FDB33D91705D1650049EBB5 /* NSString+Manuscripts.h */,
-				5FDB33DA1705D1650049EBB5 /* NSString+Manuscripts.m */,
-				5FDB343A1705DA900049EBB5 /* NSSet+Manuscripts.h */,
-				5FDB343B1705DA900049EBB5 /* NSSet+Manuscripts.m */,
-				5FDB34A41705DFD80049EBB5 /* NSBundle+Manuscripts.h */,
-				5FDB34A51705DFD80049EBB5 /* NSBundle+Manuscripts.m */,
-				5FDB343E1705DAA50049EBB5 /* NSObject+Manuscripts.h */,
-				5FDB343F1705DAA50049EBB5 /* NSObject+Manuscripts.m */,
-				5FDB34421705DAC10049EBB5 /* NSArray+Manuscripts.h */,
-				5FDB34431705DAC10049EBB5 /* NSArray+Manuscripts.m */,
+				5FDB33131705CB950049EBB5 /* Feather.h */,
+				5FDB33141705CB950049EBB5 /* Feather.m */,
 				5FDB34461705DADA0049EBB5 /* MPSharedPackageController.h */,
 				5FDB34471705DADA0049EBB5 /* MPSharedPackageController.m */,
 				5FDB344E1705DB240049EBB5 /* NSDictionary+Manuscripts.h */,
@@ -465,33 +453,33 @@
 				5FDB35C81705FB9F0049EBB5 /* NSData+MPExtensions.m */,
 				5FDB330D1705CB950049EBB5 /* Supporting Files */,
 			);
-			path = Cushion;
+			path = Feather;
 			sourceTree = "<group>";
 		};
 		5FDB330D1705CB950049EBB5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5FDB330E1705CB950049EBB5 /* Cushion-Info.plist */,
+				5FDB330E1705CB950049EBB5 /* Feather-Info.plist */,
 				5FDB330F1705CB950049EBB5 /* InfoPlist.strings */,
-				5FDB33121705CB950049EBB5 /* Cushion-Prefix.pch */,
+				5FDB33121705CB950049EBB5 /* Feather-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		5FDB33221705CB950049EBB5 /* CushionTests */ = {
+		5FDB33221705CB950049EBB5 /* FeatherTests */ = {
 			isa = PBXGroup;
 			children = (
-				5FDB33281705CB950049EBB5 /* CushionTests.h */,
-				5FDB33291705CB950049EBB5 /* CushionTests.m */,
+				5FDB33281705CB950049EBB5 /* FeatherTests.h */,
+				5FDB33291705CB950049EBB5 /* FeatherTests.m */,
 				5FDB33231705CB950049EBB5 /* Supporting Files */,
 			);
-			path = CushionTests;
+			path = FeatherTests;
 			sourceTree = "<group>";
 		};
 		5FDB33231705CB950049EBB5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				5FDB33241705CB950049EBB5 /* CushionTests-Info.plist */,
+				5FDB33241705CB950049EBB5 /* FeatherTests-Info.plist */,
 				5FDB33251705CB950049EBB5 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -534,14 +522,58 @@
 		5FDB33D61705D0F20049EBB5 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				5FDB35CE1705FCFD0049EBB5 /* JSONKit */,
+				5FDB35CD1705FCF30049EBB5 /* RegexKitLite */,
+				5FDB35CC1705FCEA0049EBB5 /* ObjectiveMixin */,
+				5FDB35CB1705FCBE0049EBB5 /* MPExtensions */,
+			);
+			name = External;
+			sourceTree = "<group>";
+		};
+		5FDB35CB1705FCBE0049EBB5 /* MPExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				5FDB34EE1705EFDE0049EBB5 /* NSError+Manuscripts.h */,
+				5FDB34EF1705EFDF0049EBB5 /* NSError+Manuscripts.m */,
+				5FDB33D91705D1650049EBB5 /* NSString+Manuscripts.h */,
+				5FDB33DA1705D1650049EBB5 /* NSString+Manuscripts.m */,
+				5FDB343A1705DA900049EBB5 /* NSSet+Manuscripts.h */,
+				5FDB343B1705DA900049EBB5 /* NSSet+Manuscripts.m */,
+				5FDB34A41705DFD80049EBB5 /* NSBundle+Manuscripts.h */,
+				5FDB34A51705DFD80049EBB5 /* NSBundle+Manuscripts.m */,
+				5FDB343E1705DAA50049EBB5 /* NSObject+Manuscripts.h */,
+				5FDB343F1705DAA50049EBB5 /* NSObject+Manuscripts.m */,
+				5FDB34421705DAC10049EBB5 /* NSArray+Manuscripts.h */,
+				5FDB34431705DAC10049EBB5 /* NSArray+Manuscripts.m */,
+			);
+			name = MPExtensions;
+			sourceTree = "<group>";
+		};
+		5FDB35CC1705FCEA0049EBB5 /* ObjectiveMixin */ = {
+			isa = PBXGroup;
+			children = (
 				5FDB34361705D90A0049EBB5 /* Mixin.h */,
 				5FDB34371705D90A0049EBB5 /* Mixin.m */,
+			);
+			name = ObjectiveMixin;
+			sourceTree = "<group>";
+		};
+		5FDB35CD1705FCF30049EBB5 /* RegexKitLite */ = {
+			isa = PBXGroup;
+			children = (
 				5FDB33D21705D0D90049EBB5 /* RegexKitLite.h */,
 				5FDB33D31705D0D90049EBB5 /* RegexKitLite.m */,
+			);
+			name = RegexKitLite;
+			sourceTree = "<group>";
+		};
+		5FDB35CE1705FCFD0049EBB5 /* JSONKit */ = {
+			isa = PBXGroup;
+			children = (
 				5FDB34521705DB570049EBB5 /* JSONKit.h */,
 				5FDB34531705DB570049EBB5 /* JSONKit.m */,
 			);
-			name = External;
+			name = JSONKit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -590,9 +622,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		5FDB33021705CB950049EBB5 /* Cushion */ = {
+		5FDB33021705CB950049EBB5 /* Feather */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5FDB332D1705CB950049EBB5 /* Build configuration list for PBXNativeTarget "Cushion" */;
+			buildConfigurationList = 5FDB332D1705CB950049EBB5 /* Build configuration list for PBXNativeTarget "Feather" */;
 			buildPhases = (
 				5FDB32FE1705CB950049EBB5 /* Sources */,
 				5FDB32FF1705CB950049EBB5 /* Frameworks */,
@@ -606,14 +638,14 @@
 				5FDB33B61705CDB40049EBB5 /* PBXTargetDependency */,
 				5FDB33911705CCAA0049EBB5 /* PBXTargetDependency */,
 			);
-			name = Cushion;
-			productName = Cushion;
-			productReference = 5FDB33031705CB950049EBB5 /* Cushion.framework */;
+			name = Feather;
+			productName = Feather;
+			productReference = 5FDB33031705CB950049EBB5 /* Feather.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		5FDB331A1705CB950049EBB5 /* CushionTests */ = {
+		5FDB331A1705CB950049EBB5 /* FeatherTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5FDB33301705CB950049EBB5 /* Build configuration list for PBXNativeTarget "CushionTests" */;
+			buildConfigurationList = 5FDB33301705CB950049EBB5 /* Build configuration list for PBXNativeTarget "FeatherTests" */;
 			buildPhases = (
 				5FDB33161705CB950049EBB5 /* Sources */,
 				5FDB33171705CB950049EBB5 /* Frameworks */,
@@ -625,9 +657,9 @@
 			dependencies = (
 				5FDB33201705CB950049EBB5 /* PBXTargetDependency */,
 			);
-			name = CushionTests;
-			productName = CushionTests;
-			productReference = 5FDB331B1705CB950049EBB5 /* CushionTests.octest */;
+			name = FeatherTests;
+			productName = FeatherTests;
+			productReference = 5FDB331B1705CB950049EBB5 /* FeatherTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -639,7 +671,7 @@
 				LastUpgradeCheck = 0450;
 				ORGANIZATIONNAME = "Matias Piipari";
 			};
-			buildConfigurationList = 5FDB32FC1705CB950049EBB5 /* Build configuration list for PBXProject "Cushion" */;
+			buildConfigurationList = 5FDB32FC1705CB950049EBB5 /* Build configuration list for PBXProject "Feather" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -661,8 +693,8 @@
 			);
 			projectRoot = "";
 			targets = (
-				5FDB33021705CB950049EBB5 /* Cushion */,
-				5FDB331A1705CB950049EBB5 /* CushionTests */,
+				5FDB33021705CB950049EBB5 /* Feather */,
+				5FDB331A1705CB950049EBB5 /* FeatherTests */,
 			);
 		};
 /* End PBXProject section */
@@ -850,7 +882,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FDB33151705CB950049EBB5 /* Cushion.m in Sources */,
+				5FDB33151705CB950049EBB5 /* Feather.m in Sources */,
 				5FDB33361705CBD90049EBB5 /* MPManagedObjectsController.m in Sources */,
 				5FDB333D1705CBEF0049EBB5 /* MPSnapshotsController.m in Sources */,
 				5FDB33441705CC000049EBB5 /* MPManagedObject.m in Sources */,
@@ -884,7 +916,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FDB332A1705CB950049EBB5 /* CushionTests.m in Sources */,
+				5FDB332A1705CB950049EBB5 /* FeatherTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -893,7 +925,7 @@
 /* Begin PBXTargetDependency section */
 		5FDB33201705CB950049EBB5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5FDB33021705CB950049EBB5 /* Cushion */;
+			target = 5FDB33021705CB950049EBB5 /* Feather */;
 			targetProxy = 5FDB331F1705CB950049EBB5 /* PBXContainerItemProxy */;
 		};
 		5FDB33911705CCAA0049EBB5 /* PBXTargetDependency */ = {
@@ -994,8 +1026,8 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Cushion/Cushion-Prefix.pch";
-				INFOPLIST_FILE = "Cushion/Cushion-Info.plist";
+				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
+				INFOPLIST_FILE = "Feather/Feather-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
@@ -1014,8 +1046,8 @@
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Cushion/Cushion-Prefix.pch";
-				INFOPLIST_FILE = "Cushion/Cushion-Info.plist";
+				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
+				INFOPLIST_FILE = "Feather/Feather-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
@@ -1032,8 +1064,8 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Cushion/Cushion-Prefix.pch";
-				INFOPLIST_FILE = "CushionTests/CushionTests-Info.plist";
+				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
+				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -1045,8 +1077,8 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Cushion/Cushion-Prefix.pch";
-				INFOPLIST_FILE = "CushionTests/CushionTests-Info.plist";
+				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
+				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -1055,7 +1087,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5FDB32FC1705CB950049EBB5 /* Build configuration list for PBXProject "Cushion" */ = {
+		5FDB32FC1705CB950049EBB5 /* Build configuration list for PBXProject "Feather" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5FDB332B1705CB950049EBB5 /* Debug */,
@@ -1064,21 +1096,23 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5FDB332D1705CB950049EBB5 /* Build configuration list for PBXNativeTarget "Cushion" */ = {
+		5FDB332D1705CB950049EBB5 /* Build configuration list for PBXNativeTarget "Feather" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5FDB332E1705CB950049EBB5 /* Debug */,
 				5FDB332F1705CB950049EBB5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
-		5FDB33301705CB950049EBB5 /* Build configuration list for PBXNativeTarget "CushionTests" */ = {
+		5FDB33301705CB950049EBB5 /* Build configuration list for PBXNativeTarget "FeatherTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5FDB33311705CB950049EBB5 /* Debug */,
 				5FDB33321705CB950049EBB5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
