@@ -4,4 +4,11 @@
 
 #ifdef __OBJC__
     #import <Cocoa/Cocoa.h>
+
+    #ifdef DEBUG
+        #define MPLog(fmt, ...) NSLog(fmt, ##__VA_ARGS__)
+    #else
+        #define MPLog(...) do{}while(0) 
+    #endif
+
 #endif
