@@ -107,13 +107,6 @@
 			remoteGlobalIDString = 275315D514ACF0A10065964D;
 			remoteInfo = TouchDBListener;
 		};
-		5FDB337A1705CC960049EBB5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FDB335D1705CC960049EBB5 /* TouchDB.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 270B3DFB1489359000E0A926;
-			remoteInfo = TouchDBTests;
-		};
 		5FDB337C1705CC960049EBB5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5FDB335D1705CC960049EBB5 /* TouchDB.xcodeproj */;
@@ -491,7 +484,6 @@
 			children = (
 				5FDB33771705CC960049EBB5 /* TouchDB.framework */,
 				5FDB33791705CC960049EBB5 /* TouchDBListener.framework */,
-				5FDB337B1705CC960049EBB5 /* TouchDBTests.octest */,
 				5FDB337D1705CC960049EBB5 /* TouchDB Demo.app */,
 				5FDB337F1705CC960049EBB5 /* TouchDB */,
 				5FDB33811705CC960049EBB5 /* libTouchDB.a */,
@@ -726,13 +718,6 @@
 			fileType = wrapper.framework;
 			path = TouchDBListener.framework;
 			remoteRef = 5FDB33781705CC960049EBB5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5FDB337B1705CC960049EBB5 /* TouchDBTests.octest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = TouchDBTests.octest;
-			remoteRef = 5FDB337A1705CC960049EBB5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		5FDB337D1705CC960049EBB5 /* TouchDB Demo.app */ = {
