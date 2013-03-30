@@ -11,6 +11,12 @@
 #import <CommonCrypto/CommonDigest.h>
 #import <CommonCrypto/CommonHMAC.h>
 
+#import <zlib.h>
+
+#import "NSData+Base64.h"
+
+// FIXME: Find the source for these.
+
 @implementation NSData (MPExtensions)
 
 
@@ -46,7 +52,7 @@
 
 - (NSString *)sha1HMacStringWithKey:(NSString *)key
 {
-	return [[self sha1HMacWithKey:key] base64Encoded];
+	return [[self sha1HMacWithKey:key] base64EncodingWithLineLength:-1];
 }
 
 - (NSData *)sha1HMacWithKey:(NSString *)key
@@ -64,7 +70,7 @@
 
 - (NSString *)sha256HMacStringWithKey:(NSString *)key
 {
-	return [[self sha256HMacWithKey:key] base64Encoded];
+	return [[self sha256HMacWithKey:key] base64EncodingWithLineLength:-1];
 }
 
 - (NSData *)sha256HMacWithKey:(NSString *)key

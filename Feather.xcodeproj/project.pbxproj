@@ -78,6 +78,9 @@
 		5FDB3841170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB383F170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3842170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3840170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.m */; };
 		5FDB39BE170761D00049EBB5 /* CouchCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB39AF170761B70049EBB5 /* CouchCocoa.framework */; };
+		5FDB3A05170793550049EBB5 /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3A03170793550049EBB5 /* NSData+Base64.h */; };
+		5FDB3A06170793550049EBB5 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A04170793550049EBB5 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-w"; }; };
+		5FDB3A08170793B30049EBB5 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB3A07170793B20049EBB5 /* libz.dylib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -330,6 +333,9 @@
 		5FDB383F170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNotificationCenter+MPExtensions.h"; path = "Sources/Categories/NSNotificationCenter+MPExtensions.h"; sourceTree = "<group>"; };
 		5FDB3840170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNotificationCenter+MPExtensions.m"; path = "Sources/Categories/NSNotificationCenter+MPExtensions.m"; sourceTree = "<group>"; };
 		5FDB399E170761B70049EBB5 /* CouchCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CouchCocoa.xcodeproj; path = External/CouchCocoa/CouchCocoa.xcodeproj; sourceTree = "<group>"; };
+		5FDB3A03170793550049EBB5 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "External/NSData+Base64/NSData+Base64.h"; sourceTree = SOURCE_ROOT; };
+		5FDB3A04170793550049EBB5 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "External/NSData+Base64/NSData+Base64.m"; sourceTree = SOURCE_ROOT; };
+		5FDB3A07170793B20049EBB5 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -337,6 +343,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FDB3A08170793B30049EBB5 /* libz.dylib in Frameworks */,
 				5FDB33C31705CF260049EBB5 /* libcommonCrypto.dylib in Frameworks */,
 				5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */,
 				5FDB39BE170761D00049EBB5 /* CouchCocoa.framework in Frameworks */,
@@ -383,6 +390,7 @@
 		5FDB33051705CB950049EBB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5FDB3A07170793B20049EBB5 /* libz.dylib */,
 				5FDB33D71705D1380049EBB5 /* libicucore.dylib */,
 				5FDB33C21705CF260049EBB5 /* libcommonCrypto.dylib */,
 				5FDB33061705CB950049EBB5 /* Cocoa.framework */,
@@ -494,6 +502,7 @@
 		5FDB33D61705D0F20049EBB5 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				5FDB3A02170793130049EBB5 /* NSData+Base64 */,
 				5FDB35CE1705FCFD0049EBB5 /* JSONKit */,
 				5FDB35CD1705FCF30049EBB5 /* RegexKitLite */,
 				5FDB35CC1705FCEA0049EBB5 /* ObjectiveMixin */,
@@ -573,6 +582,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		5FDB3A02170793130049EBB5 /* NSData+Base64 */ = {
+			isa = PBXGroup;
+			children = (
+				5FDB3A03170793550049EBB5 /* NSData+Base64.h */,
+				5FDB3A04170793550049EBB5 /* NSData+Base64.m */,
+			);
+			name = "NSData+Base64";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -612,6 +630,7 @@
 				5FDB33D41705D0DA0049EBB5 /* RegexKitLite.h in Headers */,
 				5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */,
 				5FDB34541705DB570049EBB5 /* JSONKit.h in Headers */,
+				5FDB3A05170793550049EBB5 /* NSData+Base64.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -905,6 +924,7 @@
 				5FDB383A170703850049EBB5 /* NSFileManager+MPExtensions.m in Sources */,
 				5FDB383E1707038F0049EBB5 /* NSData+MPExtensions.m in Sources */,
 				5FDB3842170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.m in Sources */,
+				5FDB3A06170793550049EBB5 /* NSData+Base64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
