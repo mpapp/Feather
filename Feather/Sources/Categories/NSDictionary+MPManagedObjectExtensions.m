@@ -10,7 +10,7 @@ NSString * const MPManagedObjectDictionaryErrorDomain = @"MPManagedObjectDiction
 
 #import "NSDictionary+MPManagedObjectExtensions.h"
 #import "MPManagedObject.h"
-#import "NSError+Manuscripts.h"
+#import "NSError+MPExtensions.h"
 
 @implementation NSDictionary (MPManagedObject)
 

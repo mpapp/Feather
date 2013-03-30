@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
 //
 
-#import "NSArray+Manuscripts.h"
+#import "NSArray+MPExtensions.h"
 
 
 @implementation NSArray (Manuscripts)

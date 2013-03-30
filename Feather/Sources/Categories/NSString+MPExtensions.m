@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
 //
 
-#import "NSString+Manuscripts.h"
+#import "NSString+MPExtensions.h"
 
 #import "RegexKitLite.h"
 

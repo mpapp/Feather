@@ -6,12 +6,12 @@
 //  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
 //
 
-#import "NSNotificationCenter+Manuscripts.h"
+#import "NSNotificationCenter+MPExtensions.h"
 #import "MPManagedObject.h"
 
 #import "RegexKitLite.h"
-#import "NSString+Manuscripts.h"
-#import "NSObject+Manuscripts.h"
+#import "NSString+MPExtensions.h"
+#import "NSObject+MPExtensions.h"
 
 #import <objc/runtime.h>
 

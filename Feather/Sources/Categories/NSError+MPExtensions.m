@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
 //
 
-#import "NSError+Manuscripts.h"
+#import "NSError+MPExtensions.h"
 
 
 @implementation NSError (Manuscripts)

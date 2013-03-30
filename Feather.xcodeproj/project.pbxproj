@@ -15,74 +15,69 @@
 		5FDB33211705CB950049EBB5 /* Feather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33031705CB950049EBB5 /* Feather.framework */; };
 		5FDB33271705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB33251705CB950049EBB5 /* InfoPlist.strings */; };
 		5FDB332A1705CB950049EBB5 /* FeatherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33291705CB950049EBB5 /* FeatherTests.m */; };
-		5FDB33351705CBD90049EBB5 /* MPManagedObjectsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33331705CBD90049EBB5 /* MPManagedObjectsController.h */; };
+		5FDB33351705CBD90049EBB5 /* MPManagedObjectsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33331705CBD90049EBB5 /* MPManagedObjectsController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB33361705CBD90049EBB5 /* MPManagedObjectsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33341705CBD90049EBB5 /* MPManagedObjectsController.m */; };
-		5FDB33381705CBE10049EBB5 /* MPManuscriptCategoriesController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33371705CBE10049EBB5 /* MPManuscriptCategoriesController.h */; };
-		5FDB333C1705CBEF0049EBB5 /* MPSnapshotsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33391705CBEF0049EBB5 /* MPSnapshotsController.h */; };
+		5FDB333C1705CBEF0049EBB5 /* MPSnapshotsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33391705CBEF0049EBB5 /* MPSnapshotsController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB333D1705CBEF0049EBB5 /* MPSnapshotsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB333A1705CBEF0049EBB5 /* MPSnapshotsController.m */; };
-		5FDB333E1705CBEF0049EBB5 /* MPSnapshotsController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB333B1705CBEF0049EBB5 /* MPSnapshotsController+Protected.h */; };
-		5FDB33431705CC000049EBB5 /* MPManagedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB333F1705CC000049EBB5 /* MPManagedObject.h */; };
+		5FDB333E1705CBEF0049EBB5 /* MPSnapshotsController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB333B1705CBEF0049EBB5 /* MPSnapshotsController+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5FDB33431705CC000049EBB5 /* MPManagedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB333F1705CC000049EBB5 /* MPManagedObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB33441705CC000049EBB5 /* MPManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33401705CC000049EBB5 /* MPManagedObject.m */; };
-		5FDB33451705CC000049EBB5 /* MPManagedObject+Mixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33411705CC000049EBB5 /* MPManagedObject+Mixin.h */; };
+		5FDB33451705CC000049EBB5 /* MPManagedObject+Mixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33411705CC000049EBB5 /* MPManagedObject+Mixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB33461705CC000049EBB5 /* MPManagedObject+Mixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33421705CC000049EBB5 /* MPManagedObject+Mixin.m */; };
-		5FDB334C1705CC170049EBB5 /* MPManagedObject+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB334B1705CC170049EBB5 /* MPManagedObject+Protected.h */; };
-		5FDB33501705CC300049EBB5 /* MPSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB334D1705CC300049EBB5 /* MPSnapshot.h */; };
+		5FDB334C1705CC170049EBB5 /* MPManagedObject+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB334B1705CC170049EBB5 /* MPManagedObject+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5FDB33501705CC300049EBB5 /* MPSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB334D1705CC300049EBB5 /* MPSnapshot.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB33511705CC300049EBB5 /* MPSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB334E1705CC300049EBB5 /* MPSnapshot.m */; };
-		5FDB33521705CC300049EBB5 /* MPSnapshot+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB334F1705CC300049EBB5 /* MPSnapshot+Protected.h */; };
-		5FDB33581705CC500049EBB5 /* MPCachingObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33571705CC500049EBB5 /* MPCachingObject.h */; };
+		5FDB33521705CC300049EBB5 /* MPSnapshot+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB334F1705CC300049EBB5 /* MPSnapshot+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5FDB33581705CC500049EBB5 /* MPCachingObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33571705CC500049EBB5 /* MPCachingObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB33921705CCAF0049EBB5 /* TouchDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33771705CC960049EBB5 /* TouchDB.framework */; };
-		5FDB33951705CD570049EBB5 /* MPDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33931705CD570049EBB5 /* MPDatabase.h */; };
+		5FDB33951705CD570049EBB5 /* MPDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33931705CD570049EBB5 /* MPDatabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB33961705CD570049EBB5 /* MPDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33941705CD570049EBB5 /* MPDatabase.m */; };
-		5FDB33B71705CDBB0049EBB5 /* CouchCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33A81705CDA70049EBB5 /* CouchCocoa.framework */; };
-		5FDB33BD1705CEC10049EBB5 /* MPManagedObjectsController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33BC1705CEC10049EBB5 /* MPManagedObjectsController+Protected.h */; };
+		5FDB33BD1705CEC10049EBB5 /* MPManagedObjectsController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33BC1705CEC10049EBB5 /* MPManagedObjectsController+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB33C31705CF260049EBB5 /* libcommonCrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33C21705CF260049EBB5 /* libcommonCrypto.dylib */; };
-		5FDB33CB1705D0080049EBB5 /* MPDatabasePackageController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33C81705D0080049EBB5 /* MPDatabasePackageController.h */; };
+		5FDB33CB1705D0080049EBB5 /* MPDatabasePackageController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33C81705D0080049EBB5 /* MPDatabasePackageController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB33CC1705D0080049EBB5 /* MPDatabasePackageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33C91705D0080049EBB5 /* MPDatabasePackageController.m */; };
-		5FDB33CD1705D0080049EBB5 /* MPDatabasePackageController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33CA1705D0080049EBB5 /* MPDatabasePackageController+Protected.h */; };
+		5FDB33CD1705D0080049EBB5 /* MPDatabasePackageController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33CA1705D0080049EBB5 /* MPDatabasePackageController+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB33D41705D0DA0049EBB5 /* RegexKitLite.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33D21705D0D90049EBB5 /* RegexKitLite.h */; };
 		5FDB33D51705D0DA0049EBB5 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33D31705D0D90049EBB5 /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33D71705D1380049EBB5 /* libicucore.dylib */; };
 		5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34361705D90A0049EBB5 /* Mixin.h */; };
 		5FDB34391705D90A0049EBB5 /* Mixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34371705D90A0049EBB5 /* Mixin.m */; };
-		5FDB34481705DADA0049EBB5 /* MPSharedPackageController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34461705DADA0049EBB5 /* MPSharedPackageController.h */; };
-		5FDB34491705DADA0049EBB5 /* MPSharedPackageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34471705DADA0049EBB5 /* MPSharedPackageController.m */; };
-		5FDB344C1705DB190049EBB5 /* NSNotificationCenter+ErrorNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB344A1705DB180049EBB5 /* NSNotificationCenter+ErrorNotification.h */; };
+		5FDB344C1705DB190049EBB5 /* NSNotificationCenter+ErrorNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB344A1705DB180049EBB5 /* NSNotificationCenter+ErrorNotification.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB344D1705DB190049EBB5 /* NSNotificationCenter+ErrorNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB344B1705DB190049EBB5 /* NSNotificationCenter+ErrorNotification.m */; };
 		5FDB34541705DB570049EBB5 /* JSONKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34521705DB570049EBB5 /* JSONKit.h */; };
 		5FDB34551705DB570049EBB5 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34531705DB570049EBB5 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		5FDB34581705DB860049EBB5 /* MPContributorsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34561705DB850049EBB5 /* MPContributorsController.h */; };
+		5FDB34581705DB860049EBB5 /* MPContributorsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34561705DB850049EBB5 /* MPContributorsController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB34591705DB860049EBB5 /* MPContributorsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34571705DB860049EBB5 /* MPContributorsController.m */; };
-		5FDB349F1705DCBF0049EBB5 /* MPContributor.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB349D1705DCBE0049EBB5 /* MPContributor.h */; };
+		5FDB349F1705DCBF0049EBB5 /* MPContributor.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB349D1705DCBE0049EBB5 /* MPContributor.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB34A01705DCBF0049EBB5 /* MPContributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB349E1705DCBE0049EBB5 /* MPContributor.m */; };
 		5FDB34A31705DCEC0049EBB5 /* TouchDBListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33791705CC960049EBB5 /* TouchDBListener.framework */; };
-		5FDB34AA1705E48C0049EBB5 /* MPException.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34A81705E48B0049EBB5 /* MPException.h */; };
+		5FDB34AA1705E48C0049EBB5 /* MPException.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34A81705E48B0049EBB5 /* MPException.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB34AB1705E48C0049EBB5 /* MPException.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34A91705E48B0049EBB5 /* MPException.m */; };
-		5FDB3768170642160049EBB5 /* MPShoeboxPackageController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3766170642150049EBB5 /* MPShoeboxPackageController.h */; };
+		5FDB3768170642160049EBB5 /* MPShoeboxPackageController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3766170642150049EBB5 /* MPShoeboxPackageController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3769170642160049EBB5 /* MPShoeboxPackageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3767170642150049EBB5 /* MPShoeboxPackageController.m */; };
-		5FDB37A8170647570049EBB5 /* MPManuscript.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB37A6170647560049EBB5 /* MPManuscript.h */; };
-		5FDB37A9170647570049EBB5 /* MPManuscript.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB37A7170647570049EBB5 /* MPManuscript.m */; };
-		5FDB3819170702470049EBB5 /* NSError+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3817170702470049EBB5 /* NSError+MPExtensions.h */; };
+		5FDB3819170702470049EBB5 /* NSError+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3817170702470049EBB5 /* NSError+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB381A170702470049EBB5 /* NSError+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3818170702470049EBB5 /* NSError+MPExtensions.m */; };
-		5FDB381D170702650049EBB5 /* NSString+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB381B170702650049EBB5 /* NSString+MPExtensions.h */; };
+		5FDB381D170702650049EBB5 /* NSString+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB381B170702650049EBB5 /* NSString+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB381E170702650049EBB5 /* NSString+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB381C170702650049EBB5 /* NSString+MPExtensions.m */; };
-		5FDB38211707027E0049EBB5 /* NSSet+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB381F1707027E0049EBB5 /* NSSet+MPExtensions.h */; };
+		5FDB38211707027E0049EBB5 /* NSSet+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB381F1707027E0049EBB5 /* NSSet+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB38221707027E0049EBB5 /* NSSet+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB38201707027E0049EBB5 /* NSSet+MPExtensions.m */; };
-		5FDB3825170702990049EBB5 /* NSBundle+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3823170702990049EBB5 /* NSBundle+MPExtensions.h */; };
+		5FDB3825170702990049EBB5 /* NSBundle+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3823170702990049EBB5 /* NSBundle+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3826170702990049EBB5 /* NSBundle+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3824170702990049EBB5 /* NSBundle+MPExtensions.m */; };
-		5FDB3829170702B50049EBB5 /* NSObject+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3827170702B50049EBB5 /* NSObject+MPExtensions.h */; };
+		5FDB3829170702B50049EBB5 /* NSObject+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3827170702B50049EBB5 /* NSObject+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB382A170702B50049EBB5 /* NSObject+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3828170702B50049EBB5 /* NSObject+MPExtensions.m */; };
-		5FDB382D170702CD0049EBB5 /* NSArray+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB382B170702CD0049EBB5 /* NSArray+MPExtensions.h */; };
+		5FDB382D170702CD0049EBB5 /* NSArray+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB382B170702CD0049EBB5 /* NSArray+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB382E170702CD0049EBB5 /* NSArray+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB382C170702CD0049EBB5 /* NSArray+MPExtensions.m */; };
-		5FDB3831170702F40049EBB5 /* NSDictionary+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB382F170702F40049EBB5 /* NSDictionary+MPExtensions.h */; };
+		5FDB3831170702F40049EBB5 /* NSDictionary+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB382F170702F40049EBB5 /* NSDictionary+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3832170702F40049EBB5 /* NSDictionary+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3830170702F40049EBB5 /* NSDictionary+MPExtensions.m */; };
-		5FDB3835170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3833170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.h */; };
+		5FDB3835170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3833170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3836170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3834170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.m */; };
-		5FDB3839170703850049EBB5 /* NSFileManager+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3837170703850049EBB5 /* NSFileManager+MPExtensions.h */; };
+		5FDB3839170703850049EBB5 /* NSFileManager+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3837170703850049EBB5 /* NSFileManager+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB383A170703850049EBB5 /* NSFileManager+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3838170703850049EBB5 /* NSFileManager+MPExtensions.m */; };
-		5FDB383D1707038F0049EBB5 /* NSData+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB383B1707038F0049EBB5 /* NSData+MPExtensions.h */; };
+		5FDB383D1707038F0049EBB5 /* NSData+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB383B1707038F0049EBB5 /* NSData+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB383E1707038F0049EBB5 /* NSData+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB383C1707038F0049EBB5 /* NSData+MPExtensions.m */; };
-		5FDB3841170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB383F170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h */; };
+		5FDB3841170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB383F170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3842170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3840170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.m */; };
+		5FDB39BE170761D00049EBB5 /* CouchCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB39AF170761B70049EBB5 /* CouchCocoa.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -184,68 +179,75 @@
 			remoteGlobalIDString = 270B3DE91489359000E0A926;
 			remoteInfo = TouchDB;
 		};
-		5FDB33A71705CDA70049EBB5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FDB33971705CDA60049EBB5 /* CouchCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 27CDEBF113C67C9B00C979BB;
-			remoteInfo = "Mac Framework";
-		};
-		5FDB33A91705CDA70049EBB5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FDB33971705CDA60049EBB5 /* CouchCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 27CDEC0313C67C9B00C979BB;
-			remoteInfo = "Mac Tests";
-		};
-		5FDB33AB1705CDA70049EBB5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FDB33971705CDA60049EBB5 /* CouchCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 27EF14771396D7BA0052913E;
-			remoteInfo = "Demo-Addresses";
-		};
-		5FDB33AD1705CDA70049EBB5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FDB33971705CDA60049EBB5 /* CouchCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2784E1BC13CE5249009CC5C8;
-			remoteInfo = "Demo-Shopping";
-		};
-		5FDB33AF1705CDA70049EBB5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FDB33971705CDA60049EBB5 /* CouchCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 27EEA59813D602EA00D7ACA4;
-			remoteInfo = "iOS Framework";
-		};
-		5FDB33B11705CDA70049EBB5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FDB33971705CDA60049EBB5 /* CouchCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2739BF2B13BCE53B004829CD;
-			remoteInfo = "iOS Library";
-		};
-		5FDB33B31705CDA70049EBB5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FDB33971705CDA60049EBB5 /* CouchCocoa.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 2739BF3613BCE53C004829CD;
-			remoteInfo = "iOS Tests";
-		};
-		5FDB33B51705CDB40049EBB5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FDB33971705CDA60049EBB5 /* CouchCocoa.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 27CDEBF013C67C9B00C979BB;
-			remoteInfo = "Mac Framework";
-		};
 		5FDB34A11705DCE50049EBB5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5FDB335D1705CC960049EBB5 /* TouchDB.xcodeproj */;
 			proxyType = 1;
 			remoteGlobalIDString = 275315D414ACF0A10065964D;
 			remoteInfo = TouchDBListener;
+		};
+		5FDB3924170713BD0049EBB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FDB335D1705CC960049EBB5 /* TouchDB.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 270B3DFB1489359000E0A926;
+			remoteInfo = TouchDBTests;
+		};
+		5FDB39AE170761B70049EBB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FDB399E170761B70049EBB5 /* CouchCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 27CDEBF113C67C9B00C979BB;
+			remoteInfo = "Mac Framework";
+		};
+		5FDB39B0170761B70049EBB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FDB399E170761B70049EBB5 /* CouchCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 27CDEC0313C67C9B00C979BB;
+			remoteInfo = "Mac Tests";
+		};
+		5FDB39B2170761B70049EBB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FDB399E170761B70049EBB5 /* CouchCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 27EF14771396D7BA0052913E;
+			remoteInfo = "Demo-Addresses";
+		};
+		5FDB39B4170761B70049EBB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FDB399E170761B70049EBB5 /* CouchCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2784E1BC13CE5249009CC5C8;
+			remoteInfo = "Demo-Shopping";
+		};
+		5FDB39B6170761B70049EBB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FDB399E170761B70049EBB5 /* CouchCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 27EEA59813D602EA00D7ACA4;
+			remoteInfo = "iOS Framework";
+		};
+		5FDB39B8170761B70049EBB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FDB399E170761B70049EBB5 /* CouchCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2739BF2B13BCE53B004829CD;
+			remoteInfo = "iOS Library";
+		};
+		5FDB39BA170761B70049EBB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FDB399E170761B70049EBB5 /* CouchCocoa.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 2739BF3613BCE53C004829CD;
+			remoteInfo = "iOS Tests";
+		};
+		5FDB39BC170761C10049EBB5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FDB399E170761B70049EBB5 /* CouchCocoa.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 27CDEBF013C67C9B00C979BB;
+			remoteInfo = "Mac Framework";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -268,7 +270,6 @@
 		5FDB33291705CB950049EBB5 /* FeatherTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeatherTests.m; sourceTree = "<group>"; };
 		5FDB33331705CBD90049EBB5 /* MPManagedObjectsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPManagedObjectsController.h; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPManagedObjectsController.h"; sourceTree = "<group>"; };
 		5FDB33341705CBD90049EBB5 /* MPManagedObjectsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPManagedObjectsController.m; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPManagedObjectsController.m"; sourceTree = "<group>"; };
-		5FDB33371705CBE10049EBB5 /* MPManuscriptCategoriesController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPManuscriptCategoriesController.h; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPManuscriptCategoriesController.h"; sourceTree = "<group>"; };
 		5FDB33391705CBEF0049EBB5 /* MPSnapshotsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPSnapshotsController.h; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPSnapshotsController.h"; sourceTree = "<group>"; };
 		5FDB333A1705CBEF0049EBB5 /* MPSnapshotsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPSnapshotsController.m; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPSnapshotsController.m"; sourceTree = "<group>"; };
 		5FDB333B1705CBEF0049EBB5 /* MPSnapshotsController+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MPSnapshotsController+Protected.h"; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPSnapshotsController+Protected.h"; sourceTree = "<group>"; };
@@ -284,7 +285,6 @@
 		5FDB335D1705CC960049EBB5 /* TouchDB.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TouchDB.xcodeproj; path = External/TouchDB/TouchDB.xcodeproj; sourceTree = "<group>"; };
 		5FDB33931705CD570049EBB5 /* MPDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPDatabase.h; path = ../../manuscripts/Manuscripts/Sources/Model/MPTouchDatabase/MPDatabase.h; sourceTree = "<group>"; };
 		5FDB33941705CD570049EBB5 /* MPDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPDatabase.m; path = ../../manuscripts/Manuscripts/Sources/Model/MPTouchDatabase/MPDatabase.m; sourceTree = "<group>"; };
-		5FDB33971705CDA60049EBB5 /* CouchCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CouchCocoa.xcodeproj; path = External/CouchCocoa/CouchCocoa.xcodeproj; sourceTree = "<group>"; };
 		5FDB33BC1705CEC10049EBB5 /* MPManagedObjectsController+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MPManagedObjectsController+Protected.h"; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPManagedObjectsController+Protected.h"; sourceTree = "<group>"; };
 		5FDB33C21705CF260049EBB5 /* libcommonCrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcommonCrypto.dylib; path = usr/lib/system/libcommonCrypto.dylib; sourceTree = SDKROOT; };
 		5FDB33C81705D0080049EBB5 /* MPDatabasePackageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPDatabasePackageController.h; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPDatabasePackageController.h"; sourceTree = "<group>"; };
@@ -295,8 +295,6 @@
 		5FDB33D71705D1380049EBB5 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		5FDB34361705D90A0049EBB5 /* Mixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mixin.h; path = External/ObjectiveMixin/ObjectiveMixin/Mixin.h; sourceTree = SOURCE_ROOT; };
 		5FDB34371705D90A0049EBB5 /* Mixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Mixin.m; path = External/ObjectiveMixin/ObjectiveMixin/Mixin.m; sourceTree = SOURCE_ROOT; };
-		5FDB34461705DADA0049EBB5 /* MPSharedPackageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPSharedPackageController.h; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPSharedPackageController.h"; sourceTree = "<group>"; };
-		5FDB34471705DADA0049EBB5 /* MPSharedPackageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPSharedPackageController.m; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPSharedPackageController.m"; sourceTree = "<group>"; };
 		5FDB344A1705DB180049EBB5 /* NSNotificationCenter+ErrorNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNotificationCenter+ErrorNotification.h"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSNotificationCenter+ErrorNotification.h"; sourceTree = "<group>"; };
 		5FDB344B1705DB190049EBB5 /* NSNotificationCenter+ErrorNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNotificationCenter+ErrorNotification.m"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSNotificationCenter+ErrorNotification.m"; sourceTree = "<group>"; };
 		5FDB34521705DB570049EBB5 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = External/JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
@@ -309,8 +307,6 @@
 		5FDB34A91705E48B0049EBB5 /* MPException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPException.m; path = ../../manuscripts/Manuscripts/Sources/Utilities/MPException.m; sourceTree = "<group>"; };
 		5FDB3766170642150049EBB5 /* MPShoeboxPackageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPShoeboxPackageController.h; path = ../../manuscripts/Manuscripts/Sources/Utilities/MPShoeboxPackageController.h; sourceTree = "<group>"; };
 		5FDB3767170642150049EBB5 /* MPShoeboxPackageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPShoeboxPackageController.m; path = ../../manuscripts/Manuscripts/Sources/Utilities/MPShoeboxPackageController.m; sourceTree = "<group>"; };
-		5FDB37A6170647560049EBB5 /* MPManuscript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPManuscript.h; path = ../../manuscripts/Manuscripts/Sources/Model/MPManuscript.h; sourceTree = "<group>"; };
-		5FDB37A7170647570049EBB5 /* MPManuscript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPManuscript.m; path = ../../manuscripts/Manuscripts/Sources/Model/MPManuscript.m; sourceTree = "<group>"; };
 		5FDB3817170702470049EBB5 /* NSError+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSError+MPExtensions.h"; path = "Sources/Categories/NSError+MPExtensions.h"; sourceTree = "<group>"; };
 		5FDB3818170702470049EBB5 /* NSError+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSError+MPExtensions.m"; path = "Sources/Categories/NSError+MPExtensions.m"; sourceTree = "<group>"; };
 		5FDB381B170702650049EBB5 /* NSString+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+MPExtensions.h"; path = "Sources/Categories/NSString+MPExtensions.h"; sourceTree = "<group>"; };
@@ -333,6 +329,7 @@
 		5FDB383C1707038F0049EBB5 /* NSData+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+MPExtensions.m"; path = "Sources/Categories/NSData+MPExtensions.m"; sourceTree = "<group>"; };
 		5FDB383F170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNotificationCenter+MPExtensions.h"; path = "Sources/Categories/NSNotificationCenter+MPExtensions.h"; sourceTree = "<group>"; };
 		5FDB3840170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNotificationCenter+MPExtensions.m"; path = "Sources/Categories/NSNotificationCenter+MPExtensions.m"; sourceTree = "<group>"; };
+		5FDB399E170761B70049EBB5 /* CouchCocoa.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CouchCocoa.xcodeproj; path = External/CouchCocoa/CouchCocoa.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -340,10 +337,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FDB34A31705DCEC0049EBB5 /* TouchDBListener.framework in Frameworks */,
-				5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */,
 				5FDB33C31705CF260049EBB5 /* libcommonCrypto.dylib in Frameworks */,
-				5FDB33B71705CDBB0049EBB5 /* CouchCocoa.framework in Frameworks */,
+				5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */,
+				5FDB39BE170761D00049EBB5 /* CouchCocoa.framework in Frameworks */,
+				5FDB34A31705DCEC0049EBB5 /* TouchDBListener.framework in Frameworks */,
 				5FDB33921705CCAF0049EBB5 /* TouchDB.framework in Frameworks */,
 				5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */,
 			);
@@ -369,8 +366,8 @@
 				5FDB33221705CB950049EBB5 /* FeatherTests */,
 				5FDB33051705CB950049EBB5 /* Frameworks */,
 				5FDB33041705CB950049EBB5 /* Products */,
+				5FDB399E170761B70049EBB5 /* CouchCocoa.xcodeproj */,
 				5FDB335D1705CC960049EBB5 /* TouchDB.xcodeproj */,
-				5FDB33971705CDA60049EBB5 /* CouchCocoa.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -422,7 +419,6 @@
 				5FDB33331705CBD90049EBB5 /* MPManagedObjectsController.h */,
 				5FDB33341705CBD90049EBB5 /* MPManagedObjectsController.m */,
 				5FDB33BC1705CEC10049EBB5 /* MPManagedObjectsController+Protected.h */,
-				5FDB33371705CBE10049EBB5 /* MPManuscriptCategoriesController.h */,
 				5FDB33391705CBEF0049EBB5 /* MPSnapshotsController.h */,
 				5FDB333A1705CBEF0049EBB5 /* MPSnapshotsController.m */,
 				5FDB333B1705CBEF0049EBB5 /* MPSnapshotsController+Protected.h */,
@@ -439,12 +435,8 @@
 				5FDB33571705CC500049EBB5 /* MPCachingObject.h */,
 				5FDB33131705CB950049EBB5 /* Feather.h */,
 				5FDB33141705CB950049EBB5 /* Feather.m */,
-				5FDB37A6170647560049EBB5 /* MPManuscript.h */,
-				5FDB37A7170647570049EBB5 /* MPManuscript.m */,
 				5FDB3766170642150049EBB5 /* MPShoeboxPackageController.h */,
 				5FDB3767170642150049EBB5 /* MPShoeboxPackageController.m */,
-				5FDB34461705DADA0049EBB5 /* MPSharedPackageController.h */,
-				5FDB34471705DADA0049EBB5 /* MPSharedPackageController.m */,
 				5FDB330D1705CB950049EBB5 /* Supporting Files */,
 			);
 			path = Feather;
@@ -484,6 +476,7 @@
 			children = (
 				5FDB33771705CC960049EBB5 /* TouchDB.framework */,
 				5FDB33791705CC960049EBB5 /* TouchDBListener.framework */,
+				5FDB3925170713BD0049EBB5 /* TouchDBTests.octest */,
 				5FDB337D1705CC960049EBB5 /* TouchDB Demo.app */,
 				5FDB337F1705CC960049EBB5 /* TouchDB */,
 				5FDB33811705CC960049EBB5 /* libTouchDB.a */,
@@ -494,20 +487,6 @@
 				5FDB338B1705CC960049EBB5 /* libTouchDBListener.a */,
 				5FDB338D1705CC960049EBB5 /* TouchDBListener.framework */,
 				5FDB338F1705CC960049EBB5 /* TouchServ */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		5FDB33981705CDA60049EBB5 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5FDB33A81705CDA70049EBB5 /* CouchCocoa.framework */,
-				5FDB33AA1705CDA70049EBB5 /* Mac Tests.octest */,
-				5FDB33AC1705CDA70049EBB5 /* Addresses.app */,
-				5FDB33AE1705CDA70049EBB5 /* Shopping.app */,
-				5FDB33B01705CDA70049EBB5 /* CouchCocoa.framework */,
-				5FDB33B21705CDA70049EBB5 /* libCouchCocoa.a */,
-				5FDB33B41705CDA70049EBB5 /* iOS Tests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -580,6 +559,20 @@
 			name = JSONKit;
 			sourceTree = "<group>";
 		};
+		5FDB399F170761B70049EBB5 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5FDB39AF170761B70049EBB5 /* CouchCocoa.framework */,
+				5FDB39B1170761B70049EBB5 /* Mac Tests.octest */,
+				5FDB39B3170761B70049EBB5 /* Addresses.app */,
+				5FDB39B5170761B70049EBB5 /* Shopping.app */,
+				5FDB39B7170761B70049EBB5 /* CouchCocoa.framework */,
+				5FDB39B9170761B70049EBB5 /* libCouchCocoa.a */,
+				5FDB39BB170761B70049EBB5 /* iOS Tests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -587,8 +580,18 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FDB3819170702470049EBB5 /* NSError+MPExtensions.h in Headers */,
+				5FDB381D170702650049EBB5 /* NSString+MPExtensions.h in Headers */,
+				5FDB38211707027E0049EBB5 /* NSSet+MPExtensions.h in Headers */,
+				5FDB3825170702990049EBB5 /* NSBundle+MPExtensions.h in Headers */,
+				5FDB3829170702B50049EBB5 /* NSObject+MPExtensions.h in Headers */,
+				5FDB382D170702CD0049EBB5 /* NSArray+MPExtensions.h in Headers */,
+				5FDB3831170702F40049EBB5 /* NSDictionary+MPExtensions.h in Headers */,
+				5FDB3835170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.h in Headers */,
+				5FDB3839170703850049EBB5 /* NSFileManager+MPExtensions.h in Headers */,
+				5FDB383D1707038F0049EBB5 /* NSData+MPExtensions.h in Headers */,
+				5FDB3841170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h in Headers */,
 				5FDB33351705CBD90049EBB5 /* MPManagedObjectsController.h in Headers */,
-				5FDB33381705CBE10049EBB5 /* MPManuscriptCategoriesController.h in Headers */,
 				5FDB333C1705CBEF0049EBB5 /* MPSnapshotsController.h in Headers */,
 				5FDB333E1705CBEF0049EBB5 /* MPSnapshotsController+Protected.h in Headers */,
 				5FDB33431705CC000049EBB5 /* MPManagedObject.h in Headers */,
@@ -601,27 +604,14 @@
 				5FDB33BD1705CEC10049EBB5 /* MPManagedObjectsController+Protected.h in Headers */,
 				5FDB33CB1705D0080049EBB5 /* MPDatabasePackageController.h in Headers */,
 				5FDB33CD1705D0080049EBB5 /* MPDatabasePackageController+Protected.h in Headers */,
-				5FDB33D41705D0DA0049EBB5 /* RegexKitLite.h in Headers */,
-				5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */,
-				5FDB34481705DADA0049EBB5 /* MPSharedPackageController.h in Headers */,
 				5FDB344C1705DB190049EBB5 /* NSNotificationCenter+ErrorNotification.h in Headers */,
-				5FDB34541705DB570049EBB5 /* JSONKit.h in Headers */,
 				5FDB34581705DB860049EBB5 /* MPContributorsController.h in Headers */,
 				5FDB349F1705DCBF0049EBB5 /* MPContributor.h in Headers */,
 				5FDB34AA1705E48C0049EBB5 /* MPException.h in Headers */,
 				5FDB3768170642160049EBB5 /* MPShoeboxPackageController.h in Headers */,
-				5FDB37A8170647570049EBB5 /* MPManuscript.h in Headers */,
-				5FDB3819170702470049EBB5 /* NSError+MPExtensions.h in Headers */,
-				5FDB381D170702650049EBB5 /* NSString+MPExtensions.h in Headers */,
-				5FDB38211707027E0049EBB5 /* NSSet+MPExtensions.h in Headers */,
-				5FDB3825170702990049EBB5 /* NSBundle+MPExtensions.h in Headers */,
-				5FDB3829170702B50049EBB5 /* NSObject+MPExtensions.h in Headers */,
-				5FDB382D170702CD0049EBB5 /* NSArray+MPExtensions.h in Headers */,
-				5FDB3831170702F40049EBB5 /* NSDictionary+MPExtensions.h in Headers */,
-				5FDB3835170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.h in Headers */,
-				5FDB3839170703850049EBB5 /* NSFileManager+MPExtensions.h in Headers */,
-				5FDB383D1707038F0049EBB5 /* NSData+MPExtensions.h in Headers */,
-				5FDB3841170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h in Headers */,
+				5FDB33D41705D0DA0049EBB5 /* RegexKitLite.h in Headers */,
+				5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */,
+				5FDB34541705DB570049EBB5 /* JSONKit.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -640,8 +630,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				5FDB39BD170761C10049EBB5 /* PBXTargetDependency */,
 				5FDB34A21705DCE50049EBB5 /* PBXTargetDependency */,
-				5FDB33B61705CDB40049EBB5 /* PBXTargetDependency */,
 				5FDB33911705CCAA0049EBB5 /* PBXTargetDependency */,
 			);
 			name = Feather;
@@ -689,8 +679,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 5FDB33981705CDA60049EBB5 /* Products */;
-					ProjectRef = 5FDB33971705CDA60049EBB5 /* CouchCocoa.xcodeproj */;
+					ProductGroup = 5FDB399F170761B70049EBB5 /* Products */;
+					ProjectRef = 5FDB399E170761B70049EBB5 /* CouchCocoa.xcodeproj */;
 				},
 				{
 					ProductGroup = 5FDB335E1705CC960049EBB5 /* Products */;
@@ -790,53 +780,60 @@
 			remoteRef = 5FDB338E1705CC960049EBB5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5FDB33A81705CDA70049EBB5 /* CouchCocoa.framework */ = {
+		5FDB3925170713BD0049EBB5 /* TouchDBTests.octest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = TouchDBTests.octest;
+			remoteRef = 5FDB3924170713BD0049EBB5 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5FDB39AF170761B70049EBB5 /* CouchCocoa.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = CouchCocoa.framework;
-			remoteRef = 5FDB33A71705CDA70049EBB5 /* PBXContainerItemProxy */;
+			remoteRef = 5FDB39AE170761B70049EBB5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5FDB33AA1705CDA70049EBB5 /* Mac Tests.octest */ = {
+		5FDB39B1170761B70049EBB5 /* Mac Tests.octest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "Mac Tests.octest";
-			remoteRef = 5FDB33A91705CDA70049EBB5 /* PBXContainerItemProxy */;
+			remoteRef = 5FDB39B0170761B70049EBB5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5FDB33AC1705CDA70049EBB5 /* Addresses.app */ = {
+		5FDB39B3170761B70049EBB5 /* Addresses.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = Addresses.app;
-			remoteRef = 5FDB33AB1705CDA70049EBB5 /* PBXContainerItemProxy */;
+			remoteRef = 5FDB39B2170761B70049EBB5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5FDB33AE1705CDA70049EBB5 /* Shopping.app */ = {
+		5FDB39B5170761B70049EBB5 /* Shopping.app */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.application;
 			path = Shopping.app;
-			remoteRef = 5FDB33AD1705CDA70049EBB5 /* PBXContainerItemProxy */;
+			remoteRef = 5FDB39B4170761B70049EBB5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5FDB33B01705CDA70049EBB5 /* CouchCocoa.framework */ = {
+		5FDB39B7170761B70049EBB5 /* CouchCocoa.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = CouchCocoa.framework;
-			remoteRef = 5FDB33AF1705CDA70049EBB5 /* PBXContainerItemProxy */;
+			remoteRef = 5FDB39B6170761B70049EBB5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5FDB33B21705CDA70049EBB5 /* libCouchCocoa.a */ = {
+		5FDB39B9170761B70049EBB5 /* libCouchCocoa.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libCouchCocoa.a;
-			remoteRef = 5FDB33B11705CDA70049EBB5 /* PBXContainerItemProxy */;
+			remoteRef = 5FDB39B8170761B70049EBB5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		5FDB33B41705CDA70049EBB5 /* iOS Tests.octest */ = {
+		5FDB39BB170761B70049EBB5 /* iOS Tests.octest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = "iOS Tests.octest";
-			remoteRef = 5FDB33B31705CDA70049EBB5 /* PBXContainerItemProxy */;
+			remoteRef = 5FDB39BA170761B70049EBB5 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -891,14 +888,12 @@
 				5FDB33CC1705D0080049EBB5 /* MPDatabasePackageController.m in Sources */,
 				5FDB33D51705D0DA0049EBB5 /* RegexKitLite.m in Sources */,
 				5FDB34391705D90A0049EBB5 /* Mixin.m in Sources */,
-				5FDB34491705DADA0049EBB5 /* MPSharedPackageController.m in Sources */,
 				5FDB344D1705DB190049EBB5 /* NSNotificationCenter+ErrorNotification.m in Sources */,
 				5FDB34551705DB570049EBB5 /* JSONKit.m in Sources */,
 				5FDB34591705DB860049EBB5 /* MPContributorsController.m in Sources */,
 				5FDB34A01705DCBF0049EBB5 /* MPContributor.m in Sources */,
 				5FDB34AB1705E48C0049EBB5 /* MPException.m in Sources */,
 				5FDB3769170642160049EBB5 /* MPShoeboxPackageController.m in Sources */,
-				5FDB37A9170647570049EBB5 /* MPManuscript.m in Sources */,
 				5FDB381A170702470049EBB5 /* NSError+MPExtensions.m in Sources */,
 				5FDB381E170702650049EBB5 /* NSString+MPExtensions.m in Sources */,
 				5FDB38221707027E0049EBB5 /* NSSet+MPExtensions.m in Sources */,
@@ -934,15 +929,15 @@
 			name = TouchDB;
 			targetProxy = 5FDB33901705CCAA0049EBB5 /* PBXContainerItemProxy */;
 		};
-		5FDB33B61705CDB40049EBB5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "Mac Framework";
-			targetProxy = 5FDB33B51705CDB40049EBB5 /* PBXContainerItemProxy */;
-		};
 		5FDB34A21705DCE50049EBB5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = TouchDBListener;
 			targetProxy = 5FDB34A11705DCE50049EBB5 /* PBXContainerItemProxy */;
+		};
+		5FDB39BD170761C10049EBB5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Mac Framework";
+			targetProxy = 5FDB39BC170761C10049EBB5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1029,6 +1024,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				INFOPLIST_FILE = "Feather/Feather-Info.plist";
+				LD_DYLIB_INSTALL_NAME = "@rpath/$(EXECUTABLE_PATH)";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
@@ -1049,6 +1045,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				INFOPLIST_FILE = "Feather/Feather-Info.plist";
+				LD_DYLIB_INSTALL_NAME = "@rpath/$(EXECUTABLE_PATH)";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",

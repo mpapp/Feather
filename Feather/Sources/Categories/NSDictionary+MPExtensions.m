@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
 //
 
-#import "NSDictionary+Manuscripts.h"
-#import "NSArray+Manuscripts.h"
-#import "NSSet+Manuscripts.h"
+#import "NSDictionary+MPExtensions.h"
+#import "NSArray+MPExtensions.h"
+#import "NSSet+MPExtensions.h"
 
 
 @implementation NSDictionary (Manuscripts)

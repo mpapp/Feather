@@ -7,8 +7,8 @@
 //
 
 #import "NSFileManager+MPExtensions.h"
-#import "NSError+Manuscripts.h"
-#import "NSString+Manuscripts.h"
+#import "NSError+MPExtensions.h"
+#import "NSString+MPExtensions.h"
 #import "NSData+MPExtensions.h"
 #import <CommonCrypto/CommonDigest.h>
 

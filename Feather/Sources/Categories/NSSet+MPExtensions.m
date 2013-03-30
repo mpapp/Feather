@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
 //
 
-#import "NSSet+Manuscripts.h"
+#import "NSSet+MPExtensions.h"
 
 @implementation NSSet (Manuscripts)
 

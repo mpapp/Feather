@@ -6,8 +6,9 @@
 //  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
 //
 
-#import "NSObject+Manuscripts.h"
-#import "NSArray+Manuscripts.h"
+#import "NSObject+MPExtensions.h"
+#import "NSArray+MPExtensions.h"
+#import "NSString+MPExtensions.h"
 
 #import <objc/runtime.h>
 
@@ -60,7 +61,7 @@ inline id MPNilToObject(id object, id defaultObject)
     if (!attribs) return NO;
     
     // R = readonly
-    return ![[[NSString alloc] initWithUTF8String:&attribs] containsString:@"R"];
+    return ![[[NSString alloc] initWithUTF8String:&attribs] containsSubstring:@"R"];
 }
 
 + (Class)commonAncestorForClass:(Class)a andClass:(Class)b

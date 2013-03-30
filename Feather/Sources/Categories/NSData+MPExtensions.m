@@ -8,6 +8,9 @@
 
 #import "NSData+MPExtensions.h"
 
+#import <CommonCrypto/CommonDigest.h>
+#import <CommonCrypto/CommonHMAC.h>
+
 @implementation NSData (MPExtensions)
 
 

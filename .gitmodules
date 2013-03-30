@@ -10,3 +10,6 @@
 [submodule "External/JSONKit"]
 	path = External/JSONKit
 	url = git@github.com:mz2/JSONKit.git
+[submodule "External/MYUtilities"]
+	path = External/MYUtilities
+	url = git@github.com:mz2/MYUtilities.git
