@@ -29,11 +29,7 @@
 		5FDB33501705CC300049EBB5 /* MPSnapshot.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB334D1705CC300049EBB5 /* MPSnapshot.h */; };
 		5FDB33511705CC300049EBB5 /* MPSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB334E1705CC300049EBB5 /* MPSnapshot.m */; };
 		5FDB33521705CC300049EBB5 /* MPSnapshot+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB334F1705CC300049EBB5 /* MPSnapshot+Protected.h */; };
-		5FDB33551705CC3F0049EBB5 /* NSDictionary+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33531705CC3F0049EBB5 /* NSDictionary+MPManagedObjectExtensions.h */; };
-		5FDB33561705CC3F0049EBB5 /* NSDictionary+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33541705CC3F0049EBB5 /* NSDictionary+MPManagedObjectExtensions.m */; };
 		5FDB33581705CC500049EBB5 /* MPCachingObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33571705CC500049EBB5 /* MPCachingObject.h */; };
-		5FDB335B1705CC5D0049EBB5 /* NSNotificationCenter+Manuscripts.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33591705CC5D0049EBB5 /* NSNotificationCenter+Manuscripts.h */; };
-		5FDB335C1705CC5D0049EBB5 /* NSNotificationCenter+Manuscripts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB335A1705CC5D0049EBB5 /* NSNotificationCenter+Manuscripts.m */; };
 		5FDB33921705CCAF0049EBB5 /* TouchDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33771705CC960049EBB5 /* TouchDB.framework */; };
 		5FDB33951705CD570049EBB5 /* MPDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33931705CD570049EBB5 /* MPDatabase.h */; };
 		5FDB33961705CD570049EBB5 /* MPDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33941705CD570049EBB5 /* MPDatabase.m */; };
@@ -46,22 +42,12 @@
 		5FDB33D41705D0DA0049EBB5 /* RegexKitLite.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33D21705D0D90049EBB5 /* RegexKitLite.h */; };
 		5FDB33D51705D0DA0049EBB5 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33D31705D0D90049EBB5 /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33D71705D1380049EBB5 /* libicucore.dylib */; };
-		5FDB33DB1705D1660049EBB5 /* NSString+Manuscripts.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33D91705D1650049EBB5 /* NSString+Manuscripts.h */; };
-		5FDB33DC1705D1660049EBB5 /* NSString+Manuscripts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33DA1705D1650049EBB5 /* NSString+Manuscripts.m */; };
 		5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34361705D90A0049EBB5 /* Mixin.h */; };
 		5FDB34391705D90A0049EBB5 /* Mixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34371705D90A0049EBB5 /* Mixin.m */; };
-		5FDB343C1705DA910049EBB5 /* NSSet+Manuscripts.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB343A1705DA900049EBB5 /* NSSet+Manuscripts.h */; };
-		5FDB343D1705DA910049EBB5 /* NSSet+Manuscripts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB343B1705DA900049EBB5 /* NSSet+Manuscripts.m */; };
-		5FDB34401705DAA50049EBB5 /* NSObject+Manuscripts.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB343E1705DAA50049EBB5 /* NSObject+Manuscripts.h */; };
-		5FDB34411705DAA50049EBB5 /* NSObject+Manuscripts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB343F1705DAA50049EBB5 /* NSObject+Manuscripts.m */; };
-		5FDB34441705DAC10049EBB5 /* NSArray+Manuscripts.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34421705DAC10049EBB5 /* NSArray+Manuscripts.h */; };
-		5FDB34451705DAC10049EBB5 /* NSArray+Manuscripts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34431705DAC10049EBB5 /* NSArray+Manuscripts.m */; };
 		5FDB34481705DADA0049EBB5 /* MPSharedPackageController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34461705DADA0049EBB5 /* MPSharedPackageController.h */; };
 		5FDB34491705DADA0049EBB5 /* MPSharedPackageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34471705DADA0049EBB5 /* MPSharedPackageController.m */; };
-		5FDB344C1705DB190049EBB5 /* NSNotificationCenter+ManuscriptsError.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB344A1705DB180049EBB5 /* NSNotificationCenter+ManuscriptsError.h */; };
-		5FDB344D1705DB190049EBB5 /* NSNotificationCenter+ManuscriptsError.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB344B1705DB190049EBB5 /* NSNotificationCenter+ManuscriptsError.m */; };
-		5FDB34501705DB240049EBB5 /* NSDictionary+Manuscripts.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB344E1705DB240049EBB5 /* NSDictionary+Manuscripts.h */; };
-		5FDB34511705DB240049EBB5 /* NSDictionary+Manuscripts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB344F1705DB240049EBB5 /* NSDictionary+Manuscripts.m */; };
+		5FDB344C1705DB190049EBB5 /* NSNotificationCenter+ErrorNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB344A1705DB180049EBB5 /* NSNotificationCenter+ErrorNotification.h */; };
+		5FDB344D1705DB190049EBB5 /* NSNotificationCenter+ErrorNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB344B1705DB190049EBB5 /* NSNotificationCenter+ErrorNotification.m */; };
 		5FDB34541705DB570049EBB5 /* JSONKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34521705DB570049EBB5 /* JSONKit.h */; };
 		5FDB34551705DB570049EBB5 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34531705DB570049EBB5 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5FDB34581705DB860049EBB5 /* MPContributorsController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34561705DB850049EBB5 /* MPContributorsController.h */; };
@@ -69,20 +55,34 @@
 		5FDB349F1705DCBF0049EBB5 /* MPContributor.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB349D1705DCBE0049EBB5 /* MPContributor.h */; };
 		5FDB34A01705DCBF0049EBB5 /* MPContributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB349E1705DCBE0049EBB5 /* MPContributor.m */; };
 		5FDB34A31705DCEC0049EBB5 /* TouchDBListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33791705CC960049EBB5 /* TouchDBListener.framework */; };
-		5FDB34A61705DFD80049EBB5 /* NSBundle+Manuscripts.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34A41705DFD80049EBB5 /* NSBundle+Manuscripts.h */; };
-		5FDB34A71705DFD80049EBB5 /* NSBundle+Manuscripts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34A51705DFD80049EBB5 /* NSBundle+Manuscripts.m */; };
 		5FDB34AA1705E48C0049EBB5 /* MPException.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34A81705E48B0049EBB5 /* MPException.h */; };
 		5FDB34AB1705E48C0049EBB5 /* MPException.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34A91705E48B0049EBB5 /* MPException.m */; };
-		5FDB34F01705EFE00049EBB5 /* NSError+Manuscripts.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34EE1705EFDE0049EBB5 /* NSError+Manuscripts.h */; };
-		5FDB34F11705EFE00049EBB5 /* NSError+Manuscripts.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34EF1705EFDF0049EBB5 /* NSError+Manuscripts.m */; };
-		5FDB357B1705F4CD0049EBB5 /* NSFileManager+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB35791705F4CC0049EBB5 /* NSFileManager+MPExtensions.h */; };
-		5FDB357C1705F4CD0049EBB5 /* NSFileManager+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB357A1705F4CC0049EBB5 /* NSFileManager+MPExtensions.m */; };
-		5FDB35C91705FBA00049EBB5 /* NSData+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB35C71705FB9E0049EBB5 /* NSData+MPExtensions.h */; };
-		5FDB35CA1705FBA00049EBB5 /* NSData+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB35C81705FB9F0049EBB5 /* NSData+MPExtensions.m */; };
 		5FDB3768170642160049EBB5 /* MPShoeboxPackageController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3766170642150049EBB5 /* MPShoeboxPackageController.h */; };
 		5FDB3769170642160049EBB5 /* MPShoeboxPackageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3767170642150049EBB5 /* MPShoeboxPackageController.m */; };
 		5FDB37A8170647570049EBB5 /* MPManuscript.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB37A6170647560049EBB5 /* MPManuscript.h */; };
 		5FDB37A9170647570049EBB5 /* MPManuscript.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB37A7170647570049EBB5 /* MPManuscript.m */; };
+		5FDB3819170702470049EBB5 /* NSError+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3817170702470049EBB5 /* NSError+MPExtensions.h */; };
+		5FDB381A170702470049EBB5 /* NSError+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3818170702470049EBB5 /* NSError+MPExtensions.m */; };
+		5FDB381D170702650049EBB5 /* NSString+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB381B170702650049EBB5 /* NSString+MPExtensions.h */; };
+		5FDB381E170702650049EBB5 /* NSString+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB381C170702650049EBB5 /* NSString+MPExtensions.m */; };
+		5FDB38211707027E0049EBB5 /* NSSet+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB381F1707027E0049EBB5 /* NSSet+MPExtensions.h */; };
+		5FDB38221707027E0049EBB5 /* NSSet+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB38201707027E0049EBB5 /* NSSet+MPExtensions.m */; };
+		5FDB3825170702990049EBB5 /* NSBundle+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3823170702990049EBB5 /* NSBundle+MPExtensions.h */; };
+		5FDB3826170702990049EBB5 /* NSBundle+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3824170702990049EBB5 /* NSBundle+MPExtensions.m */; };
+		5FDB3829170702B50049EBB5 /* NSObject+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3827170702B50049EBB5 /* NSObject+MPExtensions.h */; };
+		5FDB382A170702B50049EBB5 /* NSObject+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3828170702B50049EBB5 /* NSObject+MPExtensions.m */; };
+		5FDB382D170702CD0049EBB5 /* NSArray+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB382B170702CD0049EBB5 /* NSArray+MPExtensions.h */; };
+		5FDB382E170702CD0049EBB5 /* NSArray+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB382C170702CD0049EBB5 /* NSArray+MPExtensions.m */; };
+		5FDB3831170702F40049EBB5 /* NSDictionary+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB382F170702F40049EBB5 /* NSDictionary+MPExtensions.h */; };
+		5FDB3832170702F40049EBB5 /* NSDictionary+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3830170702F40049EBB5 /* NSDictionary+MPExtensions.m */; };
+		5FDB3835170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3833170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.h */; };
+		5FDB3836170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3834170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.m */; };
+		5FDB3839170703850049EBB5 /* NSFileManager+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3837170703850049EBB5 /* NSFileManager+MPExtensions.h */; };
+		5FDB383A170703850049EBB5 /* NSFileManager+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3838170703850049EBB5 /* NSFileManager+MPExtensions.m */; };
+		5FDB383D1707038F0049EBB5 /* NSData+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB383B1707038F0049EBB5 /* NSData+MPExtensions.h */; };
+		5FDB383E1707038F0049EBB5 /* NSData+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB383C1707038F0049EBB5 /* NSData+MPExtensions.m */; };
+		5FDB3841170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB383F170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h */; };
+		5FDB3842170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3840170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -287,11 +287,7 @@
 		5FDB334D1705CC300049EBB5 /* MPSnapshot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPSnapshot.h; path = ../../manuscripts/Manuscripts/Sources/Model/MPSnapshot.h; sourceTree = "<group>"; };
 		5FDB334E1705CC300049EBB5 /* MPSnapshot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPSnapshot.m; path = ../../manuscripts/Manuscripts/Sources/Model/MPSnapshot.m; sourceTree = "<group>"; };
 		5FDB334F1705CC300049EBB5 /* MPSnapshot+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MPSnapshot+Protected.h"; path = "../../manuscripts/Manuscripts/Sources/Model/MPSnapshot+Protected.h"; sourceTree = "<group>"; };
-		5FDB33531705CC3F0049EBB5 /* NSDictionary+MPManagedObjectExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+MPManagedObjectExtensions.h"; path = "../../manuscripts/Manuscripts/Sources/Model/NSDictionary+MPManagedObjectExtensions.h"; sourceTree = "<group>"; };
-		5FDB33541705CC3F0049EBB5 /* NSDictionary+MPManagedObjectExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+MPManagedObjectExtensions.m"; path = "../../manuscripts/Manuscripts/Sources/Model/NSDictionary+MPManagedObjectExtensions.m"; sourceTree = "<group>"; };
 		5FDB33571705CC500049EBB5 /* MPCachingObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCachingObject.h; path = ../../manuscripts/Manuscripts/Sources/Model/MPCachingObject.h; sourceTree = "<group>"; };
-		5FDB33591705CC5D0049EBB5 /* NSNotificationCenter+Manuscripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNotificationCenter+Manuscripts.h"; path = "../../manuscripts/Manuscripts/Sources/Model/NSNotificationCenter+Manuscripts.h"; sourceTree = "<group>"; };
-		5FDB335A1705CC5D0049EBB5 /* NSNotificationCenter+Manuscripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNotificationCenter+Manuscripts.m"; path = "../../manuscripts/Manuscripts/Sources/Model/NSNotificationCenter+Manuscripts.m"; sourceTree = "<group>"; };
 		5FDB335D1705CC960049EBB5 /* TouchDB.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = TouchDB.xcodeproj; path = External/TouchDB/TouchDB.xcodeproj; sourceTree = "<group>"; };
 		5FDB33931705CD570049EBB5 /* MPDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPDatabase.h; path = ../../manuscripts/Manuscripts/Sources/Model/MPTouchDatabase/MPDatabase.h; sourceTree = "<group>"; };
 		5FDB33941705CD570049EBB5 /* MPDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPDatabase.m; path = ../../manuscripts/Manuscripts/Sources/Model/MPTouchDatabase/MPDatabase.m; sourceTree = "<group>"; };
@@ -304,42 +300,46 @@
 		5FDB33D21705D0D90049EBB5 /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegexKitLite.h; path = "External/RegexKitLite-4.0/RegexKitLite.h"; sourceTree = SOURCE_ROOT; };
 		5FDB33D31705D0D90049EBB5 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RegexKitLite.m; path = "External/RegexKitLite-4.0/RegexKitLite.m"; sourceTree = SOURCE_ROOT; };
 		5FDB33D71705D1380049EBB5 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
-		5FDB33D91705D1650049EBB5 /* NSString+Manuscripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Manuscripts.h"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSString+Manuscripts.h"; sourceTree = "<group>"; };
-		5FDB33DA1705D1650049EBB5 /* NSString+Manuscripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Manuscripts.m"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSString+Manuscripts.m"; sourceTree = "<group>"; };
 		5FDB34361705D90A0049EBB5 /* Mixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mixin.h; path = External/ObjectiveMixin/ObjectiveMixin/Mixin.h; sourceTree = SOURCE_ROOT; };
 		5FDB34371705D90A0049EBB5 /* Mixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Mixin.m; path = External/ObjectiveMixin/ObjectiveMixin/Mixin.m; sourceTree = SOURCE_ROOT; };
-		5FDB343A1705DA900049EBB5 /* NSSet+Manuscripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSSet+Manuscripts.h"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSSet+Manuscripts.h"; sourceTree = "<group>"; };
-		5FDB343B1705DA900049EBB5 /* NSSet+Manuscripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSSet+Manuscripts.m"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSSet+Manuscripts.m"; sourceTree = "<group>"; };
-		5FDB343E1705DAA50049EBB5 /* NSObject+Manuscripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+Manuscripts.h"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSObject+Manuscripts.h"; sourceTree = "<group>"; };
-		5FDB343F1705DAA50049EBB5 /* NSObject+Manuscripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+Manuscripts.m"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSObject+Manuscripts.m"; sourceTree = "<group>"; };
-		5FDB34421705DAC10049EBB5 /* NSArray+Manuscripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+Manuscripts.h"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSArray+Manuscripts.h"; sourceTree = "<group>"; };
-		5FDB34431705DAC10049EBB5 /* NSArray+Manuscripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+Manuscripts.m"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSArray+Manuscripts.m"; sourceTree = "<group>"; };
 		5FDB34461705DADA0049EBB5 /* MPSharedPackageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPSharedPackageController.h; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPSharedPackageController.h"; sourceTree = "<group>"; };
 		5FDB34471705DADA0049EBB5 /* MPSharedPackageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPSharedPackageController.m; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPSharedPackageController.m"; sourceTree = "<group>"; };
-		5FDB344A1705DB180049EBB5 /* NSNotificationCenter+ManuscriptsError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNotificationCenter+ManuscriptsError.h"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSNotificationCenter+ManuscriptsError.h"; sourceTree = "<group>"; };
-		5FDB344B1705DB190049EBB5 /* NSNotificationCenter+ManuscriptsError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNotificationCenter+ManuscriptsError.m"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSNotificationCenter+ManuscriptsError.m"; sourceTree = "<group>"; };
-		5FDB344E1705DB240049EBB5 /* NSDictionary+Manuscripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+Manuscripts.h"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSDictionary+Manuscripts.h"; sourceTree = "<group>"; };
-		5FDB344F1705DB240049EBB5 /* NSDictionary+Manuscripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+Manuscripts.m"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSDictionary+Manuscripts.m"; sourceTree = "<group>"; };
+		5FDB344A1705DB180049EBB5 /* NSNotificationCenter+ErrorNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNotificationCenter+ErrorNotification.h"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSNotificationCenter+ErrorNotification.h"; sourceTree = "<group>"; };
+		5FDB344B1705DB190049EBB5 /* NSNotificationCenter+ErrorNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNotificationCenter+ErrorNotification.m"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSNotificationCenter+ErrorNotification.m"; sourceTree = "<group>"; };
 		5FDB34521705DB570049EBB5 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = External/JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
 		5FDB34531705DB570049EBB5 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = External/JSONKit/JSONKit.m; sourceTree = SOURCE_ROOT; };
 		5FDB34561705DB850049EBB5 /* MPContributorsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPContributorsController.h; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPContributorsController.h"; sourceTree = "<group>"; };
 		5FDB34571705DB860049EBB5 /* MPContributorsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPContributorsController.m; path = "../../manuscripts/Manuscripts/Sources/Model Controllers/MPContributorsController.m"; sourceTree = "<group>"; };
 		5FDB349D1705DCBE0049EBB5 /* MPContributor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPContributor.h; path = ../../manuscripts/Manuscripts/Sources/Model/MPContributor.h; sourceTree = "<group>"; };
 		5FDB349E1705DCBE0049EBB5 /* MPContributor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPContributor.m; path = ../../manuscripts/Manuscripts/Sources/Model/MPContributor.m; sourceTree = "<group>"; };
-		5FDB34A41705DFD80049EBB5 /* NSBundle+Manuscripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBundle+Manuscripts.h"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSBundle+Manuscripts.h"; sourceTree = "<group>"; };
-		5FDB34A51705DFD80049EBB5 /* NSBundle+Manuscripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBundle+Manuscripts.m"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSBundle+Manuscripts.m"; sourceTree = "<group>"; };
 		5FDB34A81705E48B0049EBB5 /* MPException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPException.h; path = ../../manuscripts/Manuscripts/Sources/Utilities/MPException.h; sourceTree = "<group>"; };
 		5FDB34A91705E48B0049EBB5 /* MPException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPException.m; path = ../../manuscripts/Manuscripts/Sources/Utilities/MPException.m; sourceTree = "<group>"; };
-		5FDB34EE1705EFDE0049EBB5 /* NSError+Manuscripts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSError+Manuscripts.h"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSError+Manuscripts.h"; sourceTree = "<group>"; };
-		5FDB34EF1705EFDF0049EBB5 /* NSError+Manuscripts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSError+Manuscripts.m"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSError+Manuscripts.m"; sourceTree = "<group>"; };
-		5FDB35791705F4CC0049EBB5 /* NSFileManager+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+MPExtensions.h"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSFileManager+MPExtensions.h"; sourceTree = "<group>"; };
-		5FDB357A1705F4CC0049EBB5 /* NSFileManager+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+MPExtensions.m"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSFileManager+MPExtensions.m"; sourceTree = "<group>"; };
-		5FDB35C71705FB9E0049EBB5 /* NSData+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+MPExtensions.h"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSData+MPExtensions.h"; sourceTree = "<group>"; };
-		5FDB35C81705FB9F0049EBB5 /* NSData+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+MPExtensions.m"; path = "../../manuscripts/Manuscripts/Sources/Utilities/NSData+MPExtensions.m"; sourceTree = "<group>"; };
 		5FDB3766170642150049EBB5 /* MPShoeboxPackageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPShoeboxPackageController.h; path = ../../manuscripts/Manuscripts/Sources/Utilities/MPShoeboxPackageController.h; sourceTree = "<group>"; };
 		5FDB3767170642150049EBB5 /* MPShoeboxPackageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPShoeboxPackageController.m; path = ../../manuscripts/Manuscripts/Sources/Utilities/MPShoeboxPackageController.m; sourceTree = "<group>"; };
 		5FDB37A6170647560049EBB5 /* MPManuscript.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPManuscript.h; path = ../../manuscripts/Manuscripts/Sources/Model/MPManuscript.h; sourceTree = "<group>"; };
 		5FDB37A7170647570049EBB5 /* MPManuscript.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPManuscript.m; path = ../../manuscripts/Manuscripts/Sources/Model/MPManuscript.m; sourceTree = "<group>"; };
+		5FDB3817170702470049EBB5 /* NSError+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSError+MPExtensions.h"; path = "Sources/Categories/NSError+MPExtensions.h"; sourceTree = "<group>"; };
+		5FDB3818170702470049EBB5 /* NSError+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSError+MPExtensions.m"; path = "Sources/Categories/NSError+MPExtensions.m"; sourceTree = "<group>"; };
+		5FDB381B170702650049EBB5 /* NSString+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+MPExtensions.h"; path = "Sources/Categories/NSString+MPExtensions.h"; sourceTree = "<group>"; };
+		5FDB381C170702650049EBB5 /* NSString+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+MPExtensions.m"; path = "Sources/Categories/NSString+MPExtensions.m"; sourceTree = "<group>"; };
+		5FDB381F1707027E0049EBB5 /* NSSet+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSSet+MPExtensions.h"; path = "Sources/Categories/NSSet+MPExtensions.h"; sourceTree = "<group>"; };
+		5FDB38201707027E0049EBB5 /* NSSet+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSSet+MPExtensions.m"; path = "Sources/Categories/NSSet+MPExtensions.m"; sourceTree = "<group>"; };
+		5FDB3823170702990049EBB5 /* NSBundle+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSBundle+MPExtensions.h"; path = "Sources/Categories/NSBundle+MPExtensions.h"; sourceTree = "<group>"; };
+		5FDB3824170702990049EBB5 /* NSBundle+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSBundle+MPExtensions.m"; path = "Sources/Categories/NSBundle+MPExtensions.m"; sourceTree = "<group>"; };
+		5FDB3827170702B50049EBB5 /* NSObject+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+MPExtensions.h"; path = "Sources/Categories/NSObject+MPExtensions.h"; sourceTree = "<group>"; };
+		5FDB3828170702B50049EBB5 /* NSObject+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+MPExtensions.m"; path = "Sources/Categories/NSObject+MPExtensions.m"; sourceTree = "<group>"; };
+		5FDB382B170702CD0049EBB5 /* NSArray+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+MPExtensions.h"; path = "Sources/Categories/NSArray+MPExtensions.h"; sourceTree = "<group>"; };
+		5FDB382C170702CD0049EBB5 /* NSArray+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MPExtensions.m"; path = "Sources/Categories/NSArray+MPExtensions.m"; sourceTree = "<group>"; };
+		5FDB382F170702F40049EBB5 /* NSDictionary+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+MPExtensions.h"; path = "Sources/Categories/NSDictionary+MPExtensions.h"; sourceTree = "<group>"; };
+		5FDB3830170702F40049EBB5 /* NSDictionary+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+MPExtensions.m"; path = "Sources/Categories/NSDictionary+MPExtensions.m"; sourceTree = "<group>"; };
+		5FDB3833170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDictionary+MPManagedObjectExtensions.h"; path = "Sources/Categories/NSDictionary+MPManagedObjectExtensions.h"; sourceTree = "<group>"; };
+		5FDB3834170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDictionary+MPManagedObjectExtensions.m"; path = "Sources/Categories/NSDictionary+MPManagedObjectExtensions.m"; sourceTree = "<group>"; };
+		5FDB3837170703850049EBB5 /* NSFileManager+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+MPExtensions.h"; path = "Sources/Categories/NSFileManager+MPExtensions.h"; sourceTree = "<group>"; };
+		5FDB3838170703850049EBB5 /* NSFileManager+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+MPExtensions.m"; path = "Sources/Categories/NSFileManager+MPExtensions.m"; sourceTree = "<group>"; };
+		5FDB383B1707038F0049EBB5 /* NSData+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+MPExtensions.h"; path = "Sources/Categories/NSData+MPExtensions.h"; sourceTree = "<group>"; };
+		5FDB383C1707038F0049EBB5 /* NSData+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+MPExtensions.m"; path = "Sources/Categories/NSData+MPExtensions.m"; sourceTree = "<group>"; };
+		5FDB383F170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNotificationCenter+MPExtensions.h"; path = "Sources/Categories/NSNotificationCenter+MPExtensions.h"; sourceTree = "<group>"; };
+		5FDB3840170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNotificationCenter+MPExtensions.m"; path = "Sources/Categories/NSNotificationCenter+MPExtensions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -416,6 +416,7 @@
 			isa = PBXGroup;
 			children = (
 				5FDB33D61705D0F20049EBB5 /* External */,
+				5FDB35CB1705FCBE0049EBB5 /* MPExtensions */,
 				5FDB33931705CD570049EBB5 /* MPDatabase.h */,
 				5FDB33941705CD570049EBB5 /* MPDatabase.m */,
 				5FDB349D1705DCBE0049EBB5 /* MPContributor.h */,
@@ -437,10 +438,6 @@
 				5FDB334B1705CC170049EBB5 /* MPManagedObject+Protected.h */,
 				5FDB33411705CC000049EBB5 /* MPManagedObject+Mixin.h */,
 				5FDB33421705CC000049EBB5 /* MPManagedObject+Mixin.m */,
-				5FDB33531705CC3F0049EBB5 /* NSDictionary+MPManagedObjectExtensions.h */,
-				5FDB33541705CC3F0049EBB5 /* NSDictionary+MPManagedObjectExtensions.m */,
-				5FDB33591705CC5D0049EBB5 /* NSNotificationCenter+Manuscripts.h */,
-				5FDB335A1705CC5D0049EBB5 /* NSNotificationCenter+Manuscripts.m */,
 				5FDB334D1705CC300049EBB5 /* MPSnapshot.h */,
 				5FDB334E1705CC300049EBB5 /* MPSnapshot.m */,
 				5FDB34A81705E48B0049EBB5 /* MPException.h */,
@@ -455,14 +452,6 @@
 				5FDB3767170642150049EBB5 /* MPShoeboxPackageController.m */,
 				5FDB34461705DADA0049EBB5 /* MPSharedPackageController.h */,
 				5FDB34471705DADA0049EBB5 /* MPSharedPackageController.m */,
-				5FDB344E1705DB240049EBB5 /* NSDictionary+Manuscripts.h */,
-				5FDB344F1705DB240049EBB5 /* NSDictionary+Manuscripts.m */,
-				5FDB344A1705DB180049EBB5 /* NSNotificationCenter+ManuscriptsError.h */,
-				5FDB344B1705DB190049EBB5 /* NSNotificationCenter+ManuscriptsError.m */,
-				5FDB35791705F4CC0049EBB5 /* NSFileManager+MPExtensions.h */,
-				5FDB357A1705F4CC0049EBB5 /* NSFileManager+MPExtensions.m */,
-				5FDB35C71705FB9E0049EBB5 /* NSData+MPExtensions.h */,
-				5FDB35C81705FB9F0049EBB5 /* NSData+MPExtensions.m */,
 				5FDB330D1705CB950049EBB5 /* Supporting Files */,
 			);
 			path = Feather;
@@ -537,7 +526,6 @@
 				5FDB35CE1705FCFD0049EBB5 /* JSONKit */,
 				5FDB35CD1705FCF30049EBB5 /* RegexKitLite */,
 				5FDB35CC1705FCEA0049EBB5 /* ObjectiveMixin */,
-				5FDB35CB1705FCBE0049EBB5 /* MPExtensions */,
 			);
 			name = External;
 			sourceTree = "<group>";
@@ -545,18 +533,30 @@
 		5FDB35CB1705FCBE0049EBB5 /* MPExtensions */ = {
 			isa = PBXGroup;
 			children = (
-				5FDB34EE1705EFDE0049EBB5 /* NSError+Manuscripts.h */,
-				5FDB34EF1705EFDF0049EBB5 /* NSError+Manuscripts.m */,
-				5FDB33D91705D1650049EBB5 /* NSString+Manuscripts.h */,
-				5FDB33DA1705D1650049EBB5 /* NSString+Manuscripts.m */,
-				5FDB343A1705DA900049EBB5 /* NSSet+Manuscripts.h */,
-				5FDB343B1705DA900049EBB5 /* NSSet+Manuscripts.m */,
-				5FDB34A41705DFD80049EBB5 /* NSBundle+Manuscripts.h */,
-				5FDB34A51705DFD80049EBB5 /* NSBundle+Manuscripts.m */,
-				5FDB343E1705DAA50049EBB5 /* NSObject+Manuscripts.h */,
-				5FDB343F1705DAA50049EBB5 /* NSObject+Manuscripts.m */,
-				5FDB34421705DAC10049EBB5 /* NSArray+Manuscripts.h */,
-				5FDB34431705DAC10049EBB5 /* NSArray+Manuscripts.m */,
+				5FDB382F170702F40049EBB5 /* NSDictionary+MPExtensions.h */,
+				5FDB3830170702F40049EBB5 /* NSDictionary+MPExtensions.m */,
+				5FDB3833170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.h */,
+				5FDB3834170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.m */,
+				5FDB3817170702470049EBB5 /* NSError+MPExtensions.h */,
+				5FDB3818170702470049EBB5 /* NSError+MPExtensions.m */,
+				5FDB381B170702650049EBB5 /* NSString+MPExtensions.h */,
+				5FDB381C170702650049EBB5 /* NSString+MPExtensions.m */,
+				5FDB381F1707027E0049EBB5 /* NSSet+MPExtensions.h */,
+				5FDB38201707027E0049EBB5 /* NSSet+MPExtensions.m */,
+				5FDB3823170702990049EBB5 /* NSBundle+MPExtensions.h */,
+				5FDB3824170702990049EBB5 /* NSBundle+MPExtensions.m */,
+				5FDB3827170702B50049EBB5 /* NSObject+MPExtensions.h */,
+				5FDB3828170702B50049EBB5 /* NSObject+MPExtensions.m */,
+				5FDB382B170702CD0049EBB5 /* NSArray+MPExtensions.h */,
+				5FDB382C170702CD0049EBB5 /* NSArray+MPExtensions.m */,
+				5FDB383F170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h */,
+				5FDB3840170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.m */,
+				5FDB344A1705DB180049EBB5 /* NSNotificationCenter+ErrorNotification.h */,
+				5FDB344B1705DB190049EBB5 /* NSNotificationCenter+ErrorNotification.m */,
+				5FDB3837170703850049EBB5 /* NSFileManager+MPExtensions.h */,
+				5FDB3838170703850049EBB5 /* NSFileManager+MPExtensions.m */,
+				5FDB383B1707038F0049EBB5 /* NSData+MPExtensions.h */,
+				5FDB383C1707038F0049EBB5 /* NSData+MPExtensions.m */,
 			);
 			name = MPExtensions;
 			sourceTree = "<group>";
@@ -604,32 +604,32 @@
 				5FDB334C1705CC170049EBB5 /* MPManagedObject+Protected.h in Headers */,
 				5FDB33501705CC300049EBB5 /* MPSnapshot.h in Headers */,
 				5FDB33521705CC300049EBB5 /* MPSnapshot+Protected.h in Headers */,
-				5FDB33551705CC3F0049EBB5 /* NSDictionary+MPManagedObjectExtensions.h in Headers */,
 				5FDB33581705CC500049EBB5 /* MPCachingObject.h in Headers */,
-				5FDB335B1705CC5D0049EBB5 /* NSNotificationCenter+Manuscripts.h in Headers */,
 				5FDB33951705CD570049EBB5 /* MPDatabase.h in Headers */,
 				5FDB33BD1705CEC10049EBB5 /* MPManagedObjectsController+Protected.h in Headers */,
 				5FDB33CB1705D0080049EBB5 /* MPDatabasePackageController.h in Headers */,
 				5FDB33CD1705D0080049EBB5 /* MPDatabasePackageController+Protected.h in Headers */,
 				5FDB33D41705D0DA0049EBB5 /* RegexKitLite.h in Headers */,
-				5FDB33DB1705D1660049EBB5 /* NSString+Manuscripts.h in Headers */,
 				5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */,
-				5FDB343C1705DA910049EBB5 /* NSSet+Manuscripts.h in Headers */,
-				5FDB34401705DAA50049EBB5 /* NSObject+Manuscripts.h in Headers */,
-				5FDB34441705DAC10049EBB5 /* NSArray+Manuscripts.h in Headers */,
 				5FDB34481705DADA0049EBB5 /* MPSharedPackageController.h in Headers */,
-				5FDB344C1705DB190049EBB5 /* NSNotificationCenter+ManuscriptsError.h in Headers */,
-				5FDB34501705DB240049EBB5 /* NSDictionary+Manuscripts.h in Headers */,
+				5FDB344C1705DB190049EBB5 /* NSNotificationCenter+ErrorNotification.h in Headers */,
 				5FDB34541705DB570049EBB5 /* JSONKit.h in Headers */,
 				5FDB34581705DB860049EBB5 /* MPContributorsController.h in Headers */,
 				5FDB349F1705DCBF0049EBB5 /* MPContributor.h in Headers */,
-				5FDB34A61705DFD80049EBB5 /* NSBundle+Manuscripts.h in Headers */,
 				5FDB34AA1705E48C0049EBB5 /* MPException.h in Headers */,
-				5FDB34F01705EFE00049EBB5 /* NSError+Manuscripts.h in Headers */,
-				5FDB357B1705F4CD0049EBB5 /* NSFileManager+MPExtensions.h in Headers */,
-				5FDB35C91705FBA00049EBB5 /* NSData+MPExtensions.h in Headers */,
 				5FDB3768170642160049EBB5 /* MPShoeboxPackageController.h in Headers */,
 				5FDB37A8170647570049EBB5 /* MPManuscript.h in Headers */,
+				5FDB3819170702470049EBB5 /* NSError+MPExtensions.h in Headers */,
+				5FDB381D170702650049EBB5 /* NSString+MPExtensions.h in Headers */,
+				5FDB38211707027E0049EBB5 /* NSSet+MPExtensions.h in Headers */,
+				5FDB3825170702990049EBB5 /* NSBundle+MPExtensions.h in Headers */,
+				5FDB3829170702B50049EBB5 /* NSObject+MPExtensions.h in Headers */,
+				5FDB382D170702CD0049EBB5 /* NSArray+MPExtensions.h in Headers */,
+				5FDB3831170702F40049EBB5 /* NSDictionary+MPExtensions.h in Headers */,
+				5FDB3835170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.h in Headers */,
+				5FDB3839170703850049EBB5 /* NSFileManager+MPExtensions.h in Headers */,
+				5FDB383D1707038F0049EBB5 /* NSData+MPExtensions.h in Headers */,
+				5FDB3841170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -902,29 +902,29 @@
 				5FDB33441705CC000049EBB5 /* MPManagedObject.m in Sources */,
 				5FDB33461705CC000049EBB5 /* MPManagedObject+Mixin.m in Sources */,
 				5FDB33511705CC300049EBB5 /* MPSnapshot.m in Sources */,
-				5FDB33561705CC3F0049EBB5 /* NSDictionary+MPManagedObjectExtensions.m in Sources */,
-				5FDB335C1705CC5D0049EBB5 /* NSNotificationCenter+Manuscripts.m in Sources */,
 				5FDB33961705CD570049EBB5 /* MPDatabase.m in Sources */,
 				5FDB33CC1705D0080049EBB5 /* MPDatabasePackageController.m in Sources */,
 				5FDB33D51705D0DA0049EBB5 /* RegexKitLite.m in Sources */,
-				5FDB33DC1705D1660049EBB5 /* NSString+Manuscripts.m in Sources */,
 				5FDB34391705D90A0049EBB5 /* Mixin.m in Sources */,
-				5FDB343D1705DA910049EBB5 /* NSSet+Manuscripts.m in Sources */,
-				5FDB34411705DAA50049EBB5 /* NSObject+Manuscripts.m in Sources */,
-				5FDB34451705DAC10049EBB5 /* NSArray+Manuscripts.m in Sources */,
 				5FDB34491705DADA0049EBB5 /* MPSharedPackageController.m in Sources */,
-				5FDB344D1705DB190049EBB5 /* NSNotificationCenter+ManuscriptsError.m in Sources */,
-				5FDB34511705DB240049EBB5 /* NSDictionary+Manuscripts.m in Sources */,
+				5FDB344D1705DB190049EBB5 /* NSNotificationCenter+ErrorNotification.m in Sources */,
 				5FDB34551705DB570049EBB5 /* JSONKit.m in Sources */,
 				5FDB34591705DB860049EBB5 /* MPContributorsController.m in Sources */,
 				5FDB34A01705DCBF0049EBB5 /* MPContributor.m in Sources */,
-				5FDB34A71705DFD80049EBB5 /* NSBundle+Manuscripts.m in Sources */,
 				5FDB34AB1705E48C0049EBB5 /* MPException.m in Sources */,
-				5FDB34F11705EFE00049EBB5 /* NSError+Manuscripts.m in Sources */,
-				5FDB357C1705F4CD0049EBB5 /* NSFileManager+MPExtensions.m in Sources */,
-				5FDB35CA1705FBA00049EBB5 /* NSData+MPExtensions.m in Sources */,
 				5FDB3769170642160049EBB5 /* MPShoeboxPackageController.m in Sources */,
 				5FDB37A9170647570049EBB5 /* MPManuscript.m in Sources */,
+				5FDB381A170702470049EBB5 /* NSError+MPExtensions.m in Sources */,
+				5FDB381E170702650049EBB5 /* NSString+MPExtensions.m in Sources */,
+				5FDB38221707027E0049EBB5 /* NSSet+MPExtensions.m in Sources */,
+				5FDB3826170702990049EBB5 /* NSBundle+MPExtensions.m in Sources */,
+				5FDB382A170702B50049EBB5 /* NSObject+MPExtensions.m in Sources */,
+				5FDB382E170702CD0049EBB5 /* NSArray+MPExtensions.m in Sources */,
+				5FDB3832170702F40049EBB5 /* NSDictionary+MPExtensions.m in Sources */,
+				5FDB3836170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.m in Sources */,
+				5FDB383A170703850049EBB5 /* NSFileManager+MPExtensions.m in Sources */,
+				5FDB383E1707038F0049EBB5 /* NSData+MPExtensions.m in Sources */,
+				5FDB3842170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
