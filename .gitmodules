@@ -1,3 +1,12 @@
 [submodule "External/TouchDB"]
 	path = External/TouchDB
 	url = git@github.com:mz2/TouchDB-iOS.git
+[submodule "External/ObjectiveMixin"]
+	path = External/ObjectiveMixin
+	url = git@github.com:mz2/ObjectiveMixin.git
+[submodule "External/CouchCocoa"]
+	path = External/CouchCocoa
+	url = git@github.com:mz2/CouchCocoa.git
+[submodule "External/JSONKit"]
+	path = External/JSONKit
+	url = git@github.com:mz2/JSONKit.git
