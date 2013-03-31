@@ -1,5 +1,5 @@
 //
-//  NSString+Manuscripts.h
+//  NSString+MPExtensions.h
 //  Manuscripts
 //
 //  Created by Markus Piipari on 1/18/13.

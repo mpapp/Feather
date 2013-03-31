@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSUInteger, MPFileTargetErrorCode)
+{
+    MPFileTargetErrorCodeUnknown = 0,
+    MPFileTargetErrorCodeFailedToDetermineMimeType = 1
+};
+
 @interface NSFileManager (MPExtensions)
 
 @property (readonly, copy) NSString *applicationSupportFolder;

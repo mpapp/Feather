@@ -37,6 +37,8 @@ inline NSMutableString *MPMutableStringForString(NSString *s)
 
 @implementation NSString (Manuscripts)
 
+- (BOOL)hasContent { return self.length > 0; }
+
 - (NSString *)stringByMakingSentenceCase
 {
     NSMutableString *str = [[NSMutableString alloc] initWithString:self];

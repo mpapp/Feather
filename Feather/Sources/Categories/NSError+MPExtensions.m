@@ -1,5 +1,5 @@
 //
-//  NSError+Manuscripts.m
+//  NSError+MPExtensions.m
 //  Manuscripts
 //
 //  Created by Markus on 2/1/13.

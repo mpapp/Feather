@@ -6,7 +6,7 @@
 //  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
 //
 
-#import "NSBundle+MPExtensions.h"
+#import <Feather/NSBundle+MPExtensions.h>
 
 @implementation NSBundle (Manuscripts)
 

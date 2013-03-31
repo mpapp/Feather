@@ -1,14 +1,14 @@
 //
-//  CushionTests.m
-//  CushionTests
+//  FeatherTests.m
+//  FeatherTests
 //
 //  Created by Matias Piipari on 29/03/2013.
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import "CushionTests.h"
+#import "FeatherTests.h"
 
-@implementation CushionTests
+@implementation FeatherTests
 
 - (void)setUp
 {
@@ -26,7 +26,7 @@
 
 - (void)testExample
 {
-    STFail(@"Unit tests are not implemented yet in CushionTests");
+    STFail(@"Unit tests are not implemented yet in FeatherTests");
 }
 
 @end

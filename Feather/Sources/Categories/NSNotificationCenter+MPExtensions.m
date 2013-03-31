@@ -6,8 +6,8 @@
 //  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
 //
 
-#import "NSNotificationCenter+MPExtensions.h"
-#import "MPManagedObject.h"
+#import <Feather/NSNotificationCenter+MPExtensions.h>
+#import <Feather/MPManagedObject.h>
 
 #import "RegexKitLite.h"
 #import "NSString+MPExtensions.h"
