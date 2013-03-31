@@ -35,6 +35,30 @@
 #import <net/if.h>
 #import <ifaddrs.h>
 
+@interface MPTemporaryDatabasePackageCopyFileManagerDelegate : NSObject
+@end
+
+@implementation MPTemporaryDatabasePackageCopyFileManagerDelegate
+
+- (BOOL)fileManager:(NSFileManager *)fileManager shouldCopyItemAtURL:(NSURL *)sourceURL toURL:(NSURL *)destionationURL
+{
+    NSString *filename = sourceURL.path.lastPathComponent;
+    
+    if ([filename hasPrefix:@"snapshot"])
+    {
+        MPLog(@"Will skip snapshots %@ for temporary copies.", filename);
+        return NO;
+    }
+    
+    MPLog(@"Will copy %@ to %@", filename, destionationURL.path);
+    
+    return YES;
+}
+
+@end
+
+#pragma mark -
+
 NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageControllerErrorDomain";
 
 @interface MPDatabasePackageController ()
@@ -234,6 +258,66 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (NSNotificationCenter *)notificationCenter
 {
     return [NSNotificationCenter defaultCenter]; // subclass can provide its own notification center
+}
+
+#pragma mark - Temporary copy creation
+
+- (NSURL *)makeTemporaryCopyWithError:(NSError **)err
+{
+    assert(self.delegate);
+    assert(self.delegate.packageRootURL);
+    
+    NSURL *packageRootURL = [[self delegate] packageRootURL];
+    
+    NSFileManager *fm = [[NSFileManager alloc] init];
+    
+    NSURL *cachesURL = [fm URLForDirectory:NSCachesDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:err];
+    
+    if (!cachesURL) { return nil; }
+    
+    NSURL *temporaryDirectoryURL = [cachesURL URLByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    BOOL isDirectory, exists = [fm fileExistsAtPath:temporaryDirectoryURL.path isDirectory:&isDirectory];
+    
+    if (exists && !isDirectory)
+    {
+        if (!isDirectory && err)
+            *err = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
+                                       code:MPDatabasePackageControllerErrorCodeFileNotDirectory
+                                   userInfo:@{NSLocalizedDescriptionKey :
+                    [NSString stringWithFormat:@"File at URL %@ is not a directory", temporaryDirectoryURL]}];
+        return nil;
+    }
+    else if (!exists)
+    {
+        BOOL success = [fm createDirectoryAtURL:temporaryDirectoryURL withIntermediateDirectories:NO attributes:nil error:err];
+        
+        if (!success) {
+            MPLog(@"Failed to create temporary directory %@", temporaryDirectoryURL);
+            return nil; // TODO: apply proper error propagation here
+        }
+    }
+    
+    NSURL *temporaryURL = nil;
+    
+    do
+    {
+        NSString *s = [[[NSProcessInfo processInfo] globallyUniqueString] substringToIndex:8];
+        temporaryURL = [temporaryDirectoryURL URLByAppendingPathComponent:MPStringF(@"%@_%i.%@", s, (rand() % 10000), packageRootURL.path.pathExtension)];
+    }
+    while ([fm fileExistsAtPath:temporaryURL.path]);
+    
+    MPLog(@"Will make temporary document copy into %@", temporaryURL);
+    
+    MPTemporaryDatabasePackageCopyFileManagerDelegate *fmDelegate = [[MPTemporaryDatabasePackageCopyFileManagerDelegate alloc] init];
+    fm.delegate = fmDelegate;
+    BOOL success = [fm copyItemAtURL:packageRootURL toURL:temporaryURL error:err];
+    
+    if (!success)
+    {
+        return nil;
+    }
+    
+    return temporaryURL;
 }
 
 #pragma mark - Databases

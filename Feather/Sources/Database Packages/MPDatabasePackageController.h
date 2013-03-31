@@ -29,7 +29,8 @@ typedef enum MPDatabasePackageControllerErrorCode
 {
     MPDatabasePackageControllerErrorCodeUnknown = 0,
     MPDatabasePackageControllerErrorCodeNoSuchSnapshot = 1,
-    MPDatabasePackageControllerErrorCodeUnexpectedResponse = 2
+    MPDatabasePackageControllerErrorCodeUnexpectedResponse = 2,
+    MPDatabasePackageControllerErrorCodeFileNotDirectory = 3
 } MPDatabasePackageControllerErrorCode;
 
 
@@ -64,6 +65,9 @@ typedef enum MPDatabasePackageControllerErrorCode
 
 @property (readonly, strong) NSURL *databaseListenerURL;
 @property (readonly) NSUInteger databaseListenerPort;
+
+/** @return A file URL to the root directory of a temporary copy of the package. */
+- (NSURL *)makeTemporaryCopyWithError:(NSError **)err;
 
 /** 
  * Initializes a database package controller at a given path, with an optional delegate and error pointer.
