@@ -420,6 +420,7 @@
 				5FDB3A8217079B810049EBB5 /* Database Packages */,
 				5FDB3A8117079B280049EBB5 /* Model Controllers */,
 				5FDB3A8017079B220049EBB5 /* Models */,
+				5FDB49811708CF9A00E82856 /* Mixins */,
 				5FDB35CB1705FCBE0049EBB5 /* Cocoa Categories */,
 				5FDB3A8417079BAC0049EBB5 /* Utilities */,
 				5FDB33D61705D0F20049EBB5 /* External */,
@@ -625,6 +626,13 @@
 				5FDB3A8617079C020049EBB5 /* MPException.m */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		5FDB49811708CF9A00E82856 /* Mixins */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Mixins;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

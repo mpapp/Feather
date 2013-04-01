@@ -82,7 +82,7 @@ inline NSMutableString *MPMutableStringForString(NSString *s)
                                                const NSRange *capturedRanges,
                                                volatile BOOL *const stop)
     {
-        assert(captureCount == 0);
+        assert(captureCount > 0);
         return [capturedStrings[0] lowercaseString];
     }];
     return [str copy];
