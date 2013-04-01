@@ -12,9 +12,9 @@
 #import "MPDatabasePackageController+Protected.h"
 #import "MPDatabase.h"
 
-#import <Feather/MPManagedObject+Protected.h>
+#import "MPManagedObject+Protected.h"
+#import "NSObject+MPExtensions.h"
 #import "NSFileManager+MPExtensions.h"
-
 #import "MPException.h"
 
 NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUDID";
@@ -45,14 +45,14 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
 
 - (instancetype)initWithError:(NSError *__autoreleasing *)err
 {
-    if (self = [super initWithPath:[self sharedDatabasesPath]
+    if (self = [super initWithPath:[[self class] sharedDatabasesPath]
                           delegate:nil error:err])
     {
         assert(self.server);
         assert(_sharedDatabase);
         
         NSString *identifier = [_sharedDatabase.metadata getValueOfProperty:@"identifier"];
-        
+        NSLog(@"%@", identifier);
         assert(_sharedDatabase.metadata);
         
         if (!identifier)
@@ -62,29 +62,21 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
         }
         
         /* The global database is _not_ a TouchDB server but a CouchDB server. */
-        _globalSharedDatabaseServer
-        = [[CouchServer alloc] initWithURL:[self remoteURL]];
-        
-        _globalSharedDatabase
-        = [[MPDatabase alloc] initWithServer:_globalSharedDatabaseServer
-                           packageController:self name:[self remoteGlobalSharedDatabaseName]
-                               ensureCreated:NO
-                                       error:err];
-        
-        if (!_globalSharedDatabase)
-        {
-            return nil;
-        }
-        
-        if (!_sharedDatabase)
-        {
-            return nil;
-        }
         
         // wait for possible further subclass initialisation to finish.
         dispatch_async(dispatch_get_main_queue(), ^{
+            
             if (self.synchronizesWithRemote)
             {
+                _globalSharedDatabaseServer
+                    = [[CouchServer alloc] initWithURL:[self remoteURL]];
+                
+                _globalSharedDatabase
+                    = [[MPDatabase alloc] initWithServer:_globalSharedDatabaseServer
+                                       packageController:self name:[self remoteGlobalSharedDatabaseName]
+                                           ensureCreated:NO
+                                                   error:err];
+                    
                 if ([self synchronizesUserData])
                     [self syncWithCompletionHandler:^(NSDictionary *errDict) { }];
                 
@@ -131,11 +123,6 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
     return udid;
 }
 
-- (void)initializeApplicationSupportData
-{
-    @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
-}
-
 + (NSString *)sharedDatabasesPath
 {
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -145,12 +132,33 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
 + (BOOL)createSharedDatabasesPathWithError:(NSError **)err
 {
     NSFileManager *fm = [NSFileManager defaultManager];
+    BOOL isDir = NO;
+    
+    NSString *containingDir = [[self sharedDatabasesPath] stringByDeletingLastPathComponent];
+    if ([fm fileExistsAtPath:containingDir isDirectory:&isDir] && isDir &&
+        [fm fileExistsAtPath:[self sharedDatabasesPath]]) return YES;
+    
+    if (!isDir)
+    { if (err)
+        *err = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
+                                          code:MPDatabasePackageControllerErrorCodeFileNotDirectory
+                                      userInfo:@{NSLocalizedDescriptionKey : @"Directory containig the shared databases path does not exist"}];
+        return NO;
+    }
+    
     if (![fm createDirectoryAtPath:[self sharedDatabasesPath] withIntermediateDirectories:YES attributes:nil error:err])
     {
         return NO;
     }
     
     return YES;
+}
+
+#pragma mark - Abstract methods
+
+- (void)initializeApplicationSupportData
+{
+    @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
 }
 
 - (NSString *)remoteGlobalSharedDatabaseName
@@ -160,7 +168,7 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
 
 - (NSURL *)remoteGlobalSharedDatabaseURL
 {
-    @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
+    return [[self remoteURL] URLByAppendingPathComponent:[self remoteGlobalSharedDatabaseName]];
 }
 
 #pragma mark - MPManagedObjectSharingObserver
@@ -186,9 +194,10 @@ static Class _shoeboxPackageControllerClass = nil;
 {
     assert(!_shoeboxPackageControllerClass);
     
+    // is non-nil, and subclass of shoebox controller (and not the abstract base class itself)
     assert(class &&
            [class isSubclassOfClass:[MPShoeboxPackageController class]] &&
-           !(class != [MPShoeboxPackageController class]));
+           (class != [MPShoeboxPackageController class]));
     
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -205,8 +214,12 @@ static dispatch_once_t onceToken;
         
         assert(_shoeboxPackageControllerClass &&
                [_shoeboxPackageControllerClass isSubclassOfClass:[MPShoeboxPackageController class]] &&
-               !(_shoeboxPackageControllerClass != [MPShoeboxPackageController class]));
+               (_shoeboxPackageControllerClass != [MPShoeboxPackageController class]));
         
+        if (![_shoeboxPackageControllerClass createSharedDatabasesPathWithError:&err])
+        {
+            NSLog(@"ERROR! Could not create shared data directory:\n%@", err);            
+        }
         _sharedInstance = [[_shoeboxPackageControllerClass alloc] initWithError:&err];
         if (err)
         {

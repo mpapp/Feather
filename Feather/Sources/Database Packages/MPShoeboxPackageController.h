@@ -20,8 +20,6 @@ extern NSString * const MPDefaultsKeySharedPackageUDID;
 + (void)finalizeSharedPackageController;
 #endif
 
-+ (NSString *)sharedDatabasesPath;
-
 + (BOOL)createSharedDatabasesPathWithError:(NSError **)err;
 
 - (instancetype)initWithError:(NSError *__autoreleasing *)err;

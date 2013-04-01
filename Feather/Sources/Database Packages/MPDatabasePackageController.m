@@ -88,6 +88,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 {
     if (self = [super init])
     {
+        assert(path);
+        
         _path = path;
         
         _delegate = delegate;
