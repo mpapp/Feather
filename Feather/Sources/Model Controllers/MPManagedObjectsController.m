@@ -448,7 +448,6 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
             Class moc = NSClassFromString([d managedObjectType]);
             assert(moc);
             mo = [[moc alloc] initWithNewDocumentForController:self properties:d documentID:docID];
-            MPLog(@"Created document from JSON:\n%@", [mo propertiesToSave]);
             [mos addObject:mo];
         }
         assert(mo);

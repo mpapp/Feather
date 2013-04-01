@@ -94,7 +94,6 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
                 }
             }
         });
-        
     }
     else {
         return nil;
@@ -158,7 +157,6 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
 
 - (void)initializeApplicationSupportData
 {
-    @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
 }
 
 - (NSString *)remoteGlobalSharedDatabaseName
