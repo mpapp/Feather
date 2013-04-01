@@ -1,15 +1,15 @@
 //
-//  NSDictionary+Manuscripts.h
-//  Manuscripts
+//  NSDictionary+Feather.h
+//  Feather
 //
 //  Created by Matias Piipari on 04/02/2013.
-//  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
 
-@interface NSDictionary (Manuscripts)
+@interface NSDictionary (Feather)
 
 - (NSMutableDictionary *)mutableDeepContainerCopy;
 - (NSMutableDictionary *)dictionaryOfSetsWithDictionaryOfArrays;

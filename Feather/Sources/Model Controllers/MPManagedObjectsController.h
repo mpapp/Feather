@@ -1,9 +1,9 @@
 //
 //  MPManagedObjectsController.h
-//  Manuscripts
+//  Feather
 //
 //  Created by Matias Piipari on 16/09/2012.
-//  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -30,7 +30,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 @class CouchQuery;
 @class CouchQueryEnumerator;
 
-/** An abstract base class for controllers of MPManagedObject instances. Caches managed objects strongly, allows querying and creating new manuscripts of a certain type, loading them from a JSON file, and resolving conflicting versions arising from replication. A MPManagedObjectsController subclass is parameterised by a managed object class (specified with the abstract method +managedObjectClass). Commonly it would also overload -configureDesignDocument: and -allObjectsQuery. */
+/** An abstract base class for controllers of MPManagedObject instances. Caches managed objects strongly, allows querying and creating new Feather of a certain type, loading them from a JSON file, and resolving conflicting versions arising from replication. A MPManagedObjectsController subclass is parameterised by a managed object class (specified with the abstract method +managedObjectClass). Commonly it would also overload -configureDesignDocument: and -allObjectsQuery. */
 @interface MPManagedObjectsController : NSObject <MPCachingObject, MPManagedObjectRecentChangeObserver>
 
 /** The MPDatabase whose objects this controller manages (not necessarily all of the objects in the database, just those with a matching class / objectType field).  */
@@ -48,7 +48,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** Returns YES if objects managed by this controller receive notifications for changes (default: YES). Note that you do not need to implement the -didAdd...:, -didUpdate...:, -didRemove...: methods for MPManagedObjectsController subclasses, those are created for you automatically. */
 @property (readonly) BOOL observesManagedObjectChanges;
 
-/** Returns the MPManagedObject subclass of which instances in this controller's MPDatabase are managed by this controller. The method can be overloaded in MPManagedObject subclasses (for instance for performance reasons), but does not have to be for MPManagedObjectsController subclasses whose managed object class [X] and the controller class name follow the convention where the controller's class name is [X]sController (e.g. MPManuscriptsController and MPManuscript). 
+/** Returns the MPManagedObject subclass of which instances in this controller's MPDatabase are managed by this controller. The method can be overloaded in MPManagedObject subclasses (for instance for performance reasons), but does not have to be for MPManagedObjectsController subclasses whose managed object class [X] and the controller class name follow the convention where the controller's class name is [X]sController (e.g. MPFeatherController and MPManuscript). 
  * @return The MPManagedObject subclass of which instances in this controller's MPDatabase are managed by this controller. */
 + (Class)managedObjectClass;
 

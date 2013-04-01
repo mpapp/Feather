@@ -3,7 +3,7 @@
 //  Manuscripts
 //
 //  Created by Matias Piipari on 19/10/2012.
-//  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

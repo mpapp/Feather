@@ -1,9 +1,9 @@
 //
 //  MPDatabasePackageController.h
-//  Manuscripts
+//  Feather
 //
 //  Created by Matias Piipari on 23/09/2012.
-//  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -39,7 +39,7 @@ typedef enum MPDatabasePackageControllerErrorCode
 
 /** A MPDatabasePackageController manages a number of MPDatabase objects and MPManagedObjectsController, which in turn manage the MPManagedObject instances stored in the databases. The databases owned by a MPDatabasePackageController can be replicated with a remote CouchDB server. All of the databases of a MPDatabasePackageController are stored on the same CouchServer, also owned by the MPDatabasePackageController. This combination of databases under a shared server (either a shared filesystem root directory in the case of TouchDB, or a base URI in a remote CouchDB server) is called a _database package_.
  *
- * In Manuscripts.app, MPDatabasePackageController's subclass MPManuscriptsPackageController is the controller which the NSDocument subclass MPDocument relies on for reading and writing Manuscripts document packages. There is however no dependence on Manuscripts or a document based design in MPDatabasePackageController. It is intended to be crossplatform. */
+ * In Feather.app, MPDatabasePackageController's subclass MPFeatherPackageController is the controller which the NSDocument subclass MPDocument relies on for reading and writing Feather document packages. There is however no dependence on Feather or a document based design in MPDatabasePackageController. It is intended to be crossplatform. */
 @interface MPDatabasePackageController : NSObject <TDViewCompiler, NSNetServiceDelegate, NSNetServiceBrowserDelegate>
 
 /** The filesystem path of the database package. */
@@ -155,7 +155,7 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** A set of database names. Subclasses should overload this if they wish to include databases additional to the 'snapshots' database created by the abstract base class MPDatabasePackageController. Overloaded method _must_ include the super class -databaseNames in the set of database names returned. Databases are created automatically upon initialization based on the names determined here. */
 + (NSSet *)databaseNames;
 
-/** Returns the name of the primary database in this package, used to store essential information such as contributors and a metadata record. NOTE! Abstract method: must be overloaded by subclass to provide the name for the primary database (for Manuscripts this is 'manuscript'). If nil, there is no primary database to be created by the package controller. */
+/** Returns the name of the primary database in this package, used to store essential information such as contributors and a metadata record. NOTE! Abstract method: must be overloaded by subclass to provide the name for the primary database (for Feather this is 'manuscript'). If nil, there is no primary database to be created by the package controller. */
 +(NSString *)primaryDatabaseName;
 
 /** Returns a database with a given name. Should by only called with names from the set +databaseNames. */

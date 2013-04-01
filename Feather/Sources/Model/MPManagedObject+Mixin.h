@@ -1,9 +1,9 @@
 //
 //  MPDeliverable.h
-//  Manuscripts
+//  Feather
 //
 //  Created by Matias Piipari on 22/12/2012.
-//  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

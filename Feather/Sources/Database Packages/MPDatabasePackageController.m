@@ -1,9 +1,9 @@
 //
 //  MPDatabasePackageController.m
-//  Manuscripts
+//  Feather
 //
 //  Created by Matias Piipari on 23/09/2012.
-//  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import "MPDatabase.h"
@@ -541,7 +541,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     static dispatch_queue_t packageQueue = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        packageQueue = dispatch_queue_create("com.manuscripts.package", 0);
+        packageQueue = dispatch_queue_create("com.piipari.package", 0);
     });
     
     return packageQueue;
@@ -613,7 +613,7 @@ static NSUInteger packagesOpened = 0;
 		NSData *txtRecordData = [NSNetService dataFromTXTRecordDictionary:txtRecordDataDict];
         NSString *serviceName = [NSString stringWithFormat:@"%@_%@", [host name], [self identifier]];
 		_databaseListenerService = [[NSNetService alloc] initWithDomain:@""
-                                                           type:@"_manuscriptslink._tcp."
+                                                           type:@"_Featherlink._tcp."
                                                            name:serviceName
                                                            port:_databaseListener.port];
 		assert(_databaseListenerService);

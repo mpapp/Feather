@@ -1,9 +1,9 @@
 //
 //  NSString+MPExtensions.h
-//  Manuscripts
+//  Feather
 //
 //  Created by Markus Piipari on 1/18/13.
-//  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -24,7 +24,7 @@ extern inline NSString *MPNilToString(NSString *s, NSString *s2);
 extern inline NSMutableString *MPMutableStringForString(NSString *s);
 
 
-@interface NSString (Manuscripts)
+@interface NSString (Feather)
 
 - (BOOL) containsSubstring:(NSString *)substring;
 - (NSString *)stringByTranslatingPresentToPastTense;

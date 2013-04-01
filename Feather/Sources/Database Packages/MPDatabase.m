@@ -1,9 +1,9 @@
 //
 //  MPDatabase.m
-//  Manuscripts
+//  Feather
 //
 //  Created by Matias Piipari on 16/09/2012.
-//  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import "MPDatabase.h"
@@ -89,7 +89,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         
         _queryQueue =
             dispatch_queue_create(
-                [[NSString stringWithFormat:@"com.manuscripts.db[%@][%@]", server.URL.path, name] UTF8String],
+                [[NSString stringWithFormat:@"com.piipari.db[%@][%@]", server.URL.path, name] UTF8String],
                                   DISPATCH_QUEUE_SERIAL);
         
         _database.tracksChanges = YES;
@@ -516,7 +516,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 @end
 
 
-@implementation CouchDynamicObject (Manuscripts)
+@implementation CouchDynamicObject (Feather)
 
 - (void)setValuesForPropertiesWithDictionary:(NSDictionary *)keyedValues
 {
@@ -528,7 +528,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 @end
 
-@implementation CouchDatabase (Manuscripts)
+@implementation CouchDatabase (Feather)
 
 - (id)managedObjectDatabaseBackpointer
 {

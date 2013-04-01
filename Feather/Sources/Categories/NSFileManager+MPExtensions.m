@@ -1,9 +1,9 @@
 //
 //  NSFileManager+MPExtensions.m
-//  Manuscripts
+//  Feather
 //
 //  Created by Matias Piipari on 29/03/2013.
-//  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import "NSFileManager+MPExtensions.h"
@@ -12,7 +12,7 @@
 #import "NSData+MPExtensions.h"
 #import <CommonCrypto/CommonDigest.h>
 
-NSString * const NSFileManagerManuscriptsExtensionsErrorDomain = @"NSFileManagerManuscriptsExtensionsErrorDomain";
+NSString * const NSFileManagerFeatherExtensionsErrorDomain = @"NSFileManagerFeatherExtensionsErrorDomain";
 
 @implementation NSFileManager (MPExtensions)
 
@@ -68,7 +68,7 @@ NSString * const NSFileManagerManuscriptsExtensionsErrorDomain = @"NSFileManager
     {
         if (outError != NULL)
         {
-            *outError = [NSError errorWithDomain:NSFileManagerManuscriptsExtensionsErrorDomain
+            *outError = [NSError errorWithDomain:NSFileManagerFeatherExtensionsErrorDomain
                                             code:1
                                      description:@"Failed to determine user caches directory"
                                  underlyingError:error];
@@ -86,7 +86,7 @@ NSString * const NSFileManagerManuscriptsExtensionsErrorDomain = @"NSFileManager
     {
         if (outError != NULL)
         {
-            *outError = [NSError errorWithDomain:NSFileManagerManuscriptsExtensionsErrorDomain
+            *outError = [NSError errorWithDomain:NSFileManagerFeatherExtensionsErrorDomain
                                             code:2
                                      description:MPStringF(@"Cannot use application caches directory at %@", applicationCachesDirectoryURL.path)
                                           reason:MPStringF(@"File at %@ exists but is not a directory", applicationCachesDirectoryURL.path)];
@@ -101,7 +101,7 @@ NSString * const NSFileManagerManuscriptsExtensionsErrorDomain = @"NSFileManager
         if (!success) {
             if (outError != NULL)
             {
-                *outError = [NSError errorWithDomain:NSFileManagerManuscriptsExtensionsErrorDomain
+                *outError = [NSError errorWithDomain:NSFileManagerFeatherExtensionsErrorDomain
                                                 code:3
                                          description:MPStringF(@"Failed to create application caches directory at %@", URL.path)
                                      underlyingError:error];
@@ -137,7 +137,7 @@ NSString * const NSFileManagerManuscriptsExtensionsErrorDomain = @"NSFileManager
         {
             if (outError != nil)
             {
-                *outError = [NSError errorWithDomain:NSFileManagerManuscriptsExtensionsErrorDomain
+                *outError = [NSError errorWithDomain:NSFileManagerFeatherExtensionsErrorDomain
                                                 code:4
                                          description:MPStringF(@"Failed to create temporary directory at %@", temporaryURL)
                                      underlyingError:error];

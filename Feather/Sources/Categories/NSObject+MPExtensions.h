@@ -1,9 +1,9 @@
 //
-//  NSObject+Manuscripts.h
-//  Manuscripts
+//  NSObject+Feather.h
+//  Feather
 //
 //  Created by Matias Piipari on 08/12/2012.
-//  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -12,7 +12,7 @@
 extern inline id MPNilToObject(id object, id defaultObject);
 
 
-@interface NSObject (Manuscripts)
+@interface NSObject (Feather)
 
 + (NSArray *)subclassesForClass:(Class)class;
 

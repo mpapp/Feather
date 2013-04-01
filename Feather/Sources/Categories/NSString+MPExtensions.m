@@ -1,9 +1,9 @@
 //
-//  NSString+Manuscripts.m
-//  Manuscripts
+//  NSString+Feather.m
+//  Feather
 //
 //  Created by Markus Piipari on 1/18/13.
-//  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import "NSString+MPExtensions.h"
@@ -35,7 +35,7 @@ inline NSMutableString *MPMutableStringForString(NSString *s)
 }
 
 
-@implementation NSString (Manuscripts)
+@implementation NSString (Feather)
 
 - (BOOL)hasContent { return self.length > 0; }
 

@@ -1,15 +1,15 @@
 //
-//  NSArray+Manuscripts.m
-//  Manuscripts
+//  NSArray+Feather.m
+//  Feather
 //
 //  Created by Matias Piipari on 05/01/2013.
-//  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import "NSArray+MPExtensions.h"
 
 
-@implementation NSArray (Manuscripts)
+@implementation NSArray (Feather)
 
 - (id)firstObject { return self.count > 0 ? self[0] : nil; }
 
@@ -94,7 +94,7 @@
 @end
 
 
-@implementation NSMutableArray (Manuscripts)
+@implementation NSMutableArray (Feather)
 
 - (id) popObject
 {

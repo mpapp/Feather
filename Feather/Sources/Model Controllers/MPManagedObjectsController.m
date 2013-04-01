@@ -1,9 +1,9 @@
 //
 //  MPManagedObjectsController.m
-//  Manuscripts
+//  Feather
 //
 //  Created by Matias Piipari on 16/09/2012.
-//  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import <Feather/MPManagedObject+Protected.h>
@@ -74,7 +74,7 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
         _objectCache = [NSMutableDictionary dictionaryWithCapacity:1000];
         
         _designDocumentQueue = dispatch_queue_create(
-                    [[NSString stringWithFormat:@"com.manuscripts.controller[%@]",
+                    [[NSString stringWithFormat:@"com.piipari.controller[%@]",
                       [[self class] managedObjectClassName]] UTF8String], DISPATCH_QUEUE_SERIAL);
         
         [packageController registerManagedObjectsController:self];

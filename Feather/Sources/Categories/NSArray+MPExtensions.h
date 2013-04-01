@@ -1,9 +1,9 @@
 //
-//  NSArray+Manuscripts.h
-//  Manuscripts
+//  NSArray+Feather.h
+//  Feather
 //
 //  Created by Matias Piipari on 05/01/2013.
-//  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -18,7 +18,7 @@ typedef enum MPValueToggleResult
 } MPValueToggleResult;
 
 
-@interface NSArray (Manuscripts)
+@interface NSArray (Feather)
 
 - (NSArray *)mapObjectsUsingBlock:(NSArray *(^)(id o, NSUInteger idx))mapBlock;
 
@@ -39,7 +39,7 @@ typedef enum MPValueToggleResult
 #define MPLastIndexInArray(a) (a.count - 1)
 
 
-@interface NSMutableArray (Manuscripts)
+@interface NSMutableArray (Feather)
 
 /** Removes and returns the first object in this mutable array. */
 - (id) popObject;

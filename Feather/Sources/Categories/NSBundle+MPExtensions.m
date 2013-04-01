@@ -1,14 +1,14 @@
 //
-//  NSBundle+Manuscripts.m
-//  Manuscripts
+//  NSBundle+Feather.m
+//  Feather
 //
 //  Created by Matias Piipari on 17/11/2012.
-//  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import <Feather/NSBundle+MPExtensions.h>
 
-@implementation NSBundle (Manuscripts)
+@implementation NSBundle (Feather)
 
 - (NSString *)bundleNameString
 {

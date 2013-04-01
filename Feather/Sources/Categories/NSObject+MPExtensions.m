@@ -1,9 +1,9 @@
 //
-//  NSObject+Manuscripts.m
-//  Manuscripts
+//  NSObject+Feather.m
+//  Feather
 //
 //  Created by Matias Piipari on 08/12/2012.
-//  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import "NSObject+MPExtensions.h"
@@ -17,7 +17,7 @@ inline id MPNilToObject(id object, id defaultObject)
     return (object != nil) ? object : defaultObject;
 }
 
-@implementation NSObject (Manuscripts)
+@implementation NSObject (Feather)
 
 // Adapted from http://cocoawithlove.com/2010/01/getting-subclasses-of-objective-c-class.html
 

@@ -1,14 +1,14 @@
 //
 //  NSError+MPExtensions.h
-//  Manuscripts
+//  Feather
 //
 //  Created by Markus on 2/1/13.
-//  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-@interface NSError (Manuscripts)
+@interface NSError (Feather)
 
 + (NSError *)errorWithDomain:(NSString *)domain code:(NSInteger)code
                  description:(NSString *)description;

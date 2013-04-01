@@ -1,14 +1,14 @@
 //
-//  NSSet+Manuscripts.m
-//  Manuscripts
+//  NSSet+Feather.m
+//  Feather
 //
 //  Created by Matias Piipari on 05/02/2013.
-//  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import "NSSet+MPExtensions.h"
 
-@implementation NSSet (Manuscripts)
+@implementation NSSet (Feather)
 
 - (NSMutableSet *)mutableDeepContainerCopy
 {

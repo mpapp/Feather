@@ -1,14 +1,14 @@
 //
-//  NSBundle+Manuscripts.h
-//  Manuscripts
+//  NSBundle+Feather.h
+//  Feather
 //
 //  Created by Matias Piipari on 17/11/2012.
-//  Copyright (c) 2012 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
-@interface NSBundle (Manuscripts)
+@interface NSBundle (Feather)
 
 @property (readonly, copy) NSString *bundleNameString;
 @property (readonly, copy) NSString *bundleVersionString;

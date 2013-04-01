@@ -1,9 +1,9 @@
 //
-//  NSDictionary+Manuscripts.m
-//  Manuscripts
+//  NSDictionary+Feather.m
+//  Feather
 //
 //  Created by Matias Piipari on 04/02/2013.
-//  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
 #import "NSDictionary+MPExtensions.h"
@@ -11,7 +11,7 @@
 #import "NSSet+MPExtensions.h"
 
 
-@implementation NSDictionary (Manuscripts)
+@implementation NSDictionary (Feather)
 
 - (NSMutableDictionary *)mutableDeepContainerCopy
 {
