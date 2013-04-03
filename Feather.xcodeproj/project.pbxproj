@@ -11,6 +11,7 @@
 		5F28A033170A3310000D61B6 /* NSApplication+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F28A031170A3310000D61B6 /* NSApplication+MPExtensions.m */; };
 		5F73DE88170C41D000DC411A /* MPCategorizableMixin.h in Resources */ = {isa = PBXBuildFile; fileRef = 5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */; };
 		5F73DE89170C41D000DC411A /* MPCategorizableMixin.m in Resources */ = {isa = PBXBuildFile; fileRef = 5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */; };
+		5F73DEA7170C6BA300DC411A /* MPShoeboxPackageController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FCC021F170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FCC0220170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */; };
 		5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
@@ -267,6 +268,7 @@
 		5F28A031170A3310000D61B6 /* NSApplication+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSApplication+MPExtensions.m"; path = "../../feather/Feather/Sources/Categories/NSApplication+MPExtensions.m"; sourceTree = "<group>"; };
 		5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; name = MPCategorizableMixin.h; path = ../../../Manuscripts/Sources/Model/MPCategorizableMixin.h; sourceTree = "<group>"; };
 		5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; name = MPCategorizableMixin.m; path = ../../../Manuscripts/Sources/Model/MPCategorizableMixin.m; sourceTree = "<group>"; };
+		5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPShoeboxPackageController+Protected.h"; path = "Sources/Database Packages/MPShoeboxPackageController+Protected.h"; sourceTree = "<group>"; };
 		5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+MPManagedObjectExtensions.h"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.h"; sourceTree = "<group>"; };
 		5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MPManagedObjectExtensions.m"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.m"; sourceTree = "<group>"; };
 		5FDB33031705CB950049EBB5 /* Feather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Feather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -631,6 +633,7 @@
 				5FDB3A8F17079DD10049EBB5 /* MPDatabasePackageController+Protected.h */,
 				5FDB3A9D17079ED60049EBB5 /* MPShoeboxPackageController.h */,
 				5FDB3A9E17079ED70049EBB5 /* MPShoeboxPackageController.m */,
+				5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */,
 			);
 			name = "Database Packages";
 			sourceTree = "<group>";
@@ -698,6 +701,7 @@
 				5FDB3AA81707A36D0049EBB5 /* Feather.h in Headers */,
 				5FDB3AA91707ABBE0049EBB5 /* MPTreeItem.h in Headers */,
 				5FCC021F170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h in Headers */,
+				5F73DEA7170C6BA300DC411A /* MPShoeboxPackageController+Protected.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

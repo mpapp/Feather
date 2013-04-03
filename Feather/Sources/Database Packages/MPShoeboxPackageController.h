@@ -15,10 +15,9 @@ extern NSString * const MPDefaultsKeySharedPackageUDID;
 /** An abstract base class for database package controller which manages crowd sourced objects pulled from a remote server and bundled with the application. Snapshotting is not supported by the shared package controller. Shared database package is not synchronized peerlessly. */
 @interface MPShoeboxPackageController : MPDatabasePackageController <MPManagedObjectSharingObserver>
 
-#ifdef MP_UNIT_TEST
-+ (BOOL)sharedPackageControllerInitialized;
-+ (void)finalizeSharedPackageController;
-#endif
+// used for unit testing
++ (BOOL)sharedShoeboxControllerInitialized;
++ (void)finalizeSharedShoeboxController;
 
 + (BOOL)createSharedDatabasesPathWithError:(NSError **)err;
 

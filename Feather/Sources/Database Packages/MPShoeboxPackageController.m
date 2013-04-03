@@ -9,6 +9,7 @@
 #import "MPShoeboxPackageController.h"
 #import <Feather/NSBundle+MPExtensions.h>
 #import <Feather/NSBundle+MPExtensions.h>
+#import "MPShoeboxPackageController+Protected.h"
 #import "MPDatabasePackageController+Protected.h"
 #import "MPDatabase.h"
 
@@ -18,20 +19,6 @@
 #import "MPException.h"
 
 NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUDID";
-
-@interface MPShoeboxPackageController ()
-{
-    MPDatabase *_sharedDatabase;
-    MPDatabase *_globalSharedDatabase;
-}
-
-@property (readonly, strong) MPDatabase *sharedDatabase;
-
-@property (readonly, strong) MPDatabase *globalSharedDatabase;
-@property (readonly, strong) CouchServer *globalSharedDatabaseServer;
-
-@end
-
 
 
 @implementation MPShoeboxPackageController
@@ -45,8 +32,7 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
 
 - (instancetype)initWithError:(NSError *__autoreleasing *)err
 {
-    if (self = [super initWithPath:[[self class] sharedDatabasesPath]
-                          delegate:nil error:err])
+    if (self = [super initWithPath:[[self class] sharedDatabasesPath] delegate:nil error:err])
     {
         assert(self.server);
         assert(_sharedDatabase);

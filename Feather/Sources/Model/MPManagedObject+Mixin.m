@@ -44,8 +44,6 @@
         
         if (patternBlock(conformingProtocolName))
         {
-            NSLog(@"Conforming protocol: %@", NSStringFromProtocol(conformingProtocol));
-            
             [self implementProtocol:conformingProtocol
                andProtocolsMatching:patternBlock overloadMethods:overloadMethods];
         }
