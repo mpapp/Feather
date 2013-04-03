@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5F28A032170A3310000D61B6 /* NSApplication+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F28A030170A3310000D61B6 /* NSApplication+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F28A033170A3310000D61B6 /* NSApplication+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F28A031170A3310000D61B6 /* NSApplication+MPExtensions.m */; };
+		5FCC021F170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5FCC0220170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */; };
 		5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
 		5FDB33111705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB330F1705CB950049EBB5 /* InfoPlist.strings */; };
 		5FDB331D1705CB950049EBB5 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB331C1705CB950049EBB5 /* SenTestingKit.framework */; };
@@ -261,6 +263,8 @@
 /* Begin PBXFileReference section */
 		5F28A030170A3310000D61B6 /* NSApplication+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSApplication+MPExtensions.h"; path = "../../feather/Feather/Sources/Categories/NSApplication+MPExtensions.h"; sourceTree = "<group>"; };
 		5F28A031170A3310000D61B6 /* NSApplication+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSApplication+MPExtensions.m"; path = "../../feather/Feather/Sources/Categories/NSApplication+MPExtensions.m"; sourceTree = "<group>"; };
+		5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+MPManagedObjectExtensions.h"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.h"; sourceTree = "<group>"; };
+		5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MPManagedObjectExtensions.m"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.m"; sourceTree = "<group>"; };
 		5FDB33031705CB950049EBB5 /* Feather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Feather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FDB33061705CB950049EBB5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		5FDB33091705CB950049EBB5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -496,6 +500,8 @@
 		5FDB35CB1705FCBE0049EBB5 /* Cocoa Categories */ = {
 			isa = PBXGroup;
 			children = (
+				5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */,
+				5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */,
 				5FDB3A9917079EA80049EBB5 /* NSNotificationCenter+ErrorNotification.h */,
 				5FDB3A9A17079EAB0049EBB5 /* NSNotificationCenter+ErrorNotification.m */,
 				5FDB382F170702F40049EBB5 /* NSDictionary+MPExtensions.h */,
@@ -685,6 +691,7 @@
 				5FDB3A05170793550049EBB5 /* NSData+Base64.h in Headers */,
 				5FDB3AA81707A36D0049EBB5 /* Feather.h in Headers */,
 				5FDB3AA91707ABBE0049EBB5 /* MPTreeItem.h in Headers */,
+				5FCC021F170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -979,6 +986,7 @@
 				5FDB3A9C17079EAE0049EBB5 /* NSNotificationCenter+ErrorNotification.m in Sources */,
 				5FDB3AA017079ED80049EBB5 /* MPShoeboxPackageController.m in Sources */,
 				5F28A033170A3310000D61B6 /* NSApplication+MPExtensions.m in Sources */,
+				5FCC0220170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
