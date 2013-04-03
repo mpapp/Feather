@@ -24,6 +24,9 @@
 #import "MPContributorsController.h"
 #import "MPShoeboxPackageController.h"
 
+#import "Mixin.h"
+#import "MPCacheableMixin.h"
+
 #import "RegexKitLite.h"
 #import <CouchCocoa/CouchCocoa.h>
 
@@ -52,6 +55,14 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 
 @implementation MPManagedObject
 @synthesize controller = _controller;
+
++ (void)initialize
+{
+    if (self == [MPManagedObject class])
+    {
+        [self mixinFrom:[MPCacheableMixin class]];
+    }
+}
 
 - (instancetype)init
 {
@@ -551,30 +562,6 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     assert(db);
     
     return db;
-}
-
-#pragma mark - Caching
-
-+ (NSDictionary *)cachedPropertiesByManagedObjectClassName
-{
-    static NSDictionary *cachedProperties = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        cachedProperties = [self propertiesOfSubclassesForClass:[MPManagedObject class]
-                                                       matching:^BOOL(Class cls, NSString *key)
-        {
-            return [key isMatchedByRegex:@"^cached\\w{1,}"] && [cls propertyWithKeyIsReadWrite:key];
-        }];
-    });
-    
-    return cachedProperties;
-}
-
-- (void)clearCachedValues
-{
-    NSSet *cachedKeys = [MPManagedObject cachedPropertiesByManagedObjectClassName][NSStringFromClass([self class])];
-    for (NSString *cachedKey in cachedKeys)
-        [self setValue:nil forKey:cachedKey];
 }
 
 #pragma mark - NSPasteboardWriting & NSPasteboardReading

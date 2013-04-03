@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import "MPCachingObject.h"
+#import "MPCacheable.h"
 
 extern NSString * const MPManagedObjectErrorDomain;
 
@@ -41,7 +41,7 @@ typedef enum MPManagedObjectModerationState
 /**
  * An abstract base class for all objects contained in a MPDatabase (n per MPDatabase), except for MPMetadata (1 per MPDatabase).
  */
-@interface MPManagedObject : CouchModel <NSPasteboardWriting, NSPasteboardReading, MPCachingObject>
+@interface MPManagedObject : CouchModel <NSPasteboardWriting, NSPasteboardReading, MPCacheable>
 
 /** The managed objects controller which manages (and caches) the object. */
 @property (weak, readonly) MPManagedObjectsController *controller;

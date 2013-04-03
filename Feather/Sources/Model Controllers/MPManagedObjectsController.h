@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MPCachingObject.h"
+#import "MPCacheable.h"
 #import "NSNotificationCenter+MPExtensions.h"
 
 #import <TouchDB/TouchDB.h>
@@ -31,7 +31,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 @class CouchQueryEnumerator;
 
 /** An abstract base class for controllers of MPManagedObject instances. Caches managed objects strongly, allows querying and creating new Feather of a certain type, loading them from a JSON file, and resolving conflicting versions arising from replication. A MPManagedObjectsController subclass is parameterised by a managed object class (specified with the abstract method +managedObjectClass). Commonly it would also overload -configureDesignDocument: and -allObjectsQuery. */
-@interface MPManagedObjectsController : NSObject <MPCachingObject, MPManagedObjectRecentChangeObserver>
+@interface MPManagedObjectsController : NSObject <MPCacheable, MPManagedObjectRecentChangeObserver>
 
 /** The MPDatabase whose objects this controller manages (not necessarily all of the objects in the database, just those with a matching class / objectType field).  */
 @property (readonly, strong) MPDatabase *db;
