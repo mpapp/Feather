@@ -23,4 +23,7 @@ extern inline id MPNilToObject(id object, id defaultObject);
 + (NSDictionary *)propertiesOfSubclassesForClass:(Class)class matching:(BOOL(^)(Class cls, NSString *key))patternBlock;
 + (NSSet *)propertyKeys;
 
+- (id)performNonLeakingSelector:(SEL)selector;
+- (id)performNonLeakingSelector:(SEL)selector withObject:(id)object;
+
 @end

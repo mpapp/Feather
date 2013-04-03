@@ -146,4 +146,20 @@ inline id MPNilToObject(id object, id defaultObject)
     return propertyNames;
 }
 
+- (id)performNonLeakingSelector:(SEL)selector
+{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    return [self performSelector:selector];
+#pragma clang diagnostic pop
+}
+
+- (id)performNonLeakingSelector:(SEL)selector withObject:(id)object
+{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    return [self performSelector:selector withObject:object];
+#pragma clang diagnostic pop
+}
+
 @end
