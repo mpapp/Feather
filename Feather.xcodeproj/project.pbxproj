@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		5F28A032170A3310000D61B6 /* NSApplication+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F28A030170A3310000D61B6 /* NSApplication+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F28A033170A3310000D61B6 /* NSApplication+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F28A031170A3310000D61B6 /* NSApplication+MPExtensions.m */; };
+		5F73DE88170C41D000DC411A /* MPCategorizableMixin.h in Resources */ = {isa = PBXBuildFile; fileRef = 5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */; };
+		5F73DE89170C41D000DC411A /* MPCategorizableMixin.m in Resources */ = {isa = PBXBuildFile; fileRef = 5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */; };
 		5FCC021F170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FCC0220170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */; };
 		5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
@@ -263,6 +265,8 @@
 /* Begin PBXFileReference section */
 		5F28A030170A3310000D61B6 /* NSApplication+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSApplication+MPExtensions.h"; path = "../../feather/Feather/Sources/Categories/NSApplication+MPExtensions.h"; sourceTree = "<group>"; };
 		5F28A031170A3310000D61B6 /* NSApplication+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSApplication+MPExtensions.m"; path = "../../feather/Feather/Sources/Categories/NSApplication+MPExtensions.m"; sourceTree = "<group>"; };
+		5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; name = MPCategorizableMixin.h; path = ../../../Manuscripts/Sources/Model/MPCategorizableMixin.h; sourceTree = "<group>"; };
+		5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; name = MPCategorizableMixin.m; path = ../../../Manuscripts/Sources/Model/MPCategorizableMixin.m; sourceTree = "<group>"; };
 		5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+MPManagedObjectExtensions.h"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.h"; sourceTree = "<group>"; };
 		5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MPManagedObjectExtensions.m"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.m"; sourceTree = "<group>"; };
 		5FDB33031705CB950049EBB5 /* Feather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Feather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -643,6 +647,8 @@
 		5FDB49811708CF9A00E82856 /* Mixins */ = {
 			isa = PBXGroup;
 			children = (
+				5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */,
+				5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */,
 			);
 			name = Mixins;
 			sourceTree = "<group>";
@@ -924,6 +930,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FDB33111705CB950049EBB5 /* InfoPlist.strings in Resources */,
+				5F73DE88170C41D000DC411A /* MPCategorizableMixin.h in Resources */,
+				5F73DE89170C41D000DC411A /* MPCategorizableMixin.m in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
