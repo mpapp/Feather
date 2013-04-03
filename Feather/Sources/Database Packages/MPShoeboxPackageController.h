@@ -36,9 +36,6 @@ extern NSString * const MPDefaultsKeySharedPackageUDID;
 /** Initializes application support data if it's missing. */
 - (void)initializeApplicationSupportData;
 
-/** The base directory for the shoebox's data. */
-@property (readonly, copy) NSString *sharedDatabasesPath;
-
 /** Name of the remote database this shoebox synchronizes with. */
 @property (readonly, copy) NSString *remoteGlobalSharedDatabaseName;
 
@@ -47,6 +44,9 @@ extern NSString * const MPDefaultsKeySharedPackageUDID;
 
 /** Register the subclass of MPShoeboxPackageController used by this application. Should be called exactly once in the +initialize of the subclass, with itself given as the argument. */
 + (void)registerShoeboxPackageControllerClass:(Class)class;
+
+/** The base directory for the shoebox's data. */
++ (NSString *)sharedDatabasesPath;
 
 + (instancetype)sharedShoeboxController;
 
