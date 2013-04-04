@@ -9,6 +9,7 @@
 #import "FeatherTests.h"
 #import <Feather/Feather.h>
 #import "NSBundle+MPExtensions.h"
+#import "MPDatabasePackageController+Protected.h"
 
 @implementation MPFeatherTestSuite
 
@@ -29,6 +30,12 @@
                  @"Test bundle name is the last path component of the shared package path.");
     
     NSFileManager *fm = [NSFileManager defaultManager];
+    
+    NSError *err = nil;
+    if (sharedPackageIsForTestBundle)
+        [MPFeatherTestPackageController createSharedDatabasesPathWithError:&err];
+    
+    STAssertTrue(!err, @"No error should happen with creating the shared databases path");
     
     if ([fm fileExistsAtPath:sharedPackagePath] && sharedPackageIsForTestBundle)
     {
@@ -55,12 +62,11 @@
         
     } else if (!sharedPackageIsForTestBundle)
     {
-        NSLog(@"Shared data is in an unexpected path, don't dare to continue: %@",
+        NSLog(@"Shared data is in an unexpected path or missing, don't dare to continue: %@",
               sharedPackagePath);
         exit(1);
     }
     
-    NSError *err = nil;
     STAssertTrue([fm createDirectoryAtPath:_docRoot withIntermediateDirectories:YES attributes:nil error:&err],
                  @"Creating document root succeeded.");
     
@@ -97,6 +103,17 @@
     }
 }
 
+- (instancetype)initWithError:(NSError *__autoreleasing *)err
+{
+    if (self = [super initWithError:err])
+    {
+        _testObjectsController =
+            [[MPTestObjectsController alloc] initWithPackageController:self database:self.primaryDatabase];
+    }
+    
+    return self;
+}
+
 + (instancetype)sharedPackageController
 {
     MPFeatherTestPackageController *tpc = [MPFeatherTestPackageController sharedShoeboxController];
@@ -104,4 +121,12 @@
     return tpc;
 }
 
++ (NSString *)primaryDatabaseName { return @"shared"; }
+
+@end
+
+@implementation MPTestObject
+@end
+
+@implementation MPTestObjectsController
 @end

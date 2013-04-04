@@ -14,6 +14,21 @@
 @end
 
 
+@interface MPTestObject : MPManagedObject
+@end
+
+@interface MPEmbeddedTestObject : MPEmbeddedObject
+@end
+
+@interface MPTestObjectsController : MPManagedObjectsController
+@end
+
+
+
+@class MPTestObject, MPEmbeddedTestObject, MPTestObjectsController;
+
 @interface MPFeatherTestPackageController : MPShoeboxPackageController
 + (instancetype)sharedPackageController;
+
+@property (readonly, strong) MPTestObjectsController *testObjectsController;
 @end

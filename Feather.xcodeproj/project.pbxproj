@@ -18,6 +18,7 @@
 		5F293BF6170DFD4E001C2111 /* UICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293BF4170DFD4E001C2111 /* UICKeyChainStore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5F293BF8170DFD77001C2111 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F293BF7170DFD77001C2111 /* Security.framework */; };
 		5F293C00170E1935001C2111 /* MPExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293BFD170E191F001C2111 /* MPExtensionTests.m */; };
+		5F293C07170E2980001C2111 /* MPEmbeddedObjectsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */; };
 		5F73DE88170C41D000DC411A /* MPCategorizableMixin.h in Resources */ = {isa = PBXBuildFile; fileRef = 5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */; };
 		5F73DE89170C41D000DC411A /* MPCategorizableMixin.m in Resources */ = {isa = PBXBuildFile; fileRef = 5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */; };
 		5F73DEA7170C6BA300DC411A /* MPShoeboxPackageController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -283,6 +284,8 @@
 		5F293BF7170DFD77001C2111 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		5F293BFC170E191F001C2111 /* MPExtensionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPExtensionTests.h; sourceTree = "<group>"; };
 		5F293BFD170E191F001C2111 /* MPExtensionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPExtensionTests.m; sourceTree = "<group>"; };
+		5F293C05170E2980001C2111 /* MPEmbeddedObjectsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPEmbeddedObjectsTests.h; sourceTree = "<group>"; };
+		5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPEmbeddedObjectsTests.m; sourceTree = "<group>"; };
 		5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCategorizableMixin.h; path = ../../../Manuscripts/Sources/Model/MPCategorizableMixin.h; sourceTree = "<group>"; };
 		5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCategorizableMixin.m; path = ../../../Manuscripts/Sources/Model/MPCategorizableMixin.m; sourceTree = "<group>"; };
 		5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPShoeboxPackageController+Protected.h"; path = "Sources/Database Packages/MPShoeboxPackageController+Protected.h"; sourceTree = "<group>"; };
@@ -487,6 +490,8 @@
 				5F293BFC170E191F001C2111 /* MPExtensionTests.h */,
 				5F293BFD170E191F001C2111 /* MPExtensionTests.m */,
 				5FDB33231705CB950049EBB5 /* Supporting Files */,
+				5F293C05170E2980001C2111 /* MPEmbeddedObjectsTests.h */,
+				5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */,
 			);
 			path = FeatherTests;
 			sourceTree = "<group>";
@@ -1045,6 +1050,7 @@
 			files = (
 				5FDB332A1705CB950049EBB5 /* FeatherTests.m in Sources */,
 				5F293C00170E1935001C2111 /* MPExtensionTests.m in Sources */,
+				5F293C07170E2980001C2111 /* MPEmbeddedObjectsTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
