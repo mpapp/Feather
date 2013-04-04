@@ -7,22 +7,26 @@
 //
 
 #import <CouchCocoa/CouchCocoa.h>
-#import "MPManagedObject.h"
 
-/** Objects which can embed MPEmbeddedObject instances should conform to this. Note that MPEmbeddedObject itself conforms to MPEmbeddingObject because it can embed other objects (x => y => z). */
+/** Protocol used to tag objects which can embed MPEmbeddedObject instances. */
 @protocol MPEmbeddingObject <NSObject>
 @end
 
+/** MPEmbeddedObject itself conforms to MPEmbeddingObject because it can embed other objects. */
 @interface MPEmbeddedObject : CouchDynamicObject <MPEmbeddingObject>
 
 @property (readonly, copy) NSString *identifier;
 
-@property (weak) MPManagedObject *embeddingObject;
+@property (weak) id<MPEmbeddingObject> embeddingObject;
 
-- (instancetype)initWithEmbeddingObject:(MPManagedObject *)embeddingObject;
-- (id)externalize;
+- (instancetype)initWithEmbeddingObject:(id<MPEmbeddingObject>)embeddingObject;
 
-/** Returns a subclass of MPEmbeddedObject */
-+ (id)embeddedObjectWithJSONString:(NSString *)string;
+/** Returns a JSON encodable version of the embedded object. */
+- (NSString *)externalize;
+
+/** Returns an MPEmbeddedObject instance for a JSON string. 
+  * The class of the object is determined by its 'objectType' property. */
++ (id)embeddedObjectWithJSONString:(NSString *)string
+                   embeddingObject:(id<MPEmbeddingObject>)embeddingObject;
 
 @end

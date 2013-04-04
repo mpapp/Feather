@@ -23,25 +23,32 @@
 
 - (instancetype)initWithJSONString:(NSString *)jsonString embeddingObject:(id<MPEmbeddingObject>)embeddingObject
 {
+    NSMutableDictionary *propertiesDict = [jsonString objectFromJSONString];
+    return [self initWithDictionary:propertiesDict embeddingObject:embeddingObject];
+}
+
+- (instancetype)initWithDictionary:(NSDictionary *)propertiesDict embeddingObject:(id<MPEmbeddingObject>)embeddingObject
+{
     if (self = [super init])
     {
-        NSMutableDictionary *propertiesDict = [[jsonString objectFromJSONString] mutableCopy];
         assert([propertiesDict isKindOfClass:[NSDictionary class]]);
         assert(propertiesDict[@"_id"]);
         assert(propertiesDict[@"objectType"]);
+        assert([propertiesDict[@"objectType"] isEqualToString:NSStringFromClass(self.class)]);
         
-        _properties = propertiesDict;
+        _properties = [propertiesDict mutableCopy];
     }
     
     return self;
 }
 
-- (instancetype)initWithEmbeddingObject:(MPManagedObject *)embeddingObject
+- (instancetype)initWithEmbeddingObject:(id<MPEmbeddingObject>)embeddingObject
 {
     if (self = [super init])
     {
         assert(embeddingObject);
         self.embeddingObject = embeddingObject;
+        
         _properties = [NSMutableDictionary dictionaryWithCapacity:10];
         _properties[@"_id"] = [[NSUUID UUID] UUIDString];
         _properties[@"objectType"] = NSStringFromClass([self class]);
@@ -50,8 +57,12 @@
     return self;
 }
 
-#pragma mark - 
++ (id)embeddedObjectWithJSONString:(NSString *)string embeddingObject:(id<MPEmbeddingObject>)embeddingObject;
+{
+    return [[self alloc] initWithJSONString:string embeddingObject:embeddingObject];
+}
 
+#pragma mark - 
 
 - (id)getValueOfProperty:(NSString *)property
 {
@@ -62,6 +73,9 @@
 {
     id val = [self getValueOfProperty:property];
     if ([val isEqualToValue:value]) return YES;
+    
+    assert(self.embeddingObject);
+    
     
     return NO;
 }

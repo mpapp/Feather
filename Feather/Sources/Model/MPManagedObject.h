@@ -6,7 +6,12 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+#import <CouchCocoa/CouchCocoa.h>
+
 #import "MPCacheable.h"
+
+#import "MPEmbeddedObject.h"
 
 extern NSString * const MPManagedObjectErrorDomain;
 
@@ -24,8 +29,6 @@ typedef enum MPManagedObjectModerationState
     MPManagedObjectModerationStateRejected = 2
 } MPManagedObjectModerationState;
 
-#import <Foundation/Foundation.h>
-#import <CouchCocoa/CouchCocoa.h>
 
 /** An empty tag protocol used to signify objects which can be referenced across database boundaries.
   * This information is used to determine the correct controller for an object. */
@@ -41,7 +44,7 @@ typedef enum MPManagedObjectModerationState
 /**
  * An abstract base class for all objects contained in a MPDatabase (n per MPDatabase), except for MPMetadata (1 per MPDatabase).
  */
-@interface MPManagedObject : CouchModel <NSPasteboardWriting, NSPasteboardReading, MPCacheable>
+@interface MPManagedObject : CouchModel <NSPasteboardWriting, NSPasteboardReading, MPCacheable, MPEmbeddingObject>
 
 /** The managed objects controller which manages (and caches) the object. */
 @property (weak, readonly) MPManagedObjectsController *controller;

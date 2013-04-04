@@ -17,7 +17,6 @@
 #pragma mark - Caching
 
 + (NSDictionary *)cachedPropertiesByClassName
-
 {
     static NSDictionary *cachedProperties = nil;
     static dispatch_once_t onceToken;

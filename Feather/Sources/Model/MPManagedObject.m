@@ -15,6 +15,8 @@
 #import "NSNotificationCenter+MPExtensions.h"
 #import "MPShoeboxPackageController.h"
 
+#import "MPEmbeddedObject.h"
+
 #import "NSFileManager+MPExtensions.h"
 #import "NSDictionary+MPManagedObjectExtensions.h"
 #import "MPEmbeddedObject.h"
@@ -592,7 +594,7 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     {
         id rawValue = [self.document propertyForKey:property];
         if ([rawValue isKindOfClass: [NSString class]])
-            value = [MPEmbeddedObject embeddedObjectWithJSONString:rawValue];
+            value = [MPEmbeddedObject embeddedObjectWithJSONString:rawValue embeddingObject:self];
         if (value)
             [self cacheValue: value ofProperty: property changed: NO];
         else if (rawValue)
@@ -649,16 +651,6 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 {
     assert([type isEqualToString:[[self class] pasteboardTypeName]]);
     return NSPasteboardReadingAsPropertyList;
-}
-
-- (void)setEmbeddedObject:(MPEmbeddedObject *)embeddedObj forProperty:(NSString *)property
-{
-    
-}
-
-- (CouchModel*)getEmbeddedModelProperty:(NSString*)property
-{
-    
 }
 
 @end
