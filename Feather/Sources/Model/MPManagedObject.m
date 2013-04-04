@@ -17,6 +17,7 @@
 
 #import "NSFileManager+MPExtensions.h"
 #import "NSDictionary+MPManagedObjectExtensions.h"
+#import "MPEmbeddedObject.h"
 
 #import "NSArray+MPExtensions.h"
 #import "NSObject+MPExtensions.h"
@@ -36,9 +37,11 @@
 NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 
 @interface CouchModel (Private)
-@property (retain, readwrite) CouchDocument *document;
+@property (strong, readwrite) CouchDocument *document;
+@property (strong, readwrite) NSMutableDictionary *properties;
 @property (copy, readonly) NSString *documentID;
 - (void)couchDocumentChanged:(CouchDocument *)doc;
+- (id)externalizePropertyValue: (id)value;
 @end
 
 @interface MPManagedObject ()
@@ -564,6 +567,52 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     return db;
 }
 
+#pragma mark - Embedded object support
+
+- (id)externalizePropertyValue:(id)value
+{
+    if ([value isKindOfClass:[MPEmbeddedObject class]])
+    {
+        return [value externalize];
+    }
+    else
+    {
+        [super externalizePropertyValue:value];
+    }
+    
+    assert(false);
+    return nil;
+}
+
+- (NSDate *)getEmbeddedObjectProperty:(NSString *)property
+{
+    assert(self.properties);
+    NSDate* value = [self.properties objectForKey: property];
+    if (!value)
+    {
+        id rawValue = [self.document propertyForKey:property];
+        if ([rawValue isKindOfClass: [NSString class]])
+            value = [MPEmbeddedObject embeddedObjectWithJSONString:rawValue];
+        if (value)
+            [self cacheValue: value ofProperty: property changed: NO];
+        else if (rawValue)
+            MPLog(@"Unable to decode embedded object from property %@ of %@", property, self.document);
+    }
+    return value;
+}
+
++ (IMP)impForGetterOfProperty:(NSString *)property ofClass:(Class)propertyClass
+{
+    if ([propertyClass isSubclassOfClass:[MPEmbeddedObject class]])
+    {
+        return imp_implementationWithBlock(^id(MPManagedObject *receiver) {
+            return [receiver getEmbeddedObjectProperty:property];
+        });
+    }
+    
+    return [super impForGetterOfProperty:property ofClass:propertyClass];
+}
+
 #pragma mark - NSPasteboardWriting & NSPasteboardReading
 
 + (NSString *)pasteboardTypeName
@@ -600,6 +649,16 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 {
     assert([type isEqualToString:[[self class] pasteboardTypeName]]);
     return NSPasteboardReadingAsPropertyList;
+}
+
+- (void)setEmbeddedObject:(MPEmbeddedObject *)embeddedObj forProperty:(NSString *)property
+{
+    
+}
+
+- (CouchModel*)getEmbeddedModelProperty:(NSString*)property
+{
+    
 }
 
 @end

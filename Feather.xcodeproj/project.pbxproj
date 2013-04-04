@@ -9,11 +9,14 @@
 /* Begin PBXBuildFile section */
 		5F28A032170A3310000D61B6 /* NSApplication+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F28A030170A3310000D61B6 /* NSApplication+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F28A033170A3310000D61B6 /* NSApplication+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F28A031170A3310000D61B6 /* NSApplication+MPExtensions.m */; };
+		5F293B9B170CAD65001C2111 /* MPCacheableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293B99170CAD65001C2111 /* MPCacheableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F293B9C170CAD65001C2111 /* MPCacheableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293B9A170CAD65001C2111 /* MPCacheableMixin.m */; };
+		5F293B9D170CAD8C001C2111 /* MPCacheable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293B85170CAD53001C2111 /* MPCacheable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F293BA0170CAECC001C2111 /* MPEmbeddedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293B9E170CAECC001C2111 /* MPEmbeddedObject.h */; };
+		5F293BA1170CAECC001C2111 /* MPEmbeddedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293B9F170CAECC001C2111 /* MPEmbeddedObject.m */; };
 		5F73DE88170C41D000DC411A /* MPCategorizableMixin.h in Resources */ = {isa = PBXBuildFile; fileRef = 5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */; };
 		5F73DE89170C41D000DC411A /* MPCategorizableMixin.m in Resources */ = {isa = PBXBuildFile; fileRef = 5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */; };
 		5F73DEA7170C6BA300DC411A /* MPShoeboxPackageController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5F73DEEE170C8BF000DC411A /* MPCacheableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F73DEEC170C8BF000DC411A /* MPCacheableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5F73DEEF170C8BF000DC411A /* MPCacheableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F73DEED170C8BF000DC411A /* MPCacheableMixin.m */; };
 		5FCC021F170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FCC0220170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */; };
 		5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
@@ -79,7 +82,6 @@
 		5FDB3A7F17079B1E0049EBB5 /* MPSnapshot+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3A7C17079B1E0049EBB5 /* MPSnapshot+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3A8717079C020049EBB5 /* MPException.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3A8517079C020049EBB5 /* MPException.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3A8817079C020049EBB5 /* MPException.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A8617079C020049EBB5 /* MPException.m */; };
-		5FDB3A8A17079C520049EBB5 /* MPCacheable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3A8917079C520049EBB5 /* MPCacheable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3A9217079DD10049EBB5 /* MPDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3A8B17079DD10049EBB5 /* MPDatabase.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3A9317079DD10049EBB5 /* MPDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A8C17079DD10049EBB5 /* MPDatabase.m */; };
 		5FDB3A9417079DD10049EBB5 /* MPDatabasePackageController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3A8D17079DD10049EBB5 /* MPDatabasePackageController.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -89,7 +91,6 @@
 		5FDB3A9C17079EAE0049EBB5 /* NSNotificationCenter+ErrorNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A9A17079EAB0049EBB5 /* NSNotificationCenter+ErrorNotification.m */; };
 		5FDB3A9F17079ED80049EBB5 /* MPShoeboxPackageController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3A9D17079ED60049EBB5 /* MPShoeboxPackageController.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3AA017079ED80049EBB5 /* MPShoeboxPackageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A9E17079ED70049EBB5 /* MPShoeboxPackageController.m */; };
-		5FDB3AA31707A0610049EBB5 /* MPPlaceHolding.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3AA21707A05F0049EBB5 /* MPPlaceHolding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3AA81707A36D0049EBB5 /* Feather.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33131705CB950049EBB5 /* Feather.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3AA91707ABBE0049EBB5 /* MPTreeItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
@@ -268,11 +269,14 @@
 /* Begin PBXFileReference section */
 		5F28A030170A3310000D61B6 /* NSApplication+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSApplication+MPExtensions.h"; path = "../../feather/Feather/Sources/Categories/NSApplication+MPExtensions.h"; sourceTree = "<group>"; };
 		5F28A031170A3310000D61B6 /* NSApplication+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSApplication+MPExtensions.m"; path = "../../feather/Feather/Sources/Categories/NSApplication+MPExtensions.m"; sourceTree = "<group>"; };
+		5F293B85170CAD53001C2111 /* MPCacheable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MPCacheable.h; path = Sources/Model/MPCacheable.h; sourceTree = "<group>"; };
+		5F293B99170CAD65001C2111 /* MPCacheableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCacheableMixin.h; path = Sources/Model/MPCacheableMixin.h; sourceTree = "<group>"; };
+		5F293B9A170CAD65001C2111 /* MPCacheableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCacheableMixin.m; path = Sources/Model/MPCacheableMixin.m; sourceTree = "<group>"; };
+		5F293B9E170CAECC001C2111 /* MPEmbeddedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPEmbeddedObject.h; path = Sources/Model/MPEmbeddedObject.h; sourceTree = "<group>"; };
+		5F293B9F170CAECC001C2111 /* MPEmbeddedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPEmbeddedObject.m; path = Sources/Model/MPEmbeddedObject.m; sourceTree = "<group>"; };
 		5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCategorizableMixin.h; path = ../../../Manuscripts/Sources/Model/MPCategorizableMixin.h; sourceTree = "<group>"; };
 		5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCategorizableMixin.m; path = ../../../Manuscripts/Sources/Model/MPCategorizableMixin.m; sourceTree = "<group>"; };
 		5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPShoeboxPackageController+Protected.h"; path = "Sources/Database Packages/MPShoeboxPackageController+Protected.h"; sourceTree = "<group>"; };
-		5F73DEEC170C8BF000DC411A /* MPCacheableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCacheableMixin.h; path = Sources/Model/MPCacheableMixin.h; sourceTree = "<group>"; };
-		5F73DEED170C8BF000DC411A /* MPCacheableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCacheableMixin.m; path = Sources/Model/MPCacheableMixin.m; sourceTree = "<group>"; };
 		5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+MPManagedObjectExtensions.h"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.h"; sourceTree = "<group>"; };
 		5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MPManagedObjectExtensions.m"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.m"; sourceTree = "<group>"; };
 		5FDB33031705CB950049EBB5 /* Feather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Feather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -345,7 +349,6 @@
 		5FDB3A7C17079B1E0049EBB5 /* MPSnapshot+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MPSnapshot+Protected.h"; path = "Sources/Model/MPSnapshot+Protected.h"; sourceTree = "<group>"; };
 		5FDB3A8517079C020049EBB5 /* MPException.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPException.h; path = Sources/Utilities/MPException.h; sourceTree = "<group>"; };
 		5FDB3A8617079C020049EBB5 /* MPException.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPException.m; path = Sources/Utilities/MPException.m; sourceTree = "<group>"; };
-		5FDB3A8917079C520049EBB5 /* MPCacheable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCacheable.h; path = Sources/Model/MPCacheable.h; sourceTree = "<group>"; };
 		5FDB3A8B17079DD10049EBB5 /* MPDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPDatabase.h; path = "Sources/Database Packages/MPDatabase.h"; sourceTree = "<group>"; };
 		5FDB3A8C17079DD10049EBB5 /* MPDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPDatabase.m; path = "Sources/Database Packages/MPDatabase.m"; sourceTree = "<group>"; };
 		5FDB3A8D17079DD10049EBB5 /* MPDatabasePackageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPDatabasePackageController.h; path = "Sources/Database Packages/MPDatabasePackageController.h"; sourceTree = "<group>"; };
@@ -356,7 +359,6 @@
 		5FDB3A9D17079ED60049EBB5 /* MPShoeboxPackageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPShoeboxPackageController.h; path = "Sources/Database Packages/MPShoeboxPackageController.h"; sourceTree = "<group>"; };
 		5FDB3A9E17079ED70049EBB5 /* MPShoeboxPackageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPShoeboxPackageController.m; path = "Sources/Database Packages/MPShoeboxPackageController.m"; sourceTree = "<group>"; };
 		5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MPTreeItem.h; path = Sources/Model/MPTreeItem.h; sourceTree = "<group>"; };
-		5FDB3AA21707A05F0049EBB5 /* MPPlaceHolding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPPlaceHolding.h; path = Sources/Model/MPPlaceHolding.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -597,6 +599,8 @@
 			children = (
 				5FDB3A3A1707992B0049EBB5 /* MPManagedObject.h */,
 				5FDB3A3B1707992B0049EBB5 /* MPManagedObject.m */,
+				5F293B9E170CAECC001C2111 /* MPEmbeddedObject.h */,
+				5F293B9F170CAECC001C2111 /* MPEmbeddedObject.m */,
 				5FDB3A3C1707992B0049EBB5 /* MPManagedObject+Mixin.h */,
 				5FDB3A3D1707992B0049EBB5 /* MPManagedObject+Mixin.m */,
 				5FDB3A3E1707992B0049EBB5 /* MPManagedObject+Protected.h */,
@@ -609,10 +613,9 @@
 				5FDB3A6817079A750049EBB5 /* MPContributor.h */,
 				5FDB3A6917079A750049EBB5 /* MPContributor.m */,
 				5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */,
-				5FDB3AA21707A05F0049EBB5 /* MPPlaceHolding.h */,
-				5FDB3A8917079C520049EBB5 /* MPCacheable.h */,
-				5F73DEEC170C8BF000DC411A /* MPCacheableMixin.h */,
-				5F73DEED170C8BF000DC411A /* MPCacheableMixin.m */,
+				5F293B85170CAD53001C2111 /* MPCacheable.h */,
+				5F293B99170CAD65001C2111 /* MPCacheableMixin.h */,
+				5F293B9A170CAD65001C2111 /* MPCacheableMixin.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -692,13 +695,11 @@
 				5FDB3A7D17079B1E0049EBB5 /* MPSnapshot.h in Headers */,
 				5FDB3A7F17079B1E0049EBB5 /* MPSnapshot+Protected.h in Headers */,
 				5FDB3A8717079C020049EBB5 /* MPException.h in Headers */,
-				5FDB3A8A17079C520049EBB5 /* MPCacheable.h in Headers */,
 				5FDB3A9217079DD10049EBB5 /* MPDatabase.h in Headers */,
 				5FDB3A9417079DD10049EBB5 /* MPDatabasePackageController.h in Headers */,
 				5FDB3A9617079DD10049EBB5 /* MPDatabasePackageController+Protected.h in Headers */,
 				5FDB3A9B17079EAE0049EBB5 /* NSNotificationCenter+ErrorNotification.h in Headers */,
 				5FDB3A9F17079ED80049EBB5 /* MPShoeboxPackageController.h in Headers */,
-				5FDB3AA31707A0610049EBB5 /* MPPlaceHolding.h in Headers */,
 				5FDB33D41705D0DA0049EBB5 /* RegexKitLite.h in Headers */,
 				5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */,
 				5F28A032170A3310000D61B6 /* NSApplication+MPExtensions.h in Headers */,
@@ -708,7 +709,9 @@
 				5FDB3AA91707ABBE0049EBB5 /* MPTreeItem.h in Headers */,
 				5FCC021F170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h in Headers */,
 				5F73DEA7170C6BA300DC411A /* MPShoeboxPackageController+Protected.h in Headers */,
-				5F73DEEE170C8BF000DC411A /* MPCacheableMixin.h in Headers */,
+				5F293B9B170CAD65001C2111 /* MPCacheableMixin.h in Headers */,
+				5F293B9D170CAD8C001C2111 /* MPCacheable.h in Headers */,
+				5F293BA0170CAECC001C2111 /* MPEmbeddedObject.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1006,7 +1009,8 @@
 				5FDB3AA017079ED80049EBB5 /* MPShoeboxPackageController.m in Sources */,
 				5F28A033170A3310000D61B6 /* NSApplication+MPExtensions.m in Sources */,
 				5FCC0220170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m in Sources */,
-				5F73DEEF170C8BF000DC411A /* MPCacheableMixin.m in Sources */,
+				5F293B9C170CAD65001C2111 /* MPCacheableMixin.m in Sources */,
+				5F293BA1170CAECC001C2111 /* MPEmbeddedObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
