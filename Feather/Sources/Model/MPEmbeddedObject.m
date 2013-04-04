@@ -69,13 +69,15 @@
     return _properties[property];
 }
 
-- (BOOL) setValue:(id)value ofProperty:(NSString *)property
+- (BOOL)setValue:(id)value ofProperty:(NSString *)property
 {
     id val = [self getValueOfProperty:property];
     if ([val isEqualToValue:value]) return YES;
     
     assert(self.embeddingObject);
     
+    // FIXME: Continue from here. Infer the key the object has in its embedding object, preferably without introducing new state.
+    //[self.embeddingObject.changedNames addObject:property]
     
     return NO;
 }

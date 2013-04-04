@@ -123,5 +123,8 @@
 @implementation MPTestObject
 @end
 
+@implementation MPEmbeddedTestObject
+@end
+
 @implementation MPTestObjectsController
 @end

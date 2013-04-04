@@ -6,13 +6,18 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
+#import "FeatherTests.h"
 #import "MPEmbeddedObjectsTests.h"
 
 @implementation MPEmbeddedObjectsTests
 
 - (void)testEmbeddedObjectCreation
 {
+    MPFeatherTestPackageController *tpkg = [MPFeatherTestPackageController sharedPackageController];
+    MPTestObjectsController *tc = tpkg.testObjectsController;
     
+    MPTestObject *obj = [[MPTestObject alloc] initWithNewDocumentForController:tc];
+    MPEmbeddedTestObject *eobj = [[MPEmbeddedTestObject alloc] initWithEmbeddingObject:obj];
 }
 
 @end
