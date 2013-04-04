@@ -7,7 +7,13 @@
 //
 
 #import <SenTestingKit/SenTestingKit.h>
+#import "Feather.h"
 
-@interface FeatherTests : SenTestCase
+@interface MPFeatherTestSuite : SenTestCase <MPDatabasePackageControllerDelegate>
+@property (copy) NSString *docRoot;
+@end
 
+
+@interface MPFeatherTestPackageController : MPShoeboxPackageController
++ (instancetype)sharedPackageController;
 @end

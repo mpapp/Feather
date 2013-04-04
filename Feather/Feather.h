@@ -12,6 +12,8 @@
 #import "MPManagedObjectsController.h"
 #import "MPManagedObject+Mixin.h"
 
+#import "MPEmbeddedObject.h"
+
 #import "MPDatabase.h"
 #import "MPDatabasePackageController.h"
 #import "MPShoeboxPackageController.h"

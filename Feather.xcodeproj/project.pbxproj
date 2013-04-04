@@ -12,8 +12,12 @@
 		5F293B9B170CAD65001C2111 /* MPCacheableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293B99170CAD65001C2111 /* MPCacheableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F293B9C170CAD65001C2111 /* MPCacheableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293B9A170CAD65001C2111 /* MPCacheableMixin.m */; };
 		5F293B9D170CAD8C001C2111 /* MPCacheable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293B85170CAD53001C2111 /* MPCacheable.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5F293BA0170CAECC001C2111 /* MPEmbeddedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293B9E170CAECC001C2111 /* MPEmbeddedObject.h */; };
+		5F293BA0170CAECC001C2111 /* MPEmbeddedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293B9E170CAECC001C2111 /* MPEmbeddedObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F293BA1170CAECC001C2111 /* MPEmbeddedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293B9F170CAECC001C2111 /* MPEmbeddedObject.m */; };
+		5F293BF5170DFD4E001C2111 /* UICKeyChainStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293BF3170DFD4E001C2111 /* UICKeyChainStore.h */; };
+		5F293BF6170DFD4E001C2111 /* UICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293BF4170DFD4E001C2111 /* UICKeyChainStore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5F293BF8170DFD77001C2111 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F293BF7170DFD77001C2111 /* Security.framework */; };
+		5F293C00170E1935001C2111 /* MPExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293BFD170E191F001C2111 /* MPExtensionTests.m */; };
 		5F73DE88170C41D000DC411A /* MPCategorizableMixin.h in Resources */ = {isa = PBXBuildFile; fileRef = 5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */; };
 		5F73DE89170C41D000DC411A /* MPCategorizableMixin.m in Resources */ = {isa = PBXBuildFile; fileRef = 5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */; };
 		5F73DEA7170C6BA300DC411A /* MPShoeboxPackageController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -274,6 +278,11 @@
 		5F293B9A170CAD65001C2111 /* MPCacheableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCacheableMixin.m; path = Sources/Model/MPCacheableMixin.m; sourceTree = "<group>"; };
 		5F293B9E170CAECC001C2111 /* MPEmbeddedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPEmbeddedObject.h; path = Sources/Model/MPEmbeddedObject.h; sourceTree = "<group>"; };
 		5F293B9F170CAECC001C2111 /* MPEmbeddedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPEmbeddedObject.m; path = Sources/Model/MPEmbeddedObject.m; sourceTree = "<group>"; };
+		5F293BF3170DFD4E001C2111 /* UICKeyChainStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UICKeyChainStore.h; path = External/UICKeyChainStore/UICKeyChainStore.h; sourceTree = SOURCE_ROOT; };
+		5F293BF4170DFD4E001C2111 /* UICKeyChainStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UICKeyChainStore.m; path = External/UICKeyChainStore/UICKeyChainStore.m; sourceTree = SOURCE_ROOT; };
+		5F293BF7170DFD77001C2111 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		5F293BFC170E191F001C2111 /* MPExtensionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPExtensionTests.h; sourceTree = "<group>"; };
+		5F293BFD170E191F001C2111 /* MPExtensionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPExtensionTests.m; sourceTree = "<group>"; };
 		5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCategorizableMixin.h; path = ../../../Manuscripts/Sources/Model/MPCategorizableMixin.h; sourceTree = "<group>"; };
 		5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCategorizableMixin.m; path = ../../../Manuscripts/Sources/Model/MPCategorizableMixin.m; sourceTree = "<group>"; };
 		5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPShoeboxPackageController+Protected.h"; path = "Sources/Database Packages/MPShoeboxPackageController+Protected.h"; sourceTree = "<group>"; };
@@ -369,6 +378,7 @@
 				5FDB3A08170793B30049EBB5 /* libz.dylib in Frameworks */,
 				5FDB33C31705CF260049EBB5 /* libcommonCrypto.dylib in Frameworks */,
 				5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */,
+				5F293BF8170DFD77001C2111 /* Security.framework in Frameworks */,
 				5FDB39BE170761D00049EBB5 /* CouchCocoa.framework in Frameworks */,
 				5FDB34A31705DCEC0049EBB5 /* TouchDBListener.framework in Frameworks */,
 				5FDB33921705CCAF0049EBB5 /* TouchDB.framework in Frameworks */,
@@ -389,6 +399,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5F293BF2170DFD3A001C2111 /* UICKeyChainStore */ = {
+			isa = PBXGroup;
+			children = (
+				5F293BF3170DFD4E001C2111 /* UICKeyChainStore.h */,
+				5F293BF4170DFD4E001C2111 /* UICKeyChainStore.m */,
+			);
+			name = UICKeyChainStore;
+			sourceTree = "<group>";
+		};
 		5FDB32F71705CB950049EBB5 = {
 			isa = PBXGroup;
 			children = (
@@ -416,6 +435,7 @@
 				5FDB3A07170793B20049EBB5 /* libz.dylib */,
 				5FDB33D71705D1380049EBB5 /* libicucore.dylib */,
 				5FDB33C21705CF260049EBB5 /* libcommonCrypto.dylib */,
+				5F293BF7170DFD77001C2111 /* Security.framework */,
 				5FDB33061705CB950049EBB5 /* Cocoa.framework */,
 				5FDB331C1705CB950049EBB5 /* SenTestingKit.framework */,
 				5FDB33081705CB950049EBB5 /* Other Frameworks */,
@@ -464,6 +484,8 @@
 			children = (
 				5FDB33281705CB950049EBB5 /* FeatherTests.h */,
 				5FDB33291705CB950049EBB5 /* FeatherTests.m */,
+				5F293BFC170E191F001C2111 /* MPExtensionTests.h */,
+				5F293BFD170E191F001C2111 /* MPExtensionTests.m */,
 				5FDB33231705CB950049EBB5 /* Supporting Files */,
 			);
 			path = FeatherTests;
@@ -501,6 +523,7 @@
 		5FDB33D61705D0F20049EBB5 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				5F293BF2170DFD3A001C2111 /* UICKeyChainStore */,
 				5FDB3A02170793130049EBB5 /* NSData+Base64 */,
 				5FDB35CE1705FCFD0049EBB5 /* JSONKit */,
 				5FDB35CD1705FCF30049EBB5 /* RegexKitLite */,
@@ -712,6 +735,7 @@
 				5F293B9B170CAD65001C2111 /* MPCacheableMixin.h in Headers */,
 				5F293B9D170CAD8C001C2111 /* MPCacheable.h in Headers */,
 				5F293BA0170CAECC001C2111 /* MPEmbeddedObject.h in Headers */,
+				5F293BF5170DFD4E001C2111 /* UICKeyChainStore.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1011,6 +1035,7 @@
 				5FCC0220170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m in Sources */,
 				5F293B9C170CAD65001C2111 /* MPCacheableMixin.m in Sources */,
 				5F293BA1170CAECC001C2111 /* MPEmbeddedObject.m in Sources */,
+				5F293BF6170DFD4E001C2111 /* UICKeyChainStore.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1019,6 +1044,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FDB332A1705CB950049EBB5 /* FeatherTests.m in Sources */,
+				5F293C00170E1935001C2111 /* MPExtensionTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
