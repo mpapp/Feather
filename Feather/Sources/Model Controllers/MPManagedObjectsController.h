@@ -142,8 +142,6 @@ typedef enum MPManagedObjectsControllerErrorCode
                        matchedToObjects:(NSArray *)preloadedObjects
                 dataChecksumMetadataKey:(NSString *)dataChecksumKey;
 
-+ (NSDictionary *)cachedPropertiesByManagedObjectsControllerClassName;
-
 @end
 
 

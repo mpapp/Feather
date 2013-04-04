@@ -141,7 +141,7 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
 
 #pragma mark - Abstract methods
 
-- (void)initializeApplicationSupportData
+- (void)initializeBundledData
 {
 }
 

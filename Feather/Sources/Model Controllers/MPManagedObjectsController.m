@@ -28,6 +28,9 @@
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 
+#import "Mixin.h"
+#import "MPCacheableMixin.h"
+
 #import <objc/runtime.h>
 #import <objc/message.h>
 
@@ -48,6 +51,14 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 @end
 
 @implementation MPManagedObjectsController
+
++ (void)initialize
+{
+    if (self == [MPManagedObjectsController class])
+    {
+        [self mixinFrom:[MPCacheableMixin class] followInheritance:NO force:NO];
+    }
+}
 
 - (instancetype)init
 {
@@ -102,7 +113,6 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
         [self loadBundledResources];
     }
 
-    
     return self;
 }
 
@@ -244,38 +254,6 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     if (object.prototypeID) return nil;
     
     return [[self managedObjectClass] modelForDocument:[self.db.database documentWithID:object.document.documentID]];
-}
-
-
-#pragma mark - Caching
-
-+ (NSDictionary *)cachedPropertiesByManagedObjectsControllerClassName
-{
-    static NSDictionary *cachedProperties = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        cachedProperties = [self propertiesOfSubclassesForClass:[MPManagedObjectsController class]
-                                                       matching:^BOOL(Class cls, NSString *key)
-        {
-            BOOL hasCachedPrefix = [key isMatchedByRegex:@"^cached\\w{1,}"];
-            
-            if (hasCachedPrefix && ![cls propertyWithKeyIsReadWrite:key])
-                @throw [[MPReadonlyCachedPropertyException alloc] initWithPropertyKey:key ofClass:cls];
-            
-            return hasCachedPrefix;
-        }];
-    });
-    
-    return cachedProperties;
-}
-
-- (void)clearCachedValues
-{
-    NSSet *cachedKeys = [MPManagedObjectsController cachedPropertiesByManagedObjectsControllerClassName][NSStringFromClass([self class])];
-    for (NSString *cachedKey in cachedKeys)
-    {
-        [self setValue:nil forKey:cachedKey];
-    }
 }
 
 - (void)refreshCachedValues {}
