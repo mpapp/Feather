@@ -579,7 +579,7 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     }
     else
     {
-        [super externalizePropertyValue:value];
+        return [super externalizePropertyValue:value];
     }
     
     assert(false);

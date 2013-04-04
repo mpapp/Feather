@@ -8,7 +8,7 @@
 
 #import "MPManagedObject.h"
 #import "MPTreeItem.h"
-#import "MPPlaceHolding.h"
+#import <Feather/MPPlaceHolding.h>
 
 @class MPContributorCategory;
 
