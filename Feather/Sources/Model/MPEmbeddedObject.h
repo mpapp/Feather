@@ -17,7 +17,8 @@
 
 @property (readonly, copy) NSString *identifier;
 
-@property (weak) id<MPEmbeddingObject> embeddingObject;
+@property (weak, readonly) id<MPEmbeddingObject> embeddingObject;
+@property (copy, readonly) NSString *embeddingKey;
 
 - (instancetype)initWithEmbeddingObject:(id<MPEmbeddingObject>)embeddingObject;
 
@@ -27,6 +28,7 @@
 /** Returns an MPEmbeddedObject instance for a JSON string. 
   * The class of the object is determined by its 'objectType' property. */
 + (id)embeddedObjectWithJSONString:(NSString *)string
-                   embeddingObject:(id<MPEmbeddingObject>)embeddingObject;
+                   embeddingObject:(id<MPEmbeddingObject>)embeddingObject
+                      embeddingKey:(NSString *)key;
 
 @end

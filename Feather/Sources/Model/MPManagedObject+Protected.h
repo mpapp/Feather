@@ -29,3 +29,14 @@
 - (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller properties:(NSDictionary *)properties documentID:(NSString *)identifier;
 
 @end
+
+@interface CouchModel (Private)
+
+@property (strong, readwrite) CouchDocument *document;
+@property (strong, readwrite) NSMutableDictionary *properties;
+@property (strong, readwrite) NSMutableSet *changedNames;
+@property (copy, readonly) NSString *documentID;
+- (void)couchDocumentChanged:(CouchDocument *)doc;
+- (id)externalizePropertyValue: (id)value;
+
+@end

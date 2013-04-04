@@ -13,8 +13,12 @@
 @property (copy) NSString *docRoot;
 @end
 
+@class MPEmbeddedTestObject;
 
 @interface MPTestObject : MPManagedObject
+
+@property (readwrite, strong) MPEmbeddedTestObject *embeddedTestObject;
+
 @end
 
 @interface MPEmbeddedTestObject : MPEmbeddedObject

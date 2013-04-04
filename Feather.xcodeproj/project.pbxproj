@@ -288,6 +288,7 @@
 		5F293C05170E2980001C2111 /* MPEmbeddedObjectsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPEmbeddedObjectsTests.h; sourceTree = "<group>"; };
 		5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPEmbeddedObjectsTests.m; sourceTree = "<group>"; };
 		5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPPlaceHolding.h; path = Sources/Model/MPPlaceHolding.h; sourceTree = "<group>"; };
+		5F293C20170E45D4001C2111 /* MPEmbeddedObject+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPEmbeddedObject+Protected.h"; path = "Sources/Model/MPEmbeddedObject+Protected.h"; sourceTree = "<group>"; };
 		5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCategorizableMixin.h; path = ../../../Manuscripts/Sources/Model/MPCategorizableMixin.h; sourceTree = "<group>"; };
 		5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCategorizableMixin.m; path = ../../../Manuscripts/Sources/Model/MPCategorizableMixin.m; sourceTree = "<group>"; };
 		5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPShoeboxPackageController+Protected.h"; path = "Sources/Database Packages/MPShoeboxPackageController+Protected.h"; sourceTree = "<group>"; };
@@ -631,6 +632,7 @@
 				5FDB3A3B1707992B0049EBB5 /* MPManagedObject.m */,
 				5F293B9E170CAECC001C2111 /* MPEmbeddedObject.h */,
 				5F293B9F170CAECC001C2111 /* MPEmbeddedObject.m */,
+				5F293C20170E45D4001C2111 /* MPEmbeddedObject+Protected.h */,
 				5FDB3A3C1707992B0049EBB5 /* MPManagedObject+Mixin.h */,
 				5FDB3A3D1707992B0049EBB5 /* MPManagedObject+Mixin.m */,
 				5FDB3A3E1707992B0049EBB5 /* MPManagedObject+Protected.h */,

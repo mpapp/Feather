@@ -16,6 +16,7 @@
 #import "MPShoeboxPackageController.h"
 
 #import "MPEmbeddedObject.h"
+#import "MPEmbeddedObject+Protected.h"
 
 #import "NSFileManager+MPExtensions.h"
 #import "NSDictionary+MPManagedObjectExtensions.h"
@@ -37,14 +38,6 @@
 #import <objc/message.h>
 
 NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
-
-@interface CouchModel (Private)
-@property (strong, readwrite) CouchDocument *document;
-@property (strong, readwrite) NSMutableDictionary *properties;
-@property (copy, readonly) NSString *documentID;
-- (void)couchDocumentChanged:(CouchDocument *)doc;
-- (id)externalizePropertyValue: (id)value;
-@end
 
 @interface MPManagedObject ()
 {
@@ -586,21 +579,42 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     return nil;
 }
 
-- (NSDate *)getEmbeddedObjectProperty:(NSString *)property
+- (void)setEmbeddedObject:(MPEmbeddedObject *)embeddedObj ofProperty:(NSString *)property
+{
+    [self setValue:embeddedObj ofProperty:property];
+    assert(!embeddedObj.embeddingKey); // should be set only once.
+    embeddedObj.embeddingKey = property;
+}
+
+- (MPEmbeddedObject *)getEmbeddedObjectProperty:(NSString *)property
 {
     assert(self.properties);
-    NSDate* value = [self.properties objectForKey: property];
+    MPEmbeddedObject *value = [self.properties objectForKey: property];
     if (!value)
     {
         id rawValue = [self.document propertyForKey:property];
         if ([rawValue isKindOfClass: [NSString class]])
-            value = [MPEmbeddedObject embeddedObjectWithJSONString:rawValue embeddingObject:self];
+            value = [MPEmbeddedObject embeddedObjectWithJSONString:rawValue embeddingObject:self embeddingKey:property];
         if (value)
             [self cacheValue: value ofProperty: property changed: NO];
         else if (rawValue)
             MPLog(@"Unable to decode embedded object from property %@ of %@", property, self.document);
     }
     return value;
+}
+
++ (IMP)impForSetterOfProperty:(NSString*)property ofClass:(Class)propertyClass
+{
+    if ([propertyClass isSubclassOfClass:[MPEmbeddedObject class]])
+    {
+        return imp_implementationWithBlock(^(MPManagedObject* receiver, MPEmbeddedObject* value)
+        {
+            [receiver setEmbeddedObject:value ofProperty:property];
+        });
+    } else
+    {
+        return [super impForSetterOfProperty: property ofClass: propertyClass];
+    }
 }
 
 + (IMP)impForGetterOfProperty:(NSString *)property ofClass:(Class)propertyClass

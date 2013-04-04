@@ -17,7 +17,8 @@
     MPTestObjectsController *tc = tpkg.testObjectsController;
     
     MPTestObject *obj = [[MPTestObject alloc] initWithNewDocumentForController:tc];
-    MPEmbeddedTestObject *eobj = [[MPEmbeddedTestObject alloc] initWithEmbeddingObject:obj];
+    
+    obj.embeddedTestObject = [[MPEmbeddedTestObject alloc] initWithEmbeddingObject:obj];
 }
 
 @end
