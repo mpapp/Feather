@@ -19,11 +19,6 @@
     
     NSString *sharedPackagePath = [MPShoeboxPackageController sharedDatabasesPath];
     
-    BOOL sharedPackageIsForMainBundle = [[sharedPackagePath lastPathComponent] isEqualToString:
-                                         [[NSBundle mainBundle] bundleNameString]];
-    STAssertFalse(sharedPackageIsForMainBundle,
-                  @"Main bundle name is *not* the last path component of the shared package path.");
-    
     BOOL sharedPackageIsForTestBundle = [[sharedPackagePath lastPathComponent] isEqualToString:
                                          [[NSBundle appBundle] bundleNameString]];
     STAssertTrue(sharedPackageIsForTestBundle,
@@ -32,8 +27,8 @@
     NSFileManager *fm = [NSFileManager defaultManager];
     
     NSError *err = nil;
-    if (sharedPackageIsForTestBundle)
-        [MPFeatherTestPackageController createSharedDatabasesPathWithError:&err];
+    
+    [MPFeatherTestPackageController sharedPackageController];
     
     STAssertTrue(!err, @"No error should happen with creating the shared databases path");
     

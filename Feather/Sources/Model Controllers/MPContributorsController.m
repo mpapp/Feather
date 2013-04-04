@@ -48,7 +48,7 @@ NSString * const MPContributorRoleTranslator = @"translator";
 {
     NSString *allObjsViewName = [self allObjectsViewName];
     [designDoc defineViewNamed:allObjsViewName mapBlock:self.allObjectsBlock
-                       version:[[NSBundle mainBundle] bundleVersionString]];
+                       version:[[NSBundle appBundle] bundleVersionString]];
     
     [designDoc defineViewNamed:@"contributorsByRole"
                       mapBlock:^(NSDictionary *doc, TDMapEmitBlock emit)
