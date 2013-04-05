@@ -13,7 +13,25 @@
 #import "MPManagedObject+Protected.h"
 #import "MPEmbeddedObject+Protected.h"
 
+#import <CouchCocoa/CouchCocoa.h>
+
 #import <objc/runtime.h>
+
+/* A private class for saving embedded objects. */
+@interface MPSaveOperation : NSObject <MPWaitingOperation>
+
+@property (readwrite, strong) MPEmbeddedObject *embeddedObject;
+@property (readwrite, strong) id<MPWaitingOperation> embeddingSaveOperation;
+
+- (instancetype)initWithEmbeddedObject:(MPEmbeddedObject *)embeddedObject;
+
+@end
+
+@interface MPEmbeddedObject ()
+{
+    NSMutableSet *_changedNames;
+}
+@end
 
 @implementation MPEmbeddedObject
 
@@ -68,6 +86,11 @@
 
 #pragma mark - 
 
+- (NSMutableSet *)changedNames
+{
+    return _changedNames;
+}
+
 - (id)getValueOfProperty:(NSString *)property
 {
     return _properties[property];
@@ -80,14 +103,16 @@
     
     assert(self.embeddingObject);
     assert(self.embeddingKey);
-    assert(((MPManagedObject *)self.embeddingObject).changedNames);
+    assert([[self embeddingObject] changedNames]);
     
     // FIXME: Continue from here. Infer the key the object has in its embedding object, preferably without introducing new state.
     //[self.embeddingObject.changedNames addObject:property]
     // - Propagate changes further back in the tree
     // - Deal with MPEmbeddedObjects too
-    [((MPManagedObject *)self.embeddingObject).changedNames addObject:self.embeddingKey];
+    MPManagedObject *o = ((MPManagedObject *)self.embeddingObject);
     
+    [o.changedNames addObject:self.embeddingKey];
+    [o markNeedsSave];
     
     return NO;
 }
@@ -136,6 +161,39 @@
         dict[key] = [self externalizePropertyValue:_properties[key]];
     
     return [dict JSONString];
+}
+
+- (MPSaveOperation *)save
+{
+    return [[MPSaveOperation alloc] initWithEmbeddedObject:self];
+}
+
+- (void)markNeedsSave
+{
+    _needsSave = YES;
+}
+
+@end
+
+#pragma mark - saving
+
+@implementation MPSaveOperation
+
+- (instancetype)initWithEmbeddedObject:(MPEmbeddedObject *)embeddedObject
+{
+    if (self = [super init])
+    {
+        _embeddedObject = embeddedObject;
+        _embeddingSaveOperation = [_embeddedObject.embeddingObject save];
+    }
+    
+    return self;
+}
+
+- (BOOL)wait
+{
+    assert(_embeddingSaveOperation);
+    return [_embeddingSaveOperation wait];
 }
 
 @end

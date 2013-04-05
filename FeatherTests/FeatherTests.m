@@ -88,6 +88,8 @@
 
 @end
 
+#pragma mark - 
+
 @implementation MPFeatherTestPackageController
 
 + (void)initialize
@@ -121,6 +123,7 @@
 @end
 
 @implementation MPTestObject
+@dynamic embeddedTestObject;
 @end
 
 @implementation MPEmbeddedTestObject

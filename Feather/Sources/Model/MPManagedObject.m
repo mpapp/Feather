@@ -455,6 +455,12 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     
 }
 
+// this + property declaration in CouchModel (PrivateExtensions) are there to make the compiler happy.
+- (NSMutableSet *)changedNames
+{
+    return [super changedNames];
+}
+
 - (id)prototypeTransformedValueForKey:(NSString *)key
 {
     return [self humanReadableNameForPropertyKey:key];
@@ -588,7 +594,6 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 
 - (MPEmbeddedObject *)getEmbeddedObjectProperty:(NSString *)property
 {
-    assert(self.properties);
     MPEmbeddedObject *value = [self.properties objectForKey: property];
     if (!value)
     {
@@ -726,6 +731,17 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     _controller = controller;
 }
 
+@end
 
+
+#pragma mark - CouchModel additions
+
+@implementation CouchModel (PrivateExtensions)
+
+- (void)setDocument:(CouchDocument *)document { _document = document; }
+- (CouchDocument *)document { return _document; }
+
+- (NSMutableDictionary *)properties { return _properties; }
+- (NSMutableSet *)changedNames { return _changedNames; }
 
 @end

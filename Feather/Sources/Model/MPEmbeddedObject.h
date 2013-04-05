@@ -8,17 +8,35 @@
 
 #import <CouchCocoa/CouchCocoa.h>
 
-/** Protocol used to tag objects which can embed MPEmbeddedObject instances. */
+@protocol MPWaitingOperation;
+
+/** Protocol used to mark objects which can embed MPEmbeddedObject instances. */
 @protocol MPEmbeddingObject <NSObject>
+- (id<MPWaitingOperation>)save;
+- (void)markNeedsSave;
+@property (readonly, strong) NSMutableSet *changedNames;
 @end
 
-/** MPEmbeddedObject itself conforms to MPEmbeddingObject because it can embed other objects. */
+/** Protocol used to mark operations which can be made to wait until any pending network activity is finished.
+  * @return  YES on a successfully finished operation, NO on error. */
+@protocol MPWaitingOperation <NSObject>
+- (BOOL)wait;
+@end
+
+#pragma mark - 
+
+/** A model object that can be embedded as values in MPManagedObject's keys. 
+  * MPEmbeddedObject itself conforms to MPEmbeddingObject because it can embed other objects. */
 @interface MPEmbeddedObject : CouchDynamicObject <MPEmbeddingObject>
 
 @property (readonly, copy) NSString *identifier;
 
 @property (weak, readonly) id<MPEmbeddingObject> embeddingObject;
 @property (copy, readonly) NSString *embeddingKey;
+
+@property (readonly, strong) NSMutableSet *changedNames;
+
+@property (readonly) BOOL needsSave;
 
 - (instancetype)initWithEmbeddingObject:(id<MPEmbeddingObject>)embeddingObject;
 
@@ -31,4 +49,7 @@
                    embeddingObject:(id<MPEmbeddingObject>)embeddingObject
                       embeddingKey:(NSString *)key;
 
+@end
+
+@interface RESTOperation (MPWaitingOperation) <MPWaitingOperation>
 @end
