@@ -14,6 +14,8 @@
 #import "MPEmbeddedObject+Protected.h"
 
 #import <CouchCocoa/CouchCocoa.h>
+#import <CouchCocoa/CouchModelFactory.h>
+#import <CouchCocoa/RESTBody.h>
 
 #import <objc/runtime.h>
 
@@ -56,9 +58,9 @@
         assert([propertiesDict[@"objectType"] isEqualToString:NSStringFromClass(self.class)]);
         assert(key);
         
-        self.embeddingKey = key;
-        
+        _embeddingKey = key;
         _properties = [propertiesDict mutableCopy];
+        _changedNames = [NSMutableSet setWithCapacity:10];
     }
     
     return self;
@@ -74,6 +76,8 @@
         _properties = [NSMutableDictionary dictionaryWithCapacity:10];
         _properties[@"_id"] = [[NSUUID UUID] UUIDString];
         _properties[@"objectType"] = NSStringFromClass([self class]);
+        
+        _changedNames = [NSMutableSet setWithCapacity:10];
     }
     
     return self;
@@ -114,7 +118,7 @@
     [o.changedNames addObject:self.embeddingKey];
     [o markNeedsSave];
     
-    return NO;
+    return YES;
 }
 
 
@@ -171,6 +175,146 @@
 - (void)markNeedsSave
 {
     _needsSave = YES;
+    assert(_embeddingObject);
+    [_embeddingObject markNeedsSave];
+}
+
+#pragma mark - Accessor implementations
+
+- (CouchDatabase *)databaseForModelProperty:(NSString *)property
+{
+    id<MPEmbeddingObject> embedder = self;
+    while (![(embedder = self.embeddingObject) isKindOfClass:[MPManagedObject class]])
+    {
+        assert(embedder);
+    }
+    assert([embedder isKindOfClass:[MPManagedObject class]]);
+    MPManagedObject *mo = (MPManagedObject *)embedder;
+    
+    return mo.database;
+}
+
+// adapted from CouchModel
+- (CouchModel *)getModelProperty:(NSString *)property
+{
+    NSString* rawValue = [self getValueOfProperty: property];
+    if (!rawValue)
+        return nil;
+    
+    // Look up the CouchDocument:
+    if (![rawValue isKindOfClass: [NSString class]]) {
+        MPLog(@"Model-valued property %@ of %@ is not a string", property, self);
+        return nil;
+    }
+    
+    CouchDocument* doc = [[self databaseForModelProperty: property] documentWithID:rawValue];
+    if (!doc)
+    {
+        MPLog(@"Unable to get document from property %@ of %@ (value='%@')",
+             property, doc, rawValue);
+        return nil;
+    }
+    
+    // Ask factory to get/create model; if it doesn't know, use the declared class:
+    CouchModel* value = [doc.database.modelFactory modelForDocument: doc];
+    if (!value) {
+        Class declaredClass = [[self class] classOfProperty: property];
+        value = [declaredClass modelForDocument: doc];
+        if (!value)
+            MPLog(@"Unable to instantiate %@ from %@ -- property %@ of %@ (%@)",
+                 declaredClass, doc, property, self, self);
+    }
+    return value;
+}
+
+- (NSDate *)getDateProperty:(NSString *)property
+{
+    id value = _properties[property];
+    
+    if ([value isKindOfClass:[NSString class]])
+        { value = [RESTBody dateWithJSONObject:value]; }
+    
+    if (value && ![value isKindOfClass:[NSDate class]])
+        { MPLog(@"Unable to decode date from property %@ of %@", property, self); return nil; }
+    
+    //if (value)
+    //    [self cacheValue: value ofProperty: property changed: NO];
+    
+    
+    return value;
+}
+
+- (NSData *)getDataProperty:(NSString *)property
+{
+    id value = _properties[property];
+    
+    if ([value isKindOfClass:[NSString class]])
+        { value = [RESTBody dataWithBase64:value]; }
+    else if (value && ![value isKindOfClass:[NSData data]])
+        { MPLog(@"Unable to decode Base64 data from property %@ of %@", property, self); return nil; }
+    
+    //if (value) // TODO: Cache decoded values.
+    //    [self cacheValue:value ofProperty: property changed: NO];
+    
+    return value;
+}
+
+
++ (IMP)impForGetterOfProperty:(NSString *)property ofClass:(Class)propertyClass
+{
+    if (propertyClass == Nil
+        || propertyClass == [NSString class]
+        || propertyClass == [NSNumber class]
+        || propertyClass == [NSArray class]
+        || propertyClass == [NSDictionary class])
+        return [super impForGetterOfProperty:property ofClass: propertyClass];  // Basic classes (including 'id')
+    else if (propertyClass == [NSData class])
+    {
+        return imp_implementationWithBlock(^id(MPEmbeddedObject *receiver)
+        {
+            return [receiver getDataProperty: property];
+        });
+    } else if (propertyClass == [NSDate class])
+    {
+        return imp_implementationWithBlock(^id(MPEmbeddedObject *receiver)
+        {
+            return [receiver getDateProperty: property];
+        });
+    } else if ([propertyClass isSubclassOfClass: [CouchModel class]])
+    {
+        return imp_implementationWithBlock(^id(MPEmbeddedObject *receiver)
+        {
+            return [receiver getModelProperty:property];
+        });
+    } else
+    {
+        return NULL;  // Unsupported
+    }
+}
+
+- (void)setModel:(CouchModel *)model forProperty:(NSString *)property
+{
+    if (_properties[property] &&
+        ([_properties[property] isEqualToString:model.document.documentID] ||
+         !(_properties[property] && !model))) return;
+        
+    assert(model.document);
+    _properties[property] = model.document.documentID;
+    [self markNeedsSave];
+}
+
++ (IMP)impForSetterOfProperty:(NSString *)property ofClass:(Class)propertyClass
+{
+    if ([propertyClass isSubclassOfClass:[CouchModel class]])
+    {
+        return imp_implementationWithBlock(^(MPEmbeddedObject *receiver, CouchModel* value)
+        {
+            [receiver setModel:value forProperty:property];
+        });
+    } else
+    {
+        return [super impForSetterOfProperty:property ofClass:propertyClass];
+    }
 }
 
 @end

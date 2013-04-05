@@ -22,6 +22,10 @@
 @end
 
 @interface MPEmbeddedTestObject : MPEmbeddedObject
+@property (strong) MPEmbeddedTestObject *anotherEmbeddedObject;
+
+@property (readwrite, copy) NSString *aStringTypedProperty;
+@property (readwrite, assign) NSUInteger anUnsignedIntTypedProperty;
 @end
 
 @interface MPTestObjectsController : MPManagedObjectsController

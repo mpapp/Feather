@@ -38,6 +38,8 @@
 
 @property (readonly) BOOL needsSave;
 
+- (CouchDatabase *)databaseForModelProperty:(NSString *)property;
+
 - (instancetype)initWithEmbeddingObject:(id<MPEmbeddingObject>)embeddingObject;
 
 /** Returns a JSON encodable version of the embedded object. */

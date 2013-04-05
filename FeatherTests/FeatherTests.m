@@ -127,6 +127,9 @@
 @end
 
 @implementation MPEmbeddedTestObject
+@dynamic anotherEmbeddedObject;
+@dynamic aStringTypedProperty;
+@dynamic anUnsignedIntTypedProperty;
 @end
 
 @implementation MPTestObjectsController
