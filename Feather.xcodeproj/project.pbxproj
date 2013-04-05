@@ -1168,7 +1168,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				INFOPLIST_FILE = "Feather/Feather-Info.plist";
-				LD_DYLIB_INSTALL_NAME = "@rpath/$(EXECUTABLE_PATH)";
+				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
@@ -1189,7 +1189,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				INFOPLIST_FILE = "Feather/Feather-Info.plist";
-				LD_DYLIB_INSTALL_NAME = "@rpath/$(EXECUTABLE_PATH)";
+				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
