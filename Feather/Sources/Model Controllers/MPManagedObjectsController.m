@@ -237,7 +237,20 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 {
     return ^(NSDictionary *doc, TDMapEmitBlock emit)
     {
-        if ([self managesDocumentWithDictionary:doc]) emit(doc[@"_id"], nil);
+        if (![self managesDocumentWithDictionary:doc]) return;
+        
+        emit(doc[@"_id"], nil);
+    };
+}
+
+- (TDMapBlock)bundledObjectsBlock
+{
+    return ^(NSDictionary *doc, TDMapEmitBlock emit)
+    {
+        if (![self managesDocumentWithDictionary:doc]) return;
+        if (![doc[@"bundled"] boolValue]) return;
+        
+        emit(doc[@"_id"], nil);
     };
 }
 
@@ -493,11 +506,16 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 
 #pragma mark - Loading bundled objects
 
-- (NSArray *)bundledObjectsFromResource:(NSString *)resourceName
+- (NSArray *)loadBundledObjectsFromResource:(NSString *)resourceName
                           withExtension:(NSString *)extension
                        matchedToObjects:(NSArray *)preloadedObjects
                 dataChecksumMetadataKey:(NSString *)dataChecksumKey
 {
+    if ([resourceName isEqualToString:@"manuscript-categories"])
+    {
+        MPLog(@"Foo");
+    }
+    
     NSArray *returnedObjects = nil;
     MPMetadata *metadata = [self.db metadata];
     
@@ -512,16 +530,18 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     }
     else
     {
-        [metadata setValue:md5 ofProperty:dataChecksumKey];
-        [metadata save];
-        
         NSError *err = nil;
         returnedObjects = [self objectsFromContentsOfArrayJSONAtURL:jsonURL error:&err];
         assert(returnedObjects);
-        if (err)
+        if (err || !returnedObjects)
         {
             NSLog(@"ERROR! Could not load bundled data from resource %@%@:\n%@", resourceName, extension, err);
             [[NSNotificationCenter defaultCenter] postErrorNotification:err];
+        }
+        else
+        {
+            [metadata setValue:md5 ofProperty:dataChecksumKey];
+            [metadata save];
         }
     }
     
