@@ -6,7 +6,9 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import "FeatherTests.h"
+#import "MPFeatherTestSuite.h"
+#import "MPFeatherTestClasses.h"
+
 #import "MPEmbeddedObjectsTests.h"
 #import "MPEmbeddedObject+Protected.h"
 

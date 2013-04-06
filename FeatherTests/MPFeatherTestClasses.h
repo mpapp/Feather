@@ -1,17 +1,13 @@
 //
-//  FeatherTests.h
-//  FeatherTests
+//  MPFeatherTestClasses.h
+//  Feather
 //
-//  Created by Matias Piipari on 29/03/2013.
+//  Created by Matias Piipari on 06/04/2013.
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <Foundation/Foundation.h>
 #import "Feather.h"
-
-@interface MPFeatherTestSuite : SenTestCase <MPDatabasePackageControllerDelegate>
-@property (copy) NSString *docRoot;
-@end
 
 @class MPEmbeddedTestObject;
 

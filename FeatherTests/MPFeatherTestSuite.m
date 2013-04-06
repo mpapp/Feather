@@ -6,8 +6,10 @@
 //  Copyright (c) 2013 Manuscripts.app Limited. All rights reserved.
 //
 
-#import "FeatherTests.h"
-#import <Feather/Feather.h>
+#import "Feather.h"
+#import "MPFeatherTestSuite.h"
+#import "MPFeatherTestClasses.h"
+
 #import "NSBundle+MPExtensions.h"
 #import "MPDatabasePackageController+Protected.h"
 
@@ -32,7 +34,8 @@
     
     STAssertTrue(!err, @"No error should happen with creating the shared databases path");
     
-    STAssertTrue([fm createDirectoryAtPath:_docRoot withIntermediateDirectories:YES attributes:nil error:&err],
+    if (_docRoot)
+        STAssertTrue([fm createDirectoryAtPath:_docRoot withIntermediateDirectories:YES attributes:nil error:&err],
                  @"Creating document root succeeded.");
     
 
@@ -82,56 +85,10 @@
     [super tearDown];
 }
 
+// test suites which need to act as a MPDatabasePackageControllerDelegate need to overload this.
 - (NSURL *)packageRootURL
 {
     @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
 }
 
-@end
-
-#pragma mark - 
-
-@implementation MPFeatherTestPackageController
-
-+ (void)initialize
-{
-    if (self == [MPFeatherTestPackageController class])
-    {
-        [self registerShoeboxPackageControllerClass:self];
-    }
-}
-
-- (instancetype)initWithError:(NSError *__autoreleasing *)err
-{
-    if (self = [super initWithError:err])
-    {
-        _testObjectsController =
-            [[MPTestObjectsController alloc] initWithPackageController:self database:self.primaryDatabase];
-    }
-    
-    return self;
-}
-
-+ (instancetype)sharedPackageController
-{
-    MPFeatherTestPackageController *tpc = [MPFeatherTestPackageController sharedShoeboxController];
-    assert([tpc isKindOfClass:[MPFeatherTestPackageController class]]);
-    return tpc;
-}
-
-+ (NSString *)primaryDatabaseName { return @"shared"; }
-
-@end
-
-@implementation MPTestObject
-@dynamic embeddedTestObject;
-@end
-
-@implementation MPEmbeddedTestObject
-@dynamic anotherEmbeddedObject;
-@dynamic aStringTypedProperty;
-@dynamic anUnsignedIntTypedProperty;
-@end
-
-@implementation MPTestObjectsController
 @end
