@@ -8,6 +8,7 @@
 
 #import "Feather.h"
 #import "MPFeatherTestSuite.h"
+#import "MPManagedObject.h"
 
 #import "NSBundle+MPExtensions.h"
 #import "NSArray+MPExtensions.h"
@@ -141,6 +142,10 @@
         NSError *err = nil;
         STAssertTrue([fm removeItemAtPath:_testPackageRootDirectory error:&err], @"Deleting document root succeeded.");
     }
+    
+#if MP_DEBUG_ZOMBIE_MODELS
+    [MPManagedObject clearModelObjectMap];
+#endif
     
     [super tearDown];
 }

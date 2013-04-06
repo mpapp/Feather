@@ -468,7 +468,6 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
         dispatch_sync(_queryQueue, ^{
             //MPManagedObject *mo = [[[self class] managedObjectClass] modelForDocument:row.document];
             MPManagedObject *modelObj = [row.document modelObject];
-            modelObj.document = row.document;
             
             if (!modelObj)
             {
@@ -476,8 +475,15 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
                 modelObj.document = row.document;
                 
                 if (!modelObj)
+                {
                     modelObj = [[row.document managedObjectClass] modelForDocument:row.document];
+                }
             }
+            else
+            {
+                modelObj.document = row.document;
+            }
+            
             assert([modelObj isKindOfClass:[MPManagedObject class]]);
             
             [entries addObject:modelObj];

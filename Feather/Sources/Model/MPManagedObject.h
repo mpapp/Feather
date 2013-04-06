@@ -166,4 +166,10 @@ typedef enum MPManagedObjectModerationState
 /** A method which is called after successful initialisation steps but before the object is returned. Can be overloaded by subclasses (oveloaded methods should call the superclass -didInitialize). This method should not be called directly. */
 - (void)didInitialize; // overload but don't call manually
 
+#pragma mark - 
+
+#if MP_DEBUG_ZOMBIE_MODELS
++ (void)clearModelObjectMap;
+#endif
+
 @end

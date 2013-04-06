@@ -11,7 +11,6 @@
 #import "MPManagedObject.h"
 #import "MPManagedObjectsController.h"
 #import "MPManagedObject+Mixin.h"
-
 #import "MPEmbeddedObject.h"
 
 #import "MPDatabase.h"

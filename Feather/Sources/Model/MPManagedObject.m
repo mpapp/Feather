@@ -48,7 +48,7 @@
 
 NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 
-#if DEBUG_OBJECT_CONTEXT
+#if MP_DEBUG_ZOMBIE_MODELS
 static NSMapTable *_modelObjectByIdentifierMap = nil;
 #endif
 
@@ -74,12 +74,16 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         [self mixinFrom:[MPCacheableMixin class]];
         [self mixinFrom:[MPEmbeddedPropertyContainingMixin class]];
         
-#if DEBUG_OBJECT_CONTEXT
+#if MP_DEBUG_ZOMBIE_MODELS
         _modelObjectByIdentifierMap = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsStrongMemory
                                                             valueOptions:NSPointerFunctionsWeakMemory];
 #endif
     }
 }
+
+#if MP_DEBUG_ZOMBIE_MODELS
++ (void)clearModelObjectMap { [_modelObjectByIdentifierMap removeAllObjects]; }
+#endif
 
 - (instancetype)init
 {
@@ -111,11 +115,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     if (self = [super initWithDocument:document])
     {
 
-#if DEBUG_OBJECT_CONTEXT
+#if MP_DEBUG_ZOMBIE_MODELS
         if (document)
         {
             assert(![_modelObjectByIdentifierMap objectForKey:self.document.documentID]
-                   || [_modelObjectByIdentifierMap objectForKey:self.document.documentID] == self);
+                   || ([_modelObjectByIdentifierMap objectForKey:self.document.documentID] == self));
             [_modelObjectByIdentifierMap setObject:self forKey:document.documentID];
         }
 #endif
@@ -286,7 +290,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     [op onCompletion:^{
         [_controller didDeleteObject:self];
         
-#if DEBUG_OBJECT_CONTEXT
+#if MP_DEBUG_ZOMBIE_MODELS
         if (docID)
             [_modelObjectByIdentifierMap removeObjectForKey:docID];
 #endif
@@ -795,8 +799,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         if (identifier)
             assert([self.document.documentID isEqualToString:identifier]);
         
-#if DEBUG_OBJECT_CONTEXT
-        assert(![_modelObjectByIdentifierMap objectForKey:self.document.documentID]);
+#if MP_DEBUG_ZOMBIE_MODELS
+        assert(![_modelObjectByIdentifierMap objectForKey:self.document.documentID] ||
+               ([_modelObjectByIdentifierMap objectForKey:self.document.documentID] == self));
         [_modelObjectByIdentifierMap setObject:self forKey:self.document.documentID];
 #endif
     }
