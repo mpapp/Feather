@@ -105,6 +105,7 @@
 		5FDCF2F017104A8F0039DAED /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB331C1705CB950049EBB5 /* SenTestingKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */; };
+		5FDCF34D1710CA600039DAED /* MPModelFoundationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -384,6 +385,8 @@
 		5FDCF2ED171045990039DAED /* MPFeatherTestClasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPFeatherTestClasses.m; sourceTree = "<group>"; };
 		5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPEmbeddedPropertyContainingMixin.h; path = Sources/Model/MPEmbeddedPropertyContainingMixin.h; sourceTree = "<group>"; };
 		5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPEmbeddedPropertyContainingMixin.m; path = Sources/Model/MPEmbeddedPropertyContainingMixin.m; sourceTree = "<group>"; };
+		5FDCF34B1710CA600039DAED /* MPModelFoundationTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPModelFoundationTests.h; sourceTree = "<group>"; };
+		5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPModelFoundationTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -508,6 +511,8 @@
 				5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */,
 				5FDCF2EC171045990039DAED /* MPFeatherTestClasses.h */,
 				5FDCF2ED171045990039DAED /* MPFeatherTestClasses.m */,
+				5FDCF34B1710CA600039DAED /* MPModelFoundationTests.h */,
+				5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */,
 			);
 			path = FeatherTests;
 			sourceTree = "<group>";
@@ -1077,6 +1082,7 @@
 				5F293C00170E1935001C2111 /* MPExtensionTests.m in Sources */,
 				5F293C07170E2980001C2111 /* MPEmbeddedObjectsTests.m in Sources */,
 				5FDCF2EE171045990039DAED /* MPFeatherTestClasses.m in Sources */,
+				5FDCF34D1710CA600039DAED /* MPModelFoundationTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

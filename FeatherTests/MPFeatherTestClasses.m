@@ -45,6 +45,9 @@
 @dynamic embeddedTestObject;
 @end
 
+@implementation MPMoreSpecificTestObject
+@end
+
 @implementation MPEmbeddedTestObject
 @dynamic anotherEmbeddedObject;
 @dynamic aStringTypedProperty;

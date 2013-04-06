@@ -17,6 +17,10 @@
 
 @end
 
+/* Used to test the model => model controller, model => notification mapping. */
+@interface MPMoreSpecificTestObject : MPTestObject
+@end
+
 @interface MPEmbeddedTestObject : MPEmbeddedObject
 @property (strong) MPEmbeddedTestObject *anotherEmbeddedObject;
 

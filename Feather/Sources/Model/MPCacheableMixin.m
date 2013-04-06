@@ -11,6 +11,8 @@
 #import "MPException.h"
 #import <Feather/NSObject+MPExtensions.h>
 
+#import <objc/runtime.h>
+
 @implementation MPCacheableMixin
 
 
@@ -18,14 +20,22 @@
 
 + (NSDictionary *)cachedPropertiesByClassName
 {
-    static NSDictionary *cachedProperties = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        cachedProperties = [self propertiesOfSubclassesForClass:self matching:^BOOL(Class cls, NSString *key)
+    NSString *cachedPropertiesKey
+        = [NSString stringWithFormat:@"cachedPropertiesFor%@", NSStringFromClass(self)];
+    
+    NSDictionary *cachedProperties = objc_getAssociatedObject(self, [cachedPropertiesKey UTF8String]);
+    
+    if (!cachedProperties)
+    {
+        cachedProperties
+            = [self propertiesOfSubclassesForClass:self matching:^BOOL(Class cls, NSString *key)
         {
             return [key isMatchedByRegex:@"^cached\\w{1,}"] && [cls propertyWithKeyIsReadWrite:key];
         }];
-    });
+
+        objc_setAssociatedObject(self, [cachedPropertiesKey UTF8String],
+                                 cachedProperties, OBJC_ASSOCIATION_RETAIN);
+    }
     
     return cachedProperties;
 }

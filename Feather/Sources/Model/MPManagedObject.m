@@ -284,13 +284,13 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 {
     assert(_controller);
     
-    NSString *docID = self.document.documentID;
-    
     RESTOperation *op = [super deleteDocument];
     [op onCompletion:^{
         [_controller didDeleteObject:self];
         
 #if MP_DEBUG_ZOMBIE_MODELS
+        NSString *docID = self.document.documentID;
+        
         if (docID)
             [_modelObjectByIdentifierMap removeObjectForKey:docID];
 #endif

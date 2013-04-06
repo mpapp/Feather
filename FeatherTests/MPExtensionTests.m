@@ -60,7 +60,7 @@
     STAssertTrue([propertyKeys containsObject:@"allTranslators"],
                  @"There should be a property 'allTranslators'");
     
-    NSDictionary *dict = [MPContributorsController cachedPropertiesByClassName];
+    NSDictionary *dict = [MPManagedObjectsController cachedPropertiesByClassName];
     STAssertTrue(dict[NSStringFromClass([MPContributorsController class])] != nil,
                  @"There should be a record of 'MPSharedManuscriptCategoriesController'");
     

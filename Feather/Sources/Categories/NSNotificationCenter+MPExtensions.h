@@ -76,6 +76,12 @@ typedef enum MPReplicationEventType {
 - (void)postNotificationForChangingDetailSelectionToSingleObject:(id)obj;
 - (void)postNotificationForChangingMasterSelectionToMultipleObjects:(NSArray *)objs;
 - (void)postNotificationForChangingDetailSelectionToMultipleObjects:(NSArray *)objs;
+
+/** Hierarchy of dictionaries of the managed object notification names by class name 
+  * (1st level dictionary) and the change type (2nd level dictionary). 
+  * Exposed publicly mostly for enabling testing, accessing otherwise not advisable. */
++ (NSDictionary *)managedObjectNotificationNameDictionary;
+
 @end
 
 @interface NSNotificationCenter (MPDatabaseExtensions)

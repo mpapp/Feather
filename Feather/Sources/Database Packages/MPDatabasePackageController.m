@@ -17,6 +17,7 @@
 #import "MPSnapshotsController.h"
 #import "MPException.h"
 #import "NSString+MPExtensions.h"
+#import "NSObject+MPExtensions.h"
 
 #import "JSONKit.h"
 
@@ -253,6 +254,47 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return moc;
 }
 
++ (Class)_controllerClassForManagedObjectClass:(Class)class
+{
+    MPManagedObjectsController *moc = nil;
+    do {
+        NSString *className = NSStringFromClass(class);
+        assert([className isMatchedByRegex:@"^MP"]);
+        
+        // MPPublication => MPPublicationsController
+        // MPCategory => MPCategoriesController
+        
+        NSString *mocClassName = [NSString stringWithFormat:@"%@Controller", [className pluralizedString]];
+        
+        Class mocClass = NSClassFromString(mocClassName);
+        if (mocClass) return mocClass;
+        
+    } while (!moc && ((class = [class superclass]) != [MPManagedObject class]));
+    
+    return nil;
+}
+
++ (NSDictionary *)controllerClassForManagedObjectClass:(Class)class
+{
+    assert([class isSubclassOfClass:[MPManagedObject class]]);
+    
+    static NSDictionary *controllerDictionary = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:30];
+        
+        for (Class cls in [[NSObject subclassesForClass:[MPManagedObject class]] arrayByAddingObject:class])
+        {
+            Class controllerClass = [self _controllerClassForManagedObjectClass:cls];
+            
+            if (controllerClass)
+                dict[NSStringFromClass(cls)] = controllerClass;
+        }
+        controllerDictionary = [dict copy];
+    });
+    
+    return controllerDictionary[NSStringFromClass(class)];
+}
 
 - (MPManagedObjectsController *)controllerForDocument:(CouchDocument *)document
 {

@@ -28,4 +28,6 @@ extern inline id MPNilToObject(id object, id defaultObject);
 
 + (Class)classOfProperty:(NSString *)propertyName;
 
++ (NSArray *)classesMatchingPattern:(BOOL(^)(Class cls))patternBlock;
+
 @end

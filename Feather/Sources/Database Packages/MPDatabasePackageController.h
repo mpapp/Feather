@@ -86,6 +86,13 @@ typedef enum MPDatabasePackageControllerErrorCode
  @param class A subclass of MPManagedObject. */
 - (MPManagedObjectsController *)controllerForManagedObjectClass:(Class)class;
 
+/** The managed object controller subclass closes in the class hierarchy to the managed object class.
+  * For instance, for a MPManagedObject > MPColor > MPRGBColor hierarchy, if there is no
+  * MPRGBColorsController in the controller class hierarchy, but there is a MPColorsController, 
+  * will return MPColorsController.
+  */
++ (Class)controllerClassForManagedObjectClass:(Class)class;
+
 /** @return YES if a controller exists in this package controller for a managed object class. */
 - (BOOL)controllerExistsForManagedObjectClass:(Class)class;
 

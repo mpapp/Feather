@@ -53,6 +53,24 @@ inline id MPNilToObject(id object, id defaultObject)
     return result;
 }
 
++ (NSArray *)classesMatchingPattern:(BOOL(^)(Class cls))patternBlock
+{
+    unsigned int classCount = 0;
+    NSMutableArray *classArray = [NSMutableArray arrayWithCapacity:classCount];
+    
+    Class *classes = objc_copyClassList(&classCount);
+    
+    for (NSUInteger i = 0; i < classCount; i++)
+    {
+        Class cls = classes[i];
+        if (patternBlock(cls)) [classArray addObject:cls];
+    }
+    
+    free(classes);
+    
+    return [classArray copy];
+}
+
 + (BOOL)propertyWithKeyIsReadWrite:(NSString *)key
 {
     objc_property_t prop = class_getProperty(self, [key UTF8String]);

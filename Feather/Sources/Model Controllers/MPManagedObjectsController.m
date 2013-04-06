@@ -498,7 +498,7 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 
 - (void)hasAddedManagedObject:(NSNotification *)notification
 {
-    
+    [self clearCachedValues];
 }
 
 - (void)hasUpdatedManagedObject:(NSNotification *)notification
@@ -508,7 +508,7 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 
 - (void)hasRemovedManagedObject:(NSNotification *)notification
 {
-    
+    [self clearCachedValues];
 }
 
 - (void)loadBundledResources
