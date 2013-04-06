@@ -103,6 +103,8 @@
 		5FDCF2EE171045990039DAED /* MPFeatherTestClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2ED171045990039DAED /* MPFeatherTestClasses.m */; };
 		5FDCF2EF17104A710039DAED /* MPFeatherTestSuite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33291705CB950049EBB5 /* MPFeatherTestSuite.m */; };
 		5FDCF2F017104A8F0039DAED /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB331C1705CB950049EBB5 /* SenTestingKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */; };
+		5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -380,6 +382,8 @@
 		5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MPTreeItem.h; path = Sources/Model/MPTreeItem.h; sourceTree = "<group>"; };
 		5FDCF2EC171045990039DAED /* MPFeatherTestClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPFeatherTestClasses.h; sourceTree = "<group>"; };
 		5FDCF2ED171045990039DAED /* MPFeatherTestClasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPFeatherTestClasses.m; sourceTree = "<group>"; };
+		5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPEmbeddedPropertyContainingMixin.h; path = Sources/Model/MPEmbeddedPropertyContainingMixin.h; sourceTree = "<group>"; };
+		5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPEmbeddedPropertyContainingMixin.m; path = Sources/Model/MPEmbeddedPropertyContainingMixin.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -642,8 +646,6 @@
 				5F293B9E170CAECC001C2111 /* MPEmbeddedObject.h */,
 				5F293B9F170CAECC001C2111 /* MPEmbeddedObject.m */,
 				5F293C20170E45D4001C2111 /* MPEmbeddedObject+Protected.h */,
-				5FDB3A3C1707992B0049EBB5 /* MPManagedObject+Mixin.h */,
-				5FDB3A3D1707992B0049EBB5 /* MPManagedObject+Mixin.m */,
 				5FDB3A3E1707992B0049EBB5 /* MPManagedObject+Protected.h */,
 				5FDB3A7A17079B1E0049EBB5 /* MPSnapshot.h */,
 				5FDB3A7B17079B1E0049EBB5 /* MPSnapshot.m */,
@@ -655,9 +657,6 @@
 				5FDB3A6917079A750049EBB5 /* MPContributor.m */,
 				5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */,
 				5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */,
-				5F293B85170CAD53001C2111 /* MPCacheable.h */,
-				5F293B99170CAD65001C2111 /* MPCacheableMixin.h */,
-				5F293B9A170CAD65001C2111 /* MPCacheableMixin.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -701,8 +700,15 @@
 		5FDB49811708CF9A00E82856 /* Mixins */ = {
 			isa = PBXGroup;
 			children = (
+				5FDB3A3C1707992B0049EBB5 /* MPManagedObject+Mixin.h */,
+				5FDB3A3D1707992B0049EBB5 /* MPManagedObject+Mixin.m */,
 				5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */,
 				5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */,
+				5F293B85170CAD53001C2111 /* MPCacheable.h */,
+				5F293B99170CAD65001C2111 /* MPCacheableMixin.h */,
+				5F293B9A170CAD65001C2111 /* MPCacheableMixin.m */,
+				5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */,
+				5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */,
 			);
 			name = Mixins;
 			sourceTree = "<group>";
@@ -757,6 +763,7 @@
 				5F293BF5170DFD4E001C2111 /* UICKeyChainStore.h in Headers */,
 				5F293C1F170E3B62001C2111 /* MPPlaceHolding.h in Headers */,
 				5FDCF2D8171043A80039DAED /* MPFeatherTestSuite.h in Headers */,
+				5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1058,6 +1065,7 @@
 				5F293BA1170CAECC001C2111 /* MPEmbeddedObject.m in Sources */,
 				5F293BF6170DFD4E001C2111 /* UICKeyChainStore.m in Sources */,
 				5FDCF2EF17104A710039DAED /* MPFeatherTestSuite.m in Sources */,
+				5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

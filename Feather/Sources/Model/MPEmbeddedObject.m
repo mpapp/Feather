@@ -12,6 +12,9 @@
 #import "MPManagedObject.h"
 #import "MPManagedObject+Protected.h"
 #import "MPEmbeddedObject+Protected.h"
+#import "MPEmbeddedPropertyContainingMixin.h"
+
+#import "Mixin.h"
 
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchModelFactory.h>
@@ -36,6 +39,14 @@
 @end
 
 @implementation MPEmbeddedObject
+
++ (void)initialize
+{
+    if (self == [MPEmbeddedObject class])
+    {
+        [self mixinFrom:[MPEmbeddedPropertyContainingMixin class] followInheritance:NO force:NO];
+    }
+}
 
 - (instancetype)init
 {
@@ -115,6 +126,10 @@
     // - Deal with MPEmbeddedObjects too
     MPManagedObject *o = ((MPManagedObject *)self.embeddingObject);
     
+    assert(_properties);
+    _properties[property] = value;
+    _needsSave = true;
+    
     [o.changedNames addObject:self.embeddingKey];
     [o markNeedsSave];
     
@@ -174,9 +189,17 @@
 
 - (void)markNeedsSave
 {
-    _needsSave = YES;
     assert(_embeddingObject);
     [_embeddingObject markNeedsSave];
+}
+
+- (void)markNeedsNoSave
+{
+    self.needsSave = false;
+    
+    assert(_embeddingObject);
+    for (NSString *propertyKey in [self.class embeddedProperties])
+         [[self valueForKey:propertyKey] markNeedsNoSave];
 }
 
 #pragma mark - Accessor implementations
@@ -315,6 +338,42 @@
     {
         return [super impForSetterOfProperty:property ofClass:propertyClass];
     }
+}
+
++ (IMP)impForGetterOfProperty:(NSString *)property ofType:(const char *)propertyType
+{
+    if (propertyType[0] == _C_ULNG_LNG)
+    {
+        return imp_implementationWithBlock(^unsigned long long(CouchDynamicObject* receiver) {
+            return [[receiver getValueOfProperty:property] unsignedLongValue];
+        });
+    }
+    else if (propertyType[0] == _C_LNG_LNG)
+    {
+        return imp_implementationWithBlock(^long long(CouchDynamicObject* receiver) {
+            return [[receiver getValueOfProperty:property] longLongValue];
+        });
+    }
+    
+    return [super impForGetterOfProperty:property ofType:propertyType];
+}
+
++ (IMP)impForSetterOfProperty:(NSString *)property ofType:(const char *)propertyType
+{
+    if (propertyType[0] == _C_ULNG_LNG)
+    {
+        return imp_implementationWithBlock(^(CouchDynamicObject* receiver, unsigned long long value) {
+            [receiver setValue:[NSNumber numberWithUnsignedLongLong:value] ofProperty:property];
+        });
+    }
+    else if (propertyType[0] == _C_LNG_LNG)
+    {
+        return imp_implementationWithBlock(^(CouchDynamicObject* receiver, long long value) {
+            [receiver setValue:[NSNumber numberWithLongLong:value] ofProperty:property];
+        });
+    }
+    
+    return [super impForSetterOfProperty:property ofType:propertyType];
 }
 
 @end

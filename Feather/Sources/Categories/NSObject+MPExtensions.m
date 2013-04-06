@@ -10,6 +10,7 @@
 #import "NSArray+MPExtensions.h"
 #import "NSString+MPExtensions.h"
 
+#import <CouchCocoa/CouchDynamicObject.h>
 #import <objc/runtime.h>
 
 inline id MPNilToObject(id object, id defaultObject)
@@ -144,6 +145,20 @@ inline id MPNilToObject(id object, id defaultObject)
     [propertyNames unionSet:[[self superclass] propertyKeys]];
     [classToNames setObject: propertyNames forKey: (id)self];
     return propertyNames;
+}
+
+
+#pragma mark -
+
+// From CouchCocoa's CouchDynamicObject
+// Look up the encoded type of a property, and whether it's settable or readonly
++ (Class) classOfProperty: (NSString*)propertyName
+{
+    Class declaredInClass;
+    const char* propertyType;
+    if (!getPropertyInfo(self, propertyName, NO, &declaredInClass, &propertyType))
+        return Nil;
+    return classFromType(propertyType);
 }
 
 - (id)performNonLeakingSelector:(SEL)selector

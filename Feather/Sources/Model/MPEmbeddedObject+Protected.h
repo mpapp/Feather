@@ -15,4 +15,6 @@
 @property (copy) NSString *embeddingKey;
 @property (readonly) NSMutableDictionary *properties;
 
+@property (readwrite) bool needsSave;
+
 @end
