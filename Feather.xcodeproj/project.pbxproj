@@ -103,7 +103,7 @@
 		5FDCF2EE171045990039DAED /* MPFeatherTestClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2ED171045990039DAED /* MPFeatherTestClasses.m */; };
 		5FDCF2EF17104A710039DAED /* MPFeatherTestSuite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33291705CB950049EBB5 /* MPFeatherTestSuite.m */; };
 		5FDCF2F017104A8F0039DAED /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB331C1705CB950049EBB5 /* SenTestingKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */; };
+		5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */; };
 /* End PBXBuildFile section */
 
