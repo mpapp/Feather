@@ -39,4 +39,6 @@
 @property (strong, readwrite) CouchDocument *document;
 @property (strong, readonly) NSMutableDictionary *properties;
 @property (strong, readonly) NSMutableSet *changedNames;
+
+- (void)markNeedsNoSave; // propagates needsSave = false to object's embedded properties
 @end

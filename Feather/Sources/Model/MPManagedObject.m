@@ -6,10 +6,12 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
+#import <Feather/MPManagedObject+Protected.h>
+
 #import "MPDatabase.h"
 #import "MPManagedObject.h"
 #import "MPManagedObjectsController.h"
-#import <Feather/MPManagedObject+Protected.h>
+
 #import "MPManagedObjectsController+Protected.h"
 
 #import "MPDatabasePackageController.h"
@@ -20,16 +22,20 @@
 
 #import "MPEmbeddedObject.h"
 #import "MPEmbeddedObject+Protected.h"
+#import "MPEmbeddedPropertyContainingMixin.h"
 
-#import "NSFileManager+MPExtensions.h"
-#import "NSDictionary+MPManagedObjectExtensions.h"
 #import "MPEmbeddedObject.h"
 
-#import "NSArray+MPExtensions.h"
-#import "NSObject+MPExtensions.h"
 #import "MPContributor.h"
 #import "MPContributorsController.h"
 #import "MPShoeboxPackageController.h"
+
+#import "NSObject+MPExtensions.h"
+#import "NSArray+MPExtensions.h"
+#import "NSObject+MPExtensions.h"
+#import "NSFileManager+MPExtensions.h"
+#import "NSDictionary+MPManagedObjectExtensions.h"
+
 
 #import "Mixin.h"
 #import "MPCacheableMixin.h"
@@ -66,8 +72,9 @@ static NSMutableDictionary *_modelObjectByIdentifierMap = nil;
     if (self == [MPManagedObject class])
     {
         [self mixinFrom:[MPCacheableMixin class]];
+        [self mixinFrom:[MPEmbeddedPropertyContainingMixin class]];
         
-#ifdef DEBUG_OBJET_CONTEXT
+#ifdef DEBUG_OBJECT_CONTEXT
         _modelObjectByIdentifierMap = [[NSMutableDictionary alloc] init];
 #endif
     }
@@ -242,6 +249,13 @@ static NSMutableDictionary *_modelObjectByIdentifierMap = nil;
     [self updateTimestamps];
     
     RESTOperation *oper = [super save];
+    
+    // once save finishes, propagate needsSave => false through the tree
+    // FIXME: race condition on concurrent saves (could set needsSave to false on an embedded key too early)
+    [oper onCompletion:^{
+        for (NSString *propertyKey in [[self class] embeddedProperties])
+            [[self valueForKey:propertyKey] setNeedsSave:false];
+    }];
     
     return oper;
 }
@@ -599,7 +613,7 @@ static NSMutableDictionary *_modelObjectByIdentifierMap = nil;
     return db;
 }
 
-// FIXME: call the method on the super class
+// FIXME: call super once CouchModel's -getModelProperty: is fixed so it doesn't return an empty object.
 - (CouchModel *)getModelProperty:(NSString *)property
 {
     Class cls = [[self class] classOfProperty:property];
@@ -810,5 +824,14 @@ static NSMutableDictionary *_modelObjectByIdentifierMap = nil;
 
 - (NSMutableDictionary *)properties { return _properties; }
 - (NSMutableSet *)changedNames { return _changedNames; }
+
+- (void)markNeedsNoSave
+{
+    // Note: do NOT set needsSave = false on object itself here.
+    // That's MPManagedObject & CouchModel responsibility.
+    
+    for (NSString *key in self.class.embeddedProperties)
+        [[self valueForKey:key] markNeedsNoSave];
+}
 
 @end

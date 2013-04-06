@@ -12,6 +12,7 @@
 #import "MPCacheable.h"
 
 #import "MPEmbeddedObject.h"
+#import "MPEmbeddedPropertyContainingMixin.h"
 
 extern NSString * const MPManagedObjectErrorDomain;
 
@@ -44,7 +45,8 @@ typedef enum MPManagedObjectModerationState
 /**
  * An abstract base class for all objects contained in a MPDatabase (n per MPDatabase), except for MPMetadata (1 per MPDatabase).
  */
-@interface MPManagedObject : CouchModel <NSPasteboardWriting, NSPasteboardReading, MPCacheable, MPEmbeddingObject>
+@interface MPManagedObject : CouchModel
+    <NSPasteboardWriting, NSPasteboardReading, MPCacheable, MPEmbeddingObject>
 
 /** The managed objects controller which manages (and caches) the object. */
 @property (weak, readonly) MPManagedObjectsController *controller;

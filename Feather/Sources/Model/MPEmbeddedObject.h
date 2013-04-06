@@ -7,14 +7,25 @@
 //
 
 #import <CouchCocoa/CouchCocoa.h>
+#import "MPEmbeddedPropertyContainingMixin.h"
 
 @protocol MPWaitingOperation;
 
 /** Protocol used to mark objects which can embed MPEmbeddedObject instances. */
-@protocol MPEmbeddingObject <NSObject>
+@protocol MPEmbeddingObject <MPEmbeddedPropertyContaining, NSObject>
+
 - (id<MPWaitingOperation>)save;
+
+@property (readonly) bool needsSave;
+
+/** Propagates needsSave = true towards embedding object. */
 - (void)markNeedsSave;
+
+/** Propagates needsSave = false through the embedded properties of the object. */
+- (void)markNeedsNoSave;
+
 @property (readonly, strong) NSMutableSet *changedNames;
+
 @end
 
 /** Protocol used to mark operations which can be made to wait until any pending network activity is finished.
@@ -35,8 +46,6 @@
 @property (copy, readonly) NSString *embeddingKey;
 
 @property (readonly, strong) NSMutableSet *changedNames;
-
-@property (readonly) BOOL needsSave;
 
 - (CouchDatabase *)databaseForModelProperty:(NSString *)property;
 
