@@ -71,6 +71,8 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
             
             for (Class subclass in subclasses)
             {
+                if ([NSStringFromClass(subclass) hasSuffix:@"Mixin"]) continue;
+                
                 Class closestControllerClass = [MPDatabasePackageController controllerClassForManagedObjectClass:subclass];
                 Class closestModelClass = [closestControllerClass managedObjectClass];
                 assert(closestControllerClass);
