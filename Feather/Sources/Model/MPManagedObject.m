@@ -48,7 +48,7 @@
 
 NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 
-#ifdef DEBUG_OBJECT_CONTEXT
+#if DEBUG_OBJECT_CONTEXT
 static NSMapTable *_modelObjectByIdentifierMap = nil;
 #endif
 
@@ -74,7 +74,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         [self mixinFrom:[MPCacheableMixin class]];
         [self mixinFrom:[MPEmbeddedPropertyContainingMixin class]];
         
-#ifdef DEBUG_OBJECT_CONTEXT
+#if DEBUG_OBJECT_CONTEXT
         _modelObjectByIdentifierMap = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsStrongMemory
                                                             valueOptions:NSPointerFunctionsWeakMemory];
 #endif
@@ -111,7 +111,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     if (self = [super initWithDocument:document])
     {
 
-#ifdef DEBUG_OBJECT_CONTEXT
+#if DEBUG_OBJECT_CONTEXT
         if (document)
         {
             assert(![_modelObjectByIdentifierMap objectForKey:self.document.documentID]
@@ -286,7 +286,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     [op onCompletion:^{
         [_controller didDeleteObject:self];
         
-#ifdef DEBUG_OBJECT_CONTEXT
+#if DEBUG_OBJECT_CONTEXT
         if (docID)
             [_modelObjectByIdentifierMap removeObjectForKey:docID];
 #endif
@@ -795,7 +795,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         if (identifier)
             assert([self.document.documentID isEqualToString:identifier]);
         
-#ifdef DEBUG_OBJECT_CONTEXT
+#if DEBUG_OBJECT_CONTEXT
         assert(![_modelObjectByIdentifierMap objectForKey:self.document.documentID]);
         [_modelObjectByIdentifierMap setObject:self forKey:self.document.documentID];
 #endif

@@ -468,11 +468,12 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
         dispatch_sync(_queryQueue, ^{
             //MPManagedObject *mo = [[[self class] managedObjectClass] modelForDocument:row.document];
             MPManagedObject *modelObj = [row.document modelObject];
-            
+            modelObj.document = row.document;
             
             if (!modelObj)
             {
                 modelObj = _objectCache[row.document.documentID];
+                modelObj.document = row.document;
                 
                 if (!modelObj)
                     modelObj = [[row.document managedObjectClass] modelForDocument:row.document];
