@@ -552,8 +552,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     for (CouchQueryRow *row in rows)
     {
         CouchDocument *doc = row.document;
-        MPManagedObjectsController *moc = [[self packageController] controllerForDocument:doc];
-        MPManagedObject *mo = [[moc managedObjectClass] modelForDocument:doc];
+        MPManagedObject *mo = [[MPManagedObject managedObjectClassFromDocumentID:doc.documentID] modelForDocument:doc];
         assert(mo);
         [objs addObject:mo];
     }

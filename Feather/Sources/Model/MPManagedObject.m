@@ -39,6 +39,10 @@
 
 NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 
+#ifdef DEBUG_OBJECT_CONTEXT
+static NSMutableDictionary *_modelObjectByIdentifierMap = nil;
+#endif
+
 @interface MPManagedObject ()
 {
     __weak MPManagedObjectsController *_controller;
@@ -59,6 +63,10 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     if (self == [MPManagedObject class])
     {
         [self mixinFrom:[MPCacheableMixin class]];
+        
+#ifdef DEBUG_OBJET_CONTEXT
+        _modelObjectByIdentifierMap = [[NSMutableDictionary alloc] init];
+#endif
     }
 }
 
@@ -91,6 +99,15 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 {
     if (self = [super initWithDocument:document])
     {
+
+#ifdef DEBUG_OBJECT_CONTEXT
+        if (document)
+        {
+            assert(!_modelObjectByIdentifierMap[self.document.documentID]);
+            _modelObjectByIdentifierMap[document.documentID] = self;
+        }
+#endif
+
         assert(_controller);
         self.isNewObject = document == nil; // is new if there's no document to go with it.
         [self didInitialize];
@@ -165,6 +182,8 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     assert(document);
     assert(document.database);
     
+    if ([document.modelObject isKindOfClass:self.class]) return document.modelObject;
+    
     CouchModel *cm = [super modelForDocument:document];
     assert ([cm isKindOfClass:[MPManagedObject class]]);
 
@@ -173,6 +192,7 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     if (!mo.controller) [mo setControllerWithDocument:document];
     
     assert(mo.controller);
+    assert([document.properties[@"objectType"] isEqualToString:NSStringFromClass(self)]);
         
     return mo;
 }
@@ -196,9 +216,13 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 
 + (RESTOperation *)saveModels:(NSArray *)models
 {
-    for (id mo in models)
+    for (MPManagedObject *mo in models)
     {
         assert([mo isKindOfClass:[MPManagedObject class]]);
+        
+        if (!mo.document.modelObject)
+            mo.document.modelObject = mo;
+        
         [mo updateTimestamps];
     }
     return [super saveModels:models];
@@ -207,7 +231,10 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 - (RESTOperation *)save
 {
     assert(_controller);
+    assert(_document);
     [_controller willSaveObject:self];
+    
+    if (!_document.modelObject) _document.modelObject = self;
     
     [self updateTimestamps];
     
@@ -283,6 +310,7 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
         [self setControllerWithDocument:document];
     }
     
+    document.modelObject = self;
     [super setDocument:document];
     
     if (self.document)
@@ -707,6 +735,11 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
         
         if (identifier)
             assert([self.document.documentID isEqualToString:identifier]);
+        
+#ifdef DEBUG_OBJECT_CONTEXT
+        assert(!_modelObjectByIdentifierMap[self.document.documentID]);
+        _modelObjectByIdentifierMap[self.document.documentID] = self;
+#endif
     }
     else
     {

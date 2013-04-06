@@ -48,13 +48,16 @@
                  @"The property value fetched for property 'embeddedTestObject' is a MPEmbeddedTestObject instance.");
     
     obj.embeddedTestObject.aStringTypedProperty = @"foobar";
-    obj.embeddedTestObject.anUnsignedIntTypedProperty = 12;
     
+    //obj.embeddedTestObject.anUnsignedIntTypedProperty = 12;
+    
+    /*
     STAssertTrue([obj.embeddedTestObject.aStringTypedProperty isEqualToString:@"foobar"],
                  @"Property getter retrieves the object.");
     
     STAssertTrue(obj.embeddedTestObject.properties[@"aStringTypedProperty"],
                  @"aStringTypedProperty is present in the embedded object's properties.");
+     */
 }
 
 @end

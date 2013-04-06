@@ -32,10 +32,14 @@
     
     STAssertTrue(!err, @"No error should happen with creating the shared databases path");
     
-    if ([fm fileExistsAtPath:sharedPackagePath] && sharedPackageIsForTestBundle)
+    STAssertTrue([fm createDirectoryAtPath:_docRoot withIntermediateDirectories:YES attributes:nil error:&err],
+                 @"Creating document root succeeded.");
+    
+
+    if ([fm fileExistsAtPath:sharedPackagePath]
+        && sharedPackageIsForTestBundle
+        &! [MPShoeboxPackageController sharedShoeboxControllerInitialized])
     {
-        if ([MPShoeboxPackageController sharedShoeboxControllerInitialized]) return;
-        
         NSError *err = nil;
         [fm removeItemAtPath:sharedPackagePath error:&err];
         
@@ -61,9 +65,6 @@
               sharedPackagePath);
         exit(1);
     }
-    
-    STAssertTrue([fm createDirectoryAtPath:_docRoot withIntermediateDirectories:YES attributes:nil error:&err],
-                 @"Creating document root succeeded.");
     
     err = nil;
 }
