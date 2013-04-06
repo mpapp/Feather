@@ -27,13 +27,12 @@
     
     NSFileManager *fm = [NSFileManager defaultManager];
     
-    [MPShoeboxPackageController sharedShoeboxController];
-    
     [self createPackageRootDirectory];
+    [self createSharedPackageRootDirectory];
     
     if ([fm fileExistsAtPath:sharedPackagePath]
         && sharedPackageIsForTestBundle
-        &! [MPShoeboxPackageController sharedShoeboxControllerInitialized])
+        && ![MPShoeboxPackageController sharedShoeboxControllerInitialized])
     {
         NSError *err = nil;
         [fm removeItemAtPath:sharedPackagePath error:&err];
@@ -71,7 +70,14 @@
                                     attributes:nil error:&err],
                      @"Creating document root succeeded.");
     
-    STAssertTrue(!err, @"No error should happen with creating the shared databases path");
+    STAssertTrue(!err, @"No error should happen with creating the package root directory");
+}
+
+- (void)createSharedPackageRootDirectory
+{
+    NSError *err = nil;
+    [MPShoeboxPackageController createSharedDatabasesPathWithError:&err];
+    STAssertTrue(!err, @"No error should happen with creating the shared package root directory");
 }
 
 - (void)tearDown
