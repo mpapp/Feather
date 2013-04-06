@@ -349,7 +349,10 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     assert(identifier);
     Class cls = [MPManagedObject managedObjectClassFromDocumentID:identifier];
     assert(cls);
-    return [cls modelForDocument:[self.db.database getDocumentWithID:identifier]];
+    CouchDocument *doc = [self.db.database getDocumentWithID:identifier];
+    if (!doc) return nil;
+    
+    return [cls modelForDocument:doc];
 }
 
 - (id)newObject
@@ -388,8 +391,6 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 
 - (NSArray *)objectsFromContentsOfArrayJSONAtURL:(NSURL *)url error:(NSError **)err
 {
-    assert([self class] != [MPManagedObjectsController class]);
-    
     NSData *objData = [NSData dataWithContentsOfURL:url options:NSDataReadingMapped error:err];
     if (!objData) return nil;
     

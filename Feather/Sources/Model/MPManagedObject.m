@@ -11,9 +11,12 @@
 #import "MPManagedObjectsController.h"
 #import <Feather/MPManagedObject+Protected.h>
 #import "MPManagedObjectsController+Protected.h"
+
 #import "MPDatabasePackageController.h"
-#import "NSNotificationCenter+MPExtensions.h"
+#import "MPDatabasePackageController+Protected.h"
 #import "MPShoeboxPackageController.h"
+
+#import "NSNotificationCenter+MPExtensions.h"
 
 #import "MPEmbeddedObject.h"
 #import "MPEmbeddedObject+Protected.h"
@@ -594,6 +597,37 @@ static NSMutableDictionary *_modelObjectByIdentifierMap = nil;
     assert(db);
     
     return db;
+}
+
+// FIXME: call the method on the super class
+- (CouchModel *)getModelProperty:(NSString *)property
+{
+    Class cls = [[self class] classOfProperty:property];
+    assert([cls isSubclassOfClass:[MPManagedObject class]]);
+    NSString *objectID = [self getValueOfProperty:property];
+
+    CouchDatabase *db = [self databaseForModelProperty:property];
+    MPDatabasePackageController *pkgc = [db packageController];
+    MPManagedObjectsController *moc = [pkgc controllerForManagedObjectClass:cls];
+    
+    if ([cls conformsToProtocol:@protocol(MPReferencableObject)])
+    {
+        
+        MPManagedObject *mo = [moc objectWithIdentifier:objectID];
+        if (mo) return mo;
+        
+        MPShoeboxPackageController *shoebox = [MPShoeboxPackageController sharedShoeboxController];
+        MPManagedObjectsController *sharedMOC = [shoebox controllerForManagedObjectClass:cls];
+        
+        return [sharedMOC objectWithIdentifier:objectID];
+    }
+    else
+    {
+        return [moc objectWithIdentifier:objectID];
+    }
+    
+    assert(false);
+    return nil;
 }
 
 #pragma mark - Embedded object support

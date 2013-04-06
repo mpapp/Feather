@@ -30,6 +30,7 @@
 - (void)couchDocumentChanged:(CouchDocument *)doc;
 -   (id)externalizePropertyValue: (id)value;
 - (void)cacheValue:(id)value ofProperty:(NSString *)property changed:(BOOL)changed;
+- (CouchModel*) getModelProperty: (NSString*)property;
 - (void)markNeedsSave;
 
 @end
