@@ -26,4 +26,6 @@ extern inline id MPNilToObject(id object, id defaultObject);
 - (id)performNonLeakingSelector:(SEL)selector;
 - (id)performNonLeakingSelector:(SEL)selector withObject:(id)object;
 
++ (Class)classOfProperty:(NSString *)propertyName;
+
 @end

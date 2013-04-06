@@ -101,6 +101,20 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         
         _pushFilterName = pushFilterName;
         _pullFilterName = pullFilterName;
+        
+        [self.primaryDesignDocument setValidationBlock:
+         ^BOOL(TD_Revision *newRevision, id<TD_ValidationContext> context)
+        {
+            if (newRevision.deleted) return YES;
+            
+            BOOL managedObjectTypeIncluded = newRevision.properties.managedObjectType != nil;
+            
+            BOOL idHasValidPrefix = NO;
+            if (managedObjectTypeIncluded)
+                idHasValidPrefix = [newRevision.docID hasPrefix:newRevision.properties.managedObjectType];
+            
+            return managedObjectTypeIncluded && idHasValidPrefix;
+        }];
     }
     
     return self;
@@ -126,6 +140,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     if (!_primaryDesignDocument)
     {
         assert([self name]);
+        assert(self.database);
         _primaryDesignDocument = [self.database designDocumentWithName:[self name]];
     }
     

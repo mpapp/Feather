@@ -43,23 +43,40 @@
     id<MPWaitingOperation> saveOp = [obj.embeddedTestObject save];
     STAssertTrue([saveOp wait], @"Setting the embedded object succeeds.");
     
+    STAssertTrue(!obj.embeddedTestObject.needsSave,
+                 @"Embedded object doesn't need saving after saving.");
+    STAssertTrue(!obj.embeddedTestObject.embeddingObject.needsSave,
+                 @"Embedded object's embedding object doesn't need saving after saving.");
+    
     STAssertTrue([obj.document.properties[@"embeddedTestObject"] isKindOfClass:NSString.class],
                  @"The interal, persisted property value is a string.");
     
     STAssertTrue([[obj getValueOfProperty:@"embeddedTestObject"] isKindOfClass:MPEmbeddedTestObject.class],
                  @"The property value fetched for property 'embeddedTestObject' is a MPEmbeddedTestObject instance.");
     
+    
     obj.embeddedTestObject.aStringTypedProperty = @"foobar";
     
-    //obj.embeddedTestObject.anUnsignedIntTypedProperty = 12;
+    STAssertTrue(obj.embeddedTestObject.needsSave,
+                 @"Embedded object need saving after 'aStringTypedProperty' has changed.");
+    STAssertTrue(obj.embeddedTestObject.embeddingObject.needsSave,
+                 @"Embedded object's embedding object needs saving after the embedded object's 'aStringTypedProperty' has changed.");
     
-    /*
+    STAssertTrue([obj.embeddedTestObject.properties[@"aStringTypedProperty"] isEqualToString:@"foobar"],
+                 @"Properties dictionary contains the correct string object.");
+    
     STAssertTrue([obj.embeddedTestObject.aStringTypedProperty isEqualToString:@"foobar"],
                  @"Property getter retrieves the object.");
     
+    
+    obj.embeddedTestObject.anUnsignedIntTypedProperty = 12;
+    
+    STAssertTrue(obj.embeddedTestObject.anUnsignedIntTypedProperty == 12,
+                 @"Integral getter retrieves the right value.");
+    
     STAssertTrue(obj.embeddedTestObject.properties[@"aStringTypedProperty"],
                  @"aStringTypedProperty is present in the embedded object's properties.");
-     */
+    
 }
 
 @end
