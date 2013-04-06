@@ -82,9 +82,12 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** Closes all the database package's databases. */
 - (void)close;
 
-/** Return the controller for a MPManagedObject subclass.
+/** @return the controller for a MPManagedObject subclass.
  @param class A subclass of MPManagedObject. */
 - (MPManagedObjectsController *)controllerForManagedObjectClass:(Class)class;
+
+/** @return YES if a controller exists in this package controller for a managed object class. */
+- (BOOL)controllerExistsForManagedObjectClass:(Class)class;
 
 /** Return the controller for a CouchDocument object, based on its database and the document's objectType property.
  * @param document A CouchDocument containing a serialised MPManagedObject (including a key 'objectType' whose value matches the name of one of the MPManagedObject subclasses). */

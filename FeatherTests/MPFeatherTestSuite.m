@@ -10,7 +10,9 @@
 #import "MPFeatherTestSuite.h"
 
 #import "NSBundle+MPExtensions.h"
+#import "NSArray+MPExtensions.h"
 #import "MPDatabasePackageController+Protected.h"
+#import "RegexKitLite.h"
 
 @implementation MPFeatherTestSuite
 
@@ -59,6 +61,8 @@
               sharedPackagePath);
         exit(1);
     }
+    
+    [self loadSharedFixtures];
 }
 
 - (void)createPackageRootDirectory
@@ -78,6 +82,54 @@
     NSError *err = nil;
     [MPShoeboxPackageController createSharedDatabasesPathWithError:&err];
     STAssertTrue(!err, @"No error should happen with creating the shared package root directory");
+}
+
+- (NSArray *)loadFixturesForManagedObjectClass:(Class)class
+                           toPackageController:(MPDatabasePackageController *)pkgc
+                              fromJSONResource:(NSString *)resource
+{
+    NSError *err = nil;
+    MPManagedObjectsController *moc = [pkgc controllerForManagedObjectClass:class];
+    
+    NSURL *url = [[NSBundle appBundle] URLForResource:resource withExtension:@"json"];
+    NSArray *objs = [moc objectsFromContentsOfArrayJSONAtURL:url
+                                                       error:&err];
+    
+    STAssertTrue(!err, [NSString stringWithFormat:@"No error occurred loading fixtures from %@", url]);
+    
+    return objs;
+}
+
+- (void)loadSharedFixtures
+{
+    NSError *err = nil;
+    NSArray *urls = [NSBundle URLsForResourcesWithExtension:@"json" subdirectory:@""
+                                            inBundleWithURL:[[NSBundle appBundle] bundleURL]];
+    
+    MPShoeboxPackageController *spkg = [MPShoeboxPackageController sharedShoeboxController];
+    
+    for (NSURL *url in urls)
+    {
+        NSString *name = [url lastPathComponent];
+        
+        Class cls =
+            NSClassFromString(
+                [[name componentsMatchedByRegex:@"(\\S+)-fixtures.json" capture:1] firstObject]);
+        
+        if ([cls isSubclassOfClass:[MPManagedObject class]])
+        {
+            MPManagedObjectsController *moc = [spkg controllerForManagedObjectClass:cls];
+            if (!moc) continue;
+            
+            NSArray *objs = [moc objectsFromContentsOfArrayJSONAtURL:url error:&err];
+            
+            MPLog(@"Loaded %lu fixture objects from %@", objs.count, url);
+            
+            if (err) break;
+        }
+    }
+    
+    STAssertTrue(!err, @"Loading fixtures succeeds.");
 }
 
 - (void)tearDown

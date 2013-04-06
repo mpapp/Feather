@@ -447,7 +447,7 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     
     if (mos.count > 0)
     {
-        RESTOperation *saveOperation = [CouchModel saveModels:mos];
+        RESTOperation *saveOperation = [MPManagedObject saveModels:mos];
         [saveOperation wait];
         if ([saveOperation error])
         {

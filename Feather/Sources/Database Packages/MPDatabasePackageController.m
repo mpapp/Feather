@@ -193,7 +193,28 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 - (BOOL)synchronizesPeerlessly { return YES; }
 
+- (BOOL)controllerExistsForManagedObjectClass:(Class)class
+{
+    return [self _controllerForManagedObjectClass:class] != nil;
+}
+
 - (MPManagedObjectsController *)controllerForManagedObjectClass:(Class)class
+{
+    MPManagedObjectsController *c = [self _controllerForManagedObjectClass:class];
+    if (c) return c;
+    
+    if (![class conformsToProtocol:@protocol(MPReferencableObject)])
+    {
+        NSAssert(class != [MPManagedObject class],
+                 @"No controller found for non-referencable managed object class %@", class);
+    }
+    
+    _controllerDictionary[NSStringFromClass(class)] = [NSNull null];
+    
+    return nil;
+}
+
+- (MPManagedObjectsController *)_controllerForManagedObjectClass:(Class)class
 {
     assert(class);
     assert([class isSubclassOfClass:[MPManagedObject class]] && class != [MPManagedObject class]);
@@ -229,15 +250,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
     } while (!moc && ((class = [class superclass]) != [MPManagedObject class]));
     
-    if (![origClass conformsToProtocol:@protocol(MPReferencableObject)])
-    {
-        NSAssert(class != [MPManagedObject class],
-                 @"No controller found for non-referencable managed object class %@", origClass);
-    }
-    
-    _controllerDictionary[origClassName] = [NSNull null];
-    
-    return nil;
+    return moc;
 }
 
 
