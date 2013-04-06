@@ -49,7 +49,7 @@
 NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 
 #ifdef DEBUG_OBJECT_CONTEXT
-static NSMutableDictionary *_modelObjectByIdentifierMap = nil;
+static NSMapTable *_modelObjectByIdentifierMap = nil;
 #endif
 
 @interface MPManagedObject ()
@@ -75,7 +75,8 @@ static NSMutableDictionary *_modelObjectByIdentifierMap = nil;
         [self mixinFrom:[MPEmbeddedPropertyContainingMixin class]];
         
 #ifdef DEBUG_OBJECT_CONTEXT
-        _modelObjectByIdentifierMap = [[NSMutableDictionary alloc] init];
+        _modelObjectByIdentifierMap = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsStrongMemory
+                                                            valueOptions:NSPointerFunctionsWeakMemory];
 #endif
     }
 }
@@ -113,8 +114,9 @@ static NSMutableDictionary *_modelObjectByIdentifierMap = nil;
 #ifdef DEBUG_OBJECT_CONTEXT
         if (document)
         {
-            assert(!_modelObjectByIdentifierMap[self.document.documentID]);
-            _modelObjectByIdentifierMap[document.documentID] = self;
+            assert(![_modelObjectByIdentifierMap objectForKey:self.document.documentID]
+                   || [_modelObjectByIdentifierMap objectForKey:self.document.documentID] == self);
+            [_modelObjectByIdentifierMap setObject:self forKey:document.documentID];
         }
 #endif
 
@@ -192,7 +194,7 @@ static NSMutableDictionary *_modelObjectByIdentifierMap = nil;
     assert(document);
     assert(document.database);
     
-    if ([document.modelObject isKindOfClass:self.class]) return document.modelObject;
+    if (document.modelObject) return document.modelObject;
     
     CouchModel *cm = [super modelForDocument:document];
     assert ([cm isKindOfClass:[MPManagedObject class]]);
@@ -278,9 +280,16 @@ static NSMutableDictionary *_modelObjectByIdentifierMap = nil;
 {
     assert(_controller);
     
+    NSString *docID = self.document.documentID;
+    
     RESTOperation *op = [super deleteDocument];
     [op onCompletion:^{
         [_controller didDeleteObject:self];
+        
+#ifdef DEBUG_OBJECT_CONTEXT
+        if (docID)
+            [_modelObjectByIdentifierMap removeObjectForKey:docID];
+#endif
     }];
     
     return op;
@@ -616,10 +625,12 @@ static NSMutableDictionary *_modelObjectByIdentifierMap = nil;
 // FIXME: call super once CouchModel's -getModelProperty: is fixed so it doesn't return an empty object.
 - (CouchModel *)getModelProperty:(NSString *)property
 {
+    NSString *objectID = [self getValueOfProperty:property];
+    if (!objectID) return nil;
+    
     Class cls = [[self class] classOfProperty:property];
     assert([cls isSubclassOfClass:[MPManagedObject class]]);
-    NSString *objectID = [self getValueOfProperty:property];
-
+    
     CouchDatabase *db = [self databaseForModelProperty:property];
     MPDatabasePackageController *pkgc = [db packageController];
     MPManagedObjectsController *moc = [pkgc controllerForManagedObjectClass:cls];
@@ -785,8 +796,8 @@ static NSMutableDictionary *_modelObjectByIdentifierMap = nil;
             assert([self.document.documentID isEqualToString:identifier]);
         
 #ifdef DEBUG_OBJECT_CONTEXT
-        assert(!_modelObjectByIdentifierMap[self.document.documentID]);
-        _modelObjectByIdentifierMap[self.document.documentID] = self;
+        assert(![_modelObjectByIdentifierMap objectForKey:self.document.documentID]);
+        [_modelObjectByIdentifierMap setObject:self forKey:self.document.documentID];
 #endif
     }
     else

@@ -469,9 +469,14 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
             //MPManagedObject *mo = [[[self class] managedObjectClass] modelForDocument:row.document];
             MPManagedObject *modelObj = [row.document modelObject];
             
-            if (!modelObj)
-                modelObj = [[row.document managedObjectClass] modelForDocument:row.document];
             
+            if (!modelObj)
+            {
+                modelObj = _objectCache[row.document.documentID];
+                
+                if (!modelObj)
+                    modelObj = [[row.document managedObjectClass] modelForDocument:row.document];
+            }
             assert([modelObj isKindOfClass:[MPManagedObject class]]);
             
             [entries addObject:modelObj];
