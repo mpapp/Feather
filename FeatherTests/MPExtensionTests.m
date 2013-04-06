@@ -36,7 +36,7 @@
 - (void)testPropertyKeys
 {
     /*
-    MPManuscriptsPackageController *packageController = [[MPManuscriptsPackageController alloc] initWithPath:self.docRoot delegate:self error:&err];
+    MPManuscriptsPackageController *packageController = [[MPManuscriptsPackageController alloc] initWithPath:self.testPackageRootDirectory delegate:self error:&err];
     STAssertTrue(packageController != nil, @"Document database controller was initialised");
     
     MPSharedPackageController *spc = [MPSharedPackageController sharedPackageController];

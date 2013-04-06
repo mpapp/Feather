@@ -101,6 +101,8 @@
 		5FDB3AA91707ABBE0049EBB5 /* MPTreeItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2D8171043A80039DAED /* MPFeatherTestSuite.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33281705CB950049EBB5 /* MPFeatherTestSuite.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2EE171045990039DAED /* MPFeatherTestClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2ED171045990039DAED /* MPFeatherTestClasses.m */; };
+		5FDCF2EF17104A710039DAED /* MPFeatherTestSuite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33291705CB950049EBB5 /* MPFeatherTestSuite.m */; };
+		5FDCF2F017104A8F0039DAED /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB331C1705CB950049EBB5 /* SenTestingKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -388,6 +390,7 @@
 				5FDB3A08170793B30049EBB5 /* libz.dylib in Frameworks */,
 				5FDB33C31705CF260049EBB5 /* libcommonCrypto.dylib in Frameworks */,
 				5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */,
+				5FDCF2F017104A8F0039DAED /* SenTestingKit.framework in Frameworks */,
 				5F293BF8170DFD77001C2111 /* Security.framework in Frameworks */,
 				5FDB39BE170761D00049EBB5 /* CouchCocoa.framework in Frameworks */,
 				5FDB34A31705DCEC0049EBB5 /* TouchDBListener.framework in Frameworks */,
@@ -1054,6 +1057,7 @@
 				5F293B9C170CAD65001C2111 /* MPCacheableMixin.m in Sources */,
 				5F293BA1170CAECC001C2111 /* MPEmbeddedObject.m in Sources */,
 				5F293BF6170DFD4E001C2111 /* UICKeyChainStore.m in Sources */,
+				5FDCF2EF17104A710039DAED /* MPFeatherTestSuite.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1172,6 +1176,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
@@ -1193,6 +1201,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";

@@ -12,6 +12,6 @@
 @interface MPFeatherTestSuite : SenTestCase <MPDatabasePackageControllerDelegate>
 
 /** A root path for a package controllers initialised for a test. Automatically created and deleted by the test suite in setup and teardown. */
-@property (copy) NSString *docRoot;
+@property (copy) NSString *testPackageRootDirectory;
 
 @end

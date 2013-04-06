@@ -8,7 +8,6 @@
 
 #import "Feather.h"
 #import "MPFeatherTestSuite.h"
-#import "MPFeatherTestClasses.h"
 
 #import "NSBundle+MPExtensions.h"
 #import "MPDatabasePackageController+Protected.h"
@@ -28,17 +27,10 @@
     
     NSFileManager *fm = [NSFileManager defaultManager];
     
-    NSError *err = nil;
+    [MPShoeboxPackageController sharedShoeboxController];
     
-    [MPFeatherTestPackageController sharedPackageController];
+    [self createPackageRootDirectory];
     
-    STAssertTrue(!err, @"No error should happen with creating the shared databases path");
-    
-    if (_docRoot)
-        STAssertTrue([fm createDirectoryAtPath:_docRoot withIntermediateDirectories:YES attributes:nil error:&err],
-                 @"Creating document root succeeded.");
-    
-
     if ([fm fileExistsAtPath:sharedPackagePath]
         && sharedPackageIsForTestBundle
         &! [MPShoeboxPackageController sharedShoeboxControllerInitialized])
@@ -59,8 +51,8 @@
                      [fm createDirectoryAtPath:sharedPackagePath withIntermediateDirectories:NO attributes:nil error:&err],
                      [NSString stringWithFormat:@"Failed to create shared package directory root: %@", err]);
         
-        MPFeatherTestPackageController *sharedPackage = [MPFeatherTestPackageController sharedPackageController];
-        STAssertTrue(sharedPackage != nil, @"Shared package controller initialized");
+        MPShoeboxPackageController *sharedPackage = [MPShoeboxPackageController sharedShoeboxController];
+        STAssertTrue(sharedPackage != nil, @"A shared package controller initialized");
         
     } else if (!sharedPackageIsForTestBundle)
     {
@@ -68,18 +60,28 @@
               sharedPackagePath);
         exit(1);
     }
+}
+
+- (void)createPackageRootDirectory
+{
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSError *err = nil;
+    if (_testPackageRootDirectory)
+        STAssertTrue([fm createDirectoryAtPath:_testPackageRootDirectory withIntermediateDirectories:YES
+                                    attributes:nil error:&err],
+                     @"Creating document root succeeded.");
     
-    err = nil;
+    STAssertTrue(!err, @"No error should happen with creating the shared databases path");
 }
 
 - (void)tearDown
 {
     NSFileManager *fm = [NSFileManager defaultManager];
     
-    if (_docRoot && [fm fileExistsAtPath:_docRoot])
+    if (_testPackageRootDirectory && [fm fileExistsAtPath:_testPackageRootDirectory])
     {
         NSError *err = nil;
-        STAssertTrue([fm removeItemAtPath:_docRoot error:&err], @"Deleting document root succeeded.");
+        STAssertTrue([fm removeItemAtPath:_testPackageRootDirectory error:&err], @"Deleting document root succeeded.");
     }
     
     [super tearDown];
