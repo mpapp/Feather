@@ -678,9 +678,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)setEmbeddedObject:(MPEmbeddedObject *)embeddedObj ofProperty:(NSString *)property
 {
-    [self setValue:embeddedObj ofProperty:property];
-    assert(!embeddedObj.embeddingKey); // should be set only once.
+    assert(!embeddedObj.embeddingKey
+           || [embeddedObj.embeddingKey isEqualToString:property]);
+    
     embeddedObj.embeddingKey = property;
+    [self setValue:embeddedObj ofProperty:property];
 }
 
 - (MPEmbeddedObject *)getEmbeddedObjectProperty:(NSString *)property
@@ -689,12 +691,25 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     if (!value)
     {
         id rawValue = [self.document propertyForKey:property];
-        if ([rawValue isKindOfClass: [NSString class]])
-            value = [MPEmbeddedObject embeddedObjectWithJSONString:rawValue embeddingObject:self embeddingKey:property];
+        if ([rawValue isKindOfClass:[NSString class]])
+        {
+            value = [MPEmbeddedObject embeddedObjectWithJSONString:rawValue
+                                                   embeddingObject:self embeddingKey:property];
+        }
+        else if ([rawValue isKindOfClass:[NSDictionary class]])
+        {
+            value = [MPEmbeddedObject embeddedObjectWithDictionary:rawValue
+                                                   embeddingObject:self embeddingKey:property];
+        }
+        else if ([rawValue isKindOfClass:[MPEmbeddedObject class]]) {}
+        else if (rawValue)
+        {
+            MPLog(@"Unable to decode embedded object from property %@ of %@", property, self.document);
+            return nil;
+        }
+
         if (value)
             [self cacheValue: value ofProperty: property changed: NO];
-        else if (rawValue)
-            MPLog(@"Unable to decode embedded object from property %@ of %@", property, self.document);
     }
     return value;
 }

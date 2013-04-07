@@ -18,7 +18,8 @@
 @property (readwrite, assign) MPManagedObjectModerationState moderationState;
 @property (readwrite, copy) NSString *prototypeID;
 
-- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller properties:(NSDictionary *)properties documentID:(NSString *)identifier;
+- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller
+                                      properties:(NSDictionary *)properties documentID:(NSString *)identifier;
 
 @end
 

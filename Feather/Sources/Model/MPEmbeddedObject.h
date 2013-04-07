@@ -56,9 +56,13 @@
 
 /** Returns an MPEmbeddedObject instance for a JSON string. 
   * The class of the object is determined by its 'objectType' property. */
-+ (id)embeddedObjectWithJSONString:(NSString *)string
-                   embeddingObject:(id<MPEmbeddingObject>)embeddingObject
-                      embeddingKey:(NSString *)key;
++ (instancetype)embeddedObjectWithJSONString:(NSString *)string
+                             embeddingObject:(id<MPEmbeddingObject>)embeddingObject
+                                embeddingKey:(NSString *)key;
+
++ (instancetype)embeddedObjectWithDictionary:(NSDictionary *)dictionary
+                             embeddingObject:(id<MPEmbeddingObject>)embeddingObject
+                                embeddingKey:(NSString *)key;
 
 @end
 

@@ -70,6 +70,8 @@
         assert(key);
         
         _embeddingKey = key;
+        _embeddingObject = embeddingObject;
+        
         _properties = [propertiesDict mutableCopy];
         _changedNames = [NSMutableSet setWithCapacity:10];
     }
@@ -82,21 +84,68 @@
     if (self = [super init])
     {
         assert(embeddingObject);
+        
         self.embeddingObject = embeddingObject;
         
         _properties = [NSMutableDictionary dictionaryWithCapacity:10];
-        _properties[@"_id"] = [[NSUUID UUID] UUIDString];
+        _properties[@"_id"] = [NSString stringWithFormat:@"%@:%@",
+                               NSStringFromClass([self class]), [[NSUUID UUID] UUIDString]];
         _properties[@"objectType"] = NSStringFromClass([self class]);
-        
+    
         _changedNames = [NSMutableSet setWithCapacity:10];
     }
     
     return self;
 }
 
-+ (id)embeddedObjectWithJSONString:(NSString *)string embeddingObject:(id<MPEmbeddingObject>)embeddingObject embeddingKey:(NSString *)key;
++ (instancetype)embeddedObjectWithJSONString:(NSString *)string
+                             embeddingObject:(id<MPEmbeddingObject>)embeddingObject
+                                embeddingKey:(NSString *)key
 {
-    return [[self alloc] initWithJSONString:string embeddingObject:embeddingObject embeddingKey:key];
+    if (!string) return nil;
+    
+    Class cls = nil;
+    NSDictionary *dictionary = [string objectFromJSONString];
+
+    if (self == [MPEmbeddedObject class])
+    {
+        cls = dictionary[@"objectType"] ? NSClassFromString(dictionary[@"objectType"]) : nil;
+        if (!cls) { MPLog(@"Could not decode an embedded object from:\n%@", string); return nil; }
+        assert([cls isSubclassOfClass:[MPEmbeddedObject class]]);
+    }
+    else
+    {
+        cls = self;
+        assert(cls == NSClassFromString(dictionary[@"objectType"]));
+    }
+
+    return [[cls alloc] initWithDictionary:dictionary embeddingObject:embeddingObject embeddingKey:key];
+}
+
++ (instancetype)embeddedObjectWithDictionary:(NSDictionary *)dictionary
+                             embeddingObject:(id<MPEmbeddingObject>)embeddingObject
+                                embeddingKey:(NSString *)key
+{
+    Class cls = nil;
+    
+    if (self == [MPEmbeddedObject class])
+    {
+        assert([dictionary isKindOfClass:NSDictionary.class]);
+        cls = dictionary[@"objectType"] ? NSClassFromString(dictionary[@"objectType"]) : nil;
+        if (!cls)
+        {
+            MPLog(@"Could not decode an embedded object from:\n%@", dictionary);
+            return nil;
+        }
+        assert([cls isSubclassOfClass:[MPEmbeddedObject class]]);
+    }
+    else
+    {
+        cls = self;
+        assert(cls == NSClassFromString(dictionary[@"objectType"]));
+    }
+
+    return [[cls alloc] initWithDictionary:dictionary embeddingObject:embeddingObject embeddingKey:key];
 }
 
 #pragma mark - 
@@ -200,6 +249,8 @@
     assert(_embeddingObject);
     for (NSString *propertyKey in [self.class embeddedProperties])
          [[self valueForKey:propertyKey] markNeedsNoSave];
+    
+    [_changedNames removeAllObjects];
 }
 
 #pragma mark - Accessor implementations
