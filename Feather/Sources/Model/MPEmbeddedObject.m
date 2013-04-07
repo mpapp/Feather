@@ -32,12 +32,6 @@
 
 @end
 
-@interface MPEmbeddedObject ()
-{
-    NSMutableSet *_changedNames;
-}
-@end
-
 @implementation MPEmbeddedObject
 
 + (void)initialize
@@ -73,7 +67,6 @@
         _embeddingObject = embeddingObject;
         
         _properties = [propertiesDict mutableCopy];
-        _changedNames = [NSMutableSet setWithCapacity:10];
     }
     
     return self;
@@ -91,8 +84,6 @@
         _properties[@"_id"] = [NSString stringWithFormat:@"%@:%@",
                                NSStringFromClass([self class]), [[NSUUID UUID] UUIDString]];
         _properties[@"objectType"] = NSStringFromClass([self class]);
-    
-        _changedNames = [NSMutableSet setWithCapacity:10];
     }
     
     return self;
@@ -150,11 +141,6 @@
 
 #pragma mark - 
 
-- (NSMutableSet *)changedNames
-{
-    return _changedNames;
-}
-
 - (id)getValueOfProperty:(NSString *)property
 {
     return _properties[property];
@@ -167,7 +153,6 @@
     
     assert(self.embeddingObject);
     assert(self.embeddingKey);
-    assert([[self embeddingObject] changedNames]);
     
     // FIXME: Continue from here. Infer the key the object has in its embedding object, preferably without introducing new state.
     //[self.embeddingObject.changedNames addObject:property]
@@ -179,7 +164,7 @@
     _properties[property] = value;
     _needsSave = true;
     
-    [o.changedNames addObject:self.embeddingKey];
+    [o cacheValue:value ofProperty:property changed:YES];
     [o markNeedsSave];
     
     return YES;
@@ -249,8 +234,6 @@
     assert(_embeddingObject);
     for (NSString *propertyKey in [self.class embeddedProperties])
          [[self valueForKey:propertyKey] markNeedsNoSave];
-    
-    [_changedNames removeAllObjects];
 }
 
 #pragma mark - Accessor implementations
@@ -368,12 +351,20 @@
 
 - (void)setModel:(CouchModel *)model forProperty:(NSString *)property
 {
-    if (_properties[property] &&
-        ([_properties[property] isEqualToString:model.document.documentID] ||
-         !(_properties[property] && !model))) return;
-        
-    assert(model.document);
-    _properties[property] = model.document.documentID;
+    if (_properties[property]
+        && ([_properties[property] isEqualToString:model.document.documentID] ||
+            !(_properties[property] && !model))) return;
+    
+    if (model)
+    {
+        assert(model.document);
+        _properties[property] = model.document.documentID;
+    }
+    else
+    {
+        [_properties removeObjectForKey:property];
+    }
+    
     [self markNeedsSave];
 }
 
