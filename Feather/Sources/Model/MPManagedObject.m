@@ -693,23 +693,37 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     [self setValue:embeddedObj ofProperty:property];
 }
 
+- (MPEmbeddedObject *)decodeEmbeddedObject:(id)rawValue embeddingKey:(NSString *)key
+{
+    if ([rawValue isKindOfClass:[NSString class]])
+    {
+        return [MPEmbeddedObject embeddedObjectWithJSONString:rawValue
+                                              embeddingObject:self embeddingKey:key];
+    }
+    else if ([rawValue isKindOfClass:[NSDictionary class]])
+    {
+        return [MPEmbeddedObject embeddedObjectWithDictionary:rawValue
+                                              embeddingObject:self embeddingKey:key];
+    }
+    else return nil;
+}
+
 - (MPEmbeddedObject *)getEmbeddedObjectProperty:(NSString *)property
 {
     id value = [self.properties objectForKey: property];
     if (!value)
     {
         id rawValue = [self.document propertyForKey:property];
-        if ([rawValue isKindOfClass:[NSString class]])
+        
+        if ([rawValue isKindOfClass:[NSString class]]
+            || [rawValue isKindOfClass:[NSDictionary class]])
         {
-            value = [MPEmbeddedObject embeddedObjectWithJSONString:rawValue
-                                                   embeddingObject:self embeddingKey:property];
+            value = [self decodeEmbeddedObject:rawValue embeddingKey:property];
         }
-        else if ([rawValue isKindOfClass:[NSDictionary class]])
+        else if ([rawValue isKindOfClass:[MPEmbeddedObject class]])
         {
-            value = [MPEmbeddedObject embeddedObjectWithDictionary:rawValue
-                                                   embeddingObject:self embeddingKey:property];
+            value = rawValue;
         }
-        else if ([rawValue isKindOfClass:[MPEmbeddedObject class]]) { value = rawValue; }
         else if (rawValue)
         {
             MPLog(@"Unable to decode embedded object from property %@ of %@", property, self.document);
@@ -723,12 +737,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
             [self cacheValue:value ofProperty:property changed:NO];
     }
     
-    // can be a NSDictionary because
-    // -setValuesForPropertiesWithDictionary:(NSDictionary *)keyedValues is not embedded type aware
+    // can be a NSDictionary or NSString still here because
+    // -setValuesForPropertiesWithDictionary:(NSDictionary *)keyedValues
+    // is not embedded type aware and value externalization can save a string.
     // TODO: consider better implementation.
-    if ([value isKindOfClass:[NSDictionary class]])
+    else if ([value isKindOfClass:[NSString class]]
+             || [value isKindOfClass:[NSDictionary class]])
     {
-        value = [MPEmbeddedObject embeddedObjectWithDictionary:value embeddingObject:self embeddingKey:property];
+        value = [self decodeEmbeddedObject:value embeddingKey:property];
         [self cacheValue:value ofProperty:property changed:NO];
     }
     assert(!value

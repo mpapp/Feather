@@ -101,13 +101,19 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
              forManagedObjectsOfClass:[self managedObjectClass]
                             hasAdded:
              ^(MPManagedObjectsController *_self, NSNotification *notification)
-            { [_self hasAddedManagedObject:notification.object]; }
+            {
+                [_self hasAddedManagedObject:notification.object];
+            }
             hasUpdated:
              ^(MPManagedObjectsController *_self, NSNotification *notification)
-            { [_self hasUpdatedManagedObject:notification.object]; }
+            {
+                [_self hasUpdatedManagedObject:notification.object];
+            }
             hasRemoved:
              ^(MPManagedObjectsController *_self, NSNotification *notification)
-            { [_self hasRemovedManagedObject:notification.object]; }];
+            {
+                [_self hasRemovedManagedObject:notification.object];
+            }];
         }
         
         [self loadBundledResources];
@@ -582,13 +588,15 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     
     NSNotificationCenter *nc = [_packageController notificationCenter]; assert(nc);
     
-    [nc postNotificationName:
-     [NSNotificationCenter notificationNameForRecentChangeOfType:MPChangeTypeAdd
-                                             forManagedObjectClass:[object class]] object:object];
+    NSString *recentChange = [NSNotificationCenter notificationNameForRecentChangeOfType:MPChangeTypeAdd
+                                                                   forManagedObjectClass:[object class]];
     
-    [nc postNotificationName:
-        [NSNotificationCenter notificationNameForPastChangeOfType:MPChangeTypeAdd
-                                              forManagedObjectClass:[object class]] object:object];
+    NSString *pastChange = [NSNotificationCenter notificationNameForPastChangeOfType:MPChangeTypeAdd
+                                                               forManagedObjectClass:[object class]];
+
+    [nc postNotificationName:recentChange object:object];
+    
+    [nc postNotificationName:pastChange object:object];
     
     if ([[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])
         [[self.packageController delegate] updateChangeCount:NSChangeDone];
@@ -602,9 +610,12 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     MPLog(@"Did change object %@", object);
     NSNotificationCenter *nc = [_packageController notificationCenter]; assert(nc);
     
-    [nc postNotificationName:[NSNotificationCenter notificationNameForRecentChangeOfType:MPChangeTypeUpdate forManagedObjectClass:[object class]] object:object];
+    NSString *recentChange = [NSNotificationCenter notificationNameForRecentChangeOfType:MPChangeTypeUpdate forManagedObjectClass:[object class]];
+    NSString *pastChange = [NSNotificationCenter notificationNameForPastChangeOfType:MPChangeTypeUpdate forManagedObjectClass:[object class]];
     
-    [nc postNotificationName:[NSNotificationCenter notificationNameForPastChangeOfType:MPChangeTypeUpdate forManagedObjectClass:[object class]] object:object];
+    [nc postNotificationName:recentChange object:object];
+    
+    [nc postNotificationName:pastChange object:object];
     
     if ([[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])
         [[self.packageController delegate] updateChangeCount:NSChangeDone];
