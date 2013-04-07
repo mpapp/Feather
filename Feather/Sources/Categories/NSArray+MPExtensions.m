@@ -91,6 +91,15 @@
     return array;
 }
 
+- (void)matchingValueForKey:(NSString *)key value:(void(^)(BOOL valueMatches, id value))valueBlock
+{
+    NSArray *values = [self valueForKey:key];
+    NSSet *valueSet = [NSSet setWithArray:values];
+    
+    if (valueSet.count == 0 || valueSet.count > 1) { valueBlock(NO, nil); return; }
+    else if (valueSet.count == 1) { valueBlock(YES, [valueSet anyObject]); return; }
+}
+
 @end
 
 

@@ -33,6 +33,8 @@ typedef enum MPValueToggleResult
 
 - (NSArray *)arrayByRemovingObject:(id)obj;
 
+- (void)matchingValueForKey:(NSString *)key value:(void(^)(BOOL valueMatches, id value))valueBlock;
+
 @end
 
 
