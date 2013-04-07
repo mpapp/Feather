@@ -260,7 +260,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     // FIXME: race condition on concurrent saves (could set needsSave to false on an embedded key too early)
     [oper onCompletion:^{
         for (NSString *propertyKey in [[self class] embeddedProperties])
-            [[self valueForKey:propertyKey] setNeedsSave:false];
+        {
+            MPEmbeddedObject *embeddedObj = [self valueForKey:propertyKey];
+            assert(!embeddedObj
+                   || [embeddedObj isKindOfClass:MPEmbeddedObject.class]);
+            [embeddedObj setNeedsSave:false];
+        }
     }];
     
     return oper;
@@ -681,13 +686,16 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     assert(!embeddedObj.embeddingKey
            || [embeddedObj.embeddingKey isEqualToString:property]);
     
+    assert(!embeddedObj
+           ||[embeddedObj isKindOfClass:[MPEmbeddedObject class]]);
+    
     embeddedObj.embeddingKey = property;
     [self setValue:embeddedObj ofProperty:property];
 }
 
 - (MPEmbeddedObject *)getEmbeddedObjectProperty:(NSString *)property
 {
-    MPEmbeddedObject *value = [self.properties objectForKey: property];
+    id value = [self.properties objectForKey: property];
     if (!value)
     {
         id rawValue = [self.document propertyForKey:property];
@@ -701,16 +709,31 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
             value = [MPEmbeddedObject embeddedObjectWithDictionary:rawValue
                                                    embeddingObject:self embeddingKey:property];
         }
-        else if ([rawValue isKindOfClass:[MPEmbeddedObject class]]) {}
+        else if ([rawValue isKindOfClass:[MPEmbeddedObject class]]) { value = rawValue; }
         else if (rawValue)
         {
             MPLog(@"Unable to decode embedded object from property %@ of %@", property, self.document);
             return nil;
         }
 
+        assert(!value
+               || [value isKindOfClass:[MPEmbeddedObject class]]);
+        
         if (value)
-            [self cacheValue: value ofProperty: property changed: NO];
+            [self cacheValue:value ofProperty:property changed:NO];
     }
+    
+    // can be a NSDictionary because
+    // -setValuesForPropertiesWithDictionary:(NSDictionary *)keyedValues is not embedded type aware
+    // TODO: consider better implementation.
+    if ([value isKindOfClass:[NSDictionary class]])
+    {
+        value = [MPEmbeddedObject embeddedObjectWithDictionary:value embeddingObject:self embeddingKey:property];
+        [self cacheValue:value ofProperty:property changed:NO];
+    }
+    assert(!value
+           || [value isKindOfClass:[MPEmbeddedObject class]]);
+    
     return value;
 }
 
