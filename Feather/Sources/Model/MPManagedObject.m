@@ -166,6 +166,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return moClass;
 }
 
++ (NSString *)humanReadableName
+{
+    NSString *className = NSStringFromClass(self);
+    return [[className componentsMatchedByRegex:@"MP%@" capture:1] firstObject];
+}
+
 - (NSString *)idForNewDocumentInDatabase:(CouchDatabase *)db
 {
 #ifdef DEBUG

@@ -114,6 +114,9 @@ typedef enum MPManagedObjectModerationState
 
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID;
 
+/** Human readable name for the type */
++ (NSString *)humanReadableName;
+
 /** The pasteboard representation type name for the object. Can be overloaded by subclasses which wish to use a different representation type than what MPManagedObject provides. */
 + (NSString *)pasteboardTypeName;
 
