@@ -71,6 +71,8 @@ typedef enum MPManagedObjectsControllerErrorCode
   * There should not be multiple MPManagedObjectsControllers returning YES for any given document dictionary. */
 - (BOOL)managesDocumentWithDictionary:(NSDictionary *)couchDocumentDict;
 
+- (BOOL)managesObjectsOfClass:(Class)class;
+
 /** @return A map block emitting [_id, nil] for all documents managed by the controller. */
 - (TDMapBlock)allObjectsBlock;
 

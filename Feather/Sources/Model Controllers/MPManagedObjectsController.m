@@ -239,6 +239,11 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     return [self.managedObjectSubclasses containsObject:objectType];
 }
 
+- (BOOL)managesObjectsOfClass:(Class)class
+{
+    return [self.managedObjectSubclasses containsObject:NSStringFromClass(class)];
+}
+
 - (TDMapBlock)allObjectsBlock
 {
     return ^(NSDictionary *doc, TDMapEmitBlock emit)
