@@ -91,7 +91,7 @@
     return array;
 }
 
-- (void)matchingValueForKey:(NSString *)key value:(void(^)(BOOL valueMatches, id value))valueBlock
+- (void)matchingValueForKey:(NSString *)key value:(void(^)(const BOOL valueMatches, const id value))valueBlock
 {
     NSArray *values = [self valueForKey:key];
     NSSet *valueSet = [NSSet setWithArray:values];
