@@ -19,6 +19,8 @@
 
 @property (readonly) NSInteger priority;
 
+@property (readonly, weak) id packageController;
+
 - (id)save;
 
 @end
