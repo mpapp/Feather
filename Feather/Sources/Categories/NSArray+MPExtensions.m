@@ -47,6 +47,14 @@
     return matchingObj;
 }
 
+- (NSArray *)filteredArrayMatching:(BOOL(^)(id evalutedObject))patternBlock
+{
+    // FIXME: Implement without requiring a temporary NSPredicate object
+    return [self filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        return patternBlock(evaluatedObject);
+    }]];
+}
+
 - (NSMutableArray *)mutableDeepContainerCopy
 {
     NSMutableArray *ret = [[NSMutableArray alloc] initWithCapacity:[self count]];
@@ -98,6 +106,12 @@
     
     if (valueSet.count == 0 || valueSet.count > 1) { valueBlock(NO, nil); return; }
     else if (valueSet.count == 1) { valueBlock(YES, [valueSet anyObject]); return; }
+}
+
+- (NSArray *)subarrayFromIndex:(NSUInteger)i
+{
+    assert(i < self.count);
+	return [self subarrayWithRange:NSMakeRange(i, self.count - i)];
 }
 
 @end

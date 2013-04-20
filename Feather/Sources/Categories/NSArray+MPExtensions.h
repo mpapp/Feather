@@ -25,6 +25,7 @@ typedef enum MPValueToggleResult
 - (id)firstObject;
 - (id)firstObjectMatching:(BOOL(^)(id evalutedObject))patternBlock;
 - (id)firstObjectMatching:(BOOL(^)(id evalutedObject))patternBlock index:(NSUInteger *)index;
+- (NSArray *)filteredArrayMatching:(BOOL(^)(id evalutedObject))patternBlock;
 
 - (NSMutableArray *)mutableDeepContainerCopy;
 
@@ -32,6 +33,8 @@ typedef enum MPValueToggleResult
 - (BOOL)allObjectsAreSubclassesOf:(Class)class;
 
 - (NSArray *)arrayByRemovingObject:(id)obj;
+
+- (NSArray *)subarrayFromIndex:(NSUInteger)i;
 
 - (void)matchingValueForKey:(NSString *)key value:(void(^)(BOOL valueMatches, id value))valueBlock;
 
