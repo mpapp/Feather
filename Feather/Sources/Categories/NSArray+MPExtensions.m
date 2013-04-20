@@ -114,6 +114,12 @@
 	return [self subarrayWithRange:NSMakeRange(i, self.count - i)];
 }
 
+// http://stackoverflow.com/questions/8569388/nsarray-of-united-arrays
+-(NSArray *)arrayByFlatteningArray
+{
+    return [self valueForKeyPath:@"@unionOfArrays.self"];
+}
+
 @end
 
 

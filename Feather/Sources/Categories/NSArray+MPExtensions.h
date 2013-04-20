@@ -36,6 +36,8 @@ typedef enum MPValueToggleResult
 
 - (NSArray *)subarrayFromIndex:(NSUInteger)i;
 
+- (NSArray *)arrayByFlatteningArray;
+
 - (void)matchingValueForKey:(NSString *)key value:(void(^)(BOOL valueMatches, id value))valueBlock;
 
 @end

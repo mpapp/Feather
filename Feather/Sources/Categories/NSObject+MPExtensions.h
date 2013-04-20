@@ -30,4 +30,7 @@ extern inline id MPNilToObject(id object, id defaultObject);
 
 + (NSArray *)classesMatchingPattern:(BOOL(^)(Class cls))patternBlock;
 
+/** -matchingValueForKey:value: defined also on NSArray: allows treating single and multiple selections in the same way. */
+- (void)matchingValueForKey:(NSString *)key value:(void(^)(const BOOL valueMatches, const id value))valueBlock;
+
 @end

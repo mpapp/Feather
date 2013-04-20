@@ -165,6 +165,10 @@ inline id MPNilToObject(id object, id defaultObject)
     return propertyNames;
 }
 
+- (void)matchingValueForKey:(NSString *)key value:(void(^)(const BOOL valueMatches, const id value))valueBlock
+{
+    valueBlock(YES, [self valueForKey:key]);
+}
 
 #pragma mark -
 
