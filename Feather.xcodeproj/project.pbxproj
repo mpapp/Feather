@@ -22,8 +22,10 @@
 		5F293C00170E1935001C2111 /* MPExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293BFD170E191F001C2111 /* MPExtensionTests.m */; };
 		5F293C07170E2980001C2111 /* MPEmbeddedObjectsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */; };
 		5F293C1F170E3B62001C2111 /* MPPlaceHolding.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5F73DE88170C41D000DC411A /* MPCategorizableMixin.h in Resources */ = {isa = PBXBuildFile; fileRef = 5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */; };
-		5F73DE89170C41D000DC411A /* MPCategorizableMixin.m in Resources */ = {isa = PBXBuildFile; fileRef = 5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */; };
+		5F3D380A1725D8A600D19D7C /* MPCategorizableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D38081725D8A600D19D7C /* MPCategorizableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D38091725D8A600D19D7C /* MPCategorizableMixin.m */; };
+		5F3D380E1725D8E000D19D7C /* MPBundlableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D380C1725D8E000D19D7C /* MPBundlableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F3D380F1725D8E000D19D7C /* MPBundlableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D380D1725D8E000D19D7C /* MPBundlableMixin.m */; };
 		5F73DEA7170C6BA300DC411A /* MPShoeboxPackageController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FCC021F170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FCC0220170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */; };
@@ -299,8 +301,10 @@
 		5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPEmbeddedObjectsTests.m; sourceTree = "<group>"; };
 		5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPPlaceHolding.h; path = Sources/Model/MPPlaceHolding.h; sourceTree = "<group>"; };
 		5F293C20170E45D4001C2111 /* MPEmbeddedObject+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPEmbeddedObject+Protected.h"; path = "Sources/Model/MPEmbeddedObject+Protected.h"; sourceTree = "<group>"; };
-		5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCategorizableMixin.h; path = ../../../Manuscripts/Sources/Model/MPCategorizableMixin.h; sourceTree = "<group>"; };
-		5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCategorizableMixin.m; path = ../../../Manuscripts/Sources/Model/MPCategorizableMixin.m; sourceTree = "<group>"; };
+		5F3D38081725D8A600D19D7C /* MPCategorizableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCategorizableMixin.h; path = Sources/Model/MPCategorizableMixin.h; sourceTree = "<group>"; };
+		5F3D38091725D8A600D19D7C /* MPCategorizableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCategorizableMixin.m; path = Sources/Model/MPCategorizableMixin.m; sourceTree = "<group>"; };
+		5F3D380C1725D8E000D19D7C /* MPBundlableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPBundlableMixin.h; path = Sources/Model/MPBundlableMixin.h; sourceTree = "<group>"; };
+		5F3D380D1725D8E000D19D7C /* MPBundlableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPBundlableMixin.m; path = Sources/Model/MPBundlableMixin.m; sourceTree = "<group>"; };
 		5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPShoeboxPackageController+Protected.h"; path = "Sources/Database Packages/MPShoeboxPackageController+Protected.h"; sourceTree = "<group>"; };
 		5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+MPManagedObjectExtensions.h"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.h"; sourceTree = "<group>"; };
 		5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MPManagedObjectExtensions.m"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.m"; sourceTree = "<group>"; };
@@ -709,10 +713,12 @@
 		5FDB49811708CF9A00E82856 /* Mixins */ = {
 			isa = PBXGroup;
 			children = (
+				5F3D380C1725D8E000D19D7C /* MPBundlableMixin.h */,
+				5F3D380D1725D8E000D19D7C /* MPBundlableMixin.m */,
+				5F3D38081725D8A600D19D7C /* MPCategorizableMixin.h */,
+				5F3D38091725D8A600D19D7C /* MPCategorizableMixin.m */,
 				5FDB3A3C1707992B0049EBB5 /* MPManagedObject+Mixin.h */,
 				5FDB3A3D1707992B0049EBB5 /* MPManagedObject+Mixin.m */,
-				5F73DE86170C41D000DC411A /* MPCategorizableMixin.h */,
-				5F73DE87170C41D000DC411A /* MPCategorizableMixin.m */,
 				5F293B85170CAD53001C2111 /* MPCacheable.h */,
 				5F293B99170CAD65001C2111 /* MPCacheableMixin.h */,
 				5F293B9A170CAD65001C2111 /* MPCacheableMixin.m */,
@@ -775,6 +781,8 @@
 				5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */,
 				5F1850261711707800079040 /* MPExtensions.h in Headers */,
 				5F18505E1711B13900079040 /* MPEmbeddedObject+Protected.h in Headers */,
+				5F3D380A1725D8A600D19D7C /* MPCategorizableMixin.h in Headers */,
+				5F3D380E1725D8E000D19D7C /* MPBundlableMixin.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1007,8 +1015,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FDB33111705CB950049EBB5 /* InfoPlist.strings in Resources */,
-				5F73DE88170C41D000DC411A /* MPCategorizableMixin.h in Resources */,
-				5F73DE89170C41D000DC411A /* MPCategorizableMixin.m in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1077,6 +1083,8 @@
 				5F293BF6170DFD4E001C2111 /* UICKeyChainStore.m in Sources */,
 				5FDCF2EF17104A710039DAED /* MPFeatherTestSuite.m in Sources */,
 				5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */,
+				5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */,
+				5F3D380F1725D8E000D19D7C /* MPBundlableMixin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
