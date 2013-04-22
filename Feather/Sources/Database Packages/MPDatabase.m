@@ -115,7 +115,15 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
                  if (managedObjectTypeIncluded)
                      idHasValidPrefix = [newRevision.docID hasPrefix:newRevision.properties.managedObjectType];
                  
-                 return managedObjectTypeIncluded && idHasValidPrefix;
+                 if (managedObjectTypeIncluded) return idHasValidPrefix;
+                 
+                 if (!idHasValidPrefix)
+                     idHasValidPrefix = [newRevision.docID hasPrefix:@"MPMetadata"];
+                 
+                 if (!idHasValidPrefix)
+                     idHasValidPrefix = [newRevision.docID hasPrefix:@"MPLocalMetadata"];
+                 
+                 return idHasValidPrefix;
              }];
         }
     }

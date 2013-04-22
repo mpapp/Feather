@@ -231,7 +231,7 @@ static dispatch_once_t onceToken;
 - (NSString *)pushFilterNameForDatabaseNamed:(NSString *)dbName
 {
     if ([dbName isEqualToString:[[self class] primaryDatabaseName]])
-        return @"shared";
+        return [[self class] primaryDatabaseName];
     
     return nil;
 }
