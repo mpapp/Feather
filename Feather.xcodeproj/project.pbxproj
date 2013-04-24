@@ -114,6 +114,9 @@
 		5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */; };
 		5FDCF34D1710CA600039DAED /* MPModelFoundationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */; };
+		D932296417268E37006880C2 /* NSTask+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = D932296217268E37006880C2 /* NSTask+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D932296517268E37006880C2 /* NSTask+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D932296317268E37006880C2 /* NSTask+MPExtensions.m */; };
+		D932296617268E37006880C2 /* NSTask+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D932296317268E37006880C2 /* NSTask+MPExtensions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -402,6 +405,8 @@
 		5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPEmbeddedPropertyContainingMixin.m; path = Sources/Model/MPEmbeddedPropertyContainingMixin.m; sourceTree = "<group>"; };
 		5FDCF34B1710CA600039DAED /* MPModelFoundationTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPModelFoundationTests.h; sourceTree = "<group>"; };
 		5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPModelFoundationTests.m; sourceTree = "<group>"; };
+		D932296217268E37006880C2 /* NSTask+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTask+MPExtensions.h"; path = "Sources/Categories/NSTask+MPExtensions.h"; sourceTree = "<group>"; };
+		D932296317268E37006880C2 /* NSTask+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTask+MPExtensions.m"; path = "Sources/Categories/NSTask+MPExtensions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -605,6 +610,8 @@
 				5FDB383C1707038F0049EBB5 /* NSData+MPExtensions.m */,
 				5F28A030170A3310000D61B6 /* NSApplication+MPExtensions.h */,
 				5F28A031170A3310000D61B6 /* NSApplication+MPExtensions.m */,
+				D932296217268E37006880C2 /* NSTask+MPExtensions.h */,
+				D932296317268E37006880C2 /* NSTask+MPExtensions.m */,
 			);
 			name = "Cocoa Categories";
 			sourceTree = "<group>";
@@ -790,6 +797,7 @@
 				5F293BF5170DFD4E001C2111 /* UICKeyChainStore.h in Headers */,
 				5F293C1F170E3B62001C2111 /* MPPlaceHolding.h in Headers */,
 				5FDCF2D8171043A80039DAED /* MPFeatherTestSuite.h in Headers */,
+				D932296417268E37006880C2 /* NSTask+MPExtensions.h in Headers */,
 				5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */,
 				5F1850261711707800079040 /* MPExtensions.h in Headers */,
 				5F18505E1711B13900079040 /* MPEmbeddedObject+Protected.h in Headers */,
@@ -1101,6 +1109,7 @@
 				5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */,
 				5F3D380F1725D8E000D19D7C /* MPBundlableMixin.m in Sources */,
 				5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */,
+				D932296517268E37006880C2 /* NSTask+MPExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1113,6 +1122,7 @@
 				5F293C07170E2980001C2111 /* MPEmbeddedObjectsTests.m in Sources */,
 				5FDCF2EE171045990039DAED /* MPFeatherTestClasses.m in Sources */,
 				5FDCF34D1710CA600039DAED /* MPModelFoundationTests.m in Sources */,
+				D932296617268E37006880C2 /* NSTask+MPExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
