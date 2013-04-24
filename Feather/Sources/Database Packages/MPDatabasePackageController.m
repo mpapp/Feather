@@ -19,6 +19,8 @@
 #import "NSString+MPExtensions.h"
 #import "NSObject+MPExtensions.h"
 
+#import "MPRootSection.h"
+
 #import "JSONKit.h"
 
 #import "RegexKitLite.h"
@@ -181,6 +183,25 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         {
             [self startListener];
         }
+        
+        // populate root section properties
+        NSMutableArray *rootSections = [NSMutableArray arrayWithCapacity:[[self class] orderedRootSectionClassNames].count];
+        for (NSString *rootSectionClassName in [[self class] orderedRootSectionClassNames])
+        {
+            Class rootSectionCls = NSClassFromString(rootSectionClassName);
+            assert([rootSectionCls isSubclassOfClass:[MPRootSection class]]);
+            
+            // "MPManuscriptRootSection" => "ManucriptRootSection"
+            NSString *classPrefixlessStr = [rootSectionClassName stringByReplacingOccurrencesOfRegex:@"MP" withString:@""];
+            // "ManuscriptRootSection"   => "manuscriptRootSection"
+            NSString *propertyName = [classPrefixlessStr camelCasedString];
+            
+            MPRootSection *rootSection = [[rootSectionCls alloc] initWithPackageController:self];
+            [self setValue:rootSection forKey:propertyName];
+            [rootSections addObject:rootSection];
+        }
+        
+        _rootSections = [rootSections copy];
         
         [[self class] didOpenPackage];
     }
@@ -921,5 +942,7 @@ static NSUInteger packagesOpened = 0;
 
 // default implementation is no-op because the default notification center is used.
 - (void)makeNotificationCenter { }
+
++ (NSArray *)orderedRootSectionClassNames { return nil; }
 
 @end

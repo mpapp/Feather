@@ -194,4 +194,12 @@ typedef enum MPDatabasePackageControllerErrorCode
  * @param err An error pointer. */
 - (BOOL)restoreFromSnapshotWithName:(NSString *)name error:(NSError **)err;
 
+
+@property (strong, readonly) NSArray *rootSections;
+@property (strong, readonly) NSArray *nonEmptyRootSections;
+@property (strong, readonly) NSArray *outlinerRootSections;
+
+/** Root section class names ordered in the priority order needed. */
++ (NSArray *)orderedRootSectionClassNames;
+
 @end
