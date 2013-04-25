@@ -888,6 +888,8 @@ static NSUInteger packagesOpened = 0;
                                    reason:@"View function compilation unsupported." userInfo:nil];
 }
 
++ (NSArray *)orderedRootSectionClassNames { return nil; }
+
 @end
 
 #pragma mark - Protected interface
@@ -942,7 +944,5 @@ static NSUInteger packagesOpened = 0;
 
 // default implementation is no-op because the default notification center is used.
 - (void)makeNotificationCenter { }
-
-+ (NSArray *)orderedRootSectionClassNames { return nil; }
 
 @end

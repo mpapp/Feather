@@ -15,14 +15,6 @@
 
 @class MPManuscriptsPackageController;
 
-typedef NSUInteger MPRootSectionPriority;
-extern const MPRootSectionPriority MPRootSectionPriorityManuscript;
-extern const MPRootSectionPriority MPRootSectionPriorityFigures;
-extern const MPRootSectionPriority MPRootSectionPriorityTables;
-extern const MPRootSectionPriority MPRootSectionPriorityEquations;
-extern const MPRootSectionPriority MPRootSectionPriorityReferences;
-extern const MPRootSectionPriority MPRootSectionPriorityContributors;
-
 /** MPRootSection is an abstract base class for the root section objects (Sections, Authors, etc) in the application source list. */
 @interface MPRootSection : NSObject <MPTreeItem, MPManagedObjectRecentChangeObserver, MPCacheable>
 

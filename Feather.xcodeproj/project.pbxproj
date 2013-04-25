@@ -29,7 +29,7 @@
 		5F6857A01727C38900FE06B0 /* MPVirtualSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579D1727C38900FE06B0 /* MPVirtualSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F68579E1727C38900FE06B0 /* MPVirtualSection.m */; };
 		5F6857A21727C38900FE06B0 /* MPVirtualSection+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579F1727C38900FE06B0 /* MPVirtualSection+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5F6857B71727C40300FE06B0 /* MPTitled.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857B61727C40300FE06B0 /* MPTitled.h */; };
+		5F6857B71727C40300FE06B0 /* MPTitled.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857B61727C40300FE06B0 /* MPTitled.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857DA17287F0800FE06B0 /* MPRootSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857D817287F0800FE06B0 /* MPRootSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857DB17287F0800FE06B0 /* MPRootSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6857D917287F0800FE06B0 /* MPRootSection.m */; };
 		5F6857F017287F3100FE06B0 /* MPRootSection+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
