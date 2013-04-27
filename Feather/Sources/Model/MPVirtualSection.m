@@ -147,6 +147,11 @@
 
 - (NSString *)title { return _wrappedObject.title ? _wrappedObject.title : @""; }
 
+- (NSImage *)thumbnailImage
+{
+    return [_wrappedObject thumbnailImage];
+}
+
 - (NSString *)placeholderString { return _wrappedObject.placeholderString; }
 - (BOOL)isEditable { return YES; }
 
