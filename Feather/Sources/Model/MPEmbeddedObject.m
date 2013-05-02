@@ -149,7 +149,8 @@
 - (BOOL)setValue:(id)value ofProperty:(NSString *)property
 {
     id val = [self getValueOfProperty:property];
-    if ([val isEqualToValue:value]) return YES;
+    //if ([val isEqualToValue:value]) return YES;
+    if ([val isEqual:value]) return YES;
     
     assert(self.embeddingObject);
     assert(self.embeddingKey);
