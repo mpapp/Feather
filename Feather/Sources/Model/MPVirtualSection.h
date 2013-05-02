@@ -11,6 +11,7 @@
 #import "MPPlaceHolding.h"
 #import "Feather.h"
 #import "MPTreeItem.h"
+#import "MPThumbnailable.h"
 #import "MPCacheableMixin.h"
 
 #import "MPTitled.h"
@@ -36,7 +37,7 @@
 @interface MPObjectWrappingSection : MPVirtualSection
 
 @property (readonly, copy) NSString *extendedTitle;
-@property (readonly, strong) MPManagedObject<MPTitled, MPPlaceHolding> *wrappedObject;
+@property (readonly, strong) MPManagedObject<MPTitled, MPPlaceHolding, MPThumbnailable> *wrappedObject;
 
 - (instancetype)initWithParent:(id<MPTreeItem>)parentItem
                  wrappedObject:(MPManagedObject<MPTitled, MPPlaceHolding> *)obj;

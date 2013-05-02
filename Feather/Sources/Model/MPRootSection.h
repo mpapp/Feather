@@ -13,16 +13,6 @@
 #import <Feather/NSNotificationCenter+MPExtensions.h>
 #import <Feather/MPCacheable.h>
 
-@class MPManuscriptsPackageController;
-
-typedef NSUInteger MPRootSectionPriority;
-extern const MPRootSectionPriority MPRootSectionPriorityManuscript;
-extern const MPRootSectionPriority MPRootSectionPriorityFigures;
-extern const MPRootSectionPriority MPRootSectionPriorityTables;
-extern const MPRootSectionPriority MPRootSectionPriorityEquations;
-extern const MPRootSectionPriority MPRootSectionPriorityReferences;
-extern const MPRootSectionPriority MPRootSectionPriorityContributors;
-
 /** MPRootSection is an abstract base class for the root section objects (Sections, Authors, etc) in the application source list. */
 @interface MPRootSection : NSObject <MPTreeItem, MPManagedObjectRecentChangeObserver, MPCacheable>
 
@@ -31,7 +21,7 @@ extern const MPRootSectionPriority MPRootSectionPriorityContributors;
 
 /** Creates a new MPRootSection. MPRootSection is abstract, do not allocate them but its subclasses.
  @param packageController The database with which to associate the root section with. */
-- (instancetype)initWithPackageController:(MPManuscriptsPackageController *)packageController;
+- (instancetype)initWithPackageController:(MPDatabasePackageController *)packageController;
 
 /** The objects the section represents in the data model. This is synonymous to -children, though subclasses can override if the items presented in a tree for the object (-children) should not correspond to the objects presented for the object when viewed in detail (-representedObjects). */
 @property (readonly, strong) NSArray *representedObjects;
