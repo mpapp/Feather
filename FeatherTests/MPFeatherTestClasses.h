@@ -26,6 +26,9 @@
 
 @property (readwrite, copy) NSString *aStringTypedProperty;
 @property (readwrite, assign) NSUInteger anUnsignedIntTypedProperty;
+
+@property (readwrite, strong) MPTestObject *embeddedManagedObjectProperty;
+
 @end
 
 @interface MPTestObjectsController : MPManagedObjectsController

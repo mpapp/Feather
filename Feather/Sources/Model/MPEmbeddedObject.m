@@ -225,6 +225,7 @@
 - (void)markNeedsSave
 {
     assert(_embeddingObject);
+    self.needsSave = true;
     [_embeddingObject markNeedsSave];
 }
 
@@ -373,7 +374,7 @@
 {
     if ([propertyClass isSubclassOfClass:[CouchModel class]])
     {
-        return imp_implementationWithBlock(^(MPEmbeddedObject *receiver, CouchModel* value)
+        return imp_implementationWithBlock(^(MPEmbeddedObject *receiver, CouchModel *value)
         {
             [receiver setModel:value forProperty:property];
         });
