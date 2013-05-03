@@ -30,15 +30,15 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Feather/Sources/Model/MPEmbeddedObject.m"
-         timestampString = "389259903.594669"
+         timestampString = "389264233.21944"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "375"
-         endingLineNumber = "375"
+         startingLineNumber = "376"
+         endingLineNumber = "376"
          landmarkName = "+impForSetterOfProperty:ofClass:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Feather/Sources/Model/MPEmbeddedObject.m"
-         timestampString = "389259903.594669"
+         timestampString = "389264233.21944"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "407"
-         endingLineNumber = "407"
+         startingLineNumber = "408"
+         endingLineNumber = "408"
          landmarkName = "+impForSetterOfProperty:ofType:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -60,11 +60,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Feather/Sources/Model/MPEmbeddedObject.m"
-         timestampString = "389259903.594669"
+         timestampString = "389264233.21944"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "389"
-         endingLineNumber = "389"
+         startingLineNumber = "390"
+         endingLineNumber = "390"
          landmarkName = "+impForGetterOfProperty:ofType:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -82,15 +82,15 @@
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
-         shouldBeEnabled = "No"
+         shouldBeEnabled = "Yes"
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Feather/Sources/Model/MPEmbeddedObject.m"
-         timestampString = "389259903.594669"
+         timestampString = "389264233.21944"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "379"
-         endingLineNumber = "379"
+         startingLineNumber = "380"
+         endingLineNumber = "380"
          landmarkName = "+impForSetterOfProperty:ofClass:"
          landmarkType = "5">
       </FileBreakpoint>

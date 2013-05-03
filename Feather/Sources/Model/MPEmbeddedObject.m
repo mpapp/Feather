@@ -354,8 +354,9 @@
 - (void)setModel:(CouchModel *)model forProperty:(NSString *)property
 {
     if (_properties[property]
-        && ([_properties[property] isEqualToString:model.document.documentID] ||
-            !(_properties[property] && !model))) return;
+        && ([_properties[property] isEqualToString:model.document.documentID]
+            ||
+            (!_properties[property] && !model))) return;
     
     if (model)
     {
