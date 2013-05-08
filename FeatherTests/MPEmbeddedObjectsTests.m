@@ -21,6 +21,10 @@
     
     MPTestObject *obj = [[MPTestObject alloc] initWithNewDocumentForController:tc];
     
+    obj.title = @"foo";
+    obj.desc = @"bar";
+    obj.contents = @"foobar";
+    
     obj.embeddedTestObject = [[MPEmbeddedTestObject alloc] initWithEmbeddingObject:obj];
     NSLog(@"%@", [obj propertiesToSave]);
     NSLog(@"%@", obj.document.properties);

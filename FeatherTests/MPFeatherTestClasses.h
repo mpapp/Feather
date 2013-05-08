@@ -9,11 +9,17 @@
 #import <Foundation/Foundation.h>
 #import "Feather.h"
 
+#import "MPTitled.h"
+
 @class MPEmbeddedTestObject;
 
-@interface MPTestObject : MPManagedObject
+@interface MPTestObject : MPManagedObject <MPTitled>
 
 @property (readwrite, strong) MPEmbeddedTestObject *embeddedTestObject;
+
+@property (readwrite, copy) NSString *title;
+@property (readwrite, copy) NSString *desc;
+@property (readwrite, copy) NSString *contents;
 
 @end
 

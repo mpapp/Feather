@@ -37,12 +37,18 @@
     return tpc;
 }
 
+- (BOOL)indexesObjectFullTextContents { return YES; }
+
 + (NSString *)primaryDatabaseName { return @"shared"; }
 
 @end
 
 @implementation MPTestObject
 @dynamic embeddedTestObject;
+@dynamic title, desc, contents;
+
++ (NSArray *)indexablePropertyKeys { return @[@"title", @"desc", @"contents"]; }
+
 @end
 
 @implementation MPMoreSpecificTestObject

@@ -58,24 +58,25 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
             
             [self.packageController.notificationCenter
              addRecentChangeObserver:self forManagedObjectsOfClass:cls
-             hasAdded:
-             ^(MPSearchIndexController *_self, NSNotification *notification)
+             hasAdded:^(MPSearchIndexController *_self, NSNotification *notification)
             {
-                dispatch_async(_self.indexQueue, ^{
+                dispatch_sync(_self.indexQueue, ^{
                     NSError *err = nil;
                     if (![_self indexManagedObject:notification.object error:&err])
                         _self.lastError = err;
                 });
-            } hasUpdated:^(MPSearchIndexController *_self, NSNotification *notification)
+            }
+             hasUpdated:^(MPSearchIndexController *_self, NSNotification *notification)
             {
-                dispatch_async(_self.indexQueue, ^{
+                dispatch_sync(_self.indexQueue, ^{
                     NSError *err = nil;
                     if (![_self updateIndexForManagedObject:notification.object error:&err])
                         _self.lastError = err;
                 });
-            } hasRemoved:^(MPSearchIndexController *_self, NSNotification *notification)
+            }
+             hasRemoved:^(MPSearchIndexController *_self, NSNotification *notification)
             {
-                dispatch_async(_self.indexQueue, ^{
+                dispatch_sync(_self.indexQueue, ^{
                     NSError *err = nil;
                     if (![_self deleteManagedObjectFromIndex:notification.object error:&err])
                         _self.lastError = err;
@@ -133,6 +134,8 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
         return NO;
     }
     
+    self.searchIndexDatabase = db;
+    
     return YES;
 }
 
@@ -173,9 +176,8 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
     
     dbSuccess = [self.searchIndexDatabase
                  executeUpdate:
-                    @"INSERT INTO search_data (_id, objectType, title, desc, contents) VALUES (?, ?, ?, ?)",
-                        object.document.documentID,
-                             title, desc, tokenizedString, nil];
+                    @"INSERT INTO search_data (_id, objectType, title, desc, contents) VALUES (?, ?, ?, ?, ?)",
+                        object.document.documentID, title, desc, tokenizedString, nil];
     
     if (!dbSuccess)
     {
@@ -278,9 +280,12 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
 
 - (NSArray *)objectsWithMatchingTitle:(NSString *)title
 {
-    FMResultSet *results =
-        [self.searchIndexDatabase executeQuery:
-            @"SELECT DISTINCT _id, objectType FROM search_data WHERE title MATCH ? AND objectType = ?", title];
+    __block FMResultSet *results = nil;
+    
+    dispatch_sync(_indexQueue, ^{
+        results = [self.searchIndexDatabase executeQuery:
+             @"SELECT DISTINCT _id, objectType FROM search_data WHERE title MATCH ? AND objectType = ?", title];
+    });
     
     return [self objectsForResultSet:results];
 }
@@ -295,9 +300,13 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
 
 - (NSArray *)objectsWithMatchingDesc:(NSString *)desc
 {
-    FMResultSet *results =
-        [self.searchIndexDatabase executeQuery:
-             @"SELECT DISTINCT _id, objectType FROM search_data WHERE desc MATCH ? AND objectType = ?", desc];
+    __block FMResultSet *results = nil;
+    
+    dispatch_sync(_indexQueue, ^{
+        results = [self.searchIndexDatabase executeQuery:
+            @"SELECT DISTINCT _id, objectType FROM search_data WHERE desc MATCH ? AND objectType = ?", desc];
+    });
+    
     
     return [self objectsForResultSet:results];
 }
@@ -312,9 +321,12 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
 
 - (NSArray *)objectsWithMatchingContents:(NSString *)contents
 {
-    FMResultSet *results =
+    __block FMResultSet *results = nil;
+    
+    dispatch_sync(_indexQueue, ^{
         [self.searchIndexDatabase executeQuery:
-             @"SELECT DISTINCT _id, objectType FROM search_data WHERE contents MATCH ? AND objectType = ?", contents];
+            @"SELECT DISTINCT _id, objectType FROM search_data WHERE contents MATCH ? AND objectType = ?", contents];
+    });
     
     return [self objectsForResultSet:results];
 }
@@ -329,9 +341,12 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
 
 - (NSArray *)objectsMatchingQuery:(NSString *)query
 {
-    FMResultSet *results =
-        [self.searchIndexDatabase executeQuery:
-             @"SELECT DISTINCT _id, objectType FROM search_data WHERE search_data MATCH ? AND objectType = ?", query];
+    __block FMResultSet *results = nil;
+    
+    dispatch_sync(_indexQueue, ^{
+        results = [self.searchIndexDatabase executeQuery:
+                   @"SELECT DISTINCT _id, objectType FROM search_data WHERE search_data MATCH ? AND objectType = ?", query];
+    });
     
     return [self objectsForResultSet:results];
 }
