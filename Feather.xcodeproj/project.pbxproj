@@ -779,12 +779,12 @@
 		5FDB3A8117079B280049EBB5 /* Model Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				5F95F2AF17397F2900E8C845 /* Full Text Search */,
 				5FDB3A5A170799B30049EBB5 /* MPManagedObjectsController+Protected.h */,
 				5FDB3A58170799B30049EBB5 /* MPManagedObjectsController.h */,
 				5FDB3A59170799B30049EBB5 /* MPManagedObjectsController.m */,
 				5FDB3A7617079AEC0049EBB5 /* MPContributorsController.h */,
 				5FDB3A7717079AEC0049EBB5 /* MPContributorsController.m */,
+				5F95F2AF17397F2900E8C845 /* Full Text Search */,
 			);
 			name = "Model Controllers";
 			sourceTree = "<group>";
