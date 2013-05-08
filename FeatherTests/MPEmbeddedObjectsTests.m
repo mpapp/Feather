@@ -77,6 +77,17 @@
     STAssertTrue(obj.embeddedTestObject.properties[@"aStringTypedProperty"],
                  @"aStringTypedProperty is present in the embedded object's properties.");
     
+    [[obj.embeddedTestObject save] wait];
+
+    STAssertTrue(!obj.embeddedTestObject.needsSave, @"Managed object property value has been set and object doesn't need saving.");
+    obj.embeddedTestObject.embeddedManagedObjectProperty = obj;
+    STAssertTrue(obj.embeddedTestObject.needsSave, @"Managed object property value has been set and object needs saving.");
+    
+    [[obj.embeddedTestObject save] wait];
+    
+    STAssertTrue(!obj.embeddedTestObject.needsSave, @"Managed object property value has been set and object no longer needs saving.");
+
+    STAssertTrue(obj.embeddedTestObject.embeddedManagedObjectProperty == obj, @"The embedded managed property has the expected value.");
 }
 
 @end

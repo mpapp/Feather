@@ -149,7 +149,8 @@
 - (BOOL)setValue:(id)value ofProperty:(NSString *)property
 {
     id val = [self getValueOfProperty:property];
-    if ([val isEqualToValue:value]) return YES;
+    //if ([val isEqualToValue:value]) return YES;
+    if ([val isEqual:value]) return YES;
     
     assert(self.embeddingObject);
     assert(self.embeddingKey);
@@ -224,6 +225,7 @@
 - (void)markNeedsSave
 {
     assert(_embeddingObject);
+    self.needsSave = true;
     [_embeddingObject markNeedsSave];
 }
 
@@ -352,8 +354,9 @@
 - (void)setModel:(CouchModel *)model forProperty:(NSString *)property
 {
     if (_properties[property]
-        && ([_properties[property] isEqualToString:model.document.documentID] ||
-            !(_properties[property] && !model))) return;
+        && ([_properties[property] isEqualToString:model.document.documentID]
+            ||
+            (!_properties[property] && !model))) return;
     
     if (model)
     {
@@ -372,7 +375,7 @@
 {
     if ([propertyClass isSubclassOfClass:[CouchModel class]])
     {
-        return imp_implementationWithBlock(^(MPEmbeddedObject *receiver, CouchModel* value)
+        return imp_implementationWithBlock(^(MPEmbeddedObject *receiver, CouchModel *value)
         {
             [receiver setModel:value forProperty:property];
         });
