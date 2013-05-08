@@ -34,4 +34,14 @@ typedef NS_ENUM(NSInteger, MPSearchIndexControllerErrorCode) {
 - (void)indexManagedObjects:(NSArray *)objects error:(NSError **)err;
 - (BOOL)indexManagedObject:(MPManagedObject *)object error:(NSError **)err;
 
+- (NSArray *)objectsWithMatchingTitle:(NSString *)title;
+- (NSArray *)objectsWithMatchingDesc:(NSString *)desc;
+- (NSArray *)objectsWithMatchingContents:(NSString *)contents;
+- (NSArray *)objectsMatchingQuery:(NSString *)query;
+
+- (NSArray *)objectsOfManagedObjectClass:(Class)class withMatchingTitle:(NSString *)title;
+- (NSArray *)objectsOfManagedObjectClass:(Class)class withMatchingDesc:(NSString *)desc;
+- (NSArray *)objectsOfManagedObjectClass:(Class)class withMatchingContents:(NSString *)desc;
+- (NSArray *)objectsOfManagedObjectClass:(Class)class matchingQuery:(NSString *)query;
+
 @end

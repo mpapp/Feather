@@ -18,7 +18,10 @@
 #import "NSObject+MPExtensions.h"
 
 #import "MPManagedObjectsController.h"
+#import "MPDatabasePackageController.h"
 #import "NSString+MPSearchIndex.h"
+
+#import "NSArray+MPExtensions.h"
 
 #import <FMDatabase.h>
 
@@ -120,7 +123,7 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
     }
     
 	dbSuccess = [db executeUpdate:
-                    @"CREATE VIRTUAL TABLE IF NOT EXISTS search_data USING FTS4 (_id, title, desc, contents)"];
+                    @"CREATE VIRTUAL TABLE IF NOT EXISTS search_data USING FTS4 (_id, objectType, title, desc, contents)"];
     
     if (!dbSuccess)
     {
@@ -170,7 +173,7 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
     
     dbSuccess = [self.searchIndexDatabase
                  executeUpdate:
-                    @"INSERT INTO search_data (_id, title, desc, contents) VALUES (?, ?, ?, ?)",
+                    @"INSERT INTO search_data (_id, objectType, title, desc, contents) VALUES (?, ?, ?, ?)",
                         object.document.documentID,
                              title, desc, tokenizedString, nil];
     
@@ -247,6 +250,98 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
     });
     
     return success;
+}
+
+- (NSArray *)objectsForResultSet:(FMResultSet *)results
+{
+    NSMutableArray *objects = [NSMutableArray arrayWithCapacity:100];
+    while ([results hasAnotherRow])
+    {
+        [results next];
+        
+        NSString *objID = [results stringForColumn:@"_id"];
+        NSString *objType = [results stringForColumn:@"objectType"];
+        
+        Class objClass = NSClassFromString(objType);
+        MPManagedObjectsController *c = [self.packageController controllerForManagedObjectClass:objClass];
+        MPManagedObject *mo = [c objectWithIdentifier:objID];
+        
+        if (mo) [objects addObject:mo];
+        else
+        {
+            NSLog(@"WARNING! No %@ found with ID '%@'", objType, objID);
+        }
+    }
+    
+    return [objects copy];
+}
+
+- (NSArray *)objectsWithMatchingTitle:(NSString *)title
+{
+    FMResultSet *results =
+        [self.searchIndexDatabase executeQuery:
+            @"SELECT DISTINCT _id, objectType FROM search_data WHERE title MATCH ? AND objectType = ?", title];
+    
+    return [self objectsForResultSet:results];
+}
+
+- (NSArray *)objectsOfManagedObjectClass:(Class)class withMatchingTitle:(NSString *)title
+{
+    assert([class isSubclassOfClass:[MPManagedObject class]]);
+    return [[self objectsWithMatchingTitle:title] filteredArrayMatching:^BOOL(MPManagedObject *obj) {
+        return [obj isKindOfClass:class];
+    }];
+}
+
+- (NSArray *)objectsWithMatchingDesc:(NSString *)desc
+{
+    FMResultSet *results =
+        [self.searchIndexDatabase executeQuery:
+             @"SELECT DISTINCT _id, objectType FROM search_data WHERE desc MATCH ? AND objectType = ?", desc];
+    
+    return [self objectsForResultSet:results];
+}
+
+- (NSArray *)objectsOfManagedObjectClass:(Class)class withMatchingDesc:(NSString *)desc
+{
+    assert([class isSubclassOfClass:[MPManagedObject class]]);
+    return [[self objectsWithMatchingDesc:desc] filteredArrayMatching:^BOOL(MPManagedObject *obj) {
+        return [obj isKindOfClass:class];
+    }];
+}
+
+- (NSArray *)objectsWithMatchingContents:(NSString *)contents
+{
+    FMResultSet *results =
+        [self.searchIndexDatabase executeQuery:
+             @"SELECT DISTINCT _id, objectType FROM search_data WHERE contents MATCH ? AND objectType = ?", contents];
+    
+    return [self objectsForResultSet:results];
+}
+
+- (NSArray *)objectsOfManagedObjectClass:(Class)class withMatchingContents:(NSString *)desc
+{
+    assert([class isSubclassOfClass:[MPManagedObject class]]);
+    return [[self objectsWithMatchingContents:desc] filteredArrayMatching:^BOOL(MPManagedObject *obj) {
+        return [obj isKindOfClass:class];
+    }];
+}
+
+- (NSArray *)objectsMatchingQuery:(NSString *)query
+{
+    FMResultSet *results =
+        [self.searchIndexDatabase executeQuery:
+             @"SELECT DISTINCT _id, objectType FROM search_data WHERE search_data MATCH ? AND objectType = ?", query];
+    
+    return [self objectsForResultSet:results];
+}
+
+- (NSArray *)objectsOfManagedObjectClass:(Class)class matchingQuery:(NSString *)query
+{
+    assert([class isSubclassOfClass:[MPManagedObject class]]);
+    return [[self objectsMatchingQuery:query] filteredArrayMatching:^BOOL(MPManagedObject *obj) {
+        return [obj isKindOfClass:class];
+    }];
 }
 
 @end
