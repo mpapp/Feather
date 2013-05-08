@@ -524,7 +524,6 @@
 		5FDB32F71705CB950049EBB5 = {
 			isa = PBXGroup;
 			children = (
-				5F95F2D71739A94300E8C845 /* libsqlite3.dylib */,
 				5FDB330C1705CB950049EBB5 /* Feather */,
 				5FDB33221705CB950049EBB5 /* FeatherTests */,
 				5FDB33051705CB950049EBB5 /* Frameworks */,
@@ -547,6 +546,7 @@
 		5FDB33051705CB950049EBB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5F95F2D71739A94300E8C845 /* libsqlite3.dylib */,
 				5FDB3A07170793B20049EBB5 /* libz.dylib */,
 				5FDB33D71705D1380049EBB5 /* libicucore.dylib */,
 				5FDB33C21705CF260049EBB5 /* libcommonCrypto.dylib */,
