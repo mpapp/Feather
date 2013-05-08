@@ -36,6 +36,7 @@
 #import "NSFileManager+MPExtensions.h"
 #import "NSDictionary+MPManagedObjectExtensions.h"
 
+#import "NSString+MPSearchIndex.h"
 
 #import "Mixin.h"
 #import "MPCacheableMixin.h"
@@ -668,6 +669,40 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     
     assert(false);
     return nil;
+}
+
+#pragma mark -
+
++ (NSArray *)indexablePropertyKeys { return nil; }
+
+- (NSString *)indexableStringForPropertyKey:(NSString *)propertyKey
+{
+    return [self valueForKey:propertyKey];
+}
+
+- (NSString *)tokenizedFullTextString
+{
+    NSArray *propertyKeys = [[self class] indexablePropertyKeys];
+    
+    if (propertyKeys.count == 0) return nil;
+    
+    NSUInteger propertyKeyCount = propertyKeys.count;
+    
+    NSUInteger capacity = 0;
+    for (NSString *key in propertyKeys)
+        capacity += [[self valueForKey:key] length] + 1;
+        
+    NSMutableString *str = [NSMutableString stringWithCapacity:capacity];
+    
+    NSUInteger i = 0;
+    for (NSString *key in propertyKeys)
+    {
+        [str appendString:[[self indexableStringForPropertyKey:key] fullTextNormalizedString]];
+        
+        if (i < (propertyKeyCount - 1)) [str appendString:@" "];
+    }
+    
+    return [str copy];
 }
 
 #pragma mark - Embedded object support

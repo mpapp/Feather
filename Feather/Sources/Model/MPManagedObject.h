@@ -109,6 +109,18 @@ typedef enum MPManagedObjectModerationState
 /** The object can form a prototype when shared. NO for MPManagedObject -- overload in subclasses which should form prototypes when object is marked shared. */
 @property (readonly) BOOL formsPrototype;
 
+/** The full-text indexable properties for objects of this class. 
+  * Default implementation includes none.
+  * @return nil if object should not be included in the full-text index, and an array of property key strings. */
++ (NSArray *)indexablePropertyKeys;
+
+/** The full-text indexable string for a property key. 
+  * Default implementation simply calls [self valueForKey:propertyKey] */
+- (NSString *)indexableStringForPropertyKey:(NSString *)propertyKey;
+
+/** The tokenized full-text indexable string of the object contents. */
+@property (readonly, copy) NSString *tokenizedFullTextString;
+
 /** Get a new document ID for this object type. Not to be called on MPManagedObject directly, but on its concrete subclasses. */
 + (NSString *)idForNewDocumentInDatabase:(CouchDatabase *)db;
 

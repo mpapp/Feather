@@ -19,6 +19,8 @@
 #import "NSString+MPExtensions.h"
 #import "NSObject+MPExtensions.h"
 
+#import "MPSearchIndexController.h"
+
 #import "MPRootSection.h"
 
 #import "JSONKit.h"
@@ -202,6 +204,13 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         }
         
         _rootSections = [rootSections copy];
+        
+        if ([self indexesObjectFullTextContents])
+        {
+            _searchIndexController = [[MPSearchIndexController alloc] initWithPackageController:self];
+            if (![_searchIndexController ensureCreatedWithError:err])
+                return NO;
+        }
         
         [[self class] didOpenPackage];
     }
@@ -662,6 +671,11 @@ static NSUInteger packagesOpened = 0;
 {
     if (!_databaseListener) return 0;
     return [_databaseListener port];
+}
+
+- (BOOL)indexesObjectFullTextContents
+{
+    return NO;
 }
 
 - (NSURL *)databaseListenerURL
