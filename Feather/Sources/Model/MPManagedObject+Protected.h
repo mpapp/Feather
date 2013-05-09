@@ -8,14 +8,6 @@
 
 #import "MPManagedObject.h"
 
-@interface CouchModel (Protected)
-
-// Private methods defined in CouchModel, needed for setting dictionary embedded values.
-- (void) cacheValue: (id)value ofProperty: (NSString*)property changed: (BOOL)changed;
-- (void) markNeedsSave;
-
-@end
-
 @interface MPManagedObject (Protected)
 
 @property (readwrite, copy) NSString *objectType;
@@ -26,6 +18,27 @@
 @property (readwrite, assign) MPManagedObjectModerationState moderationState;
 @property (readwrite, copy) NSString *prototypeID;
 
-- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller properties:(NSDictionary *)properties documentID:(NSString *)identifier;
+- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller
+                                      properties:(NSDictionary *)properties documentID:(NSString *)identifier;
 
+@end
+
+#pragma mark -
+
+/* MPManagedObject & MPEmbeddedObject need some otherwise private state of CouchModel exposed. */
+@interface CouchModel (Private) <MPEmbeddingObject>
+
+- (void)couchDocumentChanged:(CouchDocument *)doc;
+-   (id)externalizePropertyValue: (id)value;
+- (void)cacheValue:(id)value ofProperty:(NSString *)property changed:(BOOL)changed;
+- (CouchModel*) getModelProperty: (NSString*)property;
+- (void)markNeedsSave;
+
+@end
+
+@interface CouchModel (PrivateExtensions) <MPEmbeddingObject>
+@property (strong, readwrite) CouchDocument *document;
+@property (strong, readonly) NSMutableDictionary *properties;
+
+- (void)markNeedsNoSave; // propagates needsSave = false to object's embedded properties
 @end

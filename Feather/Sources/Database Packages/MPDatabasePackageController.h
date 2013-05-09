@@ -82,9 +82,19 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** Closes all the database package's databases. */
 - (void)close;
 
-/** Return the controller for a MPManagedObject subclass.
+/** @return the controller for a MPManagedObject subclass.
  @param class A subclass of MPManagedObject. */
 - (MPManagedObjectsController *)controllerForManagedObjectClass:(Class)class;
+
+/** The managed object controller subclass closes in the class hierarchy to the managed object class.
+  * For instance, for a MPManagedObject > MPColor > MPRGBColor hierarchy, if there is no
+  * MPRGBColorsController in the controller class hierarchy, but there is a MPColorsController, 
+  * will return MPColorsController.
+  */
++ (Class)controllerClassForManagedObjectClass:(Class)class;
+
+/** @return YES if a controller exists in this package controller for a managed object class. */
+- (BOOL)controllerExistsForManagedObjectClass:(Class)class;
 
 /** Return the controller for a CouchDocument object, based on its database and the document's objectType property.
  * @param document A CouchDocument containing a serialised MPManagedObject (including a key 'objectType' whose value matches the name of one of the MPManagedObject subclasses). */
@@ -183,5 +193,13 @@ typedef enum MPDatabasePackageControllerErrorCode
  * @param name The name of the snapshot to restore the state for the package from.
  * @param err An error pointer. */
 - (BOOL)restoreFromSnapshotWithName:(NSString *)name error:(NSError **)err;
+
+
+@property (strong, readonly) NSArray *rootSections;
+@property (strong, readonly) NSArray *nonEmptyRootSections;
+@property (strong, readonly) NSArray *outlinerRootSections;
+
+/** Root section class names ordered in the priority order needed. */
++ (NSArray *)orderedRootSectionClassNames;
 
 @end

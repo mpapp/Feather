@@ -35,7 +35,7 @@ extern NSString * const MPContributorRoleTranslator;
 
 
 /** Controller for MPContributor objects. */
-@interface MPContributorsController : MPManagedObjectsController <MPContributorRecentChangeObserver>
+@interface MPContributorsController : MPManagedObjectsController <MPContributorRecentChangeObserver, MPCacheable>
 
 /** An MPContributor object that signifies the current user. Created on demand. */
 @property (readonly, strong) MPContributor *me;

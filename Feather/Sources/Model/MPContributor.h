@@ -8,12 +8,12 @@
 
 #import "MPManagedObject.h"
 #import "MPTreeItem.h"
-#import "MPPlaceHolding.h"
+#import <Feather/MPPlaceHolding.h>
 
 @class MPContributorCategory;
 
 /** A contributor (author) model object class, managed by a MPContributorsController. Setting any of the readwrite properties can change one of the other readwrite or readonly properties, so take care to observe changes by observing changes to authors with a MPContributorChangeObserver conforming object when presenting the state of MPContributor objects. */
-@interface MPContributor : MPManagedObject <MPTreeItem, MPPlaceHolding>
+@interface MPContributor : MPManagedObject <MPPlaceHolding>
 
 @property (readwrite) MPContributorCategory *category;
 @property (readwrite, strong) NSString *role;

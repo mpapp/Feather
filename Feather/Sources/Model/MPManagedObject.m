@@ -6,23 +6,36 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
+#import <Feather/MPManagedObject+Protected.h>
+
 #import "MPDatabase.h"
 #import "MPManagedObject.h"
 #import "MPManagedObjectsController.h"
-#import <Feather/MPManagedObject+Protected.h>
+
 #import "MPManagedObjectsController+Protected.h"
+
 #import "MPDatabasePackageController.h"
-#import "NSNotificationCenter+MPExtensions.h"
+#import "MPDatabasePackageController+Protected.h"
 #import "MPShoeboxPackageController.h"
 
-#import "NSFileManager+MPExtensions.h"
-#import "NSDictionary+MPManagedObjectExtensions.h"
+#import "NSNotificationCenter+MPExtensions.h"
 
-#import "NSArray+MPExtensions.h"
-#import "NSObject+MPExtensions.h"
+#import "MPEmbeddedObject.h"
+#import "MPEmbeddedObject+Protected.h"
+#import "MPEmbeddedPropertyContainingMixin.h"
+
+#import "MPEmbeddedObject.h"
+
 #import "MPContributor.h"
 #import "MPContributorsController.h"
 #import "MPShoeboxPackageController.h"
+
+#import "NSObject+MPExtensions.h"
+#import "NSArray+MPExtensions.h"
+#import "NSObject+MPExtensions.h"
+#import "NSFileManager+MPExtensions.h"
+#import "NSDictionary+MPManagedObjectExtensions.h"
+
 
 #import "Mixin.h"
 #import "MPCacheableMixin.h"
@@ -35,11 +48,9 @@
 
 NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 
-@interface CouchModel (Private)
-@property (retain, readwrite) CouchDocument *document;
-@property (copy, readonly) NSString *documentID;
-- (void)couchDocumentChanged:(CouchDocument *)doc;
-@end
+#if MP_DEBUG_ZOMBIE_MODELS
+static NSMapTable *_modelObjectByIdentifierMap = nil;
+#endif
 
 @interface MPManagedObject ()
 {
@@ -61,8 +72,18 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     if (self == [MPManagedObject class])
     {
         [self mixinFrom:[MPCacheableMixin class]];
+        [self mixinFrom:[MPEmbeddedPropertyContainingMixin class]];
+        
+#if MP_DEBUG_ZOMBIE_MODELS
+        _modelObjectByIdentifierMap = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsStrongMemory
+                                                            valueOptions:NSPointerFunctionsWeakMemory];
+#endif
     }
 }
+
+#if MP_DEBUG_ZOMBIE_MODELS
++ (void)clearModelObjectMap { [_modelObjectByIdentifierMap removeAllObjects]; }
+#endif
 
 - (instancetype)init
 {
@@ -93,6 +114,16 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 {
     if (self = [super initWithDocument:document])
     {
+
+#if MP_DEBUG_ZOMBIE_MODELS
+        if (document)
+        {
+            assert(![_modelObjectByIdentifierMap objectForKey:self.document.documentID]
+                   || ([_modelObjectByIdentifierMap objectForKey:self.document.documentID] == self));
+            [_modelObjectByIdentifierMap setObject:self forKey:document.documentID];
+        }
+#endif
+
         assert(_controller);
         self.isNewObject = document == nil; // is new if there's no document to go with it.
         [self didInitialize];
@@ -135,6 +166,12 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     return moClass;
 }
 
++ (NSString *)humanReadableName
+{
+    NSString *className = NSStringFromClass(self);
+    return [[className componentsMatchedByRegex:@"MP(.*)" capture:1] firstObject];
+}
+
 - (NSString *)idForNewDocumentInDatabase:(CouchDatabase *)db
 {
 #ifdef DEBUG
@@ -167,6 +204,8 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     assert(document);
     assert(document.database);
     
+    if (document.modelObject) return document.modelObject;
+    
     CouchModel *cm = [super modelForDocument:document];
     assert ([cm isKindOfClass:[MPManagedObject class]]);
 
@@ -175,6 +214,7 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     if (!mo.controller) [mo setControllerWithDocument:document];
     
     assert(mo.controller);
+    assert([document.properties[@"objectType"] isEqualToString:NSStringFromClass(self)]);
         
     return mo;
 }
@@ -198,9 +238,13 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 
 + (RESTOperation *)saveModels:(NSArray *)models
 {
-    for (id mo in models)
+    for (MPManagedObject *mo in models)
     {
         assert([mo isKindOfClass:[MPManagedObject class]]);
+        
+        if (!mo.document.modelObject)
+            mo.document.modelObject = mo;
+        
         [mo updateTimestamps];
     }
     return [super saveModels:models];
@@ -209,11 +253,26 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 - (RESTOperation *)save
 {
     assert(_controller);
+    assert(_document);
     [_controller willSaveObject:self];
+    
+    if (!_document.modelObject) _document.modelObject = self;
     
     [self updateTimestamps];
     
     RESTOperation *oper = [super save];
+    
+    // once save finishes, propagate needsSave => false through the tree
+    // FIXME: race condition on concurrent saves (could set needsSave to false on an embedded key too early)
+    [oper onCompletion:^{
+        for (NSString *propertyKey in [[self class] embeddedProperties])
+        {
+            MPEmbeddedObject *embeddedObj = [self valueForKey:propertyKey];
+            assert(!embeddedObj
+                   || [embeddedObj isKindOfClass:MPEmbeddedObject.class]);
+            [embeddedObj setNeedsSave:false];
+        }
+    }];
     
     return oper;
 }
@@ -239,6 +298,13 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     RESTOperation *op = [super deleteDocument];
     [op onCompletion:^{
         [_controller didDeleteObject:self];
+        
+#if MP_DEBUG_ZOMBIE_MODELS
+        NSString *docID = self.document.documentID;
+        
+        if (docID)
+            [_modelObjectByIdentifierMap removeObjectForKey:docID];
+#endif
     }];
     
     return op;
@@ -285,6 +351,7 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
         [self setControllerWithDocument:document];
     }
     
+    document.modelObject = self;
     [super setDocument:document];
     
     if (self.document)
@@ -457,6 +524,12 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     
 }
 
+// this + property declaration in CouchModel (PrivateExtensions) are there to make the compiler happy.
+- (NSMutableSet *)changedNames
+{
+    return [super changedNames];
+}
+
 - (id)prototypeTransformedValueForKey:(NSString *)key
 {
     return [self humanReadableNameForPropertyKey:key];
@@ -564,6 +637,154 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     return db;
 }
 
+// FIXME: call super once CouchModel's -getModelProperty: is fixed so it doesn't return an empty object.
+- (CouchModel *)getModelProperty:(NSString *)property
+{
+    NSString *objectID = [self getValueOfProperty:property];
+    if (!objectID) return nil;
+    
+    Class cls = [[self class] classOfProperty:property];
+    assert([cls isSubclassOfClass:[MPManagedObject class]]);
+    
+    CouchDatabase *db = [self databaseForModelProperty:property];
+    MPDatabasePackageController *pkgc = [db packageController];
+    MPManagedObjectsController *moc = [pkgc controllerForManagedObjectClass:cls];
+    
+    if ([cls conformsToProtocol:@protocol(MPReferencableObject)])
+    {
+        
+        MPManagedObject *mo = [moc objectWithIdentifier:objectID];
+        if (mo) return mo;
+        
+        MPShoeboxPackageController *shoebox = [MPShoeboxPackageController sharedShoeboxController];
+        MPManagedObjectsController *sharedMOC = [shoebox controllerForManagedObjectClass:cls];
+        
+        return [sharedMOC objectWithIdentifier:objectID];
+    }
+    else
+    {
+        return [moc objectWithIdentifier:objectID];
+    }
+    
+    assert(false);
+    return nil;
+}
+
+#pragma mark - Embedded object support
+
+- (id)externalizePropertyValue:(id)value
+{
+    if ([value isKindOfClass:[MPEmbeddedObject class]])
+    {
+        return [value externalize];
+    }
+    else
+    {
+        return [super externalizePropertyValue:value];
+    }
+    
+    assert(false);
+    return nil;
+}
+
+- (void)setEmbeddedObject:(MPEmbeddedObject *)embeddedObj ofProperty:(NSString *)property
+{
+    assert(!embeddedObj.embeddingKey
+           || [embeddedObj.embeddingKey isEqualToString:property]);
+    
+    assert(!embeddedObj
+           ||[embeddedObj isKindOfClass:[MPEmbeddedObject class]]);
+    
+    embeddedObj.embeddingKey = property;
+    [self setValue:embeddedObj ofProperty:property];
+}
+
+- (MPEmbeddedObject *)decodeEmbeddedObject:(id)rawValue embeddingKey:(NSString *)key
+{
+    if ([rawValue isKindOfClass:[NSString class]])
+    {
+        return [MPEmbeddedObject embeddedObjectWithJSONString:rawValue
+                                              embeddingObject:self embeddingKey:key];
+    }
+    else if ([rawValue isKindOfClass:[NSDictionary class]])
+    {
+        return [MPEmbeddedObject embeddedObjectWithDictionary:rawValue
+                                              embeddingObject:self embeddingKey:key];
+    }
+    else return nil;
+}
+
+- (MPEmbeddedObject *)getEmbeddedObjectProperty:(NSString *)property
+{
+    id value = [self.properties objectForKey: property];
+    if (!value)
+    {
+        id rawValue = [self.document propertyForKey:property];
+        
+        if ([rawValue isKindOfClass:[NSString class]]
+            || [rawValue isKindOfClass:[NSDictionary class]])
+        {
+            value = [self decodeEmbeddedObject:rawValue embeddingKey:property];
+        }
+        else if ([rawValue isKindOfClass:[MPEmbeddedObject class]])
+        {
+            value = rawValue;
+        }
+        else if (rawValue)
+        {
+            MPLog(@"Unable to decode embedded object from property %@ of %@", property, self.document);
+            return nil;
+        }
+
+        assert(!value
+               || [value isKindOfClass:[MPEmbeddedObject class]]);
+        
+        if (value)
+            [self cacheValue:value ofProperty:property changed:NO];
+    }
+    
+    // can be a NSDictionary or NSString still here because
+    // -setValuesForPropertiesWithDictionary:(NSDictionary *)keyedValues
+    // is not embedded type aware and value externalization can save a string.
+    // TODO: consider better implementation.
+    else if ([value isKindOfClass:[NSString class]]
+             || [value isKindOfClass:[NSDictionary class]])
+    {
+        value = [self decodeEmbeddedObject:value embeddingKey:property];
+        [self cacheValue:value ofProperty:property changed:NO];
+    }
+    assert(!value
+           || [value isKindOfClass:[MPEmbeddedObject class]]);
+    
+    return value;
+}
+
++ (IMP)impForSetterOfProperty:(NSString*)property ofClass:(Class)propertyClass
+{
+    if ([propertyClass isSubclassOfClass:[MPEmbeddedObject class]])
+    {
+        return imp_implementationWithBlock(^(MPManagedObject* receiver, MPEmbeddedObject* value)
+        {
+            [receiver setEmbeddedObject:value ofProperty:property];
+        });
+    } else
+    {
+        return [super impForSetterOfProperty: property ofClass: propertyClass];
+    }
+}
+
++ (IMP)impForGetterOfProperty:(NSString *)property ofClass:(Class)propertyClass
+{
+    if ([propertyClass isSubclassOfClass:[MPEmbeddedObject class]])
+    {
+        return imp_implementationWithBlock(^id(MPManagedObject *receiver) {
+            return [receiver getEmbeddedObjectProperty:property];
+        });
+    }
+    
+    return [super impForGetterOfProperty:property ofClass:propertyClass];
+}
+
 #pragma mark - NSPasteboardWriting & NSPasteboardReading
 
 + (NSString *)pasteboardTypeName
@@ -637,6 +858,12 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
         
         if (identifier)
             assert([self.document.documentID isEqualToString:identifier]);
+        
+#if MP_DEBUG_ZOMBIE_MODELS
+        assert(![_modelObjectByIdentifierMap objectForKey:self.document.documentID] ||
+               ([_modelObjectByIdentifierMap objectForKey:self.document.documentID] == self));
+        [_modelObjectByIdentifierMap setObject:self forKey:self.document.documentID];
+#endif
     }
     else
     {
@@ -661,6 +888,26 @@ NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
     _controller = controller;
 }
 
+@end
 
+
+#pragma mark - CouchModel additions
+
+@implementation CouchModel (PrivateExtensions)
+
+- (void)setDocument:(CouchDocument *)document { _document = document; }
+- (CouchDocument *)document { return _document; }
+
+- (NSMutableDictionary *)properties { return _properties; }
+- (NSMutableSet *)changedNames { return _changedNames; }
+
+- (void)markNeedsNoSave
+{
+    // Note: do NOT set needsSave = false on object itself here.
+    // That's MPManagedObject & CouchModel responsibility.
+    
+    for (NSString *key in self.class.embeddedProperties)
+        [[self valueForKey:key] markNeedsNoSave];
+}
 
 @end

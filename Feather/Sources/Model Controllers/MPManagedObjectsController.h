@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+
 #import "MPCacheable.h"
 #import "NSNotificationCenter+MPExtensions.h"
 
@@ -65,12 +66,19 @@ typedef enum MPManagedObjectsControllerErrorCode
   * this controller's managed object subclasses. Subclasses can overload this method to filter objects 
   * emitted by view functions further (filtering an object out means returning `NO`). Subclass implementation 
   * of this method should never return `YES` for an object for which the MPManagedObjectsController 
-  * base class implementation would return `NO` (results in undefined behaviour). */
+  * base class implementation would return `NO` (results in undefined behaviour).
+  * @return YES if document is managed by self, NO if not. 
+  * There should not be multiple MPManagedObjectsControllers returning YES for any given document dictionary. */
 - (BOOL)managesDocumentWithDictionary:(NSDictionary *)couchDocumentDict;
 
-/** A utility which returns a TDMapBlock emitting [_id, nil] for all dictionaries whose document 
-  * is determined managed by the controller. */
+- (BOOL)managesObjectsOfClass:(Class)class;
+
+/** @return A map block emitting [_id, nil] for all documents managed by the controller. */
 - (TDMapBlock)allObjectsBlock;
+
+/** @return a TDMapBlock emitting [_id, nil]
+  * for all documents managed by the controller with bundled = YES. */
+- (TDMapBlock)bundledObjectsBlock;
 
 /** A utility instance method which returns the same value as +managedObjectClassName. Not to be overloaded. */
 - (NSString *)managedObjectClassName;
@@ -136,12 +144,10 @@ typedef enum MPManagedObjectsControllerErrorCode
 - (NSArray *)objectsFromContentsOfArrayJSONAtURL:(NSURL *)url error:(NSError **)err;
 
 /** Load bundled objects from resource with specified name and extension from inside the application main bundle. If resource checksum matches already saved checksum, return preloadedObjects, otherwise save the objects from the file into DB and return them. */
-- (NSArray *)bundledObjectsFromResource:(NSString *)resourceName
+- (NSArray *)loadBundledObjectsFromResource:(NSString *)resourceName
                           withExtension:(NSString *)extension
                        matchedToObjects:(NSArray *)preloadedObjects
                 dataChecksumMetadataKey:(NSString *)dataChecksumKey;
-
-+ (NSDictionary *)cachedPropertiesByManagedObjectsControllerClassName;
 
 @end
 

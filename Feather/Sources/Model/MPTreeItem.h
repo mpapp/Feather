@@ -16,8 +16,11 @@
 @property (readonly, strong) NSArray *siblings;
 @property (readonly) NSUInteger childCount;
 @property (readonly) BOOL hasChildren;
+@property (readonly) BOOL isEditable;
 
 @property (readonly) NSInteger priority;
+
+@property (readonly, weak) id packageController;
 
 - (id)save;
 

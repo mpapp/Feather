@@ -13,3 +13,6 @@
 [submodule "External/MYUtilities"]
 	path = External/MYUtilities
 	url = git@github.com:mz2/MYUtilities.git
+[submodule "External/UICKeyChainStore"]
+	path = External/UICKeyChainStore
+	url = git@github.com:kishikawakatsumi/UICKeyChainStore.git

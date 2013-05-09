@@ -28,6 +28,9 @@
 #import <CouchCocoa/CouchCocoa.h>
 #import <CouchCocoa/CouchDesignDocument_Embedded.h>
 
+#import "Mixin.h"
+#import "MPCacheableMixin.h"
+
 #import <objc/runtime.h>
 #import <objc/message.h>
 
@@ -48,6 +51,14 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 @end
 
 @implementation MPManagedObjectsController
+
++ (void)initialize
+{
+    if (self == [MPManagedObjectsController class])
+    {
+        [self mixinFrom:[MPCacheableMixin class] followInheritance:NO force:NO];
+    }
+}
 
 - (instancetype)init
 {
@@ -90,19 +101,24 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
              forManagedObjectsOfClass:[self managedObjectClass]
                             hasAdded:
              ^(MPManagedObjectsController *_self, NSNotification *notification)
-            { [_self hasAddedManagedObject:notification.object]; }
+            {
+                [_self hasAddedManagedObject:notification.object];
+            }
             hasUpdated:
              ^(MPManagedObjectsController *_self, NSNotification *notification)
-            { [_self hasUpdatedManagedObject:notification.object]; }
+            {
+                [_self hasUpdatedManagedObject:notification.object];
+            }
             hasRemoved:
              ^(MPManagedObjectsController *_self, NSNotification *notification)
-            { [_self hasRemovedManagedObject:notification.object]; }];
+            {
+                [_self hasRemovedManagedObject:notification.object];
+            }];
         }
         
         [self loadBundledResources];
     }
 
-    
     return self;
 }
 
@@ -223,11 +239,29 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     return [self.managedObjectSubclasses containsObject:objectType];
 }
 
+- (BOOL)managesObjectsOfClass:(Class)class
+{
+    return [self.managedObjectSubclasses containsObject:NSStringFromClass(class)];
+}
+
 - (TDMapBlock)allObjectsBlock
 {
     return ^(NSDictionary *doc, TDMapEmitBlock emit)
     {
-        if ([self managesDocumentWithDictionary:doc]) emit(doc[@"_id"], nil);
+        if (![self managesDocumentWithDictionary:doc]) return;
+        
+        emit(doc[@"_id"], nil);
+    };
+}
+
+- (TDMapBlock)bundledObjectsBlock
+{
+    return ^(NSDictionary *doc, TDMapEmitBlock emit)
+    {
+        if (![self managesDocumentWithDictionary:doc]) return;
+        if (![doc[@"bundled"] boolValue]) return;
+        
+        emit(doc[@"_id"], nil);
     };
 }
 
@@ -244,38 +278,6 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     if (object.prototypeID) return nil;
     
     return [[self managedObjectClass] modelForDocument:[self.db.database documentWithID:object.document.documentID]];
-}
-
-
-#pragma mark - Caching
-
-+ (NSDictionary *)cachedPropertiesByManagedObjectsControllerClassName
-{
-    static NSDictionary *cachedProperties = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        cachedProperties = [self propertiesOfSubclassesForClass:[MPManagedObjectsController class]
-                                                       matching:^BOOL(Class cls, NSString *key)
-        {
-            BOOL hasCachedPrefix = [key isMatchedByRegex:@"^cached\\w{1,}"];
-            
-            if (hasCachedPrefix && ![cls propertyWithKeyIsReadWrite:key])
-                @throw [[MPReadonlyCachedPropertyException alloc] initWithPropertyKey:key ofClass:cls];
-            
-            return hasCachedPrefix;
-        }];
-    });
-    
-    return cachedProperties;
-}
-
-- (void)clearCachedValues
-{
-    NSSet *cachedKeys = [MPManagedObjectsController cachedPropertiesByManagedObjectsControllerClassName][NSStringFromClass([self class])];
-    for (NSString *cachedKey in cachedKeys)
-    {
-        [self setValue:nil forKey:cachedKey];
-    }
 }
 
 - (void)refreshCachedValues {}
@@ -371,7 +373,10 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     assert(identifier);
     Class cls = [MPManagedObject managedObjectClassFromDocumentID:identifier];
     assert(cls);
-    return [cls modelForDocument:[self.db.database getDocumentWithID:identifier]];
+    CouchDocument *doc = [self.db.database getDocumentWithID:identifier];
+    if (!doc) return nil;
+    
+    return [cls modelForDocument:doc];
 }
 
 - (id)newObject
@@ -410,8 +415,6 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 
 - (NSArray *)objectsFromContentsOfArrayJSONAtURL:(NSURL *)url error:(NSError **)err
 {
-    assert([self class] != [MPManagedObjectsController class]);
-    
     NSData *objData = [NSData dataWithContentsOfURL:url options:NSDataReadingMapped error:err];
     if (!objData) return nil;
     
@@ -455,7 +458,7 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     
     if (mos.count > 0)
     {
-        RESTOperation *saveOperation = [CouchModel saveModels:mos];
+        RESTOperation *saveOperation = [MPManagedObject saveModels:mos];
         [saveOperation wait];
         if ([saveOperation error])
         {
@@ -478,7 +481,19 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
             MPManagedObject *modelObj = [row.document modelObject];
             
             if (!modelObj)
-                modelObj = [[row.document managedObjectClass] modelForDocument:row.document];
+            {
+                modelObj = _objectCache[row.document.documentID];
+                modelObj.document = row.document;
+                
+                if (!modelObj)
+                {
+                    modelObj = [[row.document managedObjectClass] modelForDocument:row.document];
+                }
+            }
+            else
+            {
+                modelObj.document = row.document;
+            }
             
             assert([modelObj isKindOfClass:[MPManagedObject class]]);
             
@@ -494,7 +509,7 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 
 - (void)hasAddedManagedObject:(NSNotification *)notification
 {
-    
+    [self clearCachedValues];
 }
 
 - (void)hasUpdatedManagedObject:(NSNotification *)notification
@@ -504,7 +519,7 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 
 - (void)hasRemovedManagedObject:(NSNotification *)notification
 {
-    
+    [self clearCachedValues];
 }
 
 - (void)loadBundledResources
@@ -514,11 +529,16 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 
 #pragma mark - Loading bundled objects
 
-- (NSArray *)bundledObjectsFromResource:(NSString *)resourceName
+- (NSArray *)loadBundledObjectsFromResource:(NSString *)resourceName
                           withExtension:(NSString *)extension
                        matchedToObjects:(NSArray *)preloadedObjects
                 dataChecksumMetadataKey:(NSString *)dataChecksumKey
 {
+    if ([resourceName isEqualToString:@"manuscript-categories"])
+    {
+        MPLog(@"Foo");
+    }
+    
     NSArray *returnedObjects = nil;
     MPMetadata *metadata = [self.db metadata];
     
@@ -533,16 +553,18 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     }
     else
     {
-        [metadata setValue:md5 ofProperty:dataChecksumKey];
-        [metadata save];
-        
         NSError *err = nil;
         returnedObjects = [self objectsFromContentsOfArrayJSONAtURL:jsonURL error:&err];
         assert(returnedObjects);
-        if (err)
+        if (err || !returnedObjects)
         {
             NSLog(@"ERROR! Could not load bundled data from resource %@%@:\n%@", resourceName, extension, err);
             [[NSNotificationCenter defaultCenter] postErrorNotification:err];
+        }
+        else
+        {
+            [metadata setValue:md5 ofProperty:dataChecksumKey];
+            [metadata save];
         }
     }
     
@@ -571,13 +593,15 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     
     NSNotificationCenter *nc = [_packageController notificationCenter]; assert(nc);
     
-    [nc postNotificationName:
-     [NSNotificationCenter notificationNameForRecentChangeOfType:MPChangeTypeAdd
-                                             forManagedObjectClass:[object class]] object:object];
+    NSString *recentChange = [NSNotificationCenter notificationNameForRecentChangeOfType:MPChangeTypeAdd
+                                                                   forManagedObjectClass:[object class]];
     
-    [nc postNotificationName:
-        [NSNotificationCenter notificationNameForPastChangeOfType:MPChangeTypeAdd
-                                              forManagedObjectClass:[object class]] object:object];
+    NSString *pastChange = [NSNotificationCenter notificationNameForPastChangeOfType:MPChangeTypeAdd
+                                                               forManagedObjectClass:[object class]];
+
+    [nc postNotificationName:recentChange object:object];
+    
+    [nc postNotificationName:pastChange object:object];
     
     if ([[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])
         [[self.packageController delegate] updateChangeCount:NSChangeDone];
@@ -591,9 +615,12 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     MPLog(@"Did change object %@", object);
     NSNotificationCenter *nc = [_packageController notificationCenter]; assert(nc);
     
-    [nc postNotificationName:[NSNotificationCenter notificationNameForRecentChangeOfType:MPChangeTypeUpdate forManagedObjectClass:[object class]] object:object];
+    NSString *recentChange = [NSNotificationCenter notificationNameForRecentChangeOfType:MPChangeTypeUpdate forManagedObjectClass:[object class]];
+    NSString *pastChange = [NSNotificationCenter notificationNameForPastChangeOfType:MPChangeTypeUpdate forManagedObjectClass:[object class]];
     
-    [nc postNotificationName:[NSNotificationCenter notificationNameForPastChangeOfType:MPChangeTypeUpdate forManagedObjectClass:[object class]] object:object];
+    [nc postNotificationName:recentChange object:object];
+    
+    [nc postNotificationName:pastChange object:object];
     
     if ([[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])
         [[self.packageController delegate] updateChangeCount:NSChangeDone];

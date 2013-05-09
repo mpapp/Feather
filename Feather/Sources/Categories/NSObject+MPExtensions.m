@@ -10,6 +10,7 @@
 #import "NSArray+MPExtensions.h"
 #import "NSString+MPExtensions.h"
 
+#import <CouchCocoa/CouchDynamicObject.h>
 #import <objc/runtime.h>
 
 inline id MPNilToObject(id object, id defaultObject)
@@ -50,6 +51,24 @@ inline id MPNilToObject(id object, id defaultObject)
     free(classes);
     
     return result;
+}
+
++ (NSArray *)classesMatchingPattern:(BOOL(^)(Class cls))patternBlock
+{
+    unsigned int classCount = 0;
+    NSMutableArray *classArray = [NSMutableArray arrayWithCapacity:classCount];
+    
+    Class *classes = objc_copyClassList(&classCount);
+    
+    for (NSUInteger i = 0; i < classCount; i++)
+    {
+        Class cls = classes[i];
+        if (patternBlock(cls)) [classArray addObject:cls];
+    }
+    
+    free(classes);
+    
+    return [classArray copy];
 }
 
 + (BOOL)propertyWithKeyIsReadWrite:(NSString *)key
@@ -146,6 +165,24 @@ inline id MPNilToObject(id object, id defaultObject)
     return propertyNames;
 }
 
+- (void)matchingValueForKey:(NSString *)key value:(void(^)(const BOOL valueMatches, const id value))valueBlock
+{
+    valueBlock(YES, [self valueForKey:key]);
+}
+
+#pragma mark -
+
+// From CouchCocoa's CouchDynamicObject
+// Look up the encoded type of a property, and whether it's settable or readonly
++ (Class) classOfProperty: (NSString*)propertyName
+{
+    Class declaredInClass;
+    const char* propertyType;
+    if (!getPropertyInfo(self, propertyName, NO, &declaredInClass, &propertyType))
+        return Nil;
+    return classFromType(propertyType);
+}
+
 - (id)performNonLeakingSelector:(SEL)selector
 {
 #pragma clang diagnostic push
@@ -160,6 +197,30 @@ inline id MPNilToObject(id object, id defaultObject)
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     return [self performSelector:selector withObject:object];
 #pragma clang diagnostic pop
+}
+
+#pragma mark -
+
++ (void)performInQueue:(dispatch_queue_t)queue
+            afterDelay:(NSTimeInterval)delay
+                 block:(void (^)(void))block
+{
+    
+    int64_t delta = (int64_t)(1.0e9 * delay);
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delta), queue, block);
+    
+}
+
++ (void)performInMainQueueAfterDelay:(NSTimeInterval)delay
+                               block:(void (^)(void))block
+
+{
+    
+    int64_t delta = (int64_t)(1.0e9 * delay);
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delta), dispatch_get_main_queue(), block);
+    
 }
 
 @end

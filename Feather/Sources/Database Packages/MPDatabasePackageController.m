@@ -17,6 +17,9 @@
 #import "MPSnapshotsController.h"
 #import "MPException.h"
 #import "NSString+MPExtensions.h"
+#import "NSObject+MPExtensions.h"
+
+#import "MPRootSection.h"
 
 #import "JSONKit.h"
 
@@ -181,6 +184,25 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
             [self startListener];
         }
         
+        // populate root section properties
+        NSMutableArray *rootSections = [NSMutableArray arrayWithCapacity:[[self class] orderedRootSectionClassNames].count];
+        for (NSString *rootSectionClassName in [[self class] orderedRootSectionClassNames])
+        {
+            Class rootSectionCls = NSClassFromString(rootSectionClassName);
+            assert([rootSectionCls isSubclassOfClass:[MPRootSection class]]);
+            
+            // "MPManuscriptRootSection" => "ManucriptRootSection"
+            NSString *classPrefixlessStr = [rootSectionClassName stringByReplacingOccurrencesOfRegex:@"MP" withString:@""];
+            // "ManuscriptRootSection"   => "manuscriptRootSection"
+            NSString *propertyName = [classPrefixlessStr camelCasedString];
+            
+            MPRootSection *rootSection = [[rootSectionCls alloc] initWithPackageController:self];
+            [self setValue:rootSection forKey:propertyName];
+            [rootSections addObject:rootSection];
+        }
+        
+        _rootSections = [rootSections copy];
+        
         [[self class] didOpenPackage];
     }
     
@@ -193,7 +215,28 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 - (BOOL)synchronizesPeerlessly { return YES; }
 
+- (BOOL)controllerExistsForManagedObjectClass:(Class)class
+{
+    return [self _controllerForManagedObjectClass:class] != nil;
+}
+
 - (MPManagedObjectsController *)controllerForManagedObjectClass:(Class)class
+{
+    MPManagedObjectsController *c = [self _controllerForManagedObjectClass:class];
+    if (c) return c;
+    
+    if (![class conformsToProtocol:@protocol(MPReferencableObject)])
+    {
+        NSAssert(class != [MPManagedObject class],
+                 @"No controller found for non-referencable managed object class %@", class);
+    }
+    
+    _controllerDictionary[NSStringFromClass(class)] = [NSNull null];
+    
+    return nil;
+}
+
+- (MPManagedObjectsController *)_controllerForManagedObjectClass:(Class)class
 {
     assert(class);
     assert([class isSubclassOfClass:[MPManagedObject class]] && class != [MPManagedObject class]);
@@ -229,17 +272,50 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
     } while (!moc && ((class = [class superclass]) != [MPManagedObject class]));
     
-    if (![origClass conformsToProtocol:@protocol(MPReferencableObject)])
-    {
-        NSAssert(class != [MPManagedObject class],
-                 @"No controller found for non-referencable managed object class %@", origClass);
-    }
-    
-    _controllerDictionary[origClassName] = [NSNull null];
+    return moc;
+}
+
++ (Class)_controllerClassForManagedObjectClass:(Class)class
+{
+    MPManagedObjectsController *moc = nil;
+    do {
+        NSString *className = NSStringFromClass(class);
+        assert([className isMatchedByRegex:@"^MP"]);
+        
+        // MPPublication => MPPublicationsController
+        // MPCategory => MPCategoriesController
+        
+        NSString *mocClassName = [NSString stringWithFormat:@"%@Controller", [className pluralizedString]];
+        
+        Class mocClass = NSClassFromString(mocClassName);
+        if (mocClass) return mocClass;
+        
+    } while (!moc && ((class = [class superclass]) != [MPManagedObject class]));
     
     return nil;
 }
 
++ (NSDictionary *)controllerClassForManagedObjectClass:(Class)class
+{
+    assert([class isSubclassOfClass:[MPManagedObject class]]);
+    
+    static NSDictionary *controllerDictionary = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:30];
+        
+        for (Class cls in [[NSObject subclassesForClass:[MPManagedObject class]] arrayByAddingObject:class])
+        {
+            Class controllerClass = [self _controllerClassForManagedObjectClass:cls];
+            
+            if (controllerClass)
+                dict[NSStringFromClass(cls)] = controllerClass;
+        }
+        controllerDictionary = [dict copy];
+    });
+    
+    return controllerDictionary[NSStringFromClass(class)];
+}
 
 - (MPManagedObjectsController *)controllerForDocument:(CouchDocument *)document
 {
@@ -811,6 +887,8 @@ static NSUInteger packagesOpened = 0;
     @throw [NSException exceptionWithName:@"MPUnsupportedLanguageException"
                                    reason:@"View function compilation unsupported." userInfo:nil];
 }
+
++ (NSArray *)orderedRootSectionClassNames { return nil; }
 
 @end
 

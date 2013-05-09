@@ -6,7 +6,13 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
+#import <CouchCocoa/CouchCocoa.h>
+
 #import "MPCacheable.h"
+
+#import "MPEmbeddedObject.h"
+#import "MPEmbeddedPropertyContainingMixin.h"
 
 extern NSString * const MPManagedObjectErrorDomain;
 
@@ -24,8 +30,6 @@ typedef enum MPManagedObjectModerationState
     MPManagedObjectModerationStateRejected = 2
 } MPManagedObjectModerationState;
 
-#import <Foundation/Foundation.h>
-#import <CouchCocoa/CouchCocoa.h>
 
 /** An empty tag protocol used to signify objects which can be referenced across database boundaries.
   * This information is used to determine the correct controller for an object. */
@@ -41,7 +45,8 @@ typedef enum MPManagedObjectModerationState
 /**
  * An abstract base class for all objects contained in a MPDatabase (n per MPDatabase), except for MPMetadata (1 per MPDatabase).
  */
-@interface MPManagedObject : CouchModel <NSPasteboardWriting, NSPasteboardReading, MPCacheable>
+@interface MPManagedObject : CouchModel
+    <NSPasteboardWriting, NSPasteboardReading, MPCacheable, MPEmbeddingObject>
 
 /** The managed objects controller which manages (and caches) the object. */
 @property (weak, readonly) MPManagedObjectsController *controller;
@@ -109,6 +114,9 @@ typedef enum MPManagedObjectModerationState
 
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID;
 
+/** Human readable name for the type */
++ (NSString *)humanReadableName;
+
 /** The pasteboard representation type name for the object. Can be overloaded by subclasses which wish to use a different representation type than what MPManagedObject provides. */
 + (NSString *)pasteboardTypeName;
 
@@ -160,5 +168,11 @@ typedef enum MPManagedObjectModerationState
 
 /** A method which is called after successful initialisation steps but before the object is returned. Can be overloaded by subclasses (oveloaded methods should call the superclass -didInitialize). This method should not be called directly. */
 - (void)didInitialize; // overload but don't call manually
+
+#pragma mark - 
+
+#if MP_DEBUG_ZOMBIE_MODELS
++ (void)clearModelObjectMap;
+#endif
 
 @end

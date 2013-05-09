@@ -33,7 +33,7 @@ extern NSString * const MPDefaultsKeySharedPackageUDID;
 + (NSString *)udid;
 
 /** Initializes application support data if it's missing. */
-- (void)initializeApplicationSupportData;
+- (void)initializeBundledData;
 
 /** Name of the remote database this shoebox synchronizes with. */
 @property (readonly, copy) NSString *remoteGlobalSharedDatabaseName;

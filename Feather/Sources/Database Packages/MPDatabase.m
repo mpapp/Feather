@@ -101,6 +101,31 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         
         _pushFilterName = pushFilterName;
         _pullFilterName = pullFilterName;
+        
+        if ([server isKindOfClass:[CouchTouchDBServer class]])
+        {
+            [self.primaryDesignDocument setValidationBlock:
+             ^BOOL(TD_Revision *newRevision, id<TD_ValidationContext> context)
+             {
+                 if (newRevision.deleted) return YES;
+                 
+                 BOOL managedObjectTypeIncluded = newRevision.properties.managedObjectType != nil;
+                 
+                 BOOL idHasValidPrefix = NO;
+                 if (managedObjectTypeIncluded)
+                     idHasValidPrefix = [newRevision.docID hasPrefix:newRevision.properties.managedObjectType];
+                 
+                 if (managedObjectTypeIncluded) return idHasValidPrefix;
+                 
+                 if (!idHasValidPrefix)
+                     idHasValidPrefix = [newRevision.docID hasPrefix:@"MPMetadata"];
+                 
+                 if (!idHasValidPrefix)
+                     idHasValidPrefix = [newRevision.docID hasPrefix:@"MPLocalMetadata"];
+                 
+                 return idHasValidPrefix;
+             }];
+        }
     }
     
     return self;
@@ -126,6 +151,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     if (!_primaryDesignDocument)
     {
         assert([self name]);
+        assert(self.database);
         _primaryDesignDocument = [self.database designDocumentWithName:[self name]];
     }
     
@@ -552,8 +578,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     for (CouchQueryRow *row in rows)
     {
         CouchDocument *doc = row.document;
-        MPManagedObjectsController *moc = [[self packageController] controllerForDocument:doc];
-        MPManagedObject *mo = [[moc managedObjectClass] modelForDocument:doc];
+        MPManagedObject *mo = [[MPManagedObject managedObjectClassFromDocumentID:doc.documentID] modelForDocument:doc];
         assert(mo);
         [objs addObject:mo];
     }

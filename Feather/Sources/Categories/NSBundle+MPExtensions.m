@@ -12,20 +12,27 @@
 
 - (NSString *)bundleNameString
 {
-    return self.infoDictionary[(__bridge NSString *)kCFBundleNameKey];
+    NSString *bundleName = self.infoDictionary[(__bridge NSString *)kCFBundleNameKey];
+    assert(bundleName);
+    
+    return bundleName;
 }
 
 - (NSString *)bundleVersionString
 {
-    return self.infoDictionary[(__bridge NSString *)kCFBundleVersionKey];
+    NSString *version = self.infoDictionary[(__bridge NSString *)kCFBundleVersionKey];
+    assert(version);
+    
+    return version;
 }
 
 /** Returns the main bundle for non-unit test targets, and the unit test bundle for the unit tests. */
 + (NSBundle *)appBundle
 {
+    // FIXME: remove this hack.
     if ([[NSProcessInfo processInfo] environment][@"MPUnitTest"])
     {
-        Class testClass = NSClassFromString(@"MPModelTests");
+        Class testClass = NSClassFromString(@"MPExtensionTests");
         assert(testClass);
         return [NSBundle bundleForClass:testClass];
     }

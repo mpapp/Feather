@@ -6,8 +6,9 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Feather/NSNotificationCenter+MPExtensions.h>
-#import <Feather/MPManagedObject.h>
+#import "NSNotificationCenter+MPExtensions.h"
+#import "MPManagedObject.h"
+#import "MPDatabasePackageController.h"
 
 #import "RegexKitLite.h"
 #import "NSString+MPExtensions.h"
@@ -31,7 +32,7 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
 + (void)initialize
 {
     [super initialize];
-    [self notificationNameDictionary];
+    [self managedObjectNotificationNameDictionary];
 }
 
 + (NSArray *)managedObjectChangeTypes
@@ -48,7 +49,7 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
             };
 }
 
-+ (NSDictionary *)notificationNameDictionary
++ (NSDictionary *)managedObjectNotificationNameDictionary
 {
     static NSDictionary *changeTypeDict = nil;
     static dispatch_once_t onceToken;
@@ -70,12 +71,22 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
             
             for (Class subclass in subclasses)
             {
-                NSString *subclassName = NSStringFromClass(subclass);
+                if ([NSStringFromClass(subclass) hasSuffix:@"Mixin"]) continue;
+                
+                Class closestControllerClass = [MPDatabasePackageController controllerClassForManagedObjectClass:subclass];
+                Class closestModelClass = [closestControllerClass managedObjectClass];
+                assert(closestControllerClass);
+                assert(closestModelClass);
+                assert(closestModelClass != [MPManagedObject class]);
+                assert([subclass isSubclassOfClass:closestModelClass]);
+                
+                NSString *closestModelClassName = NSStringFromClass(closestModelClass);
+                
                 NSString *unprefixedSubclassName =
-                    [subclassName  stringByReplacingOccurrencesOfRegex:
+                    [closestModelClassName  stringByReplacingOccurrencesOfRegex:
                         [NSString stringWithFormat:@"^%@", MPManagedObjectClassPrefix] withString:@""];
                 
-                changeTypesForClass[subclassName] =
+                changeTypesForClass[NSStringFromClass(subclass)] =
                 @{
                     @"has" : [NSString stringWithFormat:@"has%@%@", [changeTypeStr stringByTranslatingPresentToPastTense], unprefixedSubclassName],
                     @"did"  : [NSString stringWithFormat:@"did%@%@" , changeTypeStr, unprefixedSubclassName] };
@@ -90,22 +101,24 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
     return changeTypeDict;
 }
 
-+ (NSString *)notificationNameForRecentChangeOfType:(MPChangeType)changeType forManagedObjectClass:(Class)moClass
++ (NSString *)notificationNameForRecentChangeOfType:(MPChangeType)changeType
+                              forManagedObjectClass:(Class)moClass
 {
     assert([moClass isSubclassOfClass:[MPManagedObject class]]);
     assert(moClass != [MPManagedObject class]);
     NSString *notificationName =
-    [NSNotificationCenter notificationNameDictionary][@(changeType)][NSStringFromClass(moClass)][@"has"];
+    [NSNotificationCenter managedObjectNotificationNameDictionary][@(changeType)][NSStringFromClass(moClass)][@"has"];
     assert(notificationName);
     return notificationName;
 }
 
-+ (NSString *)notificationNameForPastChangeOfType:(MPChangeType)changeType forManagedObjectClass:(Class)moClass
++ (NSString *)notificationNameForPastChangeOfType:(MPChangeType)changeType
+                            forManagedObjectClass:(Class)moClass
 {
     assert([moClass isSubclassOfClass:[MPManagedObject class]]);
     assert(moClass != [MPManagedObject class]);
     NSString *notificationName =
-        [NSNotificationCenter notificationNameDictionary][@(changeType)][NSStringFromClass(moClass)][@"did"];
+        [NSNotificationCenter managedObjectNotificationNameDictionary][@(changeType)][NSStringFromClass(moClass)][@"did"];
     assert(notificationName);
     return notificationName;
 }
@@ -114,15 +127,14 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
      forManagedObjectsOfClass:(Class)moClass
 {
     [self addPastChangeObserver:observer forManagedObjectsOfClass:moClass
-               didAdd:nil didUpdate:nil didRemove:nil];
+                         didAdd:nil didUpdate:nil didRemove:nil];
 }
 
 - (void)addRecentChangeObserver:(id<MPManagedObjectRecentChangeObserver>)observer
        forManagedObjectsOfClass:(Class)moClass
 {
     [self addRecentChangeObserver:observer
-         forManagedObjectsOfClass:moClass
-                          hasAdded:nil hasUpdated:nil hasRemoved:nil];
+         forManagedObjectsOfClass:moClass hasAdded:nil hasUpdated:nil hasRemoved:nil];
 }
 
 - (void)addRecentChangeObserver:(id<MPManagedObjectRecentChangeObserver>)observer
@@ -138,7 +150,7 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
     
     for (NSNumber *changeType in [NSNotificationCenter managedObjectChangeTypes])
     {
-        NSString *recentPastNotificationName = [NSNotificationCenter notificationNameDictionary][changeType][classStr][@"has"];
+        NSString *recentPastNotificationName = [NSNotificationCenter managedObjectNotificationNameDictionary][changeType][classStr][@"has"];
         assert(recentPastNotificationName != nil);
         
         SEL recentPastObserverSelector = NSSelectorFromString([recentPastNotificationName stringByAppendingString:@":"]);
@@ -179,7 +191,7 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
     
     for (NSNumber *changeType in [NSNotificationCenter managedObjectChangeTypes])
     {
-        NSString *pastNotificationName = [NSNotificationCenter notificationNameDictionary][changeType][classStr][@"did"];
+        NSString *pastNotificationName = [NSNotificationCenter managedObjectNotificationNameDictionary][changeType][classStr][@"did"];
         assert(pastNotificationName != nil);
         
         SEL pastObserverSelector = NSSelectorFromString([pastNotificationName stringByAppendingString:@":"]);
