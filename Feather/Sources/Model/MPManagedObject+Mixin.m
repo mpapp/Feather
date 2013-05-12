@@ -119,7 +119,7 @@
                        getterImplementation:
              ^id(MPManagedObject *_self)
              {
-                 return [_self objectArrayOfProperty:propStoredNameStr];
+                 return [_self getValueOfObjectIdentifierArrayProperty:propStoredNameStr];
              }
                        setterImplementation:
              ^(MPManagedObject *_self, NSArray *setObjs)

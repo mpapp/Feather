@@ -514,7 +514,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return self.prototypeID != nil;
 }
 
-- (BOOL)formsPrototype
+- (BOOL)canFormPrototype
+{
+    return YES;
+}
+
+- (BOOL)formsPrototypeWhenShared
 {
     return NO; // overload in subclasses to form a prototype when shared
 }
@@ -530,9 +535,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return [super changedNames];
 }
 
-- (id)prototypeTransformedValueForKey:(NSString *)key
+- (id)prototypeTransformedValueForPropertiesDictionaryKey:(NSString *)key forCopyManagedByController:(MPManagedObjectsController *)cc
 {
-    return [self humanReadableNameForPropertyKey:key];
+    return [self getValueOfProperty:key];
 }
 
 - (NSString *)humanReadableNameForPropertyKey:(NSString *)key
@@ -545,9 +550,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     [self setObjectIdentifierArrayValueForManagedObjectArray:[NSSet setWithArray:objectArray] property:propertyKey];
 }
 
-- (NSSet *)objectSetOfProperty:(NSString *)propertyKey
+- (NSSet *)getValueOfObjectIdentifierSetProperty:(NSString *)propertyKey
 {
-    return [NSSet setWithArray:[self objectArrayOfProperty:propertyKey]];
+    return [NSSet setWithArray:[self getValueOfObjectIdentifierArrayProperty:propertyKey]];
 }
 
 - (void)setObjectIdentifierArrayValueForManagedObjectArray:(NSArray *)objectArray property:(NSString *)propertyKey
@@ -562,13 +567,13 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     [self setValue:ids ofProperty:propertyKey];
 }
 
-- (NSArray *)objectArrayOfProperty:(NSString *)propertyKey
+- (NSArray *)getValueOfObjectIdentifierArrayProperty:(NSString *)propertyKey
 {
     NSArray *ids = [self getValueOfProperty:propertyKey];
     if (!ids) return @[];
     if (ids.count == 0) return @[];
     
-    NSString *str = [[propertyKey componentsSeparatedByString:@":"] firstObject];
+    NSString *str = [[[ids firstObject] componentsSeparatedByString:@":"] firstObject];
     Class moClass = NSClassFromString(str);
     assert(moClass);
     assert([moClass isSubclassOfClass:[MPManagedObject class]]);
@@ -582,19 +587,25 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         if (class != moClass) { *stop = YES; allSameClass = NO; }
     }];
     
-    // get all objects in one go if they're all of the same MO subclass.
-    if (allSameClass)
-    {
-        CouchQueryEnumerator *qenum = [[self.database getDocumentsWithIDs:ids] rows];
-        MPManagedObjectsController *moc = [self.controller.db.packageController controllerForManagedObjectClass:moClass];
-        return [moc managedObjectsForQueryEnumerator:qenum];
-    }
-    
-    // get objects separately if they're different classes (potentially different controllers).
-    return [ids mapObjectsUsingBlock:^(NSString *sid, NSUInteger idx)
-    {
-        return [self.controller.db.database getDocumentWithID:sid].modelObject;
+    NSMutableArray *objs = [NSMutableArray arrayWithCapacity:ids.count];
+    [ids enumerateObjectsUsingBlock:^(NSString *objID, NSUInteger idx, BOOL *stop) {
+        Class cls = [[self class] managedObjectClassFromDocumentID:objID];
+        assert(cls);
+        MPManagedObjectsController *moc = [self.controller.packageController controllerForManagedObjectClass:cls];
+        MPManagedObject *mo = [moc objectWithIdentifier:objID];
+        
+        if (!mo)
+        {
+            NSLog(@"WARNING! Could not find object with ID '%@' from '%@'",
+                  objID, moc.db.database.URL);
+        }
+        else
+        {
+            [objs addObject:mo];            
+        }
     }];
+    
+    return [objs copy];
 }
 
 - (void)setDictionaryEmbeddedValue:(id)value forKey:(NSString *)embeddedKey ofProperty:(NSString *)dictPropertyKey

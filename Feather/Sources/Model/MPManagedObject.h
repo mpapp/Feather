@@ -94,8 +94,8 @@ typedef enum MPManagedObjectModerationState
 /** The identifier of the object on which this object is based on. Implies that the object is a template. */
 @property (readonly, copy) NSString *prototypeID;
 
-/** Returns a value transformed from the prototype object to the prototyped object. Can be the original value, or a placeholder value. For instance the property 'title' might be transformed to hide the user's set value for a title to just "Document title". */
-- (id)prototypeTransformedValueForKey:(NSString *)key;
+/** Returns a value transformed from the prototype object to the prototyped object. Can be for instance the original value, a placeholder value, a copy of the original value, or nil. For instance the property 'title' might be transformed to hide the user's set value for a title to just "Document title". */
+- (id)prototypeTransformedValueForPropertiesDictionaryKey:(NSString *)key forCopyManagedByController:(MPManagedObjectsController *)cc;
 
 /** A human readable name for a property key. Default implementation returns simply the key, capitalized. */
 - (NSString *)humanReadableNameForPropertyKey:(NSString *)key;
@@ -106,8 +106,11 @@ typedef enum MPManagedObjectModerationState
 /** The object is based on a prototype object. Implies prototype != nil. */
 @property (readonly) BOOL hasPrototype;
 
+/** The object can form a prototype. YES for MPManagedObject -- overload in subclasses with instances which should not be duplicated. */
+@property (readonly) BOOL canFormPrototype;
+
 /** The object can form a prototype when shared. NO for MPManagedObject -- overload in subclasses which should form prototypes when object is marked shared. */
-@property (readonly) BOOL formsPrototype;
+@property (readonly) BOOL formsPrototypeWhenShared;
 
 /** Get a new document ID for this object type. Not to be called on MPManagedObject directly, but on its concrete subclasses. */
 + (NSString *)idForNewDocumentInDatabase:(CouchDatabase *)db;
@@ -130,11 +133,11 @@ typedef enum MPManagedObjectModerationState
 - (void)setObjectIdentifierArrayValueForManagedObjectArray:(NSArray *)objectArray property:(NSString *)propertyKey;
 
 /** A utility method which helps implementing getters for properties which have a managed object subclass as their intended type (e.g. 'section' as property key is internally stored as 'sectionIDs', getter retrieves objects by document ID).  */
-- (NSArray *)objectArrayOfProperty:(NSString *)propertyKey;
+- (NSArray *)getValueOfObjectIdentifierArrayProperty:(NSString *)propertyKey;
 
 - (void)setObjectIdentifierSetValueForManagedObjectArray:(NSSet *)objectSet property:(NSString *)propertyKey;
 
-- (NSSet *)objectSetOfProperty:(NSString *)propertyKey;
+- (NSSet *)getValueOfObjectIdentifierSetProperty:(NSString *)propertyKey;
 
 /** Set values to an object embedded in a dictionary typed property (e.g. key "R" embedded in dictionary under key "scimago". */
 - (void)setDictionaryEmbeddedValue:(id)value forKey:(NSString *)embeddedKey ofProperty:(NSString *)dictPropertyKey;

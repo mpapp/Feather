@@ -38,4 +38,13 @@
     return [result copy];
 }
 
+- (NSSet *)filteredSetMatching:(BOOL(^)(id evalutedObject))patternBlock
+{
+    return [self filteredSetUsingPredicate:
+                [NSPredicate predicateWithBlock:
+                    ^BOOL(id evaluatedObject, NSDictionary *bindings) {
+        return patternBlock(evaluatedObject);
+    }]];
+}
+
 @end

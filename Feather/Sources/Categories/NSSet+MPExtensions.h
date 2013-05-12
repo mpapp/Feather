@@ -14,4 +14,6 @@
 
 - (NSSet *)mapObjectsUsingBlock:(id (^)(id obj))block;
 
+- (NSSet *)filteredSetMatching:(BOOL(^)(id evalutedObject))patternBlock;
+
 @end
