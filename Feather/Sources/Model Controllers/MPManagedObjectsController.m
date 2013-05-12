@@ -471,13 +471,44 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 
 #pragma mark - Querying
 
-- (NSArray *)managedObjectsForQueryEnumerator:(CouchQueryEnumerator*)rows
+- (NSDictionary *)managedObjectByKeyMapForQueryEnumerator:(CouchQueryEnumerator*)rows
 {
-    NSMutableArray* entries = [NSMutableArray array];
+    NSMutableDictionary *entries = [NSMutableDictionary dictionaryWithCapacity:rows.count];
     for (CouchQueryRow* row in rows)
     {
         dispatch_sync(_queryQueue, ^{
-            //MPManagedObject *mo = [[[self class] managedObjectClass] modelForDocument:row.document];
+            MPManagedObject *modelObj = [row.document modelObject];
+            
+            if (!modelObj)
+            {
+                modelObj = _objectCache[row.document.documentID];
+                modelObj.document = row.document;
+                
+                if (!modelObj)
+                {
+                    modelObj = [[row.document managedObjectClass] modelForDocument:row.document];
+                }
+            }
+            else
+            {
+                modelObj.document = row.document;
+            }
+            
+            assert([modelObj isKindOfClass:[MPManagedObject class]]);
+            
+            entries[row.key] = modelObj;
+        });
+    }
+    
+    return [entries copy];
+}
+
+- (NSArray *)managedObjectsForQueryEnumerator:(CouchQueryEnumerator*)rows
+{
+    NSMutableArray* entries = [NSMutableArray arrayWithCapacity:rows.count];
+    for (CouchQueryRow* row in rows)
+    {
+        dispatch_sync(_queryQueue, ^{
             MPManagedObject *modelObj = [row.document modelObject];
             
             if (!modelObj)
@@ -501,7 +532,7 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
         });
     }
     
-    return entries;
+    return [entries copy];
 }
 
 
