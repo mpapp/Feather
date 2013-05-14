@@ -129,6 +129,10 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** A query which returns all objects managed by this controller. */
 - (CouchQuery *)allObjectsQuery;
 
+/** @return a map of managed objects by the keys they are values of in the query enumerator given as argument. */
+- (NSDictionary *)managedObjectByKeyMapForQueryEnumerator:(CouchQueryEnumerator*)rows;
+
+/** @return an array of managed objects contained in the query enumerator given as argument. */
 - (NSArray *)managedObjectsForQueryEnumerator:(CouchQueryEnumerator *)rows;
 
 /** All objects managed by this controller. */

@@ -22,6 +22,8 @@
  @return Returns YES if user matches the current user, NO otherwise. */
 @property BOOL isMe;
 
+@property BOOL isCorresponding;
+
 /** The priority of the author in the author list. 
   * Joint authorship priorities are legal (for instance joint 1st authorship). */
 @property (readonly) NSInteger priority;
