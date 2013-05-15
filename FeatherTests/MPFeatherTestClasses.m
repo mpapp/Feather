@@ -53,6 +53,8 @@
 @dynamic aStringTypedProperty;
 @dynamic anUnsignedIntTypedProperty;
 @dynamic embeddedManagedObjectProperty;
+@dynamic embeddedArrayOfTestObjects;
+@dynamic embeddedDictionaryOfTestObjects;
 @end
 
 @implementation MPTestObjectsController

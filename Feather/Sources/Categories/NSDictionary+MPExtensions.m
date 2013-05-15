@@ -58,6 +58,20 @@
     return (self[key] != nil);
 }
 
+- (id)anyObjectMatching:(BOOL(^)(id evaluatedKey, id evaluatedObject))patternBlock
+{
+    __block id matchingObj = nil;
+    [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if (patternBlock(key, obj))
+        {
+            matchingObj = obj;
+            *stop = YES;
+        }
+    }];
+    
+    return matchingObj;
+}
+
 @end
 
 

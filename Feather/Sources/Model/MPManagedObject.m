@@ -32,6 +32,7 @@
 
 #import "NSObject+MPExtensions.h"
 #import "NSArray+MPExtensions.h"
+#import "NSDictionary+MPExtensions.h"
 #import "NSObject+MPExtensions.h"
 #import "NSFileManager+MPExtensions.h"
 #import "NSDictionary+MPManagedObjectExtensions.h"
@@ -688,6 +689,56 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     if ([value isKindOfClass:[MPEmbeddedObject class]])
     {
         return [value externalize];
+    }
+    else if ([value isKindOfClass:[NSArray class]])
+    {
+        // if no objects in the array are MPEmbeddedObject instances, just return value as is.
+        if (![value firstObjectMatching:^BOOL(id evaluatedObject) {
+            return [evaluatedObject isKindOfClass:[MPEmbeddedObject class]];
+        }]) return value;
+        
+        NSMutableArray *externalizedArray = [NSMutableArray arrayWithCapacity:[value count]];
+        
+        for (id obj in value)
+        {
+            if ([obj isKindOfClass:[MPEmbeddedObject class]])
+            {
+                if (!externalizedArray)
+                    externalizedArray = [NSMutableArray arrayWithCapacity:[obj count]];
+                
+                [externalizedArray addObject:[obj externalize]];
+            }
+            else
+            {
+                [externalizedArray addObject:obj];
+            }
+        }
+        
+        return [externalizedArray copy];
+    }
+    else if ([value isKindOfClass:[NSDictionary class]])
+    {
+        // if no objects in the dictionary are MPEmbeddedObject instances, just return value as is.
+        if (![value anyObjectMatching:^BOOL(id evaluatedKey, id evaluatedObject) {
+            return [evaluatedObject isKindOfClass:[MPEmbeddedObject class]];
+        }]) return value;
+        
+        NSMutableDictionary *externalizedDictionary = [NSMutableDictionary dictionaryWithCapacity:[value count]];
+        
+        for (id key in [value allKeys])
+        {
+            id obj = value[key];
+            if ([obj isKindOfClass:[MPEmbeddedObject class]])
+            {
+                externalizedDictionary[key] = [obj externalize];
+            }
+            else
+            {
+                if (externalizedDictionary) externalizedDictionary[key] = obj;
+            }
+        }
+        
+        return [externalizedDictionary copy];
     }
     else
     {
