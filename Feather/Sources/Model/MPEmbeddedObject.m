@@ -33,6 +33,9 @@
 @end
 
 @interface MPEmbeddedObject ()
+{
+    NSString *_embeddingKey;
+}
 @property (readwrite, strong) NSMutableDictionary *embeddedObjectCache;
 @end
 
@@ -66,12 +69,15 @@
         assert(propertiesDict[@"objectType"]);
         assert([propertiesDict[@"objectType"] isEqualToString:NSStringFromClass(self.class)]);
         assert(key);
+        assert(embeddingObject);
         
         _embeddingKey = key;
         _embeddingObject = embeddingObject;
         
         _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
         _properties = [propertiesDict mutableCopy];
+        
+        [embeddingObject cacheEmbeddedObjectByIdentifier:self];
     }
     
     return self;
@@ -140,11 +146,36 @@
         cls = self;
         assert(cls == NSClassFromString(dictionary[@"objectType"]));
     }
+    
+    MPEmbeddedObject *existingObj = nil;
+    if ((existingObj = [embeddingObject embeddedObjectWithIdentifier:dictionary[@"_id"]]))
+        return existingObj;
 
     return [[cls alloc] initWithDictionary:dictionary embeddingObject:embeddingObject embeddingKey:key];
 }
 
-#pragma mark - 
+- (MPEmbeddedObject *)embeddedObjectWithIdentifier:(NSString *)identifier
+{
+    assert(_embeddedObjectCache);
+    return _embeddedObjectCache[identifier];
+}
+
+- (void)setEmbeddingKey:(NSString *)embeddingKey
+{
+    if (embeddingKey && _embeddingKey == embeddingKey) return;
+    
+    // should be set only once to a non-null value (shouldn't try setting to non-null value B after setting to A)
+    assert(!_embeddingKey);
+    
+    _embeddingKey = embeddingKey;
+}
+
+- (NSString *)embeddingKey
+{
+    return _embeddingKey;
+}
+
+#pragma mark -
 
 - (id)getValueOfProperty:(NSString *)property
 {
@@ -194,8 +225,7 @@
     assert([obj identifier]);
     if (_embeddedObjectCache[[obj identifier]])
     {
-        assert(_embeddedObjectCache[[obj identifier]] == obj);
-        return;
+        assert(_embeddedObjectCache[[obj identifier]] == obj); return;
     }
     
     _embeddedObjectCache[obj.identifier] = obj;

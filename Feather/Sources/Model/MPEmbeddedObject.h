@@ -10,6 +10,7 @@
 #import "MPEmbeddedPropertyContainingMixin.h"
 
 @protocol MPWaitingOperation;
+@class MPEmbeddedObject;
 
 /** Protocol used to mark objects which can embed MPEmbeddedObject instances. */
 @protocol MPEmbeddingObject <MPEmbeddedPropertyContaining, NSObject>
@@ -25,6 +26,12 @@
 - (void)markNeedsNoSave;
 
 @property (readonly, strong) NSMutableSet *changedNames;
+
+@optional
+/** Returns an embedded object with the specified identifier */
+- (MPEmbeddedObject *)embeddedObjectWithIdentifier:(NSString *)identifier;
+
+- (void)cacheEmbeddedObjectByIdentifier:(MPEmbeddedObject *)obj;
 
 @end
 

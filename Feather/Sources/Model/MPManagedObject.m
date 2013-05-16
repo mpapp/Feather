@@ -60,6 +60,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 @property (readwrite) BOOL isNewObject;
+@property (readwrite, strong) NSMutableDictionary *embeddedObjectCache;
+
 @end
 
 @implementation MPReferencableObjectMixin
@@ -147,9 +149,46 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)didInitialize
 {
+    _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
+    
     assert(_controller);
     if (self.document)
         [_controller registerObject:self];
+}
+
+- (void)cacheEmbeddedObjectByIdentifier:(MPEmbeddedObject *)obj
+{
+    if (!obj) return;
+    
+    assert([obj identifier]);
+    if (_embeddedObjectCache[[obj identifier]])
+    {
+        assert(_embeddedObjectCache[[obj identifier]] == obj); return;
+    }
+    
+    _embeddedObjectCache[obj.identifier] = obj;
+}
+
+- (void)removeEmbeddedObjectFromByIdentifierCache:(MPEmbeddedObject *)obj
+{
+    if (!obj) return;
+    
+    assert([obj identifier]);
+    
+    if (_embeddedObjectCache[obj.identifier])
+    {
+        [_embeddedObjectCache removeObjectForKey:obj.identifier];
+    }
+    else
+    {
+        assert(false); // should not try to remove if it weren't there. remove this assertion if it looks invalid.
+    }
+}
+
+- (MPEmbeddedObject *)embeddedObjectWithIdentifier:(NSString *)identifier
+{
+    assert(_embeddedObjectCache);
+    return _embeddedObjectCache[identifier];
 }
 
 + (NSString *)idForNewDocumentInDatabase:(CouchDatabase *)db
@@ -751,6 +790,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)setEmbeddedObject:(MPEmbeddedObject *)embeddedObj ofProperty:(NSString *)property
 {
+    [self cacheEmbeddedObjectByIdentifier:embeddedObj];
+    
     assert(!embeddedObj.embeddingKey
            || [embeddedObj.embeddingKey isEqualToString:property]);
     
@@ -765,20 +806,23 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 {
     if ([rawValue isKindOfClass:[NSString class]])
     {
-        return [MPEmbeddedObject embeddedObjectWithJSONString:rawValue
-                                              embeddingObject:self embeddingKey:key];
+        MPEmbeddedObject *obj = [MPEmbeddedObject embeddedObjectWithJSONString:rawValue embeddingObject:self embeddingKey:key];
+        [self cacheEmbeddedObjectByIdentifier:obj];
+        return obj;
     }
     else if ([rawValue isKindOfClass:[NSDictionary class]])
     {
-        return [MPEmbeddedObject embeddedObjectWithDictionary:rawValue
-                                              embeddingObject:self embeddingKey:key];
+        MPEmbeddedObject *obj = [MPEmbeddedObject embeddedObjectWithDictionary:rawValue embeddingObject:self embeddingKey:key];
+        [self cacheEmbeddedObjectByIdentifier:obj];
+        return obj;
     }
+    
     else return nil;
 }
 
 - (MPEmbeddedObject *)getEmbeddedObjectProperty:(NSString *)property
 {
-    id value = [self.properties objectForKey: property];
+    id value = [self.properties objectForKey:property];
     if (!value)
     {
         id rawValue = [self.document propertyForKey:property];
@@ -829,7 +873,66 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         {
             [receiver setEmbeddedObject:value ofProperty:property];
         });
-    } else
+    }
+    else if ([propertyClass isSubclassOfClass:[NSArray class]] && [property hasPrefix:@"embedded"])
+    {
+        return imp_implementationWithBlock(^(MPManagedObject *receiver, NSArray *value)
+        {
+            NSMutableArray *embeddedObjs = [NSMutableArray arrayWithCapacity:value.count];
+            for (__strong id val in value)
+            {
+                if ([val isKindOfClass:[NSString class]])
+                {
+                    val = [MPEmbeddedObject embeddedObjectWithJSONString:val embeddingObject:receiver embeddingKey:property];
+                }
+                else if ([val isKindOfClass:[NSDictionary class]])
+                {
+                    val = [MPEmbeddedObject embeddedObjectWithDictionary:val embeddingObject:receiver embeddingKey:property];
+                }
+                else
+                {
+                    assert([val isKindOfClass:[MPEmbeddedObject class]]);
+                }
+                
+                [receiver cacheEmbeddedObjectByIdentifier:val];
+                [embeddedObjs addObject:val];
+            }
+            
+            //TODO: remove contents of previous array of embedded objects from embeddedObjectCache
+            [receiver setValue:[embeddedObjs copy] ofProperty:property];
+        });
+    }
+    else if ([propertyClass isSubclassOfClass:[NSDictionary class]] && [property hasPrefix:@"embedded"])
+    {
+        return imp_implementationWithBlock(^(MPManagedObject *receiver, NSDictionary *value)
+        {
+            NSMutableDictionary *embeddedObjs = [NSMutableDictionary dictionaryWithCapacity:[value count]];
+            for (id key in value)
+            {
+                id val = value[key];
+                
+                if ([val isKindOfClass:[NSString class]])
+                {
+                    val = [MPEmbeddedObject embeddedObjectWithJSONString:val embeddingObject:receiver embeddingKey:property];
+                }
+                else if ([val isKindOfClass:[NSDictionary class]])
+                {
+                    val = [MPEmbeddedObject embeddedObjectWithDictionary:value embeddingObject:receiver embeddingKey:property];
+                }
+                else
+                {
+                    assert([val isKindOfClass:[MPEmbeddedObject class]]);
+                }
+                
+                //TODO: remove contents of previous dictionary of embedded objects from embeddedObjectCache
+                [receiver cacheEmbeddedObjectByIdentifier:val];
+                embeddedObjs[key] = val;
+            }
+            
+            [receiver setValue:[embeddedObjs copy] ofProperty:property];
+        });
+    }
+    else
     {
         return [super impForSetterOfProperty: property ofClass: propertyClass];
     }
@@ -841,6 +944,63 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     {
         return imp_implementationWithBlock(^id(MPManagedObject *receiver) {
             return [receiver getEmbeddedObjectProperty:property];
+        });
+    }
+    else if ([propertyClass isSubclassOfClass:[NSArray class]] && [property hasPrefix:@"embedded"])
+    {
+        return imp_implementationWithBlock(^NSArray *(MPManagedObject *receiver) {
+            NSArray *objs = [receiver getValueOfProperty:property];
+            
+            NSMutableArray *embeddedObjs = [NSMutableArray arrayWithCapacity:10];
+            for (id obj in objs)
+            {
+                MPEmbeddedObject *emb = nil;
+                if ([obj isKindOfClass:[NSString class]])
+                {
+                    emb = [MPEmbeddedObject embeddedObjectWithJSONString:obj embeddingObject:receiver embeddingKey:property];
+                }
+                else if ([obj isKindOfClass:[NSDictionary class]])
+                {
+                    emb = [MPEmbeddedObject embeddedObjectWithJSONString:obj embeddingObject:receiver embeddingKey:property];
+                }
+                else if ([obj isKindOfClass:[MPEmbeddedObject class]])
+                {
+                    emb = obj;
+                }
+                [embeddedObjs addObject:emb];
+            }
+            
+            return embeddedObjs;
+        });
+    }
+    else if ([propertyClass isSubclassOfClass:[NSDictionary class]] && [property hasPrefix:@"embedded"])
+    {
+        return imp_implementationWithBlock(^NSDictionary *(MPManagedObject *receiver) {
+            NSDictionary *objs = [receiver getValueOfProperty:property];
+            
+            NSMutableDictionary *embeddedObjs = [NSMutableDictionary dictionaryWithCapacity:10];
+            for (id key in objs)
+            {
+                id obj = objs[key];
+                
+                MPEmbeddedObject *emb = nil;
+                if ([obj isKindOfClass:[NSString class]])
+                {
+                    emb = [MPEmbeddedObject embeddedObjectWithJSONString:obj embeddingObject:receiver embeddingKey:property];
+                }
+                else if ([obj isKindOfClass:[NSDictionary class]])
+                {
+                    emb = [MPEmbeddedObject embeddedObjectWithJSONString:obj embeddingObject:receiver embeddingKey:property];
+                }
+                else if ([obj isKindOfClass:[MPEmbeddedObject class]])
+                {
+                    emb = obj;
+                }
+                
+                embeddedObjs[key] = emb;
+            }
+            
+            return embeddedObjs;
         });
     }
     
