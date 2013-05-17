@@ -12,6 +12,8 @@
 #import "MPEmbeddedObjectsTests.h"
 #import "MPEmbeddedObject+Protected.h"
 
+#import "MPSearchIndexController.h"
+
 @implementation MPEmbeddedObjectsTests
 
 - (void)testEmbeddedObjectCreation
@@ -92,6 +94,21 @@
     STAssertTrue(!obj.embeddedTestObject.needsSave, @"Managed object property value has been set and object no longer needs saving.");
 
     STAssertTrue(obj.embeddedTestObject.embeddedManagedObjectProperty == obj, @"The embedded managed property has the expected value.");
+    
+    NSArray *objsByTitle = [tpkg.searchIndexController objectsWithMatchingTitle:@"foo"];
+    STAssertTrue(objsByTitle.count == 1, @"There are objects in the search index with matching");
+    
+    NSArray *objsByDesc = [tpkg.searchIndexController objectsWithMatchingDesc:@"bar"];
+    STAssertTrue(objsByDesc.count == 1, @"There are objects in the search index with matching");
+    
+    [[obj deleteDocument] wait];
+    
+    objsByTitle = [tpkg.searchIndexController objectsWithMatchingTitle:@"foo"];
+    STAssertTrue(objsByTitle.count == 0, @"There should be no objects in the search index with matching title any longer");
+    
+    objsByDesc = [tpkg.searchIndexController objectsWithMatchingDesc:@"bar"];
+    STAssertTrue(objsByDesc.count == 0, @"There should be no objects in the search index with matching desc any longer");
+    
 }
 
 @end

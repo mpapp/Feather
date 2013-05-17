@@ -51,6 +51,9 @@ typedef enum MPManagedObjectModerationState
 /** The managed objects controller which manages (and caches) the object. */
 @property (weak, readonly) MPManagedObjectsController *controller;
 
+/** The _id of the document this model object represents. Non-nil always, even for deleted objects. */
+@property (readonly, copy) NSString *documentID;
+
 /** The creation date: the moment -save or -saveModels was issued the first time for the object. It is earlier than the exact moment at which the the object was created in the database. */
 @property (readonly, assign) NSDate *createdAt;
 
