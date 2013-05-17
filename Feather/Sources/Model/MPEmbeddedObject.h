@@ -58,6 +58,9 @@
 
 - (instancetype)initWithEmbeddingObject:(id<MPEmbeddingObject>)embeddingObject;
 
+/** Returns JSON-encodable dictionary representation of this embedded object. */
+- (NSDictionary *)dictionaryRepresentation;
+
 /** Returns a JSON encodable version of the embedded object. */
 - (NSString *)externalize;
 

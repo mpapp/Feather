@@ -315,14 +315,19 @@
     return value;
 }
 
-- (id)externalize
+- (NSDictionary *)dictionaryRepresentation
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:self.properties.count];
     
     for (id key in _properties)
         dict[key] = [self externalizePropertyValue:_properties[key]];
-    
-    return [dict JSONString];
+
+    return dict;
+}
+
+- (id)externalize
+{
+    return [self.dictionaryRepresentation JSONString];
 }
 
 - (MPSaveOperation *)save

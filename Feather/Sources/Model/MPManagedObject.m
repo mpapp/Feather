@@ -949,8 +949,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     else if ([propertyClass isSubclassOfClass:[NSArray class]] && [property hasPrefix:@"embedded"])
     {
         return imp_implementationWithBlock(^NSArray *(MPManagedObject *receiver) {
-            NSArray *objs = [receiver getValueOfProperty:property];
-            
+            NSArray *objs = [receiver getValueOfProperty:property];            
             NSMutableArray *embeddedObjs = [NSMutableArray arrayWithCapacity:10];
             for (id obj in objs)
             {
@@ -977,9 +976,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     {
         return imp_implementationWithBlock(^NSDictionary *(MPManagedObject *receiver) {
             NSDictionary *objs = [receiver getValueOfProperty:property];
-            
             NSMutableDictionary *embeddedObjs = [NSMutableDictionary dictionaryWithCapacity:10];
-            for (id key in objs)
+            for (id key in objs.allKeys)
             {
                 id obj = objs[key];
                 
@@ -990,7 +988,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
                 }
                 else if ([obj isKindOfClass:[NSDictionary class]])
                 {
-                    emb = [MPEmbeddedObject embeddedObjectWithJSONString:obj embeddingObject:receiver embeddingKey:property];
+                    emb = [MPEmbeddedObject embeddedObjectWithDictionary:obj embeddingObject:receiver embeddingKey:property];
                 }
                 else if ([obj isKindOfClass:[MPEmbeddedObject class]])
                 {
