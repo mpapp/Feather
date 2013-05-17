@@ -20,7 +20,7 @@ typedef enum MPValueToggleResult
 
 @interface NSArray (Feather)
 
-- (NSArray *)mapObjectsUsingBlock:(NSArray *(^)(id o, NSUInteger idx))mapBlock;
+- (NSArray *)mapObjectsUsingBlock:(id(^)(id o, NSUInteger idx))mapBlock;
 
 - (id)firstObject;
 - (id)firstObjectMatching:(BOOL(^)(id evalutedObject))patternBlock;

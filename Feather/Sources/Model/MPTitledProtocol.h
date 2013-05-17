@@ -1,5 +1,5 @@
 //
-//  MPTitled.h
+//  MPTitledProtocol.h
 //  Manuscripts
 //
 //  Created by Matias Piipari on 14/04/2013.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol MPTitled <NSObject>
+@protocol MPTitledProtocol <NSObject>
 @property (readwrite, copy) NSString *title;
 @property (readwrite, copy) NSString *desc;
 @end

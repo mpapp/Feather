@@ -16,6 +16,8 @@ typedef void (^MPPullCompletionHandler)(NSDictionary *errDict);
 @class MPDatabase, MPSnapshot;
 @class CouchDocument;
 
+@class MPSearchIndexController;
+
 /** A delegate protocol for MPDatabasePackageController's optional delegate. */
 @protocol MPDatabasePackageControllerDelegate <NSObject>
 @property (readonly, strong) NSURL *packageRootURL;
@@ -65,6 +67,12 @@ typedef enum MPDatabasePackageControllerErrorCode
 
 @property (readonly, strong) NSURL *databaseListenerURL;
 @property (readonly) NSUInteger databaseListenerPort;
+
+/** Indicates whether the database package controller's contents are to be full text indexed. 
+  * Default implementation returns NO, overload to toggle on full-text indexing (see also MPManagedObject FTS indexing related properties and methods.) */
+@property (readonly) BOOL indexesObjectFullTextContents;
+
+@property (readonly, strong) MPSearchIndexController *searchIndexController;
 
 /** @return A file URL to the root directory of a temporary copy of the package. */
 - (NSURL *)makeTemporaryCopyWithError:(NSError **)err;

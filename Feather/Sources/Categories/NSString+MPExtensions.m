@@ -48,7 +48,7 @@ inline NSMutableString *MPMutableStringForString(NSString *s)
                  NSString *const __unsafe_unretained *capturedStrings,
                  const NSRange *capturedRanges,
                  volatile BOOL *const stop) {
-         assert(captureCount == 0);
+         assert(captureCount == 2);
          return [capturedStrings[0] uppercaseString];
     }];
     return [str copy];
