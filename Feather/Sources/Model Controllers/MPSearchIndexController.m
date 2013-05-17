@@ -140,6 +140,11 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
     return YES;
 }
 
+- (void)indexManagedObjects:(NSArray *)objects error:(NSError *__autoreleasing *)err
+{
+    return [self _indexManagedObjects:objects error:err];
+}
+
 - (void)_indexManagedObjects:(NSArray *)objects error:(NSError **)err
 {
     BOOL successful = YES;
@@ -158,6 +163,11 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
         [self.searchIndexDatabase rollback];
     else
         [self.searchIndexDatabase commit];
+}
+
+- (BOOL)indexManagedObject:(MPManagedObject *)object error:(NSError *__autoreleasing *)err
+{
+    return [self _indexManagedObject:object error:err];
 }
 
 - (BOOL)_indexManagedObject:(MPManagedObject *)object error:(NSError **)err
