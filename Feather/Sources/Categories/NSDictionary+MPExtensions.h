@@ -17,6 +17,8 @@
 - (BOOL)containsObject:(id)object;
 - (BOOL)containsObjectForKey:(id)key;
 
+- (id)anyObjectMatching:(BOOL(^)(id evaluatedKey, id evaluatedObject))patternBlock;
+
 @end
 
 

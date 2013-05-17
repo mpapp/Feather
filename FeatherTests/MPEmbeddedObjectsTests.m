@@ -74,7 +74,7 @@
     STAssertTrue(obj.embeddedTestObject.anUnsignedIntTypedProperty == 12,
                  @"Integral getter retrieves the right value.");
     
-    STAssertTrue(obj.embeddedTestObject.properties[@"aStringTypedProperty"],
+    STAssertTrue(obj.embeddedTestObject.properties[@"aStringTypedProperty"] != nil,
                  @"aStringTypedProperty is present in the embedded object's properties.");
     
     [[obj.embeddedTestObject save] wait];
@@ -84,10 +84,28 @@
     STAssertTrue(obj.embeddedTestObject.needsSave, @"Managed object property value has been set and object needs saving.");
     
     [[obj.embeddedTestObject save] wait];
-    
+
+    STAssertTrue(!obj.needsSave, @"Managed object property value has been set and embedding object no longer needs saving.");
     STAssertTrue(!obj.embeddedTestObject.needsSave, @"Managed object property value has been set and object no longer needs saving.");
 
     STAssertTrue(obj.embeddedTestObject.embeddedManagedObjectProperty == obj, @"The embedded managed property has the expected value.");
+    
+    MPEmbeddedTestObject *foo = [[MPEmbeddedTestObject alloc] initWithEmbeddingObject:obj.embeddedTestObject];
+    
+    obj.embeddedTestObject.embeddedArrayOfTestObjects = @[ foo ];
+    
+    STAssertTrue([obj needsSave], @"Object needs saving again");
+    STAssertTrue([obj.embeddedTestObject needsSave], @"Object needs saving again");
+    
+    STAssertTrue([[[obj embeddedTestObject] embeddedArrayOfTestObjects] containsObject:foo], @"Array contains the expected object");
+    STAssertTrue([[[obj embeddedTestObject] embeddedArrayOfTestObjects] count] == 1, @"Array contains only the expected object");
+    
+    [[obj save] wait];
+    
+    NSLog(@"Object: %@", [[obj embeddedTestObject] embeddedArrayOfTestObjects]);
+    
+    STAssertTrue(![obj needsSave], @"Object no longer needs saving");
+    STAssertTrue(![obj.embeddedTestObject needsSave], @"Object no longer needs saving");
 }
 
 @end

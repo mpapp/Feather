@@ -164,7 +164,7 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
     MPManagedObject *mo = notification.object;
     assert(mo.controller);
     
-    if ([mo formsPrototype])
+    if ([mo formsPrototypeWhenShared])
     {
         [mo.controller prototypeForObject:mo];
     }

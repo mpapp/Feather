@@ -32,6 +32,13 @@
 
 @end
 
+@interface MPEmbeddedObject ()
+{
+    NSString *_embeddingKey;
+}
+@property (readwrite, strong) NSMutableDictionary *embeddedObjectCache;
+@end
+
 @implementation MPEmbeddedObject
 
 + (void)initialize
@@ -62,11 +69,15 @@
         assert(propertiesDict[@"objectType"]);
         assert([propertiesDict[@"objectType"] isEqualToString:NSStringFromClass(self.class)]);
         assert(key);
+        assert(embeddingObject);
         
         _embeddingKey = key;
         _embeddingObject = embeddingObject;
         
+        _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
         _properties = [propertiesDict mutableCopy];
+        
+        [embeddingObject cacheEmbeddedObjectByIdentifier:self];
     }
     
     return self;
@@ -135,11 +146,36 @@
         cls = self;
         assert(cls == NSClassFromString(dictionary[@"objectType"]));
     }
+    
+    MPEmbeddedObject *existingObj = nil;
+    if ((existingObj = [embeddingObject embeddedObjectWithIdentifier:dictionary[@"_id"]]))
+        return existingObj;
 
     return [[cls alloc] initWithDictionary:dictionary embeddingObject:embeddingObject embeddingKey:key];
 }
 
-#pragma mark - 
+- (MPEmbeddedObject *)embeddedObjectWithIdentifier:(NSString *)identifier
+{
+    assert(_embeddedObjectCache);
+    return _embeddedObjectCache[identifier];
+}
+
+- (void)setEmbeddingKey:(NSString *)embeddingKey
+{
+    if (embeddingKey && _embeddingKey == embeddingKey) return;
+    
+    // should be set only once to a non-null value (shouldn't try setting to non-null value B after setting to A)
+    assert(!_embeddingKey);
+    
+    _embeddingKey = embeddingKey;
+}
+
+- (NSString *)embeddingKey
+{
+    return _embeddingKey;
+}
+
+#pragma mark -
 
 - (id)getValueOfProperty:(NSString *)property
 {
@@ -182,6 +218,35 @@
     return _properties[@"_id"];
 }
 
+- (void)cacheEmbeddedObjectByIdentifier:(MPEmbeddedObject *)obj
+{
+    if (!obj) return;
+    
+    assert([obj identifier]);
+    if (_embeddedObjectCache[[obj identifier]])
+    {
+        assert(_embeddedObjectCache[[obj identifier]] == obj); return;
+    }
+    
+    _embeddedObjectCache[obj.identifier] = obj;
+}
+
+- (void)removeEmbeddedObjectFromByIdentifierCache:(MPEmbeddedObject *)obj
+{
+    if (!obj) return;
+    
+    assert([obj identifier]);
+    
+    if (_embeddedObjectCache[obj.identifier])
+    {
+        [_embeddedObjectCache removeObjectForKey:obj.identifier];
+    }
+    else
+    {
+        assert(false); // should not try to remove if it weren't there. remove this assertion if it looks invalid.
+    }
+}
+
 // Adapted from CouchCocoa's CouchModel
 // Transforms cached property values back into JSON-compatible objects
 - (id)externalizePropertyValue:(id)value
@@ -201,20 +266,68 @@
     }
     else if ([value isKindOfClass:[MPEmbeddedObject class]])
     {
+        // objects should be unique by their identifier
+        [self cacheEmbeddedObjectByIdentifier:value];
         value = [value externalize];
+    }
+    else if ([value isKindOfClass:[NSArray class]])
+    {
+        NSMutableArray *externalizedArray = [NSMutableArray arrayWithCapacity:[value count]];
+        
+        for (id obj in value)
+        {
+            if ([obj isKindOfClass:[MPEmbeddedObject class]])
+            {
+                [self cacheEmbeddedObjectByIdentifier:obj];
+                [externalizedArray addObject:[obj externalize]];
+            }
+            else
+            {
+                if (externalizedArray)
+                [externalizedArray addObject:obj];
+            }
+        }
+        
+        return [externalizedArray copy];
+    }
+    else if ([value isKindOfClass:[NSDictionary class]])
+    {
+        NSMutableDictionary *externalizedDictionary = [NSMutableDictionary dictionaryWithCapacity:[value count]];
+        
+        for (id key in [value allKeys])
+        {
+            id obj = value[key];
+            if ([obj isKindOfClass:[MPEmbeddedObject class]])
+            {
+                [self cacheEmbeddedObjectByIdentifier:obj];
+                externalizedDictionary[key] = [obj externalize];
+            }
+            else
+            {
+                if (externalizedDictionary)
+                    externalizedDictionary[key] = obj;
+            }
+        }
+        
+        return [externalizedDictionary copy];
     }
     
     return value;
 }
 
-- (id)externalize
+- (NSDictionary *)dictionaryRepresentation
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:self.properties.count];
     
     for (id key in _properties)
         dict[key] = [self externalizePropertyValue:_properties[key]];
-    
-    return [dict JSONString];
+
+    return dict;
+}
+
+- (id)externalize
+{
+    return [self.dictionaryRepresentation JSONString];
 }
 
 - (MPSaveOperation *)save
@@ -256,7 +369,7 @@
 // adapted from CouchModel
 - (CouchModel *)getModelProperty:(NSString *)property
 {
-    NSString* rawValue = [self getValueOfProperty: property];
+    NSString* rawValue = [self getValueOfProperty:property];
     if (!rawValue)
         return nil;
     
@@ -284,6 +397,91 @@
                  declaredClass, doc, property, self, self);
     }
     return value;
+}
+
+- (NSArray *)getEmbeddedObjectArrayProperty:(NSString *)property
+{
+    NSArray *rawValue = [self getValueOfProperty:property];
+    if (!rawValue)
+        return nil;
+    
+    assert([rawValue isKindOfClass:[NSArray class]]);
+    
+    NSMutableArray *embeddedObjs = [NSMutableArray arrayWithCapacity:rawValue.count];
+    for (id rawObj in rawValue)
+    {
+        if (![rawObj isKindOfClass:[NSString class]])
+        {
+            MPLog(@"Embedded object array typed valued property %@ of %@ contains object other than string: %@", property, self, rawObj);
+            return nil;
+        }
+        
+        NSDictionary *dict = [rawObj objectFromJSONString];
+        NSString *objType = dict[@"objectType"];
+        assert(objType);
+        Class cls = NSClassFromString(objType);
+        assert(cls);
+        
+        NSString *identifier = dict[@"_id"];
+        assert(identifier);
+        
+        MPEmbeddedObject *obj = _embeddedObjectCache[identifier];
+        
+        if (!obj)
+        {
+            obj = [[cls alloc] initWithDictionary:dict
+                                  embeddingObject:self.embeddingObject embeddingKey:property];
+            [self cacheEmbeddedObjectByIdentifier:obj];
+        }
+        
+        assert(obj);
+        [embeddedObjs addObject:obj];
+    }
+    
+    return embeddedObjs;
+}
+
+- (NSDictionary *)getEmbeddedObjectDictionaryProperty:(NSString *)property
+{
+    NSDictionary *rawValue = [self getValueOfProperty:property];
+    if (!rawValue)
+        return nil;
+    
+    assert([rawValue isKindOfClass:[NSDictionary class]]);
+    
+    NSMutableDictionary *embeddedObjs = [NSMutableDictionary dictionaryWithCapacity:rawValue.count];
+    for (id key in rawValue)
+    {
+        id rawObj = rawValue[key];
+        if (![rawObj isKindOfClass:[NSString class]])
+        {
+            MPLog(@"Embedded object array typed valued property %@ of %@ contains object other than string: %@", property, self, rawObj);
+            return nil;
+        }
+        
+        NSDictionary *dict = [rawObj objectFromJSONString];
+        NSString *objType = dict[@"objectType"];
+        assert(objType);
+        Class cls = NSClassFromString(objType);
+        assert(cls);
+        
+        NSString *identifier = dict[@"_id"];
+        assert(identifier);
+        
+        MPEmbeddedObject *obj = _embeddedObjectCache[identifier];
+        
+        if (!obj)
+        {
+            obj = [[cls alloc] initWithDictionary:dict
+                                  embeddingObject:self.embeddingObject embeddingKey:property];
+            [self cacheEmbeddedObjectByIdentifier:obj];
+        }
+        
+        assert(obj);
+        embeddedObjs[key] = obj;
+    }
+    
+    return embeddedObjs;
 }
 
 - (NSDate *)getDateProperty:(NSString *)property
@@ -339,13 +537,26 @@
         {
             return [receiver getDateProperty: property];
         });
-    } else if ([propertyClass isSubclassOfClass: [CouchModel class]])
+    } else if ([propertyClass isSubclassOfClass:[CouchModel class]])
     {
         return imp_implementationWithBlock(^id(MPEmbeddedObject *receiver)
         {
             return [receiver getModelProperty:property];
         });
-    } else
+    } else if ([propertyClass isSubclassOfClass:[NSArray class]] && [property hasPrefix:@"embedded"])
+    {
+        return imp_implementationWithBlock(^NSArray *(MPEmbeddedObject *receiver)
+        {
+            return [receiver getEmbeddedObjectArrayProperty:property];
+        });
+    } else if ([propertyClass isSubclassOfClass:[NSDictionary class]] && [property hasPrefix:@"embedded"])
+    {
+        return imp_implementationWithBlock(^NSDictionary *(MPEmbeddedObject *receiver)
+        {
+            return [receiver getEmbeddedObjectDictionaryProperty:property];
+        });
+    }
+    else
     {
         return NULL;  // Unsupported
     }
@@ -379,7 +590,66 @@
         {
             [receiver setModel:value forProperty:property];
         });
-    } else
+    }
+    else if ([propertyClass isSubclassOfClass:[MPEmbeddedObject class]])
+    {
+        return imp_implementationWithBlock(^(MPEmbeddedObject *receiver, MPEmbeddedObject *value)
+        {
+            if (value)
+                [receiver cacheEmbeddedObjectByIdentifier:value];
+            else
+                [receiver removeEmbeddedObjectFromByIdentifierCache:[receiver valueForKey:property]];
+            
+            BOOL result = [receiver setValue:value ofProperty:property];
+            assert(result);
+        });
+    }
+    else if ([propertyClass isSubclassOfClass:[NSArray class]] && [property hasPrefix:@"embedded"])
+    {
+        return imp_implementationWithBlock(^(MPEmbeddedObject *receiver, NSArray *value)
+        {
+            // drop cached values (in case some embedded object references have been dropped.)
+            NSArray *existingValues = [receiver valueForKey:property];
+            for (MPEmbeddedObject *obj in existingValues)
+            {
+                [receiver removeEmbeddedObjectFromByIdentifierCache:obj];
+            }
+            
+            // add cached values
+            // TODO: adding might re-add some that were just removed before, optimise if that becomes a problem.
+            for (MPEmbeddedObject *obj in value)
+            {
+                [receiver cacheEmbeddedObjectByIdentifier:obj];
+            }
+            
+            BOOL result = [receiver setValue:value ofProperty:property];
+            assert(result);
+        });
+    }
+    else if ([propertyClass isSubclassOfClass:[NSDictionary class]] && [property hasPrefix:@"embedded"])
+    {
+        return imp_implementationWithBlock(^(MPEmbeddedObject *receiver, NSDictionary *value)
+        {
+            // drop cached values (in case some embedded object references have been dropped.)
+            NSDictionary *existingValues = [receiver valueForKey:property];
+            for (id key in existingValues)
+            {
+                [receiver removeEmbeddedObjectFromByIdentifierCache:existingValues[key]];
+            }
+            
+            // add cached values
+            // TODO: adding might re-add some that were just removed before, optimise if that becomes problem.
+            for (id key in value)
+            {
+                id obj = value[key];
+                [receiver cacheEmbeddedObjectByIdentifier:obj];
+            }
+            
+            BOOL result = [receiver setValue:value ofProperty:property];
+            assert(result);
+        });
+    }
+    else
     {
         return [super impForSetterOfProperty:property ofClass:propertyClass];
     }

@@ -29,6 +29,9 @@
 
 @property (readwrite, strong) MPTestObject *embeddedManagedObjectProperty;
 
+@property (readwrite, strong) NSArray *embeddedArrayOfTestObjects;
+@property (readwrite, strong) NSDictionary *embeddedDictionaryOfTestObjects;
+
 @end
 
 @interface MPTestObjectsController : MPManagedObjectsController

@@ -390,14 +390,16 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 - (id)newObjectWithPrototype:(MPManagedObject *)prototype
 {
     assert(prototype);
-    assert([prototype formsPrototype]);
+    assert([prototype isKindOfClass:[self managedObjectClass]]);
+    assert([prototype canFormPrototype]);
     assert(prototype.document.documentID);
-    MPManagedObject *obj = [self newObject];
+    
+    MPManagedObject *obj = [[[prototype class] alloc] initWithNewDocumentForController:self];
     obj.prototypeID = prototype.document.documentID;
     
     for (NSString *key in prototype.document.userProperties)
     {
-        [obj setValue:[prototype prototypeTransformedValueForKey:key] forKey:key];
+        [obj setValue:[prototype prototypeTransformedValueForPropertiesDictionaryKey:key forCopyManagedByController:self] ofProperty:key];
     }
     
     return obj;
@@ -565,11 +567,6 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
                        matchedToObjects:(NSArray *)preloadedObjects
                 dataChecksumMetadataKey:(NSString *)dataChecksumKey
 {
-    if ([resourceName isEqualToString:@"manuscript-categories"])
-    {
-        MPLog(@"Foo");
-    }
-    
     NSArray *returnedObjects = nil;
     MPMetadata *metadata = [self.db metadata];
     
@@ -620,7 +617,7 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 {
     assert(object.controller == self);
     assert(self.db);
-    MPLog(@"Did save object %@:\n%@", object, [[object document] properties]);
+    MPLog(@"Did save object %@:\n%@ in %@", object, [[object document] properties], self.db.database.URL);
     
     NSNotificationCenter *nc = [_packageController notificationCenter]; assert(nc);
     
