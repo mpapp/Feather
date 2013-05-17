@@ -52,6 +52,7 @@
 @dynamic anotherEmbeddedObject;
 @dynamic aStringTypedProperty;
 @dynamic anUnsignedIntTypedProperty;
+@dynamic embeddedManagedObjectProperty;
 @end
 
 @implementation MPTestObjectsController

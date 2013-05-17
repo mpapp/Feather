@@ -33,4 +33,8 @@ extern inline id MPNilToObject(id object, id defaultObject);
 /** -matchingValueForKey:value: defined also on NSArray: allows treating single and multiple selections in the same way. */
 - (void)matchingValueForKey:(NSString *)key value:(void(^)(const BOOL valueMatches, const id value))valueBlock;
 
++ (void)performInQueue:(dispatch_queue_t)queue afterDelay:(NSTimeInterval)delay block:(void (^)(void))block;
+
++ (void)performInMainQueueAfterDelay:(NSTimeInterval)delay block:(void (^)(void))block;
+
 @end

@@ -115,7 +115,7 @@
 }
 
 - (instancetype)initWithParent:(id<MPTreeItem>)parentItem
-                 wrappedObject:(MPManagedObject<MPTitled, MPPlaceHolding> *)obj
+                 wrappedObject:(MPManagedObject<MPTitled, MPPlaceHolding, MPThumbnailable> *)obj
             representedObjects:(NSArray *)representedObjects
         representedObjectClass:(Class)representedObjectClass
   observedManagedObjectClasses:(NSArray *)additionalObservedManagedObjectClasses

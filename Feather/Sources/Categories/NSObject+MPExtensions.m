@@ -199,4 +199,28 @@ inline id MPNilToObject(id object, id defaultObject)
 #pragma clang diagnostic pop
 }
 
+#pragma mark -
+
++ (void)performInQueue:(dispatch_queue_t)queue
+            afterDelay:(NSTimeInterval)delay
+                 block:(void (^)(void))block
+{
+    
+    int64_t delta = (int64_t)(1.0e9 * delay);
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delta), queue, block);
+    
+}
+
++ (void)performInMainQueueAfterDelay:(NSTimeInterval)delay
+                               block:(void (^)(void))block
+
+{
+    
+    int64_t delta = (int64_t)(1.0e9 * delay);
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delta), dispatch_get_main_queue(), block);
+    
+}
+
 @end

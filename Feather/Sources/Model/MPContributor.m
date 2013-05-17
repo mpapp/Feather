@@ -13,6 +13,7 @@
 
 @implementation MPContributor
 @dynamic category, role;
+@dynamic isCorresponding;
 
 // FIXME: Make abstract method in an abstract base class.
 #ifndef MPAPP
