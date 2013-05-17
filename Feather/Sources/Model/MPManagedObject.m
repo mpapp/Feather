@@ -60,6 +60,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 @property (readwrite) BOOL isNewObject;
+@property (readonly, copy) NSString *deletedDocumentID;
+
 @end
 
 @implementation MPReferencableObjectMixin
@@ -150,6 +152,13 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     assert(_controller);
     if (self.document)
         [_controller registerObject:self];
+}
+
+- (NSString *)documentID
+{
+    if (self.document) return self.document.documentID;
+    else assert(_deletedDocumentID);
+    return _deletedDocumentID;
 }
 
 + (NSString *)idForNewDocumentInDatabase:(CouchDatabase *)db
@@ -296,8 +305,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 {
     assert(_controller);
     
+    NSString *deletedDocumentID = self.document.documentID;
+    assert(deletedDocumentID);
+    
     RESTOperation *op = [super deleteDocument];
     [op onCompletion:^{
+        
+        _deletedDocumentID = deletedDocumentID;
+        
         [_controller didDeleteObject:self];
         
 #if MP_DEBUG_ZOMBIE_MODELS
