@@ -9,11 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "Feather.h"
 
-#import "MPTitled.h"
+#import "MPTitledProtocol.h"
 
 @class MPEmbeddedTestObject;
 
-@interface MPTestObject : MPManagedObject <MPTitled>
+@interface MPTestObject : MPManagedObject <MPTitledProtocol>
 
 @property (readwrite, strong) MPEmbeddedTestObject *embeddedTestObject;
 

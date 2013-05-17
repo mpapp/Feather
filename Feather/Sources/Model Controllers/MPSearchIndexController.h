@@ -31,6 +31,7 @@ typedef NS_ENUM(NSInteger, MPSearchIndexControllerErrorCode) {
 - (instancetype)initWithPackageController:(MPDatabasePackageController *)packageController;
 
 - (BOOL)ensureCreatedWithError:(NSError **)err;
+
 - (void)indexManagedObjects:(NSArray *)objects error:(NSError **)err;
 - (BOOL)indexManagedObject:(MPManagedObject *)object error:(NSError **)err;
 

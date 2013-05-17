@@ -697,9 +697,15 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     NSUInteger i = 0;
     for (NSString *key in propertyKeys)
     {
-        [str appendString:[[self indexableStringForPropertyKey:key] fullTextNormalizedString]];
+        NSString *appendedStr = [[self indexableStringForPropertyKey:key] fullTextNormalizedString];
         
-        if (i < (propertyKeyCount - 1)) [str appendString:@" "];
+        if (appendedStr)
+        {
+            [str appendString:appendedStr];
+            if (i < (propertyKeyCount - 1)) [str appendString:@" "];
+        }
+        
+        i++;
     }
     
     return [str copy];
@@ -862,7 +868,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 @implementation MPManagedObject (Protected)
 
-- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller properties:(NSDictionary *)properties documentID:(NSString *)identifier
+- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller
+                                      properties:(NSDictionary *)properties
+                                      documentID:(NSString *)identifier
 {
     assert(controller);
     assert(controller.db);

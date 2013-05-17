@@ -14,7 +14,7 @@
 #import "MPThumbnailable.h"
 #import "MPCacheableMixin.h"
 
-#import "MPTitled.h"
+#import "MPTitledProtocol.h"
 
 @interface MPVirtualSection : NSObject
     <MPTreeItem, MPCacheable, MPPlaceHolding, MPManagedObjectChangeObserver>
@@ -37,10 +37,10 @@
 @interface MPObjectWrappingSection : MPVirtualSection
 
 @property (readonly, copy) NSString *extendedTitle;
-@property (readonly, strong) MPManagedObject<MPTitled, MPPlaceHolding, MPThumbnailable> *wrappedObject;
+@property (readonly, strong) MPManagedObject<MPTitledProtocol, MPPlaceHolding, MPThumbnailable> *wrappedObject;
 
 - (instancetype)initWithParent:(id<MPTreeItem>)parentItem
-                 wrappedObject:(MPManagedObject<MPTitled, MPPlaceHolding> *)obj;
+                 wrappedObject:(MPManagedObject<MPTitledProtocol, MPPlaceHolding> *)obj;
 
 + (NSArray *)arrayOfWrappedObjects:(NSArray *)wrappedObjects
                         withParent:(id<MPTreeItem>)parent;

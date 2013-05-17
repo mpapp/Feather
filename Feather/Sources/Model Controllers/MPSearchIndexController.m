@@ -1,3 +1,4 @@
+
 //
 //  MPSearchIndexController.m
 //  Feather
@@ -12,7 +13,7 @@
 #import "MPManagedObject.h"
 #import "MPDatabasePackageController.h"
 
-#import "MPTitled.h"
+#import "MPTitledProtocol.h"
 
 #import "NSNotificationCenter+MPExtensions.h"
 #import "NSObject+MPExtensions.h"
@@ -54,31 +55,31 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
         for (Class cls in [MPManagedObjectsController managedObjectClasses])
         {
             // skip classes with no indexable property keys.
-            if ([cls indexablePropertyKeys].count == 0) break;
+            if ([cls indexablePropertyKeys].count == 0) continue;
             
             [self.packageController.notificationCenter
              addRecentChangeObserver:self forManagedObjectsOfClass:cls
              hasAdded:^(MPSearchIndexController *_self, NSNotification *notification)
             {
-                dispatch_sync(_self.indexQueue, ^{
+                dispatch_async(_self.indexQueue, ^{
                     NSError *err = nil;
-                    if (![_self indexManagedObject:notification.object error:&err])
+                    if (![_self _indexManagedObject:notification.object error:&err])
                         _self.lastError = err;
                 });
             }
              hasUpdated:^(MPSearchIndexController *_self, NSNotification *notification)
             {
-                dispatch_sync(_self.indexQueue, ^{
+                dispatch_async(_self.indexQueue, ^{
                     NSError *err = nil;
-                    if (![_self updateIndexForManagedObject:notification.object error:&err])
+                    if (![_self _updateIndexForManagedObject:notification.object error:&err])
                         _self.lastError = err;
                 });
             }
              hasRemoved:^(MPSearchIndexController *_self, NSNotification *notification)
             {
-                dispatch_sync(_self.indexQueue, ^{
+                dispatch_async(_self.indexQueue, ^{
                     NSError *err = nil;
-                    if (![_self deleteManagedObjectFromIndex:notification.object error:&err])
+                    if (![_self _deleteManagedObjectFromIndex:notification.object error:&err])
                         _self.lastError = err;
                 });
             }];
@@ -101,7 +102,7 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
 
 + (NSDictionary *)errorDictionaryForLastError:(FMDatabase *)db
 {
-    return @{@"code":@([db lastErrorCode]), NSLocalizedDescriptionKey:[db lastErrorMessage]};
+    return @{@"code":@([db lastErrorCode] ? [db lastErrorCode] : 0), NSLocalizedDescriptionKey:[db lastErrorMessage] ? [db lastErrorMessage] : @""};
 }
 
 - (BOOL)ensureCreatedWithError:(NSError **)err
@@ -139,7 +140,7 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
     return YES;
 }
 
-- (void)indexManagedObjects:(NSArray *)objects error:(NSError **)err
+- (void)_indexManagedObjects:(NSArray *)objects error:(NSError **)err
 {
     BOOL successful = YES;
     
@@ -148,7 +149,7 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
     {
         for (MPManagedObject *mo in objects)
         {
-            if ((successful = [self indexManagedObject:mo error:err]))
+            if ((successful = [self _indexManagedObject:mo error:err]))
                 break;
         }
     }
@@ -159,11 +160,11 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
         [self.searchIndexDatabase commit];
 }
 
-- (BOOL)indexManagedObject:(MPManagedObject *)object error:(NSError **)err
+- (BOOL)_indexManagedObject:(MPManagedObject *)object error:(NSError **)err
 {
     BOOL dbSuccess = YES;
     
-    BOOL isTitled = [object conformsToProtocol:@protocol(MPTitled)];
+    BOOL isTitled = [object conformsToProtocol:@protocol(MPTitledProtocol)];
     
     NSString *title = isTitled ? [object valueForKey:@"title"] : nil;
     NSString *desc = isTitled ? [object valueForKey:@"desc"] : nil;
@@ -177,7 +178,11 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
     dbSuccess = [self.searchIndexDatabase
                  executeUpdate:
                     @"INSERT INTO search_data (_id, objectType, title, desc, contents) VALUES (?, ?, ?, ?, ?)",
-                        object.document.documentID, title, desc, tokenizedString, nil];
+                         object.document.documentID,
+                         NSStringFromClass([object class]),
+                         title ? title : @"",
+                         desc ? desc : @"",
+                         tokenizedString ? tokenizedString : @"", nil];
     
     if (!dbSuccess)
     {
@@ -191,11 +196,11 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
     return YES;
 }
 
-- (BOOL)updateIndexForManagedObject:(MPManagedObject *)object error:(NSError **)err
+- (BOOL)_updateIndexForManagedObject:(MPManagedObject *)object error:(NSError **)err
 {
     BOOL dbSuccess = YES;
     
-    BOOL isTitled = [object conformsToProtocol:@protocol(MPTitled)];
+    BOOL isTitled = [object conformsToProtocol:@protocol(MPTitledProtocol)];
     
     NSString *title = isTitled ? [object valueForKey:@"title"] : nil;
     NSString *desc = isTitled ? [object valueForKey:@"desc"] : nil;
@@ -209,8 +214,10 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
         dbSuccess = [self.searchIndexDatabase
                          executeUpdate:
                              @"UPDATE search_data SET title = ?, desc = ?, contents = ? WHERE _id = ?",
-                                 title, desc, tokenizedString,
-                                 object.document.documentID, nil];
+                                 title ? title : @"",
+                     desc ? desc : @"",
+                     tokenizedString ? tokenizedString : @"",
+                    object.document.documentID, nil];
         
         if (!dbSuccess)
         {
@@ -223,14 +230,14 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
     }
     else // if no data for the index, delete the record for the _id
     {
-        [self deleteManagedObjectFromIndex:object error:err];
+        [self _deleteManagedObjectFromIndex:object error:err];
     }
     
     
     return YES;
 }
 
-- (BOOL)deleteManagedObjectFromIndex:(MPManagedObject *)object error:(NSError **)err
+- (BOOL)_deleteManagedObjectFromIndex:(MPManagedObject *)object error:(NSError **)err
 {
     assert(object.document.documentID);
     BOOL success = [self.searchIndexDatabase executeUpdate:@"DELETE FROM search_data WHERE _id = ?", object.document.documentID];
