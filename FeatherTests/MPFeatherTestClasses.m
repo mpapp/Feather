@@ -47,7 +47,9 @@
 @dynamic embeddedTestObject;
 @dynamic title, desc, contents;
 
-+ (NSArray *)indexablePropertyKeys { return @[@"title", @"desc", @"contents"]; }
++ (NSArray *)indexablePropertyKeys {
+    return @[ @"title", @"desc", @"contents" ];
+}
 
 @end
 

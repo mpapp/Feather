@@ -29,7 +29,7 @@
 		5F6857A01727C38900FE06B0 /* MPVirtualSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579D1727C38900FE06B0 /* MPVirtualSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F68579E1727C38900FE06B0 /* MPVirtualSection.m */; };
 		5F6857A21727C38900FE06B0 /* MPVirtualSection+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579F1727C38900FE06B0 /* MPVirtualSection+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5F6857B71727C40300FE06B0 /* MPTitled.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857B61727C40300FE06B0 /* MPTitled.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F6857B71727C40300FE06B0 /* MPTitledProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857B61727C40300FE06B0 /* MPTitledProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857DA17287F0800FE06B0 /* MPRootSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857D817287F0800FE06B0 /* MPRootSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857DB17287F0800FE06B0 /* MPRootSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6857D917287F0800FE06B0 /* MPRootSection.m */; };
 		5F6857F017287F3100FE06B0 /* MPRootSection+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -44,6 +44,8 @@
 		5F95F2D517399FE300E8C845 /* NSString+MPSearchIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2D317399FE300E8C845 /* NSString+MPSearchIndex.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F95F2D617399FE300E8C845 /* NSString+MPSearchIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2D417399FE300E8C845 /* NSString+MPSearchIndex.m */; };
 		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
+		5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
 		5FC77CED1737FC30005FAF15 /* NSDate+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC77CEB1737FC30005FAF15 /* NSDate+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC77CEE1737FC30005FAF15 /* NSDate+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC77CEC1737FC30005FAF15 /* NSDate+MPExtensions.m */; };
 		5FCC021F170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -351,7 +353,7 @@
 		5F68579D1727C38900FE06B0 /* MPVirtualSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPVirtualSection.h; path = Sources/Model/MPVirtualSection.h; sourceTree = "<group>"; };
 		5F68579E1727C38900FE06B0 /* MPVirtualSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPVirtualSection.m; path = Sources/Model/MPVirtualSection.m; sourceTree = "<group>"; };
 		5F68579F1727C38900FE06B0 /* MPVirtualSection+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MPVirtualSection+Protected.h"; path = "Sources/Model/MPVirtualSection+Protected.h"; sourceTree = "<group>"; };
-		5F6857B61727C40300FE06B0 /* MPTitled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPTitled.h; path = Sources/Model/MPTitled.h; sourceTree = "<group>"; };
+		5F6857B61727C40300FE06B0 /* MPTitledProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPTitledProtocol.h; path = Sources/Model/MPTitledProtocol.h; sourceTree = "<group>"; };
 		5F6857D817287F0800FE06B0 /* MPRootSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPRootSection.h; path = Sources/Model/MPRootSection.h; sourceTree = "<group>"; };
 		5F6857D917287F0800FE06B0 /* MPRootSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPRootSection.m; path = Sources/Model/MPRootSection.m; sourceTree = "<group>"; };
 		5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MPRootSection+Protected.h"; path = "Sources/Model/MPRootSection+Protected.h"; sourceTree = "<group>"; };
@@ -366,6 +368,8 @@
 		5F95F2D317399FE300E8C845 /* NSString+MPSearchIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+MPSearchIndex.h"; path = "Sources/Categories/NSString+MPSearchIndex.h"; sourceTree = "<group>"; };
 		5F95F2D417399FE300E8C845 /* NSString+MPSearchIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+MPSearchIndex.m"; path = "Sources/Categories/NSString+MPSearchIndex.m"; sourceTree = "<group>"; };
 		5F95F2D71739A94300E8C845 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPIndexableMixin.h; path = Sources/Model/MPIndexableMixin.h; sourceTree = "<group>"; };
+		5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPIndexableMixin.m; path = Sources/Model/MPIndexableMixin.m; sourceTree = "<group>"; };
 		5FC77CEB1737FC30005FAF15 /* NSDate+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+MPExtensions.h"; path = "Sources/Categories/NSDate+MPExtensions.h"; sourceTree = "<group>"; };
 		5FC77CEC1737FC30005FAF15 /* NSDate+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+MPExtensions.m"; path = "Sources/Categories/NSDate+MPExtensions.m"; sourceTree = "<group>"; };
 		5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+MPManagedObjectExtensions.h"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.h"; sourceTree = "<group>"; };
@@ -764,7 +768,7 @@
 				5FDB3A6917079A750049EBB5 /* MPContributor.m */,
 				5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */,
 				5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */,
-				5F6857B61727C40300FE06B0 /* MPTitled.h */,
+				5F6857B61727C40300FE06B0 /* MPTitledProtocol.h */,
 				5F6857D817287F0800FE06B0 /* MPRootSection.h */,
 				5F6857D917287F0800FE06B0 /* MPRootSection.m */,
 				5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */,
@@ -828,6 +832,8 @@
 				5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */,
 				5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */,
 				5F779FB8172BDC180011C4DD /* MPThumbnailable.h */,
+				5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */,
+				5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */,
 			);
 			name = Mixins;
 			sourceTree = "<group>";
@@ -890,7 +896,7 @@
 				5F3D380E1725D8E000D19D7C /* MPBundlableMixin.h in Headers */,
 				5F6857A01727C38900FE06B0 /* MPVirtualSection.h in Headers */,
 				5F6857A21727C38900FE06B0 /* MPVirtualSection+Protected.h in Headers */,
-				5F6857B71727C40300FE06B0 /* MPTitled.h in Headers */,
+				5F6857B71727C40300FE06B0 /* MPTitledProtocol.h in Headers */,
 				5F6857DA17287F0800FE06B0 /* MPRootSection.h in Headers */,
 				5F6857F017287F3100FE06B0 /* MPRootSection+Protected.h in Headers */,
 				5F779F9C172BD3D20011C4DD /* NSView+MPExtensions.h in Headers */,
@@ -899,6 +905,7 @@
 				5F95F2C517397F5400E8C845 /* MPSearchIndexController.h in Headers */,
 				5F95F2D517399FE300E8C845 /* NSString+MPSearchIndex.h in Headers */,
 				5FC77CED1737FC30005FAF15 /* NSDate+MPExtensions.h in Headers */,
+				5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1227,6 +1234,7 @@
 				5F95F2C617397F5400E8C845 /* MPSearchIndexController.m in Sources */,
 				5F95F2D617399FE300E8C845 /* NSString+MPSearchIndex.m in Sources */,
 				5FC77CEE1737FC30005FAF15 /* NSDate+MPExtensions.m in Sources */,
+				5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -109,13 +109,13 @@
     @throw [[MPInitIsPrivateException alloc] initWithSelector:_cmd];
 }
 
-- (instancetype)initWithParent:(id<MPTreeItem>)parentItem wrappedObject:(MPManagedObject<MPTitled,MPPlaceHolding> *)obj
+- (instancetype)initWithParent:(id<MPTreeItem>)parentItem wrappedObject:(MPManagedObject<MPTitledProtocol,MPPlaceHolding> *)obj
 {
     return [self initWithParent:parentItem wrappedObject:obj representedObjects:@[ obj ] representedObjectClass:obj.class observedManagedObjectClasses:nil];
 }
 
 - (instancetype)initWithParent:(id<MPTreeItem>)parentItem
-                 wrappedObject:(MPManagedObject<MPTitled, MPPlaceHolding> *)obj
+                 wrappedObject:(MPManagedObject<MPTitledProtocol, MPPlaceHolding> *)obj
             representedObjects:(NSArray *)representedObjects
         representedObjectClass:(Class)representedObjectClass
   observedManagedObjectClasses:(NSArray *)additionalObservedManagedObjectClasses
@@ -171,7 +171,7 @@
             assert(value == parent.packageController);
         }];
     
-    return [wrappedObjects mapObjectsUsingBlock:^id(MPManagedObject<MPTitled, MPPlaceHolding> *o, NSUInteger idx)
+    return [wrappedObjects mapObjectsUsingBlock:^id(MPManagedObject<MPTitledProtocol, MPPlaceHolding> *o, NSUInteger idx)
     {
         return [[MPObjectWrappingSection alloc] initWithParent:parent wrappedObject:o];
     }];

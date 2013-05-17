@@ -8,11 +8,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Feather/Sources/Model Controllers/MPSearchIndexController.m"
-         timestampString = "389700048.039721"
+         timestampString = "389729118.666971"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "48"
-         endingLineNumber = "48"
+         startingLineNumber = "49"
+         endingLineNumber = "49"
          landmarkName = "-initWithPackageController:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -21,11 +21,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Feather/Sources/Model Controllers/MPSearchIndexController.m"
-         timestampString = "389700808.267678"
+         timestampString = "389729118.666971"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "63"
-         endingLineNumber = "63"
+         startingLineNumber = "64"
+         endingLineNumber = "64"
          landmarkName = "-initWithPackageController:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -34,11 +34,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Feather/Sources/Model Controllers/MPSearchIndexController.m"
-         timestampString = "389700054.544219"
+         timestampString = "389729118.666971"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "71"
-         endingLineNumber = "71"
+         startingLineNumber = "72"
+         endingLineNumber = "72"
          landmarkName = "-initWithPackageController:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -47,11 +47,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Feather/Sources/Model Controllers/MPSearchIndexController.m"
-         timestampString = "389700808.267678"
+         timestampString = "389729118.666971"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "79"
-         endingLineNumber = "79"
+         startingLineNumber = "80"
+         endingLineNumber = "80"
          landmarkName = "-initWithPackageController:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -60,7 +60,33 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Feather/Sources/Model Controllers/MPSearchIndexController.m"
-         timestampString = "389700647.680075"
+         timestampString = "389729118.666971"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "58"
+         endingLineNumber = "58"
+         landmarkName = "-initWithPackageController:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Feather/Sources/Model Controllers/MPSearchIndexController.m"
+         timestampString = "389729118.666971"
+         startingColumnNumber = "9223372036854775807"
+         endingColumnNumber = "9223372036854775807"
+         startingLineNumber = "60"
+         endingLineNumber = "60"
+         landmarkName = "-initWithPackageController:"
+         landmarkType = "5">
+      </FileBreakpoint>
+      <FileBreakpoint
+         shouldBeEnabled = "No"
+         ignoreCount = "0"
+         continueAfterRunningActions = "No"
+         filePath = "Feather/Sources/Model Controllers/MPSearchIndexController.m"
+         timestampString = "389729118.666971"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "57"
@@ -73,12 +99,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Feather/Sources/Model Controllers/MPSearchIndexController.m"
-         timestampString = "389700827.986691"
+         timestampString = "389729118.666971"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "59"
-         endingLineNumber = "59"
-         landmarkName = "-initWithPackageController:"
+         startingLineNumber = "165"
+         endingLineNumber = "165"
+         landmarkName = "-_indexManagedObject:error:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -86,37 +112,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Feather/Sources/Model Controllers/MPSearchIndexController.m"
-         timestampString = "389700840.378858"
+         timestampString = "389729118.666971"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "56"
-         endingLineNumber = "56"
-         landmarkName = "-initWithPackageController:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "Yes"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Feather/Sources/Model Controllers/MPSearchIndexController.m"
-         timestampString = "389700977.697157"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "164"
-         endingLineNumber = "164"
-         landmarkName = "-indexManagedObject:error:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "Feather/Sources/Model Controllers/MPSearchIndexController.m"
-         timestampString = "389700929.408202"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "126"
-         endingLineNumber = "126"
+         startingLineNumber = "127"
+         endingLineNumber = "127"
          landmarkName = "-ensureCreatedWithError:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -125,11 +125,11 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Feather/Sources/Model Controllers/MPSearchIndexController.m"
-         timestampString = "389700971.283527"
+         timestampString = "389729118.666971"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "137"
-         endingLineNumber = "137"
+         startingLineNumber = "138"
+         endingLineNumber = "138"
          landmarkName = "-ensureCreatedWithError:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -138,12 +138,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Feather/Sources/Model Controllers/MPSearchIndexController.m"
-         timestampString = "389707787.768072"
+         timestampString = "389743981.24896"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "196"
-         endingLineNumber = "196"
-         landmarkName = "-updateIndexForManagedObject:error:"
+         startingLineNumber = "201"
+         endingLineNumber = "201"
+         landmarkName = "-_updateIndexForManagedObject:error:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -151,12 +151,12 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          filePath = "Feather/Sources/Model Controllers/MPSearchIndexController.m"
-         timestampString = "389702035.612532"
+         timestampString = "389729118.666971"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "177"
-         endingLineNumber = "177"
-         landmarkName = "-indexManagedObject:error:"
+         startingLineNumber = "178"
+         endingLineNumber = "178"
+         landmarkName = "-_indexManagedObject:error:"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>
