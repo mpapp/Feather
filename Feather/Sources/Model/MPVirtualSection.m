@@ -109,7 +109,7 @@
     @throw [[MPInitIsPrivateException alloc] initWithSelector:_cmd];
 }
 
-- (instancetype)initWithParent:(id<MPTreeItem>)parentItem wrappedObject:(MPManagedObject<MPTitled,MPPlaceHolding> *)obj
+- (instancetype)initWithParent:(id<MPTreeItem>)parentItem wrappedObject:(MPManagedObject<MPTitled,MPPlaceHolding, MPThumbnailable> *)obj
 {
     return [self initWithParent:parentItem wrappedObject:obj representedObjects:@[ obj ] representedObjectClass:obj.class observedManagedObjectClasses:nil];
 }

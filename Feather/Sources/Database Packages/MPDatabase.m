@@ -126,6 +126,8 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
                  return idHasValidPrefix;
              }];
         }
+        
+        
     }
     
     return self;
@@ -153,6 +155,30 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         assert([self name]);
         assert(self.database);
         _primaryDesignDocument = [self.database designDocumentWithName:[self name]];
+        
+        // used for backbone-couchdb bridging
+        [_primaryDesignDocument defineViewNamed:@"byCollection" mapBlock:^(NSDictionary *doc, TDMapEmitBlock emit) {
+            if (doc[@"objectType"])
+                emit(doc[@"objectType"], doc);
+        } version:@"1.0"];
+        
+        [_primaryDesignDocument defineFilterNamed:@"by_collection"
+                                            block:
+         ^BOOL(TD_Revision *revision, NSDictionary *params) {
+             
+             if (revision.properties[@"objectType"] && params[@"query"]
+                 && params[@"query"][@"collection"]
+                 && [params[@"query"][@"collection"] isEqualToString:revision.properties[@"objectType"]])
+                 return YES;
+             
+             else if (params[@"query"]
+                      && params[@"query"][@"collection"]
+                      && revision.deleted)
+                 return YES;
+             
+             else
+                 return NO;
+         }];
     }
     
     return _primaryDesignDocument;
