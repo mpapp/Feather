@@ -13,7 +13,7 @@
 
 - (id)firstObject { return self.count > 0 ? self[0] : nil; }
 
-- (NSArray *)mapObjectsUsingBlock:(NSArray *(^)(id o, NSUInteger idx))mapBlock
+- (NSArray *)mapObjectsUsingBlock:(id(^)(id o, NSUInteger idx))mapBlock
 {
     NSMutableArray *map = [NSMutableArray arrayWithCapacity:self.count];
     

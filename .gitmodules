@@ -16,3 +16,6 @@
 [submodule "External/UICKeyChainStore"]
 	path = External/UICKeyChainStore
 	url = git@github.com:kishikawakatsumi/UICKeyChainStore.git
+[submodule "External/fulltextsearch"]
+	path = External/fulltextsearch
+	url = git@bitbucket.org:mz2/fulltextsearch.git

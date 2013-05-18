@@ -37,6 +37,7 @@
 #import "NSFileManager+MPExtensions.h"
 #import "NSDictionary+MPManagedObjectExtensions.h"
 
+#import "NSString+MPSearchIndex.h"
 
 #import "Mixin.h"
 #import "MPCacheableMixin.h"
@@ -60,7 +61,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 @property (readwrite) BOOL isNewObject;
+
 @property (readwrite, strong) NSMutableDictionary *embeddedObjectCache;
+
+@property (readonly, copy) NSString *deletedDocumentID;
 
 @end
 
@@ -189,6 +193,13 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 {
     assert(_embeddedObjectCache);
     return _embeddedObjectCache[identifier];
+}
+
+- (NSString *)documentID
+{
+    if (self.document) return self.document.documentID;
+    else assert(_deletedDocumentID);
+    return _deletedDocumentID;
 }
 
 + (NSString *)idForNewDocumentInDatabase:(CouchDatabase *)db
@@ -335,8 +346,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 {
     assert(_controller);
     
+    NSString *deletedDocumentID = self.document.documentID;
+    assert(deletedDocumentID);
+    
     RESTOperation *op = [super deleteDocument];
     [op onCompletion:^{
+        
+        _deletedDocumentID = deletedDocumentID;
+        
         [_controller didDeleteObject:self];
         
 #if MP_DEBUG_ZOMBIE_MODELS
@@ -721,6 +738,46 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return nil;
 }
 
+#pragma mark -
+
++ (NSArray *)indexablePropertyKeys { return nil; }
+
+- (NSString *)indexableStringForPropertyKey:(NSString *)propertyKey
+{
+    return [self valueForKey:propertyKey];
+}
+
+- (NSString *)tokenizedFullTextString
+{
+    NSArray *propertyKeys = [[self class] indexablePropertyKeys];
+    
+    if (propertyKeys.count == 0) return nil;
+    
+    NSUInteger propertyKeyCount = propertyKeys.count;
+    
+    NSUInteger capacity = 0;
+    for (NSString *key in propertyKeys)
+        capacity += [[self valueForKey:key] length] + 1;
+        
+    NSMutableString *str = [NSMutableString stringWithCapacity:capacity];
+    
+    NSUInteger i = 0;
+    for (NSString *key in propertyKeys)
+    {
+        NSString *appendedStr = [[self indexableStringForPropertyKey:key] fullTextNormalizedString];
+        
+        if (appendedStr)
+        {
+            [str appendString:appendedStr];
+            if (i < (propertyKeyCount - 1)) [str appendString:@" "];
+        }
+        
+        i++;
+    }
+    
+    return [str copy];
+}
+
 #pragma mark - Embedded object support
 
 - (id)externalizePropertyValue:(id)value
@@ -1047,7 +1104,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 @implementation MPManagedObject (Protected)
 
-- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller properties:(NSDictionary *)properties documentID:(NSString *)identifier
+- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller
+                                      properties:(NSDictionary *)properties
+                                      documentID:(NSString *)identifier
 {
     assert(controller);
     assert(controller.db);

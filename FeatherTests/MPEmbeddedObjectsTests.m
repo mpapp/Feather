@@ -12,6 +12,8 @@
 #import "MPEmbeddedObjectsTests.h"
 #import "MPEmbeddedObject+Protected.h"
 
+#import "MPSearchIndexController.h"
+
 @implementation MPEmbeddedObjectsTests
 
 - (void)testEmbeddedObjectCreation
@@ -20,6 +22,10 @@
     MPTestObjectsController *tc = tpkg.testObjectsController;
     
     MPTestObject *obj = [[MPTestObject alloc] initWithNewDocumentForController:tc];
+    
+    obj.title = @"foo";
+    obj.desc = @"bar";
+    obj.contents = @"foobar";
     
     obj.embeddedTestObject = [[MPEmbeddedTestObject alloc] initWithEmbeddingObject:obj];
     NSLog(@"%@", [obj propertiesToSave]);
@@ -106,6 +112,21 @@
     
     STAssertTrue(![obj needsSave], @"Object no longer needs saving");
     STAssertTrue(![obj.embeddedTestObject needsSave], @"Object no longer needs saving");
+
+    NSArray *objsByTitle = [tpkg.searchIndexController objectsWithMatchingTitle:@"foo"];
+    STAssertTrue(objsByTitle.count == 1, @"There are objects in the search index with matching");
+    
+    NSArray *objsByDesc = [tpkg.searchIndexController objectsWithMatchingDesc:@"bar"];
+    STAssertTrue(objsByDesc.count == 1, @"There are objects in the search index with matching");
+    
+    [[obj deleteDocument] wait];
+    
+    objsByTitle = [tpkg.searchIndexController objectsWithMatchingTitle:@"foo"];
+    STAssertTrue(objsByTitle.count == 0, @"There should be no objects in the search index with matching title any longer");
+    
+    objsByDesc = [tpkg.searchIndexController objectsWithMatchingDesc:@"bar"];
+    STAssertTrue(objsByDesc.count == 0, @"There should be no objects in the search index with matching desc any longer");
+    
 }
 
 @end

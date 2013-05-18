@@ -29,7 +29,7 @@
 		5F6857A01727C38900FE06B0 /* MPVirtualSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579D1727C38900FE06B0 /* MPVirtualSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F68579E1727C38900FE06B0 /* MPVirtualSection.m */; };
 		5F6857A21727C38900FE06B0 /* MPVirtualSection+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579F1727C38900FE06B0 /* MPVirtualSection+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5F6857B71727C40300FE06B0 /* MPTitled.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857B61727C40300FE06B0 /* MPTitled.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F6857B71727C40300FE06B0 /* MPTitledProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857B61727C40300FE06B0 /* MPTitledProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857DA17287F0800FE06B0 /* MPRootSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857D817287F0800FE06B0 /* MPRootSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857DB17287F0800FE06B0 /* MPRootSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6857D917287F0800FE06B0 /* MPRootSection.m */; };
 		5F6857F017287F3100FE06B0 /* MPRootSection+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -38,8 +38,16 @@
 		5F779F9D172BD3D20011C4DD /* NSView+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F779F9B172BD3D20011C4DD /* NSView+MPExtensions.m */; };
 		5F779FCC172BDC3C0011C4DD /* MPThumbnailable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F779FB8172BDC180011C4DD /* MPThumbnailable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F779FF6172BE69A0011C4DD /* MPRESTFulResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F779FF4172BE69A0011C4DD /* MPRESTFulResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5FC77CED1737FC30005FAF15 /* NSDate+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC77CEB1737FC30005FAF15 /* NSDate+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5FC77CEE1737FC30005FAF15 /* NSDate+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC77CEC1737FC30005FAF15 /* NSDate+MPExtensions.m */; };
+		5F95F2D2173980A500E8C845 /* libFMDB.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2CF1739808F00E8C845 /* libFMDB.a */; };
+		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
+		5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
+		5FC752E71746E287007818A0 /* NSDate+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */; };
+		5FC752E81746E287007818A0 /* NSDate+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752E61746E287007818A0 /* NSDate+MPExtensions.m */; };
+		5FC752FF1746E294007818A0 /* NSString+MPSearchIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752FD1746E294007818A0 /* NSString+MPSearchIndex.h */; };
+		5FC753001746E294007818A0 /* NSString+MPSearchIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752FE1746E294007818A0 /* NSString+MPSearchIndex.m */; };
+		5FC753031746E2AA007818A0 /* MPSearchIndexController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC753011746E2AA007818A0 /* MPSearchIndexController.h */; };
+		5FC753041746E2AA007818A0 /* MPSearchIndexController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC753021746E2AA007818A0 /* MPSearchIndexController.m */; };
 		5FCC021F170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FCC0220170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */; };
 		5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
@@ -129,6 +137,27 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5F95F2CC1739808F00E8C845 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5F95F2C71739808F00E8C845 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 8DD76FA10486AA7600D96B5E;
+			remoteInfo = fmdb;
+		};
+		5F95F2CE1739808F00E8C845 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5F95F2C71739808F00E8C845 /* fmdb.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = EE4290EF12B42F870088BD94;
+			remoteInfo = FMDB;
+		};
+		5F95F2D0173980A000E8C845 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5F95F2C71739808F00E8C845 /* fmdb.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = EE4290EE12B42F870088BD94;
+			remoteInfo = FMDB;
+		};
 		5FDB331F1705CB950049EBB5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5FDB32F91705CB950049EBB5 /* Project object */;
@@ -324,7 +353,7 @@
 		5F68579D1727C38900FE06B0 /* MPVirtualSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPVirtualSection.h; path = Sources/Model/MPVirtualSection.h; sourceTree = "<group>"; };
 		5F68579E1727C38900FE06B0 /* MPVirtualSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPVirtualSection.m; path = Sources/Model/MPVirtualSection.m; sourceTree = "<group>"; };
 		5F68579F1727C38900FE06B0 /* MPVirtualSection+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MPVirtualSection+Protected.h"; path = "Sources/Model/MPVirtualSection+Protected.h"; sourceTree = "<group>"; };
-		5F6857B61727C40300FE06B0 /* MPTitled.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPTitled.h; path = Sources/Model/MPTitled.h; sourceTree = "<group>"; };
+		5F6857B61727C40300FE06B0 /* MPTitledProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPTitledProtocol.h; path = Sources/Model/MPTitledProtocol.h; sourceTree = "<group>"; };
 		5F6857D817287F0800FE06B0 /* MPRootSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPRootSection.h; path = Sources/Model/MPRootSection.h; sourceTree = "<group>"; };
 		5F6857D917287F0800FE06B0 /* MPRootSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPRootSection.m; path = Sources/Model/MPRootSection.m; sourceTree = "<group>"; };
 		5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MPRootSection+Protected.h"; path = "Sources/Model/MPRootSection+Protected.h"; sourceTree = "<group>"; };
@@ -333,8 +362,16 @@
 		5F779F9B172BD3D20011C4DD /* NSView+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSView+MPExtensions.m"; path = "Sources/Categories/NSView+MPExtensions.m"; sourceTree = "<group>"; };
 		5F779FB8172BDC180011C4DD /* MPThumbnailable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MPThumbnailable.h; path = Sources/Model/MPThumbnailable.h; sourceTree = "<group>"; };
 		5F779FF4172BE69A0011C4DD /* MPRESTFulResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPRESTFulResource.h; path = Sources/Model/MPRESTFulResource.h; sourceTree = "<group>"; };
-		5FC77CEB1737FC30005FAF15 /* NSDate+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+MPExtensions.h"; path = "Sources/Categories/NSDate+MPExtensions.h"; sourceTree = "<group>"; };
-		5FC77CEC1737FC30005FAF15 /* NSDate+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+MPExtensions.m"; path = "Sources/Categories/NSDate+MPExtensions.m"; sourceTree = "<group>"; };
+		5F95F2C71739808F00E8C845 /* fmdb.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = fmdb.xcodeproj; path = External/TouchDB/vendor/fmdb/fmdb.xcodeproj; sourceTree = "<group>"; };
+		5F95F2D71739A94300E8C845 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
+		5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPIndexableMixin.h; path = Sources/Model/MPIndexableMixin.h; sourceTree = "<group>"; };
+		5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPIndexableMixin.m; path = Sources/Model/MPIndexableMixin.m; sourceTree = "<group>"; };
+		5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+MPExtensions.h"; path = "Sources/Categories/NSDate+MPExtensions.h"; sourceTree = "<group>"; };
+		5FC752E61746E287007818A0 /* NSDate+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+MPExtensions.m"; path = "Sources/Categories/NSDate+MPExtensions.m"; sourceTree = "<group>"; };
+		5FC752FD1746E294007818A0 /* NSString+MPSearchIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+MPSearchIndex.h"; path = "Sources/Categories/NSString+MPSearchIndex.h"; sourceTree = "<group>"; };
+		5FC752FE1746E294007818A0 /* NSString+MPSearchIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+MPSearchIndex.m"; path = "Sources/Categories/NSString+MPSearchIndex.m"; sourceTree = "<group>"; };
+		5FC753011746E2AA007818A0 /* MPSearchIndexController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPSearchIndexController.h; path = "Sources/Model Controllers/MPSearchIndexController.h"; sourceTree = "<group>"; };
+		5FC753021746E2AA007818A0 /* MPSearchIndexController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPSearchIndexController.m; path = "Sources/Model Controllers/MPSearchIndexController.m"; sourceTree = "<group>"; };
 		5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+MPManagedObjectExtensions.h"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.h"; sourceTree = "<group>"; };
 		5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MPManagedObjectExtensions.m"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.m"; sourceTree = "<group>"; };
 		5FDB33031705CB950049EBB5 /* Feather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Feather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -432,6 +469,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F95F2D2173980A500E8C845 /* libFMDB.a in Frameworks */,
+				5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */,
 				5FDB3A08170793B30049EBB5 /* libz.dylib in Frameworks */,
 				5FDB33C31705CF260049EBB5 /* libcommonCrypto.dylib in Frameworks */,
 				5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */,
@@ -466,6 +505,26 @@
 			name = UICKeyChainStore;
 			sourceTree = "<group>";
 		};
+		5F95F2AF17397F2900E8C845 /* Full Text Search */ = {
+			isa = PBXGroup;
+			children = (
+				5FC753011746E2AA007818A0 /* MPSearchIndexController.h */,
+				5FC753021746E2AA007818A0 /* MPSearchIndexController.m */,
+				5FC752FD1746E294007818A0 /* NSString+MPSearchIndex.h */,
+				5FC752FE1746E294007818A0 /* NSString+MPSearchIndex.m */,
+			);
+			name = "Full Text Search";
+			sourceTree = "<group>";
+		};
+		5F95F2C81739808F00E8C845 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				5F95F2CD1739808F00E8C845 /* fmdb */,
+				5F95F2CF1739808F00E8C845 /* libFMDB.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		5FDB32F71705CB950049EBB5 = {
 			isa = PBXGroup;
 			children = (
@@ -475,6 +534,7 @@
 				5FDB33041705CB950049EBB5 /* Products */,
 				5FDB399E170761B70049EBB5 /* CouchCocoa.xcodeproj */,
 				5FDB335D1705CC960049EBB5 /* TouchDB.xcodeproj */,
+				5F95F2C71739808F00E8C845 /* fmdb.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -490,6 +550,7 @@
 		5FDB33051705CB950049EBB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5F95F2D71739A94300E8C845 /* libsqlite3.dylib */,
 				5FDB3A07170793B20049EBB5 /* libz.dylib */,
 				5FDB33D71705D1380049EBB5 /* libicucore.dylib */,
 				5FDB33C21705CF260049EBB5 /* libcommonCrypto.dylib */,
@@ -606,6 +667,8 @@
 				5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */,
 				5FDB3A9917079EA80049EBB5 /* NSNotificationCenter+ErrorNotification.h */,
 				5FDB3A9A17079EAB0049EBB5 /* NSNotificationCenter+ErrorNotification.m */,
+				5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */,
+				5FC752E61746E287007818A0 /* NSDate+MPExtensions.m */,
 				5FDB382F170702F40049EBB5 /* NSDictionary+MPExtensions.h */,
 				5FDB3830170702F40049EBB5 /* NSDictionary+MPExtensions.m */,
 				5FDB3833170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.h */,
@@ -632,8 +695,6 @@
 				D932296317268E37006880C2 /* NSTask+MPExtensions.m */,
 				5F779F9A172BD3D20011C4DD /* NSView+MPExtensions.h */,
 				5F779F9B172BD3D20011C4DD /* NSView+MPExtensions.m */,
-				5FC77CEB1737FC30005FAF15 /* NSDate+MPExtensions.h */,
-				5FC77CEC1737FC30005FAF15 /* NSDate+MPExtensions.m */,
 			);
 			name = "Cocoa Categories";
 			sourceTree = "<group>";
@@ -707,7 +768,7 @@
 				5FDB3A6917079A750049EBB5 /* MPContributor.m */,
 				5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */,
 				5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */,
-				5F6857B61727C40300FE06B0 /* MPTitled.h */,
+				5F6857B61727C40300FE06B0 /* MPTitledProtocol.h */,
 				5F6857D817287F0800FE06B0 /* MPRootSection.h */,
 				5F6857D917287F0800FE06B0 /* MPRootSection.m */,
 				5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */,
@@ -727,6 +788,7 @@
 				5FDB3A59170799B30049EBB5 /* MPManagedObjectsController.m */,
 				5FDB3A7617079AEC0049EBB5 /* MPContributorsController.h */,
 				5FDB3A7717079AEC0049EBB5 /* MPContributorsController.m */,
+				5F95F2AF17397F2900E8C845 /* Full Text Search */,
 			);
 			name = "Model Controllers";
 			sourceTree = "<group>";
@@ -770,6 +832,8 @@
 				5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */,
 				5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */,
 				5F779FB8172BDC180011C4DD /* MPThumbnailable.h */,
+				5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */,
+				5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */,
 			);
 			name = Mixins;
 			sourceTree = "<group>";
@@ -832,13 +896,16 @@
 				5F3D380E1725D8E000D19D7C /* MPBundlableMixin.h in Headers */,
 				5F6857A01727C38900FE06B0 /* MPVirtualSection.h in Headers */,
 				5F6857A21727C38900FE06B0 /* MPVirtualSection+Protected.h in Headers */,
-				5F6857B71727C40300FE06B0 /* MPTitled.h in Headers */,
+				5F6857B71727C40300FE06B0 /* MPTitledProtocol.h in Headers */,
 				5F6857DA17287F0800FE06B0 /* MPRootSection.h in Headers */,
 				5F6857F017287F3100FE06B0 /* MPRootSection+Protected.h in Headers */,
 				5F779F9C172BD3D20011C4DD /* NSView+MPExtensions.h in Headers */,
 				5F779FCC172BDC3C0011C4DD /* MPThumbnailable.h in Headers */,
 				5F779FF6172BE69A0011C4DD /* MPRESTFulResource.h in Headers */,
-				5FC77CED1737FC30005FAF15 /* NSDate+MPExtensions.h in Headers */,
+				5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */,
+				5FC752E71746E287007818A0 /* NSDate+MPExtensions.h in Headers */,
+				5FC752FF1746E294007818A0 /* NSString+MPSearchIndex.h in Headers */,
+				5FC753031746E2AA007818A0 /* MPSearchIndexController.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -857,6 +924,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5F95F2D1173980A000E8C845 /* PBXTargetDependency */,
 				5FDB39BD170761C10049EBB5 /* PBXTargetDependency */,
 				5FDB34A21705DCE50049EBB5 /* PBXTargetDependency */,
 				5FDB33911705CCAA0049EBB5 /* PBXTargetDependency */,
@@ -910,6 +978,10 @@
 					ProjectRef = 5FDB399E170761B70049EBB5 /* CouchCocoa.xcodeproj */;
 				},
 				{
+					ProductGroup = 5F95F2C81739808F00E8C845 /* Products */;
+					ProjectRef = 5F95F2C71739808F00E8C845 /* fmdb.xcodeproj */;
+				},
+				{
 					ProductGroup = 5FDB335E1705CC960049EBB5 /* Products */;
 					ProjectRef = 5FDB335D1705CC960049EBB5 /* TouchDB.xcodeproj */;
 				},
@@ -923,6 +995,20 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		5F95F2CD1739808F00E8C845 /* fmdb */ = {
+			isa = PBXReferenceProxy;
+			fileType = "compiled.mach-o.executable";
+			path = fmdb;
+			remoteRef = 5F95F2CC1739808F00E8C845 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		5F95F2CF1739808F00E8C845 /* libFMDB.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libFMDB.a;
+			remoteRef = 5F95F2CE1739808F00E8C845 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		5FDB33771705CC960049EBB5 /* TouchDB.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1145,7 +1231,10 @@
 				D932296517268E37006880C2 /* NSTask+MPExtensions.m in Sources */,
 				5F6857DB17287F0800FE06B0 /* MPRootSection.m in Sources */,
 				5F779F9D172BD3D20011C4DD /* NSView+MPExtensions.m in Sources */,
-				5FC77CEE1737FC30005FAF15 /* NSDate+MPExtensions.m in Sources */,
+				5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */,
+				5FC752E81746E287007818A0 /* NSDate+MPExtensions.m in Sources */,
+				5FC753001746E294007818A0 /* NSString+MPSearchIndex.m in Sources */,
+				5FC753041746E2AA007818A0 /* MPSearchIndexController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1165,6 +1254,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5F95F2D1173980A000E8C845 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FMDB;
+			targetProxy = 5F95F2D0173980A000E8C845 /* PBXContainerItemProxy */;
+		};
 		5FDB33201705CB950049EBB5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5FDB33021705CB950049EBB5 /* Feather */;
@@ -1273,6 +1367,7 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"$SRCROOT/External/TouchDB/vendor/fmdb/src\"";
 				INFOPLIST_FILE = "Feather/Feather-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
 				LIBRARY_SEARCH_PATHS = (
@@ -1298,6 +1393,7 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"$SRCROOT/External/TouchDB/vendor/fmdb/src\"";
 				INFOPLIST_FILE = "Feather/Feather-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
 				LIBRARY_SEARCH_PATHS = (
