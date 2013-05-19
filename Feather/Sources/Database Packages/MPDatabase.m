@@ -103,7 +103,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         
         [_database onChange:^(CouchDocument *doc, BOOL externalChange) {
             assert(_packageController);
-            [_packageController didChangeDocument:doc externally:externalChange];
+            [_packageController didChangeDocument:doc source:externalChange ? MPManagedObjectChangeSourceExternal : MPManagedObjectChangeSourceAPI];
         }];
         
         _pushFilterName = pushFilterName;

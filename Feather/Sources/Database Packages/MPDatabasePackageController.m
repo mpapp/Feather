@@ -970,7 +970,7 @@ static NSUInteger packagesOpened = 0;
 - (void)makeNotificationCenter { }
 
 
-- (void)didChangeDocument:(CouchDocument *)document externally:(BOOL)isExternalChange
+- (void)didChangeDocument:(CouchDocument *)document source:(MPManagedObjectChangeSource)source
 {
     MPManagedObjectsController *moc = [self controllerForDocument:document];
     assert(moc);
@@ -980,7 +980,7 @@ static NSUInteger packagesOpened = 0;
     assert(mo);
     assert([document modelObject] == mo);
     
-    [moc didChangeDocument:document forObject:document.modelObject externally:isExternalChange];
+    [moc didChangeDocument:document forObject:document.modelObject source:source];
 }
 
 @end

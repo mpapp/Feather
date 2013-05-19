@@ -16,19 +16,26 @@
 
 extern NSString * const MPManagedObjectErrorDomain;
 
-typedef enum MPManagedObjectErrorCode
+typedef NS_ENUM(NSInteger, MPManagedObjectErrorCode)
 {
     MPManagedObjectErrorCodeUnknown = 0,
     MPManagedObjectErrorCodeTypeMissing = 1,
     MPManagedObjectErrorCodeUserNotCreator = 2
-} MPManagedObjectErrorCode;
+};
 
-typedef enum MPManagedObjectModerationState
+typedef NS_ENUM(NSInteger, MPManagedObjectModerationState)
 {
     MPManagedObjectModerationStateUnmoderated = 0,
     MPManagedObjectModerationStateAccepted = 1,
     MPManagedObjectModerationStateRejected = 2
-} MPManagedObjectModerationState;
+};
+
+typedef NS_ENUM(NSInteger, MPManagedObjectChangeSource)
+{
+    MPManagedObjectChangeSourceInternal = 0,    // internal change (change assumed internal if no source given)
+    MPManagedObjectChangeSourceAPI = 1,         // change made in in-process via the RESTful web service API ( touchdb:// or http(s):// )
+    MPManagedObjectChangeSourceExternal = 2     // changes coming in from external source ( e.g. replication )
+};
 
 
 /** An empty tag protocol used to signify objects which can be referenced across database boundaries.

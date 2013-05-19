@@ -681,15 +681,26 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
         [[self.packageController delegate] updateChangeCount:NSChangeDone];
 }
 
-- (void)didChangeDocument:(CouchDocument *)doc forObject:(MPManagedObject *)object externally:(BOOL)externalChange
+- (void)didChangeDocument:(CouchDocument *)doc forObject:(MPManagedObject *)object source:(MPManagedObjectChangeSource)source
 {
     NSNotificationCenter *nc = [_packageController notificationCenter]; assert(nc);
     
-    [nc postNotificationName:[NSNotificationCenter notificationNameForRecentChangeOfType:MPChangeTypeUpdate
-                                                                   forManagedObjectClass:[object class]] object:object];
-
-    [nc postNotificationName:[NSNotificationCenter notificationNameForPastChangeOfType:MPChangeTypeUpdate
-                                                                 forManagedObjectClass:[object class]] object:object];
+    // TODO: get rid of this hack and reason properly about whether an object is new or updated.
+    BOOL documentIsNew = [[[doc currentRevision] revisionID] isMatchedByRegex:@"^1-"];
+    BOOL documentIsDeleted = [[doc currentRevision] isDeleted];
+    
+    NSDictionary *changeDict = @{ @"source":@(source) };
+    
+    // document new => add change type.
+    // document is not new &  document is deleted => remove change type
+    // document is now new & document is NOT deleted => update change type
+    MPChangeType changeType = documentIsNew ? MPChangeTypeAdd : (documentIsDeleted ? MPChangeTypeRemove : MPChangeTypeUpdate);
+    
+    [nc postNotificationName:[NSNotificationCenter notificationNameForRecentChangeOfType:changeType
+                                                                   forManagedObjectClass:[object class]] object:object userInfo:changeDict];
+    
+    [nc postNotificationName:[NSNotificationCenter notificationNameForPastChangeOfType:changeType
+                                                                 forManagedObjectClass:[object class]] object:object userInfo:changeDict];
 }
 
 - (void)didLoadObjectFromDocument:(MPManagedObject *)object

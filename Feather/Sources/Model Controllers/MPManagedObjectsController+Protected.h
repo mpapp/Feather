@@ -7,6 +7,7 @@
 //
 
 #import "MPManagedObjectsController.h"
+#import "MPManagedObject.h"
 
 @class CouchDocument;
 
@@ -20,7 +21,7 @@
 - (void)willDeleteObject:(MPManagedObject *)object;
 - (void)didDeleteObject:(MPManagedObject *)object;
 
-- (void)didChangeDocument:(CouchDocument *)doc forObject:(MPManagedObject *)object externally:(BOOL)externalChange;
+- (void)didChangeDocument:(CouchDocument *)doc forObject:(MPManagedObject *)object source:(MPManagedObjectChangeSource)source;
 - (void)didLoadObjectFromDocument:(MPManagedObject *)object;
 
 - (void)registerObject:(MPManagedObject *)mo;

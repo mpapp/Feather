@@ -7,6 +7,7 @@
 //
 
 #import "MPDatabasePackageController.h"
+#import "MPManagedObject.h"
 
 @class CouchDocument;
 
@@ -26,6 +27,6 @@
 
 - (void)makeNotificationCenter;
 
-- (void)didChangeDocument:(CouchDocument *)document externally:(BOOL)isExternalChange;
+- (void)didChangeDocument:(CouchDocument *)document source:(MPManagedObjectChangeSource)source;
 
 @end
