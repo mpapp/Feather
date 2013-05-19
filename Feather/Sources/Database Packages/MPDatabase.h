@@ -20,7 +20,7 @@ typedef enum MPDatabaseErrorCode
     MPDatabaseErrorCodePullAlreadyInProgress = 4
 } MPDatabaseErrorCode;
 
-@class CouchTouchDBServer, CouchTouchDBDatabase, CouchDatabase, CouchReplication, RESTOperation;
+@class CouchTouchDBServer, CouchTouchDBDatabase, CouchDatabase, CouchDocument, CouchReplication, RESTOperation;
 @class MPDatabasePackageController;
 @class MPMetadata;
 @class MPManagedObject;
@@ -188,6 +188,9 @@ typedef enum MPDatabaseErrorCode
 
 /** Get plain JSON encodable objects for query enumerator. */
 - (NSArray *)plainObjectsFromQueryEnumeratorKeys:(CouchQueryEnumerator *)rows;
+
+/** Sets a change notification handler. This is exposed in public interface because it includes a pointer to CouchDocument * unlike the CouchDatabaseChanged notification, and is fired even if the document has no model object (e.g. objects added internally without involving a model object). */
+- (void)onChange:(void(^)(CouchDocument *doc, BOOL externalChange))doc;
 
 @end
 

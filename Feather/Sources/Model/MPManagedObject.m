@@ -378,7 +378,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         [super couchDocumentChanged:doc];
 
     assert(doc == self.document);
-    [_controller didChangeDocument:doc forObject:self];
+    [_controller didChangeDocument:doc forObject:self externally:YES];
 }
 
 - (void)didLoadFromDocument

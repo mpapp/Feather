@@ -11,6 +11,8 @@
 #import "NSDictionary+MPManagedObjectExtensions.h"
 
 #import "MPDatabasePackageController.h"
+#import "MPDatabasePackageController+Protected.h"
+
 #import <Feather/MPManagedObject+Protected.h>
 #import "RegexKitLite.h"
 
@@ -99,6 +101,11 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
                                                      name:kCouchDatabaseChangeNotification
                                                    object:_database];
         
+        [_database onChange:^(CouchDocument *doc, BOOL externalChange) {
+            assert(_packageController);
+            [_packageController didChangeDocument:doc externally:externalChange];
+        }];
+        
         _pushFilterName = pushFilterName;
         _pullFilterName = pullFilterName;
         
@@ -118,13 +125,12 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
                  if (managedObjectTypeIncluded)
                  {
                      if (!idHasValidPrefix)
+                     {
                          NSLog(@"Attempting to save a managed object '%@' without object type as a prefix in _id -- this will fail: %@",
                                newRevision.docID, [newRevision properties]);
-                     return idHasValidPrefix;
-                 }
-                 
-                 if (managedObjectTypeIncluded)
-                 {
+                         return NO;
+                     }
+                     
                      Class cls = NSClassFromString(newRevision.properties.managedObjectType);
                      if (!cls)
                      {
@@ -141,6 +147,8 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
                              return NO;
                          }
                      }
+                     
+                     return idHasValidPrefix;
                  }
                  
                  if (!idHasValidPrefix)

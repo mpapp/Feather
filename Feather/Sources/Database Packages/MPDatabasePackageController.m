@@ -8,6 +8,7 @@
 
 #import "MPDatabase.h"
 #import "MPDatabasePackageController+Protected.h"
+#import "MPManagedObjectsController+Protected.h"
 #import "MPSnapshot+Protected.h"
 
 #import <Feather/NSBundle+MPExtensions.h>
@@ -105,7 +106,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         
 #ifdef DEBUG
         NSDictionary *headers = @{
-            @"Access-Control-Allow-Origin"      : @"http://localhost:8080",
+            @"Access-Control-Allow-Origin"      : @"*",
             @"Access-Control-Allow-Credentials" : @"true",
             @"Access-Control-Allow-Methods"     : @"POST, GET, PUT, DELETE, OPTIONS",
             @"Access-Control-Allow-Headers"     : @"origin, x-csrftoken, content-type, accept"
@@ -923,7 +924,7 @@ static NSUInteger packagesOpened = 0;
 {
     if (!_managedObjectsControllers)
     {
-        _managedObjectControllers = [NSMutableArray arrayWithCapacity:20];
+        _managedObjectsControllers = [NSMutableArray arrayWithCapacity:20];
     }
     
     assert(![_managedObjectsControllers containsObject:moc]);
@@ -967,5 +968,19 @@ static NSUInteger packagesOpened = 0;
 
 // default implementation is no-op because the default notification center is used.
 - (void)makeNotificationCenter { }
+
+
+- (void)didChangeDocument:(CouchDocument *)document externally:(BOOL)isExternalChange
+{
+    MPManagedObjectsController *moc = [self controllerForDocument:document];
+    assert(moc);
+    assert(moc.db.database == document.database);
+    
+    MPManagedObject *mo = [[document managedObjectClass] modelForDocument:document];
+    assert(mo);
+    assert([document modelObject] == mo);
+    
+    [moc didChangeDocument:document forObject:document.modelObject externally:isExternalChange];
+}
 
 @end

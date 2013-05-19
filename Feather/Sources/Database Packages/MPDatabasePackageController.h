@@ -159,7 +159,7 @@ typedef enum MPDatabasePackageControllerErrorCode
 @property (readonly) NSTimeInterval syncTimerPeriod;
 
 /** The managed objects controllers. When one is created in a subclass, make sure to call -registerManagedObjectsController: for it */
-@property (strong, readonly) NSArray *managedObjectControllers;
+@property (strong, readonly) NSSet *managedObjectsControllers;
 
 /** The MPDatabase objects for this database package. Note that multiple MPManagedObjectsController objects can manage objects in a MPDatabase. */
 @property (strong, readonly) NSSet *databases;

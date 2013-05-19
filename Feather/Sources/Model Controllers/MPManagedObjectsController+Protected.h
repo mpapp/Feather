@@ -20,7 +20,7 @@
 - (void)willDeleteObject:(MPManagedObject *)object;
 - (void)didDeleteObject:(MPManagedObject *)object;
 
-- (void)didChangeDocument:(CouchDocument *)document forObject:(MPManagedObject *)object;
+- (void)didChangeDocument:(CouchDocument *)doc forObject:(MPManagedObject *)object externally:(BOOL)externalChange;
 - (void)didLoadObjectFromDocument:(MPManagedObject *)object;
 
 - (void)registerObject:(MPManagedObject *)mo;

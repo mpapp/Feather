@@ -8,6 +8,8 @@
 
 #import "MPDatabasePackageController.h"
 
+@class CouchDocument;
+
 @interface MPDatabasePackageController (Protected)
 
 - (void)registerManagedObjectsController:(MPManagedObjectsController *)moc;
@@ -23,5 +25,7 @@
 - (void)didStartDatabaseListener;
 
 - (void)makeNotificationCenter;
+
+- (void)didChangeDocument:(CouchDocument *)document externally:(BOOL)isExternalChange;
 
 @end

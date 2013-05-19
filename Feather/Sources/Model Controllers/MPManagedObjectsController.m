@@ -681,7 +681,7 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
         [[self.packageController delegate] updateChangeCount:NSChangeDone];
 }
 
-- (void)didChangeDocument:(CouchDocument *)doc forObject:(MPManagedObject *)object
+- (void)didChangeDocument:(CouchDocument *)doc forObject:(MPManagedObject *)object externally:(BOOL)externalChange
 {
     NSNotificationCenter *nc = [_packageController notificationCenter]; assert(nc);
     
