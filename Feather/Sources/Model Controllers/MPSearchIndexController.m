@@ -61,7 +61,7 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
              addRecentChangeObserver:self forManagedObjectsOfClass:cls
              hasAdded:^(MPSearchIndexController *_self, NSNotification *notification)
             {
-                dispatch_sync(_self.indexQueue, ^{
+                dispatch_async(_self.indexQueue, ^{
                     NSError *err = nil;
                     if (![_self _indexManagedObject:notification.object error:&err])
                         _self.lastError = err;
@@ -69,7 +69,7 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
             }
              hasUpdated:^(MPSearchIndexController *_self, NSNotification *notification)
             {
-                dispatch_sync(_self.indexQueue, ^{
+                dispatch_async(_self.indexQueue, ^{
                     NSError *err = nil;
                     if (![_self _updateIndexForManagedObject:notification.object error:&err])
                         _self.lastError = err;
@@ -77,7 +77,7 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
             }
              hasRemoved:^(MPSearchIndexController *_self, NSNotification *notification)
             {
-                dispatch_sync(_self.indexQueue, ^{
+                dispatch_async(_self.indexQueue, ^{
                     NSError *err = nil;
                     if (![_self _deleteManagedObjectFromIndex:notification.object error:&err])
                         _self.lastError = err;
