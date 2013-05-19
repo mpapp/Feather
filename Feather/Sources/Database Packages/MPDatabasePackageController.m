@@ -972,6 +972,9 @@ static NSUInteger packagesOpened = 0;
 
 - (void)didChangeDocument:(CouchDocument *)document source:(MPManagedObjectChangeSource)source
 {
+    // ignore MPMetadata & MPLocalMetadata
+    if (!document.properties[@"objectType"]) return;
+    
     MPManagedObjectsController *moc = [self controllerForDocument:document];
     assert(moc);
     assert(moc.db.database == document.database);

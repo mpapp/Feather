@@ -337,6 +337,12 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
             emit([NSNull null], nil);
     
     } version:@"1.0"];
+    
+    [designDoc defineFilterNamed:@"managed-objects-filter"
+                                        block:
+     ^BOOL(TD_Revision *revision, NSDictionary *params) {
+         return [self managesDocumentWithDictionary:revision.properties];
+     }];
 }
 
 - (NSString *)allObjectsViewName
