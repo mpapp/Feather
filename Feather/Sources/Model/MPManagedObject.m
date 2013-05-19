@@ -207,6 +207,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return [NSString stringWithFormat:@"%@:%@", NSStringFromClass([self class]), [[NSUUID UUID] UUIDString]];
 }
 
++ (BOOL)validateRevision:(TD_Revision *)revision
+{
+    return YES;
+}
+
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID
 {
     assert(documentID);

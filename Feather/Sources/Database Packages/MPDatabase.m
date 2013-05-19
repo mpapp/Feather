@@ -115,7 +115,33 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
                  if (managedObjectTypeIncluded)
                      idHasValidPrefix = [newRevision.docID hasPrefix:newRevision.properties.managedObjectType];
                  
-                 if (managedObjectTypeIncluded) return idHasValidPrefix;
+                 if (managedObjectTypeIncluded)
+                 {
+                     if (!idHasValidPrefix)
+                         NSLog(@"Attempting to save a managed object '%@' without object type as a prefix in _id -- this will fail: %@",
+                               newRevision.docID, [newRevision properties]);
+                     return idHasValidPrefix;
+                 }
+                 
+                 if (managedObjectTypeIncluded)
+                 {
+                     Class cls = NSClassFromString(newRevision.properties.managedObjectType);
+                     if (!cls)
+                     {
+                         NSLog(@"Attempting to save a managed object '%@' with an unexpected object type '%@' -- this will fail.",
+                               newRevision.docID, newRevision.properties.managedObjectType);
+                         return NO;
+                     }
+                     else
+                     {
+                         if (![cls validateRevision:newRevision])
+                         {
+                             NSLog(@"Attempting to save a managed object '%@' which does not validate as %@ -- this will fail.",
+                                   newRevision.docID, NSStringFromClass(cls));
+                             return NO;
+                         }
+                     }
+                 }
                  
                  if (!idHasValidPrefix)
                      idHasValidPrefix = [newRevision.docID hasPrefix:@"MPMetadata"];
@@ -123,6 +149,10 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
                  if (!idHasValidPrefix)
                      idHasValidPrefix = [newRevision.docID hasPrefix:@"MPLocalMetadata"];
                  
+                 if (!idHasValidPrefix)
+                     NSLog(@"Attempting to save an object '%@' without the expected _id prefix -- this will fail: %@",
+                           newRevision.docID, [newRevision properties]);
+                     
                  return idHasValidPrefix;
              }];
         }

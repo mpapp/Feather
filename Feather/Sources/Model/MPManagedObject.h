@@ -130,6 +130,9 @@ typedef enum MPManagedObjectModerationState
 /** Get a new document ID for this object type. Not to be called on MPManagedObject directly, but on its concrete subclasses. */
 + (NSString *)idForNewDocumentInDatabase:(CouchDatabase *)db;
 
+/** Validation function for saves. All MPManagedObject revision saves (creation & update, NOT deletion) will be evaluated through this function. Default implementation returns YES. Note that there is no need to validate the presence of 'objectType' fields, required prefixing, or other universally required MPManagedObject properties here. Revisions for which this method is run are guaranteed to be non-deleted. */
++ (BOOL)validateRevision:(TD_Revision *)revision;
+
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID;
 
 /** Human readable name for the type */
