@@ -84,12 +84,15 @@
 }
 
 - (instancetype)initWithEmbeddingObject:(id<MPEmbeddingObject>)embeddingObject
+                           embeddingKey:(NSString *)embeddingKey
 {
     if (self = [super init])
     {
         assert(embeddingObject);
+        assert(embeddingKey);
         
         self.embeddingObject = embeddingObject;
+        self.embeddingKey = embeddingKey;
         
         _properties = [NSMutableDictionary dictionaryWithCapacity:10];
         _properties[@"_id"] = [NSString stringWithFormat:@"%@:%@",
