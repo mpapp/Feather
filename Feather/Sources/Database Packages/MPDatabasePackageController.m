@@ -103,7 +103,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         
 #ifdef DEBUG
         NSDictionary *headers = @{
-            @"Access-Control-Allow-Origin"      : @"*",
+            @"Access-Control-Allow-Origin"      : @"http://localhost:8080",
             @"Access-Control-Allow-Credentials" : @"true",
             @"Access-Control-Allow-Methods"     : @"POST, GET, PUT, DELETE, OPTIONS",
             @"Access-Control-Allow-Headers"     : @"origin, x-csrftoken, content-type, accept"
@@ -643,7 +643,16 @@ static NSUInteger packagesOpened = 0;
     [(CouchTouchDBServer *)_server tellTDServer: ^(TD_Server* tds) {
         __strong MPDatabasePackageController *strongSelf = weakSelf;
         [TD_View setCompiler:strongSelf];
-        strongSelf.databaseListener = [[TDListener alloc] initWithTDServer:tds port:10000 + [[strongSelf class] packagesOpened]];
+        
+        NSUInteger port = 10000 + [[strongSelf class] packagesOpened];
+        strongSelf.databaseListener = [[TDListener alloc] initWithTDServer:tds port:port];
+        
+        NSDictionary *txtDict = [strongSelf.databaseListener.TXTRecordDictionary mutableCopy];
+        [txtDict setValue:@(port) forKey:@"port"];
+        
+        NSLog(@"Serving %@ at '%@:%@'", _path, [_server URL], @(port));
+        
+        strongSelf.databaseListener.TXTRecordDictionary = txtDict;
         [strongSelf.databaseListener start];
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf advertiseListener];
