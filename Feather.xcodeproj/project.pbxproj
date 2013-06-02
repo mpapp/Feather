@@ -42,7 +42,7 @@
 		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
 		5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
-		5FC752E71746E287007818A0 /* NSDate+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */; };
+		5FC752E71746E287007818A0 /* NSDate+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC752E81746E287007818A0 /* NSDate+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752E61746E287007818A0 /* NSDate+MPExtensions.m */; };
 		5FC752FF1746E294007818A0 /* NSString+MPSearchIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752FD1746E294007818A0 /* NSString+MPSearchIndex.h */; };
 		5FC753001746E294007818A0 /* NSString+MPSearchIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752FE1746E294007818A0 /* NSString+MPSearchIndex.m */; };
