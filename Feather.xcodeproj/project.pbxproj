@@ -126,6 +126,8 @@
 		D932296417268E37006880C2 /* NSTask+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = D932296217268E37006880C2 /* NSTask+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D932296517268E37006880C2 /* NSTask+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D932296317268E37006880C2 /* NSTask+MPExtensions.m */; };
 		D932296617268E37006880C2 /* NSTask+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D932296317268E37006880C2 /* NSTask+MPExtensions.m */; };
+		D96B22B1175A26420044517B /* NSTextField+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = D96B22AF175A26420044517B /* NSTextField+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D96B22B2175A26420044517B /* NSTextField+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D96B22B0175A26420044517B /* NSTextField+MPExtensions.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -425,6 +427,8 @@
 		5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPModelFoundationTests.m; sourceTree = "<group>"; };
 		D932296217268E37006880C2 /* NSTask+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTask+MPExtensions.h"; path = "Sources/Categories/NSTask+MPExtensions.h"; sourceTree = "<group>"; };
 		D932296317268E37006880C2 /* NSTask+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTask+MPExtensions.m"; path = "Sources/Categories/NSTask+MPExtensions.m"; sourceTree = "<group>"; };
+		D96B22AF175A26420044517B /* NSTextField+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTextField+MPExtensions.h"; path = "Sources/Categories/NSTextField+MPExtensions.h"; sourceTree = "<group>"; };
+		D96B22B0175A26420044517B /* NSTextField+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTextField+MPExtensions.m"; path = "Sources/Categories/NSTextField+MPExtensions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -599,6 +603,8 @@
 		5FDB35CB1705FCBE0049EBB5 /* Cocoa Categories */ = {
 			isa = PBXGroup;
 			children = (
+				D96B22AF175A26420044517B /* NSTextField+MPExtensions.h */,
+				D96B22B0175A26420044517B /* NSTextField+MPExtensions.m */,
 				5F1850241711707800079040 /* MPExtensions.h */,
 				5FDB382B170702CD0049EBB5 /* NSArray+MPExtensions.h */,
 				5FDB382C170702CD0049EBB5 /* NSArray+MPExtensions.m */,
@@ -834,6 +840,7 @@
 				5F6857A21727C38900FE06B0 /* MPVirtualSection+Protected.h in Headers */,
 				5F6857B71727C40300FE06B0 /* MPTitled.h in Headers */,
 				5F6857DA17287F0800FE06B0 /* MPRootSection.h in Headers */,
+				D96B22B1175A26420044517B /* NSTextField+MPExtensions.h in Headers */,
 				5F6857F017287F3100FE06B0 /* MPRootSection+Protected.h in Headers */,
 				5F779F9C172BD3D20011C4DD /* NSView+MPExtensions.h in Headers */,
 				5F779FCC172BDC3C0011C4DD /* MPThumbnailable.h in Headers */,
@@ -1146,6 +1153,7 @@
 				5F6857DB17287F0800FE06B0 /* MPRootSection.m in Sources */,
 				5F779F9D172BD3D20011C4DD /* NSView+MPExtensions.m in Sources */,
 				5FC77CEE1737FC30005FAF15 /* NSDate+MPExtensions.m in Sources */,
+				D96B22B2175A26420044517B /* NSTextField+MPExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
