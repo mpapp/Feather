@@ -58,7 +58,6 @@
 		5FDB33271705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB33251705CB950049EBB5 /* InfoPlist.strings */; };
 		5FDB332A1705CB950049EBB5 /* MPFeatherTestSuite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33291705CB950049EBB5 /* MPFeatherTestSuite.m */; };
 		5FDB33921705CCAF0049EBB5 /* TouchDB.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33771705CC960049EBB5 /* TouchDB.framework */; };
-		5FDB33C31705CF260049EBB5 /* libcommonCrypto.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33C21705CF260049EBB5 /* libcommonCrypto.dylib */; };
 		5FDB33D41705D0DA0049EBB5 /* RegexKitLite.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33D21705D0D90049EBB5 /* RegexKitLite.h */; };
 		5FDB33D51705D0DA0049EBB5 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33D31705D0D90049EBB5 /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -w"; }; };
 		5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33D71705D1380049EBB5 /* libicucore.dylib */; };
@@ -472,7 +471,6 @@
 				5F95F2D2173980A500E8C845 /* libFMDB.a in Frameworks */,
 				5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */,
 				5FDB3A08170793B30049EBB5 /* libz.dylib in Frameworks */,
-				5FDB33C31705CF260049EBB5 /* libcommonCrypto.dylib in Frameworks */,
 				5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */,
 				5FDCF2F017104A8F0039DAED /* SenTestingKit.framework in Frameworks */,
 				5F293BF8170DFD77001C2111 /* Security.framework in Frameworks */,
