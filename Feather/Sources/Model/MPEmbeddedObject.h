@@ -56,7 +56,7 @@
 
 - (CouchDatabase *)databaseForModelProperty:(NSString *)property;
 
-- (instancetype)initWithEmbeddingObject:(id<MPEmbeddingObject>)embeddingObject;
+- (instancetype)initWithEmbeddingObject:(id<MPEmbeddingObject>)embeddingObject embeddingKey:(NSString *)embeddingKey;
 
 /** Returns JSON-encodable dictionary representation of this embedded object. */
 - (NSDictionary *)dictionaryRepresentation;
