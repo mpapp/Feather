@@ -13,10 +13,6 @@
 #import <CouchCocoa/CouchDynamicObject.h>
 #import <objc/runtime.h>
 
-inline id MPNilToObject(id object, id defaultObject)
-{
-    return (object != nil) ? object : defaultObject;
-}
 
 @implementation NSObject (Feather)
 

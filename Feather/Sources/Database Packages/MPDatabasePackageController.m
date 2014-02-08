@@ -679,8 +679,10 @@ static NSUInteger packagesOpened = 0;
 
 - (NSUInteger)databaseListenerPort
 {
-    if (!_databaseListener) return 0;
-    return [_databaseListener port];
+    if (!_databaseListener)
+        return 0;
+    NSUInteger port = [_databaseListener port];
+    return port;
 }
 
 - (BOOL)indexesObjectFullTextContents
@@ -706,9 +708,9 @@ static NSUInteger packagesOpened = 0;
 		NSBundle *bundle = [NSBundle mainBundle];
         NSHost   *host = [NSHost currentHost];
         
-		NSDictionary *txtRecordDataDict = @{ @"appVersion"    : [bundle bundleVersionString],
-                                             @"appIdentifier" : [bundle bundleIdentifier],
-                                         @"packageIdentifier" : [self identifier]};
+		NSDictionary *txtRecordDataDict = @{ @"appVersion"    : [[bundle bundleVersionString] dataUsingEncoding:NSUTF8StringEncoding],
+                                             @"appIdentifier" : [[bundle bundleIdentifier] dataUsingEncoding:NSUTF8StringEncoding],
+                                         @"packageIdentifier" : [[self identifier] dataUsingEncoding:NSUTF8StringEncoding]};
         
 		NSData *txtRecordData = [NSNetService dataFromTXTRecordDictionary:txtRecordDataDict];
         NSString *serviceName = [NSString stringWithFormat:@"%@_%@", [host name], [self identifier]];
@@ -717,9 +719,10 @@ static NSUInteger packagesOpened = 0;
                                                            name:serviceName
                                                            port:_databaseListener.port];
 		assert(_databaseListenerService);
-		[_databaseListenerService setTXTRecordData:txtRecordData];
+		BOOL success = [_databaseListenerService setTXTRecordData:txtRecordData];
+        assert(success);
 		[_databaseListenerService setDelegate:self];
-		[_databaseListenerService publish];
+		[_databaseListenerService publishWithOptions:NSNetServiceNoAutoRename];
 	}
     else
     {

@@ -22,13 +22,15 @@ typedef NS_ENUM(NSUInteger, MPFileTargetErrorCode)
 
 - (NSString *)mimeTypeForFileAtURL:(NSURL *)url error:(NSError **)err;
 
-- (NSURL *) temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:(NSString *)subdirectoryName
-                                                                error:(NSError *__autoreleasing *)outError;
+- (NSURL *)temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:(NSString *)subdirectoryName
+                                                               error:(NSError *__autoreleasing *)outError;
 
 
-- (NSURL *) temporaryFileURLInApplicationCachesSubdirectoryNamed:(NSString *)subdirectoryName
-                                                   withExtension:(NSString *)pathExtension
-                                                           error:(NSError *__autoreleasing *)outError;
+- (NSURL *)temporaryFileURLInApplicationCachesSubdirectoryNamed:(NSString *)subdirectoryName
+                                                  withExtension:(NSString *)pathExtension
+                                                          error:(NSError *__autoreleasing *)outError;
+
+- (NSURL *)URLForApplicationSupportDirectoryNamed:(NSString *)subpath;
 
 
 @end

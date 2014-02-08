@@ -149,4 +149,12 @@ NSString * const NSFileManagerFeatherExtensionsErrorDomain = @"NSFileManagerFeat
     return temporaryURL;
 }
 
+- (NSURL *)URLForApplicationSupportDirectoryNamed:(NSString *)subpath
+{
+    NSURL *URL = [self URLForDirectory:NSApplicationSupportDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil];
+    if (subpath)
+        URL = [URL URLByAppendingPathComponent:subpath isDirectory:YES];
+    return URL;
+}
+
 @end

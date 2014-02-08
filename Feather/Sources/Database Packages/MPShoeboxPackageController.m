@@ -111,7 +111,8 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
 + (NSString *)sharedDatabasesPath
 {
     NSFileManager *fm = [NSFileManager defaultManager];
-    return [[fm applicationSupportFolder] stringByAppendingPathComponent:[[NSBundle appBundle] bundleNameString]];
+    NSString *path = [[fm applicationSupportFolder] stringByAppendingPathComponent:[[NSBundle appBundle] bundleNameString]];
+    return path;
 }
 
 + (BOOL)createSharedDatabasesPathWithError:(NSError **)err
