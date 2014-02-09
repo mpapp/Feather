@@ -52,7 +52,6 @@
 		5FCC0220170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */; };
 		5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
 		5FDB33111705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB330F1705CB950049EBB5 /* InfoPlist.strings */; };
-		5FDB331D1705CB950049EBB5 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB331C1705CB950049EBB5 /* SenTestingKit.framework */; };
 		5FDB331E1705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
 		5FDB33211705CB950049EBB5 /* Feather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33031705CB950049EBB5 /* Feather.framework */; };
 		5FDB33271705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB33251705CB950049EBB5 /* InfoPlist.strings */; };
@@ -125,11 +124,10 @@
 		5FDB3AA91707ABBE0049EBB5 /* MPTreeItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2D8171043A80039DAED /* MPFeatherTestSuite.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33281705CB950049EBB5 /* MPFeatherTestSuite.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2EE171045990039DAED /* MPFeatherTestClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2ED171045990039DAED /* MPFeatherTestClasses.m */; };
-		5FDCF2EF17104A710039DAED /* MPFeatherTestSuite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33291705CB950049EBB5 /* MPFeatherTestSuite.m */; };
-		5FDCF2F017104A8F0039DAED /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB331C1705CB950049EBB5 /* SenTestingKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */; };
 		5FDCF34D1710CA600039DAED /* MPModelFoundationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */; };
+		5FEA8B5018A81E0100A7C14B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEA8B4F18A81E0100A7C14B /* XCTest.framework */; };
 		D932296417268E37006880C2 /* NSTask+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = D932296217268E37006880C2 /* NSTask+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D932296517268E37006880C2 /* NSTask+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D932296317268E37006880C2 /* NSTask+MPExtensions.m */; };
 		D932296617268E37006880C2 /* NSTask+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D932296317268E37006880C2 /* NSTask+MPExtensions.m */; };
@@ -461,6 +459,7 @@
 		5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPEmbeddedPropertyContainingMixin.m; path = Sources/Model/MPEmbeddedPropertyContainingMixin.m; sourceTree = "<group>"; };
 		5FDCF34B1710CA600039DAED /* MPModelFoundationTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPModelFoundationTests.h; sourceTree = "<group>"; };
 		5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPModelFoundationTests.m; sourceTree = "<group>"; };
+		5FEA8B4F18A81E0100A7C14B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		D932296217268E37006880C2 /* NSTask+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTask+MPExtensions.h"; path = "Sources/Categories/NSTask+MPExtensions.h"; sourceTree = "<group>"; };
 		D932296317268E37006880C2 /* NSTask+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTask+MPExtensions.m"; path = "Sources/Categories/NSTask+MPExtensions.m"; sourceTree = "<group>"; };
 		D990D32417704A7100735807 /* NSTextField+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTextField+MPExtensions.h"; path = "Sources/Categories/NSTextField+MPExtensions.h"; sourceTree = "<group>"; };
@@ -476,7 +475,6 @@
 				5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */,
 				5FDB3A08170793B30049EBB5 /* libz.dylib in Frameworks */,
 				5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */,
-				5FDCF2F017104A8F0039DAED /* SenTestingKit.framework in Frameworks */,
 				5F293BF8170DFD77001C2111 /* Security.framework in Frameworks */,
 				5FDB39BE170761D00049EBB5 /* CouchCocoa.framework in Frameworks */,
 				5FDB34A31705DCEC0049EBB5 /* TouchDBListener.framework in Frameworks */,
@@ -489,7 +487,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FDB331D1705CB950049EBB5 /* SenTestingKit.framework in Frameworks */,
+				5FEA8B5018A81E0100A7C14B /* XCTest.framework in Frameworks */,
 				5FDB331E1705CB950049EBB5 /* Cocoa.framework in Frameworks */,
 				5FDB33211705CB950049EBB5 /* Feather.framework in Frameworks */,
 			);
@@ -552,6 +550,7 @@
 		5FDB33051705CB950049EBB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5FEA8B4F18A81E0100A7C14B /* XCTest.framework */,
 				5F95F2D71739A94300E8C845 /* libsqlite3.dylib */,
 				5FDB3A07170793B20049EBB5 /* libz.dylib */,
 				5FDB33D71705D1380049EBB5 /* libicucore.dylib */,
@@ -1229,7 +1228,6 @@
 				5F293B9C170CAD65001C2111 /* MPCacheableMixin.m in Sources */,
 				5F293BA1170CAECC001C2111 /* MPEmbeddedObject.m in Sources */,
 				5F293BF6170DFD4E001C2111 /* UICKeyChainStore.m in Sources */,
-				5FDCF2EF17104A710039DAED /* MPFeatherTestSuite.m in Sources */,
 				5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */,
 				5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */,
 				5F3D380F1725D8E000D19D7C /* MPBundlableMixin.m in Sources */,
@@ -1414,7 +1412,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
@@ -1427,7 +1428,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"\\\"$(DEVELOPER_LIBRARY_DIR)/Frameworks\\\"",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
