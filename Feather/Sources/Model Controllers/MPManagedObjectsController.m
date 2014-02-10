@@ -572,7 +572,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (BOOL)loadsBundledResourcesSynchronously
 {
-    return ![NSBundle inTestSuite];
+    return [NSBundle inTestSuite];
 }
 
 - (void)loadBundledResources
