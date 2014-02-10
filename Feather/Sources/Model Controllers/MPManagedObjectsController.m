@@ -7,6 +7,8 @@
 //
 
 #import <Feather/MPManagedObject+Protected.h>
+#import <Feather/NSBundle+MPExtensions.h>
+
 #import "MPManagedObjectsController+Protected.h"
 #import "MPDatabasePackageController+Protected.h"
 
@@ -18,7 +20,6 @@
 #import "NSDictionary+MPManagedObjectExtensions.h"
 #import "NSString+MPExtensions.h"
 #import "NSFileManager+MPExtensions.h"
-
 #import "MPException.h"
 #import "MPDatabase.h"
 
@@ -571,7 +572,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (BOOL)loadsBundledResourcesSynchronously
 {
-    return YES;
+    return ![NSBundle inTestSuite];
 }
 
 - (void)loadBundledResources

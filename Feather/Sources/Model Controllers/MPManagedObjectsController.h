@@ -141,10 +141,10 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** All objects managed by this controller. */
 @property (readonly, strong) NSArray *allObjects;
 
-/** Loads bundled resources. This is defined as a no-op in the base class, need not be called manually but can be overloaded to load bundled resources. */
-- (void)loadBundledResources;
-
+/** An optional resource name for a touchdb typed file in the app's Contents/Resources directory. If overridden with a non-nil value, the resource is loaded upon initialisation. */
 @property (readonly, copy) NSString *bundledResourceDatabaseName;
+
+/** Signifies whether resource loading is synchronous (default=YES for tests, NO for non-tests). */
 @property (readonly) BOOL loadsBundledResourcesSynchronously;
 
 - (id)objectWithIdentifier:(NSString *)identifier;

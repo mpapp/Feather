@@ -609,7 +609,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)setObjectIdentifierSetValueForManagedObjectArray:(NSArray *)objectArray property:(NSString *)propertyKey
 {
-    [self setObjectIdentifierArrayValueForManagedObjectArray:[NSSet setWithArray:objectArray] property:propertyKey];
+    [self setObjectIdentifierArrayValueForManagedObjectArray:objectArray property:propertyKey];
 }
 
 - (NSSet *)getValueOfObjectIdentifierSetProperty:(NSString *)propertyKey

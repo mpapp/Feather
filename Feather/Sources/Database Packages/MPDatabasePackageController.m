@@ -924,7 +924,7 @@ static NSUInteger packagesOpened = 0;
 {
     if (!_managedObjectsControllers)
     {
-        _managedObjectsControllers = [NSMutableArray arrayWithCapacity:20];
+        _managedObjectsControllers = [NSMutableSet setWithCapacity:20];
     }
     
     assert(![_managedObjectsControllers containsObject:moc]);

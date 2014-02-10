@@ -15,6 +15,7 @@
 #import <Feather/MPManagedObject.h>
 #import <Feather/MPException.h>
 #import <Feather/NSObject+MPExtensions.h>
+#import <Feather/NSBundle+MPExtensions.h>
 
 @implementation MPExtensionTests
 
@@ -65,6 +66,10 @@
                  @"There should be a record of 'MPSharedManuscriptCategoriesController'");
     
     //[[category save] wait];
+}
+
+- (void)testBundleExtensions {
+    XCTAssertTrue([NSBundle inTestSuite], @"Correctly detected as being in a test suite.");
 }
 
 @end

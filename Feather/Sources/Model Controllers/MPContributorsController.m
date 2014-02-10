@@ -46,6 +46,8 @@ NSString * const MPContributorRoleTranslator = @"translator";
 
 - (void)configureDesignDocument:(CouchDesignDocument *)designDoc
 {
+    [super configureDesignDocument:designDoc];
+    
     NSString *allObjsViewName = [self allObjectsViewName];
     [designDoc defineViewNamed:allObjsViewName mapBlock:self.allObjectsBlock
                        version:[[NSBundle appBundle] bundleVersionString]];

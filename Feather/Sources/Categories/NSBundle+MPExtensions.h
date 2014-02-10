@@ -18,4 +18,8 @@
 
 + (NSBundle *)XPCServiceBundleWithName:(NSString *)name;
 
+/** Find out if bundles are loaded by a test suite.
+ *  @return YES if bundle loader is a test suite runner, NO otherwise. */
++ (BOOL)inTestSuite;
+
 @end
