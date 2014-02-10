@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <SenTestingKit/SenTestingKit.h>
+#import <XCTest/XCTest.h>
 
-@interface MPExtensionTests : SenTestCase
+@interface MPExtensionTests : XCTestCase
 
 @end

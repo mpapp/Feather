@@ -26,11 +26,15 @@
     return version;
 }
 
++ (BOOL)inTestSuite {
+    // FIXME: less hacky implementation, please.
+    return [[NSProcessInfo processInfo] environment][@"MPUnitTest"];
+}
+
 /** Returns the main bundle for non-unit test targets, and the unit test bundle for the unit tests. */
 + (NSBundle *)appBundle
 {
-    // FIXME: remove this hack.
-    if ([[NSProcessInfo processInfo] environment][@"MPUnitTest"])
+    if ([self inTestSuite])
     {
         Class testClass = NSClassFromString(@"MPExtensionTests");
         assert(testClass);

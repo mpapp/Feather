@@ -16,6 +16,9 @@
 
 extern NSString * const MPManagedObjectsControllerErrorDomain;
 
+/** A notification that is posted with the objects controller as the object whenever bundled resources have been finished loading. */
+extern NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification;
+
 typedef enum MPManagedObjectsControllerErrorCode
 {
     MPManagedObjectsControllerErrorCodeUnknown = 0,
@@ -121,7 +124,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 
 /** Configure the design document of this controller. Can (and commonly is) overloaded by subclasses, but not to be called manually.
   * @param designDoc The design document for this managed objects controller. */
-- (void)configureDesignDocument:(CouchDesignDocument *)designDoc;
+- (void)configureDesignDocument:(CouchDesignDocument *)designDoc __attribute__((objc_requires_super));
 
 /** The name of the view which returns all objects managed by this controller. */
 - (NSString *)allObjectsViewName;
@@ -138,7 +141,11 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** All objects managed by this controller. */
 @property (readonly, strong) NSArray *allObjects;
 
-- (void)loadBundledResources;
+/** An optional resource name for a touchdb typed file in the app's Contents/Resources directory. If overridden with a non-nil value, the resource is loaded upon initialisation. */
+@property (readonly, copy) NSString *bundledResourceDatabaseName;
+
+/** Signifies whether resource loading is synchronous (default=YES for tests, NO for non-tests). */
+@property (readonly) BOOL loadsBundledResourcesSynchronously;
 
 - (id)objectWithIdentifier:(NSString *)identifier;
 
