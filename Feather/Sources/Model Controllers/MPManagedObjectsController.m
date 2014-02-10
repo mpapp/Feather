@@ -36,6 +36,8 @@
 
 NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsControllerErrorDomain";
 
+NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = @"MPManagedObjectsControllerLoadedBundledResourcesNotification";
+
 @interface MPManagedObjectsController ()
 {
     NSSet *_managedObjectSubclasses;
@@ -188,7 +190,9 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 }
 
 + (NSString *)managedObjectClassName
-{ return NSStringFromClass([self managedObjectClass]); }
+{
+    return NSStringFromClass([self managedObjectClass]);
+}
 
 - (Class)managedObjectClass
 {
@@ -249,7 +253,6 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     return ^(NSDictionary *doc, TDMapEmitBlock emit)
     {
         if (![self managesDocumentWithDictionary:doc]) return;
-        
         emit(doc[@"_id"], nil);
     };
 }
@@ -561,9 +564,59 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
     [self clearCachedValues];
 }
 
+- (NSString *)bundledResourceDatabaseName
+{
+    return nil; // overload in subclass to load bundled data
+}
+
+- (BOOL)loadsBundledResourcesSynchronously
+{
+    return YES;
+}
+
 - (void)loadBundledResources
 {
+    NSString *resourceDBName = self.bundledResourceDatabaseName;
+    if (!resourceDBName)
+        return;
     
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString *bundledBundlesPath = [[NSBundle mainBundle] pathForResource:resourceDBName ofType:@"touchdb"];
+    NSString *md5 = [fm md5DigestStringAtPath:bundledBundlesPath];
+    MPMetadata *metadata = [self.db metadata];
+    
+    NSString *checksumKey = [NSString stringWithFormat:@"bundled-%@-md5", resourceDBName];
+    
+    
+    if ([[metadata getValueOfProperty:checksumKey] isEqualToString:md5])
+        return;
+    
+    // kept as nil if loading is intended to be asynchronous.
+    dispatch_semaphore_t blocker = self.loadsBundledResourcesSynchronously ? nil : dispatch_semaphore_create(0);
+    
+    [self.db pullFromDatabaseAtPath:bundledBundlesPath
+              withCompletionHandler:
+     ^(NSError *err) {
+         if (err)
+         {
+             NSLog(@"ERROR! Could not load bundled data from '%@.touchdb': %@", resourceDBName, err);
+         }
+         else
+         {
+             NSLog(@"Loaded bundled bundles.");
+             [metadata setValue:md5 ofProperty:@"bundled-bundles-md5"];
+             [metadata save];
+         }
+         
+         if (blocker)
+             dispatch_semaphore_signal(blocker);
+     }];
+
+    if (blocker)
+        dispatch_semaphore_wait(blocker, DISPATCH_TIME_FOREVER);
+
+    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    [nc postNotificationName:MPManagedObjectsControllerLoadedBundledResourcesNotification object:self];
 }
 
 #pragma mark - Loading bundled objects
