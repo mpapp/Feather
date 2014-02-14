@@ -435,8 +435,10 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     [repl setContinuous:NO];
     [repl setCreateTarget:NO];
     
-    [[repl start] onCompletion:^{
-        MPLog(@"Pull complete.");
+    RESTOperation *replOp = [repl start];
+    [replOp onCompletion:^{
+        MPLog(@"Pull complete (%@).", repl.error);
+        pullHandler(repl.error);
     }];
 }
 

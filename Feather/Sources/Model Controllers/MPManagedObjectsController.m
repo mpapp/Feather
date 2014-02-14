@@ -575,6 +575,31 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return [NSBundle inTestSuite];
 }
 
+- (void)_loadBundledResourcesFromBundledResourcesPath:(NSString *)bundledResourcesPath
+                                          checksumKey:(NSString *)checksumKey
+                                             checksum:(NSString *)md5
+                                withCompletionHandler:(dispatch_block_t)completionHandler {
+    
+    MPMetadata *metadata = [self.db metadata];
+    
+    [self.db pullFromDatabaseAtPath:bundledResourcesPath
+              withCompletionHandler:
+     ^(NSError *err) {
+         if (err)
+         {
+             NSLog(@"ERROR! Could not load bundled data from '%@.touchdb': %@", bundledResourcesPath, err);
+         }
+         else
+         {
+             NSLog(@"Loaded bundled bundles.");
+             [metadata setValue:md5 ofProperty:checksumKey];
+             [metadata save];
+         }
+         
+         completionHandler();
+     }];
+}
+
 - (void)loadBundledResources
 {
     NSString *resourceDBName = self.bundledResourceDatabaseName;
@@ -584,40 +609,37 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     NSFileManager *fm = [NSFileManager defaultManager];
     NSString *bundledBundlesPath = [[NSBundle mainBundle] pathForResource:resourceDBName ofType:@"touchdb"];
     NSString *md5 = [fm md5DigestStringAtPath:bundledBundlesPath];
+    
     MPMetadata *metadata = [self.db metadata];
-    
     NSString *checksumKey = [NSString stringWithFormat:@"bundled-%@-md5", resourceDBName];
-    
     
     if ([[metadata getValueOfProperty:checksumKey] isEqualToString:md5])
         return;
     
     // kept as nil if loading is intended to be asynchronous.
-    dispatch_semaphore_t blocker = self.loadsBundledResourcesSynchronously ? nil : dispatch_semaphore_create(0);
     
-    [self.db pullFromDatabaseAtPath:bundledBundlesPath
-              withCompletionHandler:
-     ^(NSError *err) {
-         if (err)
-         {
-             NSLog(@"ERROR! Could not load bundled data from '%@.touchdb': %@", resourceDBName, err);
-         }
-         else
-         {
-             NSLog(@"Loaded bundled bundles.");
-             [metadata setValue:md5 ofProperty:@"bundled-bundles-md5"];
-             [metadata save];
-         }
-         
-         if (blocker)
-             dispatch_semaphore_signal(blocker);
-     }];
-
-    if (blocker)
+    if (self.loadsBundledResourcesSynchronously) {
+        dispatch_semaphore_t blocker = dispatch_semaphore_create(0);
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            [self _loadBundledResourcesFromBundledResourcesPath:bundledBundlesPath
+                                                        checksumKey:checksumKey
+                                                           checksum:md5
+                                              withCompletionHandler:
+                 ^{
+                     dispatch_semaphore_signal(blocker);
+                 }];
+        });
         dispatch_semaphore_wait(blocker, DISPATCH_TIME_FOREVER);
-
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc postNotificationName:MPManagedObjectsControllerLoadedBundledResourcesNotification object:self];
+        [[self.packageController notificationCenter] postNotificationName:MPManagedObjectsControllerLoadedBundledResourcesNotification object:self];
+    }
+    else {
+        [self _loadBundledResourcesFromBundledResourcesPath:bundledBundlesPath checksumKey:checksumKey
+                                                   checksum:md5
+                                      withCompletionHandler:
+         ^{
+             [[self.packageController notificationCenter] postNotificationName:MPManagedObjectsControllerLoadedBundledResourcesNotification object:self];
+         }];
+    }
 }
 
 #pragma mark - Loading bundled objects
