@@ -13,3 +13,6 @@
 [submodule "External/UICKeyChainStore"]
 	path = External/UICKeyChainStore
 	url = git@github.com:kishikawakatsumi/UICKeyChainStore.git
+[submodule "External/couchbase-lite-ios"]
+	path = External/couchbase-lite-ios
+	url = git@github.com:couchbase/couchbase-lite-ios.git
