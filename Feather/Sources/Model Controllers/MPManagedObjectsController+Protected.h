@@ -21,7 +21,7 @@
 - (void)willDeleteObject:(MPManagedObject *)object;
 - (void)didDeleteObject:(MPManagedObject *)object;
 
-- (void)didChangeDocument:(CouchDocument *)doc forObject:(MPManagedObject *)object source:(MPManagedObjectChangeSource)source;
+- (void)didChangeDocument:(CBLDocument *)doc forObject:(MPManagedObject *)object source:(MPManagedObjectChangeSource)source;
 - (void)didLoadObjectFromDocument:(MPManagedObject *)object;
 
 - (void)registerObject:(MPManagedObject *)mo;

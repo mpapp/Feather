@@ -10,8 +10,17 @@
 #import "NSArray+MPExtensions.h"
 #import "NSString+MPExtensions.h"
 
-#import <CouchCocoa/CouchDynamicObject.h>
+#import <CouchbaseLite/CouchbaseLite.h>
+#import <CouchbaseLite/MYDynamicObject.h>
 #import <objc/runtime.h>
+
+extern Class classFromType(const char* propertyType);
+
+extern BOOL getPropertyInfo(Class cls,
+                            NSString *propertyName,
+                            BOOL setter,
+                            Class *declaredInClass,
+                            const char* *propertyType);
 
 inline id MPNilToObject(id object, id defaultObject)
 {

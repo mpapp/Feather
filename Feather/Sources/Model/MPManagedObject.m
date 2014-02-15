@@ -36,6 +36,7 @@
 #import "NSObject+MPExtensions.h"
 #import "NSFileManager+MPExtensions.h"
 #import "NSDictionary+MPManagedObjectExtensions.h"
+#import "NSNotificationCenter+ErrorNotification.h"
 
 #import "NSString+MPSearchIndex.h"
 
@@ -43,7 +44,8 @@
 #import "MPCacheableMixin.h"
 
 #import "RegexKitLite.h"
-#import <CouchCocoa/CouchCocoa.h>
+
+#import <CouchbaseLite/CouchbaseLite.h>
 
 #import <objc/runtime.h>
 #import <objc/message.h>
@@ -110,14 +112,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 /* Looks to be used from within CouchPersistentReplication? Needs some adjusting. - Matias */
-- (instancetype)initWithNewDocumentInDatabase:(CouchDatabase*)database
+- (instancetype)initWithNewDocumentInDatabase:(CBLDatabase *)database
 {
     assert(false);
     @throw [NSException exceptionWithName:@"MTInvalidInitException" reason:nil userInfo:nil];
     return nil;
 }
 
-- (instancetype)initWithDocument:(CouchDocument*)document
+- (instancetype)initWithDocument:(CBLDocument *)document
 {
     if (self = [super initWithDocument:document])
     {
@@ -202,12 +204,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return _deletedDocumentID;
 }
 
-+ (NSString *)idForNewDocumentInDatabase:(CouchDatabase *)db
++ (NSString *)idForNewDocumentInDatabase:(CBLDatabase *)db
 {
     return [NSString stringWithFormat:@"%@:%@", NSStringFromClass([self class]), [[NSUUID UUID] UUIDString]];
 }
 
-+ (BOOL)validateRevision:(TD_Revision *)revision
++ (BOOL)validateRevision:(CBLRevision *)revision
 {
     return YES;
 }
@@ -228,7 +230,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return [[className componentsMatchedByRegex:@"MP(.*)" capture:1] firstObject];
 }
 
-- (NSString *)idForNewDocumentInDatabase:(CouchDatabase *)db
+- (NSString *)idForNewDocumentInDatabase:(CBLDatabase *)db
 {
 #ifdef DEBUG
     assert([self class] != [MPManagedObject class]); // should not call directly on the subclass.
@@ -241,7 +243,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return _newDocumentID ? _newDocumentID : [[self class] idForNewDocumentInDatabase:db];
 }
 
-- (void)setControllerWithDocument:(CouchDocument *)document
+- (void)setControllerWithDocument:(CBLDocument *)document
 {
     NSString *classStr = [document propertyForKey:@"objectType"];
     assert(classStr);
@@ -255,19 +257,24 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     self.controller = moc;
 }
 
-+ (id)modelForDocument:(CouchDocument*)document
++ (instancetype)modelForDocument:(CBLDocument *)document
 {
     assert(document);
     assert(document.database);
     
-    if (document.modelObject) return document.modelObject;
+    if (document.modelObject)
+    {
+        assert([document.modelObject isKindOfClass:self.class]);
+        return (id)document.modelObject;
+    }
     
-    CouchModel *cm = [super modelForDocument:document];
+    CBLModel *cm = [super modelForDocument:document];
     assert ([cm isKindOfClass:[MPManagedObject class]]);
 
     MPManagedObject *mo = (MPManagedObject *)cm;
     
-    if (!mo.controller) [mo setControllerWithDocument:document];
+    if (!mo.controller)
+        [mo setControllerWithDocument:document];
     
     assert(mo.controller);
     assert([document.properties[@"objectType"] isEqualToString:NSStringFromClass(self)]);
@@ -292,7 +299,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     }
 }
 
-+ (RESTOperation *)saveModels:(NSArray *)models
++ (BOOL)saveModels:(NSArray *)models error:(NSError *__autoreleasing *)outError
 {
     for (MPManagedObject *mo in models)
     {
@@ -303,24 +310,23 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         
         [mo updateTimestamps];
     }
-    return [super saveModels:models];
+    
+    return [super saveModels:models error:outError];
 }
 
-- (RESTOperation *)save
+- (BOOL)save:(NSError *__autoreleasing *)outError
 {
     assert(_controller);
-    assert(_document);
+    assert(self.document);
     [_controller willSaveObject:self];
     
-    if (!_document.modelObject) _document.modelObject = self;
+    if (!self.document.modelObject) self.document.modelObject = self;
     
     [self updateTimestamps];
     
-    RESTOperation *oper = [super save];
-    
-    // once save finishes, propagate needsSave => false through the tree
-    // FIXME: race condition on concurrent saves (could set needsSave to false on an embedded key too early)
-    [oper onCompletion:^{
+    BOOL success;
+    if ((success = [super save:outError]))
+    {
         for (NSString *propertyKey in [[self class] embeddedProperties])
         {
             MPEmbeddedObject *embeddedObj = [self valueForKey:propertyKey];
@@ -328,12 +334,15 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
                    || [embeddedObj isKindOfClass:MPEmbeddedObject.class]);
             [embeddedObj setNeedsSave:false];
         }
-    }];
+    }
     
-    return oper;
+    [self saveCompleted];
+    
+    return success;
 }
 
-- (void)saveCompleted:(RESTOperation *)op {
+- (void)saveCompleted
+{
     assert(_controller);
     
     if (self.isNewObject)
@@ -347,16 +356,16 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     }
 }
 
-- (RESTOperation *)deleteDocument
+- (BOOL)deleteDocument:(NSError *__autoreleasing *)outError
 {
     assert(_controller);
     
     NSString *deletedDocumentID = self.document.documentID;
     assert(deletedDocumentID);
     
-    RESTOperation *op = [super deleteDocument];
-    [op onCompletion:^{
-        
+    BOOL success;
+    if ((success = [super deleteDocument:outError]))
+    {
         _deletedDocumentID = deletedDocumentID;
         
         [_controller didDeleteObject:self];
@@ -367,29 +376,40 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         if (docID)
             [_modelObjectByIdentifierMap removeObjectForKey:docID];
 #endif
-    }];
+    }
     
-    return op;
+    return success;
 }
 
-- (void)couchDocumentChanged:(CouchDocument *)doc
+- (void)CBLDocument:(CBLDocument *)doc
+          didChange:(CBLDatabaseChange *)change
 {
-    if ([super respondsToSelector:@selector(couchDocumentChanged:)])
-        [super couchDocumentChanged:doc];
-
+    [super CBLDocument:doc didChange:change];
+    
     assert(doc == self.document);
     [_controller didChangeDocument:doc forObject:self source:MPManagedObjectChangeSourceExternal];
 }
 
+
 - (void)didLoadFromDocument
 {
     //NSLog(@"Did load");
-    NSArray *conflictingRevs = [self.document getConflictingRevisions];
+    NSError *err = nil;
+    NSArray *conflictingRevs = [self.document getConflictingRevisions:&err];
+    
+    if (!conflictingRevs)
+    {
+        [[self.controller.packageController notificationCenter] postErrorNotification:err];
+    }
     
     if (conflictingRevs.count > 1)
     {
         NSLog(@"Conflicting revisions: %@", conflictingRevs);
-        [_controller resolveConflictingRevisionsForObject:self];
+        NSError *err = nil;
+        if (![_controller resolveConflictingRevisionsForObject:self error:&err])
+        {
+            [self.controller.packageController postErrorNotification:err];
+        }
     }
     assert(_controller);
     [super didLoadFromDocument]; // super class implementation ought to be empty but just for safety.
@@ -401,17 +421,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return _controller;
 }
 
-- (CouchDocument *)document
-{
-    return [super document];
-}
-
-- (void)setDocument:(CouchDocument *)document
+- (void)setDocument:(CBLDocument *)document
 {
     if (!_controller)
-    {
         [self setControllerWithDocument:document];
-    }
     
     document.modelObject = self;
     [super setDocument:document];
@@ -423,10 +436,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     }
 }
 
-- (CouchAttachment *)createAttachmentWithName:(NSString *)name
-                                   withString:(NSString *)string
-                                         type:(NSString *)type
-                                        error:(NSError **)err
+- (void)createAttachmentWithName:(NSString *)name
+                      withString:(NSString *)string
+                            type:(NSString *)type
+                           error:(NSError **)err
 {
     if (!type)
     {
@@ -438,18 +451,19 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     }
     
     NSData *body = [string dataUsingEncoding:NSUTF8StringEncoding];
-    CouchAttachment *a = [self.document.currentRevision createAttachmentWithName:name type:type];
-    a.body = body;
-    return a;
+    
+    return [self setAttachmentNamed:name withContentType:type content:body];
 }
 
-- (CouchAttachment *)createAttachmentWithName:(NSString*)name
-                            withContentsOfURL:(NSURL *)url
-                                         type:(NSString *)type error:(NSError **)err
+- (void)createAttachmentWithName:(NSString*)name
+               withContentsOfURL:(NSURL *)url
+                            type:(NSString *)type
+                           error:(NSError **)err
 {
     if (!type && [url isFileURL])
     {
-        if (![[NSFileManager defaultManager] mimeTypeForFileAtURL:url error:err]) return nil;
+        if (![[NSFileManager defaultManager] mimeTypeForFileAtURL:url error:err])
+            return;
     }
 
     if (!type)
@@ -461,15 +475,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
                                    userInfo:@{NSLocalizedDescriptionKey:
             [NSString stringWithFormat:@"No type was given for creating attachment from file at path %@", url]}];
         }
-        return nil;
+        return;
     }
     
     NSData *body = [NSData dataWithContentsOfURL:url options:0 error:err];
-    if (!body) return nil;
+    if (!body)
+        return;
     
-    CouchAttachment *a = [self.document.currentRevision createAttachmentWithName:name type:type];
-    a.body = body;
-    return a;
+    return [self setAttachmentNamed:name withContentType:type content:body];
 }
 
 #pragma mark - Accessors
@@ -659,7 +672,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         if (!mo)
         {
             NSLog(@"WARNING! Could not find object with ID '%@' from '%@'",
-                  objID, moc.db.database.URL);
+                  objID, moc.db.database.internalURL);
         }
         else
         {
@@ -693,13 +706,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return dict[embeddedKey];
 }
 
-- (CouchDatabase *)databaseForModelProperty:(NSString *)propertyName
+- (CBLDatabase *)databaseForModelProperty:(NSString *)propertyName
 {
     Class cls = [[self class] classOfProperty:propertyName];
     assert([cls isSubclassOfClass:[MPManagedObject class]]);
     
-    CouchDatabase *db = [self.controller.packageController controllerForManagedObjectClass:cls].db.database;
-    if (db) return db;
+    CBLDatabase *db = [self.controller.packageController controllerForManagedObjectClass:cls].db.database;
+    if (db)
+        return db;
     
     if (!db) assert([cls conformsToProtocol:@protocol(MPReferencableObject)]);
     
@@ -711,7 +725,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 // FIXME: call super once CouchModel's -getModelProperty: is fixed so it doesn't return an empty object.
-- (CouchModel *)getModelProperty:(NSString *)property
+- (CBLModel *)getModelProperty:(NSString *)property
 {
     NSString *objectID = [self getValueOfProperty:property];
     if (!objectID) return nil;
@@ -719,7 +733,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     Class cls = [[self class] classOfProperty:property];
     assert([cls isSubclassOfClass:[MPManagedObject class]]);
     
-    CouchDatabase *db = [self databaseForModelProperty:property];
+    CBLDatabase *db = [self databaseForModelProperty:property];
     MPDatabasePackageController *pkgc = [db packageController];
     MPManagedObjectsController *moc = [pkgc controllerForManagedObjectClass:cls];
     
@@ -1177,13 +1191,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 #pragma mark - CouchModel additions
 
-@implementation CouchModel (PrivateExtensions)
-
-- (void)setDocument:(CouchDocument *)document { _document = document; }
-- (CouchDocument *)document { return _document; }
-
-- (NSMutableDictionary *)properties { return _properties; }
-- (NSMutableSet *)changedNames { return _changedNames; }
+@implementation CBLModel (PrivateExtensions)
+@dynamic document;
+@dynamic properties;
 
 - (void)markNeedsNoSave
 {

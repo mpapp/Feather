@@ -139,7 +139,8 @@
                                NSString *objectID = [_self getValueOfProperty:propNameStr];
                                if (!objectID) return nil;
                                Class moClass = [MPManagedObject managedObjectClassFromDocumentID:objectID];
-                               CouchDatabase *db = [_self databaseForModelProperty:propNameStr];
+                               CBLDatabase *db = [_self databaseForModelProperty:propNameStr];
+                               
                                MPManagedObject *mo = [moClass modelForDocument:[db getDocumentWithID:objectID]];
                                return mo;
                            }

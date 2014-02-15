@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CouchCocoa/CouchCocoa.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 
 extern NSString * const MPDatabaseErrorDomain;
 
@@ -20,13 +20,12 @@ typedef enum MPDatabaseErrorCode
     MPDatabaseErrorCodePullAlreadyInProgress = 4
 } MPDatabaseErrorCode;
 
-@class CouchTouchDBServer, CouchTouchDBDatabase, CouchDatabase, CouchDocument, CouchReplication, RESTOperation;
 @class MPDatabasePackageController;
 @class MPMetadata;
 @class MPManagedObject;
 
-/** MPDatabase wraps a CouchDB or TouchDB CouchDatabase and allows it to be pull and push replicated with a remote CouchDB database. The database is managed by a MPDatabasePackageController.
- */
+/** MPDatabase wraps a CBLDatabase and allows it to be pull and push replicated with a remote database.
+ * The database is managed by a MPDatabasePackageController. */
 @interface MPDatabase : NSObject
 
 /** The filesystem path to the database .touchdb file. */
@@ -36,10 +35,10 @@ typedef enum MPDatabaseErrorCode
 @property (readonly, copy) NSString *name;
 
 /** The CouchServer instance which owns this database (the server can have multiple databases and is itself managed by MPDatabasePackageController). */
-@property (readonly, strong) CouchServer *server;
+@property (readonly, strong) CBLManager *server;
 
-/** The CouchDatabase instance wrapped by the MPDatabase instance.  */
-@property (readonly, strong) CouchDatabase *database;
+/** The CBLDatabase instance wrapped by the MPDatabase instance.  */
+@property (readonly, strong) CBLDatabase *database;
 
 /** A metadata document stored in the database. Each document has one metadata document (found by its pre-defined identifier). It is intended to store a small number of key--value pairs which do not change regularly. */
 @property (readonly, strong) MPMetadata *metadata;
@@ -58,11 +57,11 @@ typedef enum MPDatabaseErrorCode
  *
  * A database is created for the CouchServer.
 */
-- (instancetype)initWithServer:(CouchServer *)server
-  packageController:(MPDatabasePackageController *)packageController
-                name:(NSString *)name
-       ensureCreated:(BOOL)ensureCreated
-               error:(NSError **)err;
+- (instancetype)initWithServer:(CBLManager *)server
+             packageController:(MPDatabasePackageController *)packageController
+                          name:(NSString *)name
+                 ensureCreated:(BOOL)ensureCreated
+                         error:(NSError **)err;
 
 /** 
  * @param server CouchServer from which the database is to be found. Should be one of the CouchServers owned by the database controller (2nd parameter).
@@ -72,38 +71,29 @@ typedef enum MPDatabaseErrorCode
  * @param pullFilterName is the name of the pull filter function. Optional parameter (can be nil).
  * @param err Error pointer.
 */
-- (instancetype)initWithServer:(CouchServer *)server
-  packageController:(MPDatabasePackageController *)packageController
-                name:(NSString *)name
-       ensureCreated:(BOOL)ensureCreated
-      pushFilterName:(NSString *)pushFilterName
-      pullFilterName:(NSString *)pullFilterName
-               error:(NSError **)err;
+- (instancetype)initWithServer:(CBLManager *)server
+             packageController:(MPDatabasePackageController *)packageController
+                          name:(NSString *)name
+                 ensureCreated:(BOOL)ensureCreated
+                pushFilterName:(NSString *)pushFilterName
+                pullFilterName:(NSString *)pullFilterName
+                         error:(NSError **)err;
 
 /** Utility method for creating a string from a NSString which is safe to be used as a CouchDB database name (excludes certain forbidden characters).
  * @param string An input string, potentially containing characters not allowed in CouchDB database names. */
 + (NSString *)sanitizedDatabaseIDWithString:(NSString *)string;
 
-/** Start a continuous, persistent push replication with a remote database.
- * @param pushHandler A completion handler run when the request which begins the replication is completed. */
-- (void)pushToRemoteWithCompletionHandler:(void (^)(NSError *err))pushHandler;
+/** Start a continuous push replication with a remote database. */
+- (BOOL)pushToRemote:(NSError **)err;
 
-- (void)pushPersistentlyToDatabaseAtURL:(NSURL *)url continuously:(BOOL)continuously
-                  withCompletionHandler:(void (^)(NSError *))pushHandler;
+/** Start a continuous pull replication from a remote database. */
+- (BOOL)pullFromRemote:(NSError **)err;
 
-/** Start a continuous, persistent pull replication from a remote database.
-  * @param pullHandler A completion handler run when the request which begins the replication is completed. */
-- (void)pullFromRemoteWithCompletionHandler:(void (^)(NSError *err))pullHandler;
+- (BOOL)pullFromDatabaseAtURL:(NSURL *)url error:(NSError **)err;
 
-- (void)pullFromDatabaseAtURL:(NSURL *)url withCompletionHandler:(void (^)(NSError *))pullHandler;
+- (BOOL)pushToDatabaseAtURL:(NSURL *)url error:(NSError **)err;
 
-- (void)pushToDatabaseAtURL:(NSURL *)url
-      withCompletionHandler:(void (^)(NSError *err))pushHandler;
-
-- (void)pullPersistentlyFromDatabaseAtURL:(NSURL *)url continuously:(BOOL)continuously
-                    withCompletionHandler:(void (^)(NSError *))pullHandler;
-
-- (void)pullFromDatabaseAtPath:(NSString *)path withCompletionHandler:(void (^)(NSError *))pullHandler;
+- (BOOL)pullFromDatabaseAtPath:(NSString *)path error:(NSError **)err;
 
 /** Start a continuous, persistent pull and push replication with a remote database. 
   * @param syncHandler A completion handler run when the request which begins the replication is completed. */
@@ -121,13 +111,11 @@ typedef enum MPDatabaseErrorCode
 /** The full name of the push filter name, including the design document name. */
 @property (readonly, copy) NSString *qualifiedPushFilterName;
 
-@property (readonly, strong) CouchDesignDocument *primaryDesignDocument;
-
 /** Define a new filter function to the database's internal design document (used only for ). Should be called only once per name. */
-- (void)defineFilterNamed:(NSString *)name block:(TD_FilterBlock)block;
+- (void)defineFilterNamed:(NSString *)name block:(CBLFilterBlock)block;
 
 /** Filter block with a given name, stored in the database's private design document. */
-- (TD_FilterBlock)filterWithName:(NSString *)name;
+- (CBLFilterBlock)filterWithName:(NSString *)name;
 
 /** The default replication URL for this database, used by -syncWithRemoteWithCompletionHandler: , -pushToRemoteWithCompletionHandler: and -pullFromremoteWithCompletionHandler: . Derived from database controller's remote URL and the database name. */
 @property (readonly, strong) NSURL *remoteDatabaseURL;
@@ -141,17 +129,11 @@ typedef enum MPDatabaseErrorCode
 /** Authentication credentials for the remote database. */
 @property (readonly, strong) NSURLCredential *remoteDatabaseCredentials;
 
-/** The presently ongoing persistent pull replications. */
-@property (readonly, strong) NSMutableArray *currentPersistentPulls;
-
 /** The REST operation for the current persistent, continuous pulls. */
 @property (readonly, strong) NSMutableArray *currentPullOperations;
 
 /** The REST operation for the current persistent, continuous pushes. */
 @property (readonly, strong) NSMutableArray *currentPushOperations;
-
-/** The presently ongoing persistent push replications. */
-@property (readonly, strong) NSMutableArray *currentPersistentPushes;
 
 /** Currently ongoing one-off pull replications. Used when opening a database from a remote. */
 @property (readonly, strong) NSMutableArray *currentOneOffPulls;
@@ -163,8 +145,8 @@ typedef enum MPDatabaseErrorCode
 
 #pragma mark -
 
-/** A utility category on CouchDynamicObject */
-@interface CouchDynamicObject (MPDatabase)
+/** A utility category on MYDynamicObject to support MPManagedObject */
+@interface MYDynamicObject (MPDatabase)
 
 /** Set values for keys using a dictionary. Allows bulk changes of CouchDynamicObject properties.
   * @param keyedValues A dictionary with property names as keys and and values representing the values to set the properties to. */
@@ -172,10 +154,10 @@ typedef enum MPDatabaseErrorCode
 
 @end
 
-/** A MPDatabase utility category for CouchDatabase. */
-@interface CouchDatabase (MPDatabase)
+/** A MPDatabase utility category for CBLDatabase. */
+@interface CBLDatabase (MPDatabase)
 
-/** A back pointer from a CouchDatabase to its MPDatabasePackageController. This is stored as an ObjC runtime associative reference. The method should only be called on a CouchDatabase owned by a MPDatabasePackageController, as the non-nilness of the database controller pointer is asserted. */
+/** A back pointer from a CBLDatabase to its MPDatabasePackageController. This is stored as an ObjC runtime associative reference. The method should only be called on a CBLDatabase owned by a MPDatabasePackageController, as the non-nilness of the database controller pointer is asserted. */
 @property (readonly, weak) id packageController;
 
 /** Get managed object model objects for documents specified by the array of IDs from the database. */
@@ -184,13 +166,11 @@ typedef enum MPDatabaseErrorCode
 - (MPManagedObject *)getManagedObjectWithID:(NSString *)identifier;
 
 /** Get document by ID. Returns nil if no object were found. */
-- (CouchDocument *)getDocumentWithID:(NSString *)identifier;
+- (CBLDocument *)getDocumentWithID:(NSString *)identifier;
 
 /** Get plain JSON encodable objects for query enumerator. */
-- (NSArray *)plainObjectsFromQueryEnumeratorKeys:(CouchQueryEnumerator *)rows;
+- (NSArray *)plainObjectsFromQueryEnumeratorKeys:(CBLQueryEnumerator *)rows;
 
-/** Sets a change notification handler. This is exposed in public interface because it includes a pointer to CouchDocument * unlike the CouchDatabaseChanged notification, and is fired even if the document has no model object (e.g. objects added internally without involving a model object). */
-- (void)onChange:(void(^)(CouchDocument *doc, BOOL externalChange))doc;
 
 @end
 
@@ -198,7 +178,7 @@ typedef enum MPDatabaseErrorCode
  * A metadata document: a maximum of one metadata document is stored per database (think of it like NSUserDefaults stored in a CouchDB-like database).
  * MPMetadata inherits directly from CouchModel and not from MPManagedObject to avoid a requirement to have a managed objects controller for it, which would would a) be unnecessary and b) would introduce a MOC <=> MPDatabase retain cycle.
  */
-@interface MPMetadata : CouchModel
+@interface MPMetadata : CBLModel
 @end
 
 /**

@@ -16,9 +16,7 @@
 
 #import "Mixin.h"
 
-#import <CouchCocoa/CouchCocoa.h>
-#import <CouchCocoa/CouchModelFactory.h>
-#import <CouchCocoa/RESTBody.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 
 #import <objc/runtime.h>
 
@@ -256,13 +254,13 @@
 {
     if ([value isKindOfClass:[NSData class]])
     {
-        value = [RESTBody base64WithData:value];
+        value = [CBLJSON base64StringWithData:value];
     }
     else if ([value isKindOfClass:[NSDate class]])
     {
-        value = [RESTBody JSONObjectWithDate:value];
+        value = [CBLJSON JSONObjectWithDate:value];
     }
-    else if ([value isKindOfClass:[CouchModel class]])
+    else if ([value isKindOfClass:[CBLModel class]])
     {
         assert([value document]);
         value = [[value document] documentID];
@@ -333,9 +331,9 @@
     return [self.dictionaryRepresentation JSONString];
 }
 
-- (MPSaveOperation *)save
+- (BOOL)save:(NSError **)err
 {
-    return [[MPSaveOperation alloc] initWithEmbeddedObject:self];
+    return [_embeddingObject save:err];
 }
 
 - (void)markNeedsSave
@@ -356,7 +354,7 @@
 
 #pragma mark - Accessor implementations
 
-- (CouchDatabase *)databaseForModelProperty:(NSString *)property
+- (CBLDatabase *)databaseForModelProperty:(NSString *)property
 {
     id<MPEmbeddingObject> embedder = self;
     while (![(embedder = self.embeddingObject) isKindOfClass:[MPManagedObject class]])
@@ -370,7 +368,7 @@
 }
 
 // adapted from CouchModel
-- (CouchModel *)getModelProperty:(NSString *)property
+- (CBLModel *)getModelProperty:(NSString *)property
 {
     NSString* rawValue = [self getValueOfProperty:property];
     if (!rawValue)
@@ -382,7 +380,7 @@
         return nil;
     }
     
-    CouchDocument* doc = [[self databaseForModelProperty: property] documentWithID:rawValue];
+    CBLDocument* doc = [[self databaseForModelProperty: property] documentWithID:rawValue];
     if (!doc)
     {
         MPLog(@"Unable to get document from property %@ of %@ (value='%@')",
@@ -391,8 +389,9 @@
     }
     
     // Ask factory to get/create model; if it doesn't know, use the declared class:
-    CouchModel* value = [doc.database.modelFactory modelForDocument: doc];
-    if (!value) {
+    CBLModel *value = [doc.database.modelFactory modelForDocument: doc];
+    if (!value)
+    {
         Class declaredClass = [[self class] classOfProperty: property];
         value = [declaredClass modelForDocument: doc];
         if (!value)
@@ -491,11 +490,14 @@
 {
     id value = _properties[property];
     
-    if ([value isKindOfClass:[NSString class]])
-        { value = [RESTBody dateWithJSONObject:value]; }
+    if ([value isKindOfClass:[NSString class]]) {
+        value = [CBLJSON dateWithJSONObject:value];
+    }
     
-    if (value && ![value isKindOfClass:[NSDate class]])
-        { MPLog(@"Unable to decode date from property %@ of %@", property, self); return nil; }
+    if (value && ![value isKindOfClass:[NSDate class]]) {
+        MPLog(@"Unable to decode date from property %@ of %@", property, self);
+        return nil;
+    }
     
     //if (value)
     //    [self cacheValue: value ofProperty: property changed: NO];
@@ -508,10 +510,12 @@
 {
     id value = _properties[property];
     
-    if ([value isKindOfClass:[NSString class]])
-        { value = [RESTBody dataWithBase64:value]; }
-    else if (value && ![value isKindOfClass:[NSData data]])
-        { MPLog(@"Unable to decode Base64 data from property %@ of %@", property, self); return nil; }
+    if ([value isKindOfClass:[NSString class]]) {
+        value = [CBLJSON dataWithBase64String:value];
+    }
+    else if (value && ![value isKindOfClass:[NSData data]]) {
+        MPLog(@"Unable to decode Base64 data from property %@ of %@", property, self); return nil;
+    }
     
     //if (value) // TODO: Cache decoded values.
     //    [self cacheValue:value ofProperty: property changed: NO];
@@ -540,7 +544,7 @@
         {
             return [receiver getDateProperty: property];
         });
-    } else if ([propertyClass isSubclassOfClass:[CouchModel class]])
+    } else if ([propertyClass isSubclassOfClass:[CBLModel class]])
     {
         return imp_implementationWithBlock(^id(MPEmbeddedObject *receiver)
         {
@@ -565,7 +569,8 @@
     }
 }
 
-- (void)setModel:(CouchModel *)model forProperty:(NSString *)property
+- (void)setModel:(CBLModel *)model
+     forProperty:(NSString *)property
 {
     if (_properties[property]
         && ([_properties[property] isEqualToString:model.document.documentID]
@@ -587,9 +592,9 @@
 
 + (IMP)impForSetterOfProperty:(NSString *)property ofClass:(Class)propertyClass
 {
-    if ([propertyClass isSubclassOfClass:[CouchModel class]])
+    if ([propertyClass isSubclassOfClass:[CBLModel class]])
     {
-        return imp_implementationWithBlock(^(MPEmbeddedObject *receiver, CouchModel *value)
+        return imp_implementationWithBlock(^(MPEmbeddedObject *receiver, CBLModel *value)
         {
             [receiver setModel:value forProperty:property];
         });
@@ -662,13 +667,13 @@
 {
     if (propertyType[0] == _C_ULNG_LNG)
     {
-        return imp_implementationWithBlock(^unsigned long long(CouchDynamicObject* receiver) {
+        return imp_implementationWithBlock(^unsigned long long(MYDynamicObject *receiver) {
             return [[receiver getValueOfProperty:property] unsignedLongValue];
         });
     }
     else if (propertyType[0] == _C_LNG_LNG)
     {
-        return imp_implementationWithBlock(^long long(CouchDynamicObject* receiver) {
+        return imp_implementationWithBlock(^long long(MYDynamicObject *receiver) {
             return [[receiver getValueOfProperty:property] longLongValue];
         });
     }
@@ -680,41 +685,18 @@
 {
     if (propertyType[0] == _C_ULNG_LNG)
     {
-        return imp_implementationWithBlock(^(CouchDynamicObject* receiver, unsigned long long value) {
-            [receiver setValue:[NSNumber numberWithUnsignedLongLong:value] ofProperty:property];
+        return imp_implementationWithBlock(^(MYDynamicObject *receiver, unsigned long long value) {
+            [receiver setValue:@(value) ofProperty:property];
         });
     }
     else if (propertyType[0] == _C_LNG_LNG)
     {
-        return imp_implementationWithBlock(^(CouchDynamicObject* receiver, long long value) {
-            [receiver setValue:[NSNumber numberWithLongLong:value] ofProperty:property];
+        return imp_implementationWithBlock(^(MYDynamicObject *receiver, long long value) {
+            [receiver setValue:@(value) ofProperty:property];
         });
     }
     
     return [super impForSetterOfProperty:property ofType:propertyType];
-}
-
-@end
-
-#pragma mark - saving
-
-@implementation MPSaveOperation
-
-- (instancetype)initWithEmbeddedObject:(MPEmbeddedObject *)embeddedObject
-{
-    if (self = [super init])
-    {
-        _embeddedObject = embeddedObject;
-        _embeddingSaveOperation = [_embeddedObject.embeddingObject save];
-    }
-    
-    return self;
-}
-
-- (BOOL)wait
-{
-    assert(_embeddingSaveOperation);
-    return [_embeddingSaveOperation wait];
 }
 
 @end

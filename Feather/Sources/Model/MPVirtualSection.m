@@ -155,7 +155,10 @@
 - (NSString *)placeholderString { return _wrappedObject.placeholderString; }
 - (BOOL)isEditable { return YES; }
 
-- (id)save { return [_wrappedObject save]; }
+- (BOOL)save:(NSError **)err
+{
+    return [_wrappedObject save:err];
+}
 
 - (NSArray *)children { return @[]; }
 

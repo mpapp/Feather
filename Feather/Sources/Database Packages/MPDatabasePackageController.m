@@ -12,6 +12,7 @@
 #import "MPSnapshot+Protected.h"
 
 #import <Feather/NSBundle+MPExtensions.h>
+#import <Feather/NSNotificationCenter+ErrorNotification.h>
 
 #import "MPContributor.h"
 #import "MPContributorsController.h"
@@ -28,12 +29,8 @@
 
 #import "RegexKitLite.h"
 
-#import <CouchCocoa/CouchCocoa.h>
-#import <CouchCocoa/CouchDesignDocument_Embedded.h>
-#import <CouchCocoa/CouchTouchDBDatabase.h>
-#import <CouchCocoa/CouchTouchDBServer.h>
-#import <TouchDB/TouchDB.h>
-#import <TouchDBListener/TDListener.h>
+#import <CouchbaseLite/CouchbaseLite.h>
+#import <CouchbaseLiteListener/CBLListener.h>
 
 #import <objc/runtime.h>
 
@@ -81,7 +78,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 @property (strong, readwrite) MPDatabase *snapshotsDatabase;
 
-@property (strong, readwrite) TDListener *databaseListener;
+@property (strong, readwrite) CBLListener *databaseListener;
 @property (strong, readwrite) NSNetService *databaseListenerService;
 
 @end
@@ -146,12 +143,12 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
             
             if (pushFilterName)
             {
-                TD_FilterBlock filterBlock = [self pushFilterBlockWithName:pushFilterName forDatabase:db];
+                CBLFilterBlock filterBlock = [self pushFilterBlockWithName:pushFilterName forDatabase:db];
                 [db defineFilterNamed:pushFilterName block:filterBlock];
                 
                 dispatch_semaphore_t synchronizer = dispatch_semaphore_create(0);
-                __block TD_FilterBlock blk = nil;
-                [(CouchTouchDBServer *)(db.database).server tellTDDatabaseNamed:[db name] to:^(TD_Database *tdb)
+                __block CBLFilterBlock blk = nil;
+                [(CouchTouchDBServer *)(db.database).server tellTDDatabaseNamed:[db name] to:^(CBLDatabase *tdb)
                 {
                     blk = [tdb filterNamed:[NSString stringWithFormat:@"%@/%@",[db name], pushFilterName]];
                     assert(blk);
@@ -172,11 +169,15 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 #endif
         
         _contributorsController = [[MPContributorsController alloc] initWithPackageController:self
-                                                                                      database:self.primaryDatabase];
+                                                                                      database:self.primaryDatabase error:err];
+        if (!_contributorsController)
+            return nil;
         
         assert(_snapshotsDatabase);
         _snapshotsController
-            = [[MPSnapshotsController alloc] initWithPackageController:self database:_snapshotsDatabase];
+            = [[MPSnapshotsController alloc] initWithPackageController:self database:_snapshotsDatabase error:err];
+        if (!_snapshotsController)
+            return nil;
         
         _pulls = [[NSMutableArray alloc] initWithCapacity:[[[self class] databaseNames] count]];
         _completedPulls = [[NSMutableArray alloc] initWithCapacity:[[[self class] databaseNames] count]];
@@ -184,7 +185,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
         if ([defs valueForKey:@"MPDefaultsKeySyncPeerlessly"] && [self synchronizesPeerlessly])
         {
-            [self startListener];
+            if (![self startListener:err])
+                return nil;
         }
         
         // populate root section properties
@@ -233,7 +235,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (MPManagedObjectsController *)controllerForManagedObjectClass:(Class)class
 {
     MPManagedObjectsController *c = [self _controllerForManagedObjectClass:class];
-    if (c) return c;
+    if (c)
+        return c;
     
     if (![class conformsToProtocol:@protocol(MPReferencableObject)])
     {
@@ -327,7 +330,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return controllerDictionary[NSStringFromClass(class)];
 }
 
-- (MPManagedObjectsController *)controllerForDocument:(CouchDocument *)document
+- (MPManagedObjectsController *)controllerForDocument:(CBLDocument *)document
 {
     NSString *objType = [document propertyForKey:@"objectType"];
     assert(objType);
@@ -484,16 +487,16 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return nil;
 }
 
-- (TD_FilterBlock)createPushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db
+- (CBLFilterBlock)createPushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db
 {
     assert(!filterName);
     return nil;
 }
 
-- (TD_FilterBlock)pushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db
+- (CBLFilterBlock)pushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db
 {
     assert(db);
-    TD_FilterBlock block = [db filterWithName:filterName];
+    CBLFilterBlock block = [db filterWithName:filterName];
     if (block) return block;
 
     return [self createPushFilterBlockWithName:filterName forDatabase:db];
@@ -556,44 +559,39 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return @[ [NSURL URLWithString:[[baseURL absoluteString] stringByAppendingFormat:@"_snapshots"]] ];
 }
 
-- (void)pushToRemoteWithCompletionHandler:(void (^)(NSDictionary *errDict))pushHandler
+- (BOOL)pushToRemoteWithErrorDictionary:(NSDictionary **)errorDict
 {
     NSSet *databases = [self databases];
     
-    NSMutableDictionary *errDict = [NSMutableDictionary dictionaryWithCapacity:databases.count];
-    dispatch_group_t cgrp = dispatch_group_create();
+    NSMutableDictionary *errDict
+        = [NSMutableDictionary dictionaryWithCapacity:databases.count];
+    
     for (MPDatabase *db in databases)
     {
-        dispatch_group_enter(cgrp);
-        [db pushToRemoteWithCompletionHandler:^(NSError *err) {
-            if (err) errDict[db.name] = err;
-            dispatch_group_leave(cgrp);
-        }];
+        NSError *err = nil;
+        if (![db pushToRemote:&err])
+            errDict[db.name] = err;
     }
     
-    dispatch_group_notify(cgrp, dispatch_get_main_queue(), ^{
-        pushHandler(errDict.count > 0 ? errDict : nil);
-    });
+    if (errorDict)
+        *errorDict = errDict;
 }
 
-- (void)pullFromRemoteWithCompletionHandler:(void (^)(NSDictionary *errDict))pullHandler
+- (void)pullFromRemoteWithErrorDictionary:(NSDictionary **)errorDict
 {
     NSSet *databases = [self databases];
     
     NSMutableDictionary *errDict = [NSMutableDictionary dictionaryWithCapacity:databases.count];
-    dispatch_group_t cgrp = dispatch_group_create();
+    
     for (MPDatabase *db in databases)
     {
-        dispatch_group_enter(cgrp);
-        [db pullFromRemoteWithCompletionHandler:^(NSError *err) {
-            if (err) errDict[db.name] = err;
-            dispatch_group_leave(cgrp);
-        }];
+        NSError *err = nil;
+        if (![db pullFromRemote:&err])
+            errDict[db.name] = err;
     }
     
-    dispatch_group_notify(cgrp, dispatch_get_main_queue(), ^{
-        pullHandler(errDict.count > 0 ? errDict : nil);
-    });
+    if (errorDict)
+        *errorDict = errDict;
 }
 
 - (void)syncWithCompletionHandler:(void (^)(NSDictionary *errDict))syncHandler
@@ -650,20 +648,29 @@ static NSUInteger packagesOpened = 0;
     assert(_server);
     
     __weak MPDatabasePackageController *weakSelf = self;
-    [(CouchTouchDBServer *)_server tellTDServer: ^(TD_Server* tds) {
+    
+    [_server doAsync:^{
         __strong MPDatabasePackageController *strongSelf = weakSelf;
-        [TD_View setCompiler:strongSelf];
+        
+        [CBLView setCompiler:strongSelf];
         
         NSUInteger port = 10000 + [[strongSelf class] packagesOpened];
-        strongSelf.databaseListener = [[TDListener alloc] initWithTDServer:tds port:port];
+        
+        strongSelf.databaseListener = [[CBLListener alloc] initWithManager:_server port:port];
         
         NSDictionary *txtDict = [strongSelf.databaseListener.TXTRecordDictionary mutableCopy];
         [txtDict setValue:@(port) forKey:@"port"];
         
-        NSLog(@"Serving %@ at '%@:%@'", _path, [_server URL], @(port));
+        NSLog(@"Serving %@ at '%@:%@'", _path, _server.internalURL, @(port));
         
         strongSelf.databaseListener.TXTRecordDictionary = txtDict;
-        [strongSelf.databaseListener start];
+        
+        NSError *e = nil;
+        if (![strongSelf.databaseListener start:&e])
+        {
+            [self.notificationCenter postErrorNotification:e];
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf advertiseListener];
             [self didStartDatabaseListener];
@@ -823,7 +830,7 @@ static NSUInteger packagesOpened = 0;
 
 #pragma mark - Snapshots
 
-- (MPSnapshot *)newSnapshotWithName:(NSString *)name
+- (MPSnapshot *)newSnapshotWithName:(NSString *)name error:(NSError **)err
 {
     assert(name);
     assert(_managedObjectsControllers);
@@ -831,7 +838,9 @@ static NSUInteger packagesOpened = 0;
     
     __block MPSnapshot *snp = nil;
     MPSnapshotsController *sc = self.snapshotsController;
-    [sc newSnapshotWithName:name snapshotHandler:^(MPSnapshot *snapshot) {
+    [sc newSnapshotWithName:name snapshotHandler:^(MPSnapshot *snapshot, NSError *e) {
+        if (e)
+            return;
         
         for (MPManagedObjectsController *moc in _managedObjectsControllers)
         {
@@ -841,14 +850,14 @@ static NSUInteger packagesOpened = 0;
                 MPSnapshottedObject *so = [[MPSnapshottedObject alloc]
                                            initWithController:sc snapshot:snapshot
                                            snapshottedObject:mo];
-                [so save];
+                if (![so save:err])
+                    return;
             }
         }
         
         snp = snapshot;
     }];
     
-    assert(snp != nil);
     return snp;
 }
 
@@ -893,20 +902,21 @@ static NSUInteger packagesOpened = 0;
     }
     
     if (saveableObjects.count > 0)
-        { return [[CouchModel saveModels:saveableObjects] wait]; }
+        return [CBLModel saveModels:saveableObjects error:err];
     
     return YES;
 }
 
 #pragma mark - View function compilation
 
-- (TDMapBlock)compileMapFunction:(NSString *)mapSource language:(NSString *)language
+- (CBLMapBlock)compileMapFunction:(NSString *)mapSource language:(NSString *)language
 {
     @throw [NSException exceptionWithName:@"MPUnsupportedLanguageException"
                                    reason:@"View function compilation unsupported." userInfo:nil];
 }
 
-- (TDReduceBlock)compileReduceFunction:(NSString *)reduceSource language:(NSString *)language
+- (CBLReduceBlock)compileReduceFunction:(NSString *)reduceSource
+                               language:(NSString *)language
 {
     @throw [NSException exceptionWithName:@"MPUnsupportedLanguageException"
                                    reason:@"View function compilation unsupported." userInfo:nil];
@@ -970,7 +980,7 @@ static NSUInteger packagesOpened = 0;
 - (void)makeNotificationCenter { }
 
 
-- (void)didChangeDocument:(CouchDocument *)document source:(MPManagedObjectChangeSource)source
+- (void)didChangeDocument:(CBLDocument *)document source:(MPManagedObjectChangeSource)source
 {
     // ignore MPMetadata & MPLocalMetadata
     if (!document.properties[@"objectType"]) return;
@@ -983,7 +993,7 @@ static NSUInteger packagesOpened = 0;
     assert(mo);
     assert([document modelObject] == mo);
     
-    [moc didChangeDocument:document forObject:document.modelObject source:source];
+    [moc didChangeDocument:document forObject:(id)document.modelObject source:source];
 }
 
 @end

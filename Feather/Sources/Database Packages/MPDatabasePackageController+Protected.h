@@ -9,7 +9,7 @@
 #import "MPDatabasePackageController.h"
 #import "MPManagedObject.h"
 
-@class CouchDocument;
+@class CBLDocument;
 
 @interface MPDatabasePackageController (Protected)
 
@@ -27,6 +27,6 @@
 
 - (void)makeNotificationCenter;
 
-- (void)didChangeDocument:(CouchDocument *)document source:(MPManagedObjectChangeSource)source;
+- (void)didChangeDocument:(CBLDocument *)document source:(MPManagedObjectChangeSource)source;
 
 @end

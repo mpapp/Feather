@@ -24,7 +24,9 @@
     if (self = [super initWithError:err])
     {
         _testObjectsController =
-        [[MPTestObjectsController alloc] initWithPackageController:self database:self.primaryDatabase];
+            [[MPTestObjectsController alloc] initWithPackageController:self database:self.primaryDatabase error:err];
+        if (!_testObjectsController)
+            return nil;
     }
     
     return self;

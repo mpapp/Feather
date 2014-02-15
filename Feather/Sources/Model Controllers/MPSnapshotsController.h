@@ -17,7 +17,7 @@
 /** Create a new named snapshot. The snapshot object is given in a block to give an illusion of a 'transaction':  it clear it's only to be appended to inside of this block and should be treated immutable outside of it.
  @param name The name for the section. Must be non-nil but not necessarily unique.
  @param snapshotHandler snapshotHandler A block in which objects are to be added to the snapshot. */
-- (void)newSnapshotWithName:(NSString *)name snapshotHandler:(void (^)(MPSnapshot *docList))snapshotHandler;
+- (void)newSnapshotWithName:(NSString *)name snapshotHandler:(void (^)(MPSnapshot *docList, NSError *err))snapshotHandler;
 
 /** Returns a snapshotted object, which itself wraps metadata for a managed object in one of the databases from the same database package as the snapshot.
  * @param obj The object for which to return snapshotted data. Must belong to the same database package as the snapshot (2nd argument).

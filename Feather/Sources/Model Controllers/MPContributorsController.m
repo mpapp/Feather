@@ -14,9 +14,9 @@
 
 #import "NSArray+MPExtensions.h"
 #import "NSBundle+MPExtensions.h"
+#import "NSNotificationCenter+ErrorNotification.h"
 
-#import <CouchCocoa/CouchCocoa.h>
-#import <CouchCocoa/CouchDesignDocument_Embedded.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 
 
 NSString * const MPContributorRoleAuthor = @"author";
@@ -44,34 +44,40 @@ NSString * const MPContributorRoleTranslator = @"translator";
     return _me;
 }
 
-- (void)configureDesignDocument:(CouchDesignDocument *)designDoc
+- (void)configureViews
 {
-    [super configureDesignDocument:designDoc];
+    [super configureViews];
     
     NSString *allObjsViewName = [self allObjectsViewName];
-    [designDoc defineViewNamed:allObjsViewName mapBlock:self.allObjectsBlock
-                       version:[[NSBundle appBundle] bundleVersionString]];
     
-    [designDoc defineViewNamed:@"contributorsByRole"
-                      mapBlock:^(NSDictionary *doc, TDMapEmitBlock emit)
-    {
-        // if role has not been set, assume the author has role 'author' 
-        if (!doc[@"role"] || [doc[@"role"] isEqualToString:MPContributorRoleAuthor])
-        {
-            emit(MPContributorRoleAuthor, nil);
-            return;
-        }
-
-        emit(doc[@"role"], nil);
-    } version:@"1.0"];
+    CBLView *view = [self.db.database viewNamed:allObjsViewName];
+    [view setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
+     {
+         // if role has not been set, assume the author has role 'author'
+         if (!doc[@"role"] || [doc[@"role"] isEqualToString:MPContributorRoleAuthor])
+         {
+             emit(MPContributorRoleAuthor, nil);
+             return;
+         }
+         
+         emit(doc[@"role"], nil);
+     } version:@"1.0"];
 }
 
 - (NSArray *)contributorsInRole:(NSString *)role
 {
-    CouchQuery *query = [self.designDocument queryViewNamed:@"contributorsByRole"];
+    CBLQuery *query = [[self.db.database viewNamed:@"contributorsByRole"] createQuery];
     query.prefetch = YES;
     query.key = role;
-    return [self managedObjectsForQueryEnumerator:[query rows]];
+    
+    NSError *err = nil;
+    CBLQueryEnumerator *qenum = [query run:&err];
+    if (!qenum)
+    {
+        [[self.packageController notificationCenter] postErrorNotification:err];
+        return nil;
+    }
+    return [self managedObjectsForQueryEnumerator:qenum];
 }
 
 - (NSArray *)allContributors

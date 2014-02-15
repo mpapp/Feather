@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CouchCocoa/CouchCocoa.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 
 #import "MPCacheable.h"
 
@@ -46,13 +46,13 @@ typedef NS_ENUM(NSInteger, MPManagedObjectChangeSource)
 @interface MPReferencableObjectMixin : NSObject
 @end
 
-@class MPManagedObjectsController, CouchModel;
+@class MPManagedObjectsController;
 @class MPContributor;
 
 /**
  * An abstract base class for all objects contained in a MPDatabase (n per MPDatabase), except for MPMetadata (1 per MPDatabase).
  */
-@interface MPManagedObject : CouchModel
+@interface MPManagedObject : CBLModel
     <NSPasteboardWriting, NSPasteboardReading, MPCacheable, MPEmbeddingObject>
 
 /** The managed objects controller which manages (and caches) the object. */
@@ -135,10 +135,10 @@ typedef NS_ENUM(NSInteger, MPManagedObjectChangeSource)
 @property (readonly, copy) NSString *tokenizedFullTextString;
 
 /** Get a new document ID for this object type. Not to be called on MPManagedObject directly, but on its concrete subclasses. */
-+ (NSString *)idForNewDocumentInDatabase:(CouchDatabase *)db;
++ (NSString *)idForNewDocumentInDatabase:(CBLDatabase *)db;
 
 /** Validation function for saves. All MPManagedObject revision saves (creation & update, NOT deletion) will be evaluated through this function. Default implementation returns YES. Note that there is no need to validate the presence of 'objectType' fields, required prefixing, or other universally required MPManagedObject properties here. Revisions for which this method is run are guaranteed to be non-deleted. */
-+ (BOOL)validateRevision:(TD_Revision *)revision;
++ (BOOL)validateRevision:(CBLRevision *)revision;
 
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID;
 
@@ -177,10 +177,10 @@ typedef NS_ENUM(NSInteger, MPManagedObjectChangeSource)
  * @param type The content type of the attachment (MIME type).
  * @param err An optional error pointer.
  */
-- (CouchAttachment *)createAttachmentWithName:(NSString *)name
-                                   withString:(NSString *)string
-                                         type:(NSString *)type
-                                        error:(NSError **)err;
+- (void)createAttachmentWithName:(NSString *)name
+                      withString:(NSString *)string
+                            type:(NSString *)type
+                           error:(NSError **)err;
 
 /** Create an attachment with string.
  * @param name The name of the attachment. Must be unique per managed object (there can be multiple attachments in the database with the same name, but not multiple for the same managed object).
@@ -188,10 +188,10 @@ typedef NS_ENUM(NSInteger, MPManagedObjectChangeSource)
  * @param type Optional content type of the attachment (MIME type). If nil is given, an attempt is made to determine the file type from the file contents.
  * @param err An optional error pointer.
  */
-- (CouchAttachment *)createAttachmentWithName:(NSString*)name
-                            withContentsOfURL:(NSURL *)url
-                                         type:(NSString *)type
-                                        error:(NSError **)err;
+- (void)createAttachmentWithName:(NSString*)name
+               withContentsOfURL:(NSURL *)url
+                            type:(NSString *)type
+                           error:(NSError **)err;
 
 
 /** A method which is called after successful initialisation steps but before the object is returned. Can be overloaded by subclasses (oveloaded methods should call the superclass -didInitialize). This method should not be called directly. */
