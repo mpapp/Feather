@@ -34,7 +34,9 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
 
 - (instancetype)initWithError:(NSError *__autoreleasing *)err
 {
-    if (self = [super initWithPath:[[self class] sharedDatabasesPath] delegate:nil error:err])
+    self = [super initWithPath:[[self class] sharedDatabasesPath] readOnly:NO delegate:nil error:err];
+    
+    if (self)
     {
         assert(self.server);
         assert(_sharedDatabase);
@@ -56,26 +58,21 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.synchronizesWithRemote)
             {
-                _globalSharedDatabaseServer = [[CBLManager alloc] initWithURL:self.remoteURL];
-                
-                _globalSharedDatabase
-                    = [[MPDatabase alloc] initWithServer:_globalSharedDatabaseServer
-                                       packageController:self name:[self remoteGlobalSharedDatabaseName]
-                                           ensureCreated:NO
-                                                   error:err];
-                    
+                NSDictionary *errDict = nil;
                 if ([self synchronizesUserData])
-                    [self syncWithCompletionHandler:^(NSDictionary *errDict) { }];
-                
+                    [self syncWithRemote:&errDict];
                 
                 if ([self sharesUserData])
                 {
                     NSURL *url = [self remoteGlobalSharedDatabaseURL];
                     
+                    CBLReplication *push = nil;
                     NSError *pushErr = nil;
+                    
+                    CBLReplication *pull = nil;
                     NSError *pullErr = nil;
-                    [_sharedDatabase pushToDatabaseAtURL:url error:&pushErr];
-                    [_sharedDatabase pullFromDatabaseAtURL:url error:&pullErr];
+                    [_sharedDatabase pushToDatabaseAtURL:url replication:&push error:&pushErr];
+                    [_sharedDatabase pullFromDatabaseAtURL:url replication:&pull error:&pullErr];
                     
                     if (pushErr)
                         [self.notificationCenter postErrorNotification:pushErr];
@@ -85,9 +82,6 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
                 }
             }
         });
-    }
-    else {
-        return nil;
     }
     
     return self;

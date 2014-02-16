@@ -86,7 +86,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 @implementation MPDatabasePackageController
 @synthesize snapshotsDatabase = _snapshotsDatabase;
 
-- (instancetype)initWithPath:(NSString *)path delegate:(id<MPDatabasePackageControllerDelegate>)delegate
+- (instancetype)initWithPath:(NSString *)path
+                    readOnly:(BOOL)readOnly
+                    delegate:(id<MPDatabasePackageControllerDelegate>)delegate
              error:(NSError *__autoreleasing *)err
 {
     if (self = [super init])
@@ -112,18 +114,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         #warning Make editor interactions behave in a CORS-safe way.
         NSDictionary *headers = nil;
 #endif
-        _server = [[CouchTouchDBServer alloc] initWithServerPath:_path customHTTPHeaders:headers];
+        CBLManagerOptions opts;
+        opts.readOnly = NO;
         
-        CouchTouchDBServer *touchServer = (CouchTouchDBServer *)_server;
-        
-        if ([touchServer error])
-        {
-            if (err)
-            {
-                *err = [touchServer error];
-            }
-            return nil;
-        }
+        _server = [[CBLManager alloc] initWithDirectory:_path options:&opts error:err];
         
         _managedObjectsControllers = [NSMutableSet setWithCapacity:20];
         
@@ -143,20 +137,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
             
             if (pushFilterName)
             {
-                CBLFilterBlock filterBlock = [self pushFilterBlockWithName:pushFilterName forDatabase:db];
+                CBLFilterBlock filterBlock
+                    = [self pushFilterBlockWithName:pushFilterName forDatabase:db];
                 [db defineFilterNamed:pushFilterName block:filterBlock];
-                
-                dispatch_semaphore_t synchronizer = dispatch_semaphore_create(0);
-                __block CBLFilterBlock blk = nil;
-                [(CouchTouchDBServer *)(db.database).server tellTDDatabaseNamed:[db name] to:^(CBLDatabase *tdb)
-                {
-                    blk = [tdb filterNamed:[NSString stringWithFormat:@"%@/%@",[db name], pushFilterName]];
-                    assert(blk);
-                    dispatch_semaphore_signal(synchronizer);
-                }];
-                
-                dispatch_semaphore_wait(synchronizer, DISPATCH_TIME_FOREVER);
-                assert(blk);
             }
         }
         
@@ -185,8 +168,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
         if ([defs valueForKey:@"MPDefaultsKeySyncPeerlessly"] && [self synchronizesPeerlessly])
         {
-            if (![self startListener:err])
-                return nil;
+            [self startListener];
         }
         
         // populate root section properties
@@ -207,13 +189,6 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         }
         
         _rootSections = [rootSections copy];
-        
-        if ([self indexesObjectFullTextContents])
-        {
-            _searchIndexController = [[MPSearchIndexController alloc] initWithPackageController:self];
-            if (![_searchIndexController ensureCreatedWithError:err])
-                return NO;
-        }
         
         [[self class] didOpenPackage];
     }
@@ -569,12 +544,14 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     for (MPDatabase *db in databases)
     {
         NSError *err = nil;
-        if (![db pushToRemote:&err])
+        if (![db pushToRemote:nil error:&err])
             errDict[db.name] = err;
     }
     
     if (errorDict)
         *errorDict = errDict;
+    
+    return errDict.count == 0;
 }
 
 - (void)pullFromRemoteWithErrorDictionary:(NSDictionary **)errorDict
@@ -586,7 +563,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     for (MPDatabase *db in databases)
     {
         NSError *err = nil;
-        if (![db pullFromRemote:&err])
+        if (![db pullFromRemote:nil error:&err])
             errDict[db.name] = err;
     }
     
@@ -594,28 +571,27 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         *errorDict = errDict;
 }
 
-- (void)syncWithCompletionHandler:(void (^)(NSDictionary *errDict))syncHandler
+- (BOOL)syncWithRemote:(NSDictionary **)errorDict
 {
     NSSet *databases = [self databases];
     
     NSMutableDictionary *errDict = [NSMutableDictionary dictionaryWithCapacity:databases.count];
-    dispatch_group_t cgrp = dispatch_group_create();
+    
     for (MPDatabase *db in databases)
     {
         // skip snapshots if they're not to be synced
         if (db == _snapshotsDatabase && ![self synchronizesSnapshots])
             continue;
         
-        dispatch_group_enter(cgrp);
-        [db syncWithRemoteWithCompletionHandler:^(NSError *err) {
-            if (err) errDict[db.name] = err;
-            dispatch_group_leave(cgrp);
-        }];
+        NSError *err = nil;
+        if (![db syncWithRemote:&err])
+            errDict[db.name] = err;
     }
     
-    dispatch_group_notify(cgrp, dispatch_get_main_queue(), ^{
-        syncHandler(errDict.count > 0 ? errDict : nil);
-    });
+    if (errorDict)
+        *errorDict = errDict;
+    
+    return errDict.count == 0;
 }
 
 #pragma mark - Listener creation

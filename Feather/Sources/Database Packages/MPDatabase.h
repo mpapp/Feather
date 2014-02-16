@@ -84,20 +84,28 @@ typedef enum MPDatabaseErrorCode
 + (NSString *)sanitizedDatabaseIDWithString:(NSString *)string;
 
 /** Start a continuous push replication with a remote database. */
-- (BOOL)pushToRemote:(NSError **)err;
+- (BOOL)pushToRemote:(CBLReplication **)replication
+               error:(NSError **)err;
 
 /** Start a continuous pull replication from a remote database. */
-- (BOOL)pullFromRemote:(NSError **)err;
+- (BOOL)pullFromRemote:(CBLReplication **)replication
+                 error:(NSError **)err;
 
-- (BOOL)pullFromDatabaseAtURL:(NSURL *)url error:(NSError **)err;
+- (BOOL)pullFromDatabaseAtURL:(NSURL *)url
+                  replication:(CBLReplication **)replication
+                        error:(NSError **)err;
 
-- (BOOL)pushToDatabaseAtURL:(NSURL *)url error:(NSError **)err;
+- (BOOL)pushToDatabaseAtURL:(NSURL *)url
+                replication:(CBLReplication **)replication
+                      error:(NSError **)err;
 
-- (BOOL)pullFromDatabaseAtPath:(NSString *)path error:(NSError **)err;
+- (BOOL)pullFromDatabaseAtPath:(NSString *)path
+                   replication:(CBLReplication **)replication
+                         error:(NSError **)err;
 
 /** Start a continuous, persistent pull and push replication with a remote database. 
   * @param syncHandler A completion handler run when the request which begins the replication is completed. */
-- (void)syncWithRemoteWithCompletionHandler:(void (^)(NSError *err))syncHandler;
+- (BOOL)syncWithRemote:(NSError **)error;
 
 /** Name of the filter function used to filter pulls to this database from a remote. */
 @property (readonly, copy) NSString *pullFilterName;
@@ -128,18 +136,6 @@ typedef enum MPDatabaseErrorCode
 
 /** Authentication credentials for the remote database. */
 @property (readonly, strong) NSURLCredential *remoteDatabaseCredentials;
-
-/** The REST operation for the current persistent, continuous pulls. */
-@property (readonly, strong) NSMutableArray *currentPullOperations;
-
-/** The REST operation for the current persistent, continuous pushes. */
-@property (readonly, strong) NSMutableArray *currentPushOperations;
-
-/** Currently ongoing one-off pull replications. Used when opening a database from a remote. */
-@property (readonly, strong) NSMutableArray *currentOneOffPulls;
-
-/** Currently ongoing one-off push replications. */
-@property (readonly, strong) NSMutableArray *currentOneOffPushes;
 
 @end
 

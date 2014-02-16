@@ -84,8 +84,9 @@ typedef enum MPDatabasePackageControllerErrorCode
  * @param err An error pointer.
  * */
 - (instancetype)initWithPath:(NSString *)path
-          delegate:(id<MPDatabasePackageControllerDelegate>)delegate
-             error:(NSError *__autoreleasing *)err;
+                    readOnly:(BOOL)readOnly
+                    delegate:(id<MPDatabasePackageControllerDelegate>)delegate
+                       error:(NSError *__autoreleasing *)err;
 
 /** Closes all the database package's databases. */
 - (void)close;
@@ -124,17 +125,19 @@ typedef enum MPDatabasePackageControllerErrorCode
  * @param baseURL The remote base URL for which to return the database URLs. */
 + (NSArray *)databaseURLsForBaseURI:(NSURL *)baseURL;
 
-/** Push replicate asynchronously to a remote database package.
- * @param pushHandler A completion handler for the push RESTOperation. Called in response to the initial push operation having completed for all of the databases of this package, not when the full replication consisting of potentially multiple further requests has finished (replication is stateful and consists of multiple requests). */
-- (void)pushToRemoteWithCompletionHandler:(void (^)(NSDictionary *errDict))pushHandler;
+/** Push asynchronously to a remote database package.
+ * @param errorDict A dictionary of errors for *starting* replications (i.e. there can be errors during the asynchronous replication that are not captured here), keys being database names. 
+ **/
+- (BOOL)pushToRemoteWithErrorDictionary:(NSDictionary **)errorDict;
 
-/** Pull replicate asynchronously to a remote database package.
- * @param pullHandler A completion handler for the push RESTOperation. Called in response to the initial push operation having completed for all of the databases of this package, not when the full replication consisting of potentially multiple further requests has finished (replication is stateful and consists of multiple requests). */
-- (void)pullFromRemoteWithCompletionHandler:(void (^)(NSDictionary *errDict))pullHandler;
+/** Pull asynchronously from a remote database package.
+ * @param errorDict A dictionary of errors for *starting* replications (i.e. there can be errors during the asynchronous replication that are not captured here), keys being database names. 
+ **/
+- (void)pullFromRemoteWithErrorDictionary:(NSDictionary **)errorDict;
 
 /** Pull and push asynchronously to a remote database package.
-  * @param syncHandler A completion handler for the pull and push operations. Called in response to all of the pull and push operations  */
-- (void)syncWithCompletionHandler:(void (^)(NSDictionary *errDict))syncHandler;
+   * @param errorDict A dictionary of errors for *starting* replications (i.e. there can be errors during the asynchronous replication that are not captured here), keys being database names. */
+- (BOOL)syncWithRemote:(NSDictionary **)errorDict;
 
 /** Name for the push filter function used for the given database. Nil return value means that no push filter is to be used. Default implementation uses no push filter. If this method returns nil for a given db, the subclass must implement -create */
 - (NSString *)pushFilterNameForDatabaseNamed:(NSString *)db;
@@ -194,8 +197,9 @@ typedef enum MPDatabasePackageControllerErrorCode
 @property (strong, readonly) MPSnapshotsController *snapshotsController;
 
 /** Create and persist a snapshot of this package.
-  * @param name A name for the snapshot. Must be non-nil, but not necessarily unique. */
-- (MPSnapshot *)newSnapshotWithName:(NSString *)name;
+  * @param name A name for the snapshot. Must be non-nil, but not necessarily unique.
+  * @param An optional error pointer. */
+- (MPSnapshot *)newSnapshotWithName:(NSString *)name error:(NSError **)err;
 
 /** Restore the state of the database package using a named snapshot.
  * @param name The name of the snapshot to restore the state for the package from.

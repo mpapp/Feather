@@ -141,9 +141,6 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** An optional resource name for a touchdb typed file in the app's Contents/Resources directory. If overridden with a non-nil value, the resource is loaded upon initialisation. */
 @property (readonly, copy) NSString *bundledResourceDatabaseName;
 
-/** Signifies whether resource loading is synchronous (default=YES for tests, NO for non-tests). */
-@property (readonly) BOOL loadsBundledResourcesSynchronously;
-
 - (id)objectWithIdentifier:(NSString *)identifier;
 
 /** Loads objects from the contents of an array JSON field. Each record in this array is validated to be a serialized MPManagedObject.

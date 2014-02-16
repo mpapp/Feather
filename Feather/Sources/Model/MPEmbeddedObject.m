@@ -20,16 +20,6 @@
 
 #import <objc/runtime.h>
 
-/* A private class for saving embedded objects. */
-@interface MPSaveOperation : NSObject <MPWaitingOperation>
-
-@property (readwrite, strong) MPEmbeddedObject *embeddedObject;
-@property (readwrite, strong) id<MPWaitingOperation> embeddingSaveOperation;
-
-- (instancetype)initWithEmbeddedObject:(MPEmbeddedObject *)embeddedObject;
-
-@end
-
 @interface MPEmbeddedObject ()
 {
     NSString *_embeddingKey;

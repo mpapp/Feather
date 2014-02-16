@@ -48,7 +48,6 @@
 		5FC752FF1746E294007818A0 /* NSString+MPSearchIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752FD1746E294007818A0 /* NSString+MPSearchIndex.h */; };
 		5FC753001746E294007818A0 /* NSString+MPSearchIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752FE1746E294007818A0 /* NSString+MPSearchIndex.m */; };
 		5FC753031746E2AA007818A0 /* MPSearchIndexController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC753011746E2AA007818A0 /* MPSearchIndexController.h */; };
-		5FC753041746E2AA007818A0 /* MPSearchIndexController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC753021746E2AA007818A0 /* MPSearchIndexController.m */; };
 		5FCC021F170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FCC0220170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */; };
 		5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
@@ -311,8 +310,7 @@
 		5FDB33101705CB950049EBB5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5FDB33121705CB950049EBB5 /* Feather-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Feather-Prefix.pch"; sourceTree = "<group>"; };
 		5FDB33131705CB950049EBB5 /* Feather.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Feather.h; sourceTree = "<group>"; };
-		5FDB331B1705CB950049EBB5 /* FeatherTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeatherTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5FDB331C1705CB950049EBB5 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		5FDB331B1705CB950049EBB5 /* FeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FDB33241705CB950049EBB5 /* FeatherTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FeatherTests-Info.plist"; sourceTree = "<group>"; };
 		5FDB33261705CB950049EBB5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5FDB33281705CB950049EBB5 /* MPFeatherTestSuite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPFeatherTestSuite.h; sourceTree = "<group>"; };
@@ -485,7 +483,7 @@
 			isa = PBXGroup;
 			children = (
 				5FDB33031705CB950049EBB5 /* Feather.framework */,
-				5FDB331B1705CB950049EBB5 /* FeatherTests.octest */,
+				5FDB331B1705CB950049EBB5 /* FeatherTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -493,14 +491,13 @@
 		5FDB33051705CB950049EBB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5FEA8B4F18A81E0100A7C14B /* XCTest.framework */,
 				5F95F2D71739A94300E8C845 /* libsqlite3.dylib */,
 				5FDB3A07170793B20049EBB5 /* libz.dylib */,
 				5FDB33D71705D1380049EBB5 /* libicucore.dylib */,
 				5FDB33C21705CF260049EBB5 /* libcommonCrypto.dylib */,
+				5FEA8B4F18A81E0100A7C14B /* XCTest.framework */,
 				5F293BF7170DFD77001C2111 /* Security.framework */,
 				5FDB33061705CB950049EBB5 /* Cocoa.framework */,
-				5FDB331C1705CB950049EBB5 /* SenTestingKit.framework */,
 				5FDB33081705CB950049EBB5 /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -545,11 +542,11 @@
 		5FDB33221705CB950049EBB5 /* FeatherTests */ = {
 			isa = PBXGroup;
 			children = (
+				5FDB33231705CB950049EBB5 /* Supporting Files */,
 				5FDB33281705CB950049EBB5 /* MPFeatherTestSuite.h */,
 				5FDB33291705CB950049EBB5 /* MPFeatherTestSuite.m */,
 				5F293BFC170E191F001C2111 /* MPExtensionTests.h */,
 				5F293BFD170E191F001C2111 /* MPExtensionTests.m */,
-				5FDB33231705CB950049EBB5 /* Supporting Files */,
 				5F293C05170E2980001C2111 /* MPEmbeddedObjectsTests.h */,
 				5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */,
 				5FDCF2EC171045990039DAED /* MPFeatherTestClasses.h */,
@@ -861,7 +858,7 @@
 			);
 			name = FeatherTests;
 			productName = FeatherTests;
-			productReference = 5FDB331B1705CB950049EBB5 /* FeatherTests.octest */;
+			productReference = 5FDB331B1705CB950049EBB5 /* FeatherTests.xctest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -1085,7 +1082,6 @@
 				5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */,
 				5FC752E81746E287007818A0 /* NSDate+MPExtensions.m in Sources */,
 				5FC753001746E294007818A0 /* NSString+MPSearchIndex.m in Sources */,
-				5FC753041746E2AA007818A0 /* MPSearchIndexController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1199,10 +1195,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
@@ -1225,10 +1218,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SYSTEM_APPS_DIR)/Xcode.app/Contents/Developer/Library/Frameworks\"",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
@@ -1257,7 +1247,7 @@
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Debug;
 		};
@@ -1273,7 +1263,7 @@
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = octest;
+				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};

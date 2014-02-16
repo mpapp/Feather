@@ -110,8 +110,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
             }];
         }
         
-        if (![self loadBundledResources:err])
-            return nil;
+        [self loadBundledResourcesWithCompletionHandler:^(NSError *err) {
+            [[self.packageController notificationCenter] postErrorNotification:err];
+        }];
     }
 
     return self;
@@ -351,11 +352,13 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
          
      } version:@"1.0"];
     
-    [self.db.database defineFilter:@"managed-objects-filter"
-                           asBlock:
+    __weak id weakSelf = self;
+    [self.db.database setFilterNamed:@"managed-objects-filter"
+                             asBlock:
      ^BOOL(CBLSavedRevision *revision, NSDictionary *params)
     {
-        return [self managesDocumentWithDictionary:revision.properties];
+        id strongSelf = weakSelf;
+        return [strongSelf managesDocumentWithDictionary:revision.properties];
     }];
 }
 
@@ -595,22 +598,23 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return nil; // overload in subclass to load bundled data
 }
 
-- (BOOL)loadsBundledResourcesSynchronously
-{
-    return [NSBundle inTestSuite];
-}
-
-#warning Split into sync and async
-- (BOOL)loadBundledResources:(NSError **)err
+- (void)loadBundledResourcesWithCompletionHandler:(void(^)(NSError *err))completionHandler
 {
     NSString *resourceDBName = self.bundledResourceDatabaseName;
     
     // nothing to do if there is no resource for this controller
     if (!resourceDBName)
-        return YES;
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler(nil);
+        });
+        return;
+    }
     
     NSFileManager *fm = [NSFileManager defaultManager];
-    NSString *bundledBundlesPath = [[NSBundle mainBundle] pathForResource:resourceDBName ofType:@"touchdb"];
+    NSString *bundledBundlesPath
+        = [[NSBundle mainBundle] pathForResource:resourceDBName ofType:@"touchdb"];
+    
     NSString *md5 = [fm md5DigestStringAtPath:bundledBundlesPath];
     MPMetadata *metadata = [self.db metadata];
     
@@ -618,34 +622,62 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     
     // this version already loaded
     if ([[metadata getValueOfProperty:checksumKey] isEqualToString:md5])
-        return YES;
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler(nil);
+        });
+        return;
+    }
     
-    // kept as nil if loading is intended to be asynchronous.
-    dispatch_semaphore_t blocker = self.loadsBundledResourcesSynchronously ? nil : dispatch_semaphore_create(0);
+    CBLReplication *replication = nil;
     
-    [self.db pullFromDatabaseAtPath:bundledBundlesPath
-              withCompletionHandler:
-     ^(NSError *err) {
-         if (err)
-         {
-             NSLog(@"ERROR! Could not load bundled data from '%@.touchdb': %@", resourceDBName, err);
-         }
-         else
-         {
-             NSLog(@"Loaded bundled bundles.");
-             [metadata setValue:md5 ofProperty:@"bundled-bundles-md5"];
-             [metadata save:&err];
-         }
-         
-         if (blocker)
-             dispatch_semaphore_signal(blocker);
-     }];
-
-    if (blocker)
-        dispatch_semaphore_wait(blocker, DISPATCH_TIME_FOREVER);
-
+    NSError *err = nil;
+    if (![self.db pullFromDatabaseAtPath:bundledBundlesPath replication:&replication error:&err])
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler(err);
+        });
+        return;
+    }
+    
+    __weak MPManagedObjectsController *weakSelf = self;
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    [nc postNotificationName:MPManagedObjectsControllerLoadedBundledResourcesNotification object:self];
+    __block id observer =
+        [nc addObserverForName:kCBLReplicationChangeNotification
+                        object:replication queue:[NSOperationQueue mainQueue]
+                    usingBlock:
+         ^(NSNotification *note) {
+             MPManagedObjectsController *strongSelf = weakSelf;
+             CBLReplication *r = note.object;
+             assert(replication == r);
+             if (r.status == kCBLReplicationStopped && !r.lastError)
+             {
+                 [metadata setValue:md5 ofProperty:checksumKey];
+                 
+                 NSError *metadataSaveErr = nil;
+                 if (![metadata save:&metadataSaveErr])
+                 {
+                     NSLog(@"ERROR! Could not load bundled data from '%@.touchdb': %@", resourceDBName, metadataSaveErr);
+
+                     [[strongSelf.packageController notificationCenter]
+                        postErrorNotification:metadataSaveErr];
+                 }
+                 else
+                 {
+                     NSLog(@"Loaded bundled resource %@", resourceDBName);
+                     
+                     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+                     [nc postNotificationName:MPManagedObjectsControllerLoadedBundledResourcesNotification object:self];
+                 }
+             }
+             else
+             {
+                 NSLog(@"ERROR! Failed to pull from bundled database.");
+                 [[self.packageController notificationCenter] postErrorNotification:r.lastError];
+             }
+             
+             [[NSNotificationCenter defaultCenter] removeObserver:observer];
+         }];
 }
 
 #pragma mark - Loading bundled objects
