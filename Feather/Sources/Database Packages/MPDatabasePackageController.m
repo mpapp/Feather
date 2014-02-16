@@ -21,8 +21,6 @@
 #import "NSString+MPExtensions.h"
 #import "NSObject+MPExtensions.h"
 
-#import "MPSearchIndexController.h"
-
 #import "MPRootSection.h"
 
 #import "JSONKit.h"
@@ -471,8 +469,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (CBLFilterBlock)pushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db
 {
     assert(db);
-    CBLFilterBlock block = [db filterWithName:filterName];
-    if (block) return block;
+    CBLFilterBlock block = [db filterWithQualifiedName:filterName];
+    if (block)
+        return block;
 
     return [self createPushFilterBlockWithName:filterName forDatabase:db];
 }

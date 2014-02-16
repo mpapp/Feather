@@ -164,12 +164,18 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)cacheEmbeddedObjectByIdentifier:(MPEmbeddedObject *)obj
 {
-    if (!obj) return;
+    assert(obj);
     
-    assert([obj identifier]);
+    if (!obj)
+        return;
+    
+    assert([obj isKindOfClass:[MPEmbeddedObject class]]);
+    assert([obj identifier]); //has non-null identifier
+    
     if (_embeddedObjectCache[[obj identifier]])
     {
-        assert(_embeddedObjectCache[[obj identifier]] == obj); return;
+        assert(_embeddedObjectCache[obj.identifier] == obj);
+        return;
     }
     
     _embeddedObjectCache[obj.identifier] = obj;
@@ -327,7 +333,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     BOOL success;
     if ((success = [super save:outError]))
     {
-        for (NSString *propertyKey in [[self class] embeddedProperties])
+        for (NSString *propertyKey in self.class.embeddedProperties)
         {
             MPEmbeddedObject *embeddedObj = [self valueForKey:propertyKey];
             assert(!embeddedObj
@@ -426,8 +432,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     if (!_controller)
         [self setControllerWithDocument:document];
     
-    document.modelObject = self;
     [super setDocument:document];
+    assert(document.modelObject == self);
     
     if (self.document)
     {
@@ -686,7 +692,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (void)setDictionaryEmbeddedValue:(id)value forKey:(NSString *)embeddedKey ofProperty:(NSString *)dictPropertyKey
 {
     NSMutableDictionary *dict = [self getValueOfProperty:dictPropertyKey];
-    id obj = [dict objectForKey:embeddedKey];
+    id obj = dict[embeddedKey];
     if ([obj isEqual:value]) return; // value unchanged.
     
     assert([dict isKindOfClass:[NSMutableDictionary class]]);
@@ -898,7 +904,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (MPEmbeddedObject *)getEmbeddedObjectProperty:(NSString *)property
 {
-    id value = [self.properties objectForKey:property];
+    //id value = [self getValueOfProperty:property];
+    id value = self.properties[property];
+    
+    assert(!value || [value isKindOfClass:[MPEmbeddedObject class]]);
+    
     if (!value)
     {
         id rawValue = [self.document propertyForKey:property];
@@ -1151,7 +1161,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         NSMutableDictionary *p = properties ? [properties mutableCopy] : [NSMutableDictionary dictionaryWithCapacity:10];
         [p removeObjectForKey:@"_id"];
         [p removeObjectForKey:@"_rev"];
-        [p setObject:NSStringFromClass(moClass) forKey:@"objectType"];
+        p[@"objectType"] = NSStringFromClass(moClass);
         [self setValuesForPropertiesWithDictionary:p];
         
         if (identifier)
@@ -1193,7 +1203,6 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 @implementation CBLModel (PrivateExtensions)
 @dynamic document;
-@dynamic properties;
 
 - (void)markNeedsNoSave
 {

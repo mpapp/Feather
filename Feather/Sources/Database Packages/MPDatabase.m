@@ -94,10 +94,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
             dispatch_queue_create(
                 [[NSString stringWithFormat:@"com.piipari.db[%@][%@]", server.internalURL.path, name] UTF8String],
                                   DISPATCH_QUEUE_SERIAL);
-        
-        #warning Ensure that tracksChanges has simply been removed and doesn't have to be replaced.
-        //_database.tracksChanges = YES;
-        
+                
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(databaseDidChange:)
                                                      name:kCBLDatabaseChangeNotification
@@ -179,7 +176,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 - (BOOL)validateFilters
 {
-    if (_pushFilterName && ![self filterWithName:self.pushFilterName])
+    if (_pushFilterName && ![self filterWithQualifiedName:self.pushFilterName])
     {
         // indicates a serious bug, should crash also release builds.
         @throw [NSException exceptionWithName:@"MPFilterValidationException"
@@ -192,8 +189,6 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     return YES;
 }
 
-// Filters defined via MPDatabase to not expose primaryDesignDocument in public interface.
-// This is so there is no temptation to add custom views / filters there.
 - (void)defineFilterNamed:(NSString *)name block:(CBLFilterBlock)block
 {
     assert(![self.database filterNamed:name]);
@@ -280,7 +275,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 }
 - (NSString *)qualifiedPullFilterName { return self.pullFilterName; }
 
-- (CBLFilterBlock)filterWithName:(NSString *)name
+- (CBLFilterBlock)filterWithQualifiedName:(NSString *)name
 {
     assert(name);
     return [self.database filterNamed:[NSString stringWithFormat:@"%@/%@", self.name, name]];

@@ -29,6 +29,21 @@
 
 @implementation MPEmbeddedObject
 
+#ifdef DEBUG
+
++ (NSMutableSet *)embeddedObjectIDs
+{
+    static NSMutableSet *embeddedObjectIDs = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        embeddedObjectIDs = [NSMutableSet set];
+    });
+    
+    return embeddedObjectIDs;
+}
+
+#endif
+
 + (void)initialize
 {
     if (self == [MPEmbeddedObject class])
@@ -42,13 +57,17 @@
     @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
 }
 
-- (instancetype)initWithJSONString:(NSString *)jsonString embeddingObject:(id<MPEmbeddingObject>)embeddingObject embeddingKey:(NSString *)key
+- (instancetype)initWithJSONString:(NSString *)jsonString
+                   embeddingObject:(id<MPEmbeddingObject>)embeddingObject
+                      embeddingKey:(NSString *)key
 {
     NSMutableDictionary *propertiesDict = [jsonString objectFromJSONString];
     return [self initWithDictionary:propertiesDict embeddingObject:embeddingObject embeddingKey:key];
 }
 
-- (instancetype)initWithDictionary:(NSDictionary *)propertiesDict embeddingObject:(id<MPEmbeddingObject>)embeddingObject embeddingKey:(NSString *)key
+- (instancetype)initWithDictionary:(NSDictionary *)propertiesDict
+                   embeddingObject:(id<MPEmbeddingObject>)embeddingObject
+                      embeddingKey:(NSString *)key
 {
     if (self = [super init])
     {
@@ -65,7 +84,11 @@
         _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
         _properties = [propertiesDict mutableCopy];
         
-        [embeddingObject cacheEmbeddedObjectByIdentifier:self];
+        MPEmbeddedObject *obj = [embeddingObject embeddedObjectWithIdentifier:self.identifier];
+        if (!obj)
+            [embeddingObject cacheEmbeddedObjectByIdentifier:self];
+        else
+            return obj;
     }
     
     return self;
@@ -95,7 +118,8 @@
                              embeddingObject:(id<MPEmbeddingObject>)embeddingObject
                                 embeddingKey:(NSString *)key
 {
-    if (!string) return nil;
+    if (!string)
+        return nil;
     
     Class cls = nil;
     NSDictionary *dictionary = [string objectFromJSONString];
@@ -153,10 +177,11 @@
 
 - (void)setEmbeddingKey:(NSString *)embeddingKey
 {
-    if (embeddingKey && _embeddingKey == embeddingKey) return;
+    if (embeddingKey && _embeddingKey == embeddingKey)
+        return;
     
     // should be set only once to a non-null value (shouldn't try setting to non-null value B after setting to A)
-    assert(!_embeddingKey);
+    assert(!_embeddingKey || [_embeddingKey isEqualToString:embeddingKey]);
     
     _embeddingKey = embeddingKey;
 }
@@ -687,6 +712,11 @@
     }
     
     return [super impForSetterOfProperty:property ofType:propertyType];
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<%@ %@>", NSStringFromClass(self.class), self.properties];
 }
 
 @end

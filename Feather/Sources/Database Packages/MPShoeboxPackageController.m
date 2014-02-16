@@ -267,12 +267,15 @@ static dispatch_once_t onceToken;
     
     if ([filterName isEqualToString:[self pushFilterNameForDatabaseNamed:db.name]])
     {
-        [db defineFilterNamed:filterName block:^BOOL(CBLSavedRevision *revision, NSDictionary *params)
-         {
-             return [revision.properties[@"shared"] boolValue];
-         }];
+        [db.database setFilterNamed:
+            [self qualifiedFilterNameForFilterName:filterName database:db]
+                            asBlock:
+         ^BOOL(CBLSavedRevision *revision, NSDictionary *params)
+        {
+            return [revision.properties[@"shared"] boolValue];
+        }];
         
-        CBLFilterBlock block = [db filterWithName:filterName];
+        CBLFilterBlock block = [db filterWithQualifiedName:filterName];
         assert(block);
         return block;
     }
@@ -281,11 +284,18 @@ static dispatch_once_t onceToken;
     return nil;
 }
 
-- (CBLFilterBlock)pushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db
+- (NSString *)qualifiedFilterNameForFilterName:(NSString *)filterName database:(MPDatabase *)db
+{
+    return [NSString stringWithFormat:@"%@/%@", db.name, filterName];
+}
+
+- (CBLFilterBlock)pushFilterBlockWithName:(NSString *)filterName
+                              forDatabase:(MPDatabase *)db
 {
     assert(db);
-    CBLFilterBlock block = [db filterWithName:filterName];
-    if (block) return block;
+    CBLFilterBlock block = [db filterWithQualifiedName:filterName];
+    if (block)
+        return block;
     
     block = [self createPushFilterBlockWithName:filterName forDatabase:db];
     //assert(block);

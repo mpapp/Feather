@@ -113,19 +113,7 @@
     XCTAssertTrue(![obj needsSave], @"Object no longer needs saving");
     XCTAssertTrue(![obj.embeddedTestObject needsSave], @"Object no longer needs saving");
 
-    NSArray *objsByTitle = [tpkg.searchIndexController objectsWithMatchingTitle:@"foo"];
-    XCTAssertTrue(objsByTitle.count == 1, @"There are objects in the search index with matching");
-    
-    NSArray *objsByDesc = [tpkg.searchIndexController objectsWithMatchingDesc:@"bar"];
-    XCTAssertTrue(objsByDesc.count == 1, @"There are objects in the search index with matching");
-    
     XCTAssertTrue([obj deleteDocument:nil], @"Deleting the document succeeds");
-    
-    objsByTitle = [tpkg.searchIndexController objectsWithMatchingTitle:@"foo"];
-    XCTAssertTrue(objsByTitle.count == 0, @"There should be no objects in the search index with matching title any longer");
-    
-    objsByDesc = [tpkg.searchIndexController objectsWithMatchingDesc:@"bar"];
-    XCTAssertTrue(objsByDesc.count == 0, @"There should be no objects in the search index with matching desc any longer");
     
 }
 

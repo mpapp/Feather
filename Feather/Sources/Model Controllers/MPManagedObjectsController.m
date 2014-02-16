@@ -306,8 +306,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     revs = [revs sortedArrayUsingComparator:
             ^NSComparisonResult(CBLSavedRevision *revA, CBLSavedRevision *revB)
     {
-        NSNumber *changedAtA = [revA.properties objectForKey:@"updatedAt"];
-        NSNumber *changedAtB = [revB.properties objectForKey:@"updatedAt"];
+        NSNumber *changedAtA = (revA.properties)[@"updatedAt"];
+        NSNumber *changedAtB = (revB.properties)[@"updatedAt"];
         
         if (changedAtA)
             assert([changedAtA isKindOfClass:[NSNumber class]]);
@@ -345,8 +345,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
      setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
      {
          
-         if ([doc objectForKey:@"prototypeID"])
-             emit([doc objectForKey:@"prototypeID"], nil);
+         if (doc[@"prototypeID"])
+             emit(doc[@"prototypeID"], nil);
          else
              emit([NSNull null], nil);
          

@@ -110,7 +110,7 @@ typedef enum MPDatabaseErrorCode
 /** Name of the filter function used to filter pulls to this database from a remote. */
 @property (readonly, copy) NSString *pullFilterName;
 
-/** Name of the push filter function (a TouchDB TD_FilterBlock) used to filter pushes from the local database to a remote. */
+/** Name of the push filter function (a CouchbaseLite CBLFilterBlock) used to filter pushes from the local database to a remote. */
 @property (readonly, copy) NSString *pushFilterName;
 
 /** The full name of the pull filter name, including the design document name. */
@@ -123,7 +123,7 @@ typedef enum MPDatabaseErrorCode
 - (void)defineFilterNamed:(NSString *)name block:(CBLFilterBlock)block;
 
 /** Filter block with a given name, stored in the database's private design document. */
-- (CBLFilterBlock)filterWithName:(NSString *)name;
+- (CBLFilterBlock)filterWithQualifiedName:(NSString *)name;
 
 /** The default replication URL for this database, used by -syncWithRemoteWithCompletionHandler: , -pushToRemoteWithCompletionHandler: and -pullFromremoteWithCompletionHandler: . Derived from database controller's remote URL and the database name. */
 @property (readonly, strong) NSURL *remoteDatabaseURL;

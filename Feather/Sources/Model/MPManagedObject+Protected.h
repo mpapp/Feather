@@ -39,7 +39,6 @@
 
 @interface CBLModel (PrivateExtensions) <MPEmbeddingObject>
 @property (strong, readwrite) CBLDocument *document;
-@property (strong, readonly) NSMutableDictionary *properties;
 
 - (void)markNeedsNoSave; // propagates needsSave = false to object's embedded properties
 @end
