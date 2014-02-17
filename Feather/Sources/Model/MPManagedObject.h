@@ -122,6 +122,15 @@ typedef NS_ENUM(NSInteger, MPManagedObjectChangeSource)
 /** The object can form a prototype when shared. NO for MPManagedObject -- overload in subclasses which should form prototypes when object is marked shared. */
 @property (readonly) BOOL formsPrototypeWhenShared;
 
+/** Saves and posts an error notification on errors to the object's package controller's notification center. */
+- (BOOL)save;
+
+/** A shorthand for saving a number of model objects and on hitting an error posting an error notification to the package controller's notification center. */
++ (BOOL)saveModels:(NSArray *)models;
+
+/** A shorthand for deleting a model object and on hitting an error posting an error notification to the package controller's notification center. */
+- (BOOL)deleteDocument;
+
 /** The full-text indexable properties for objects of this class. 
   * Default implementation includes none.
   * @return nil if object should not be included in the full-text index, and an array of property key strings. */

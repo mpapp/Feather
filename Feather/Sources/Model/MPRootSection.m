@@ -112,7 +112,7 @@
     return [_packageController rootSections];
 }
 
-- (id)save
+- (BOOL)save
 { @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return nil; }
 
 - (NSUInteger)childCount

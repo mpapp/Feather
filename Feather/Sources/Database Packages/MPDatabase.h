@@ -158,6 +158,10 @@ typedef enum MPDatabaseErrorCode
 
 /** Get managed object model objects for documents specified by the array of IDs from the database. */
 - (NSArray *)getManagedObjectsWithIDs:(NSArray *)ids;
+
+/** A query enumerator to get documents with the specified IDs. */
+- (CBLQueryEnumerator *)getDocumentsWithIDs:(NSArray *)docIDs;
+
 /** Get managed object model objects for documents specified by the ID from the database. */
 - (MPManagedObject *)getManagedObjectWithID:(NSString *)identifier;
 
@@ -167,6 +171,13 @@ typedef enum MPDatabaseErrorCode
 /** Get plain JSON encodable objects for query enumerator. */
 - (NSArray *)plainObjectsFromQueryEnumeratorKeys:(CBLQueryEnumerator *)rows;
 
+@end
+
+@interface CBLQuery (MPDatabase)
+
+/** Runs a query, and returns a query enumerator if successful, and nil if unsuccessful.
+ *  If error occurs, posts the error in an error notification to the database's package controller's notification center. */
+- (CBLQueryEnumerator *)run;
 
 @end
 
@@ -175,6 +186,10 @@ typedef enum MPDatabaseErrorCode
  * MPMetadata inherits directly from CouchModel and not from MPManagedObject to avoid a requirement to have a managed objects controller for it, which would would a) be unnecessary and b) would introduce a MOC <=> MPDatabase retain cycle.
  */
 @interface MPMetadata : CBLModel
+
+/** Saves and posts an error notification on errors to the object's package controller's notification center. */
+- (BOOL)save;
+
 @end
 
 /**

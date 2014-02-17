@@ -13,6 +13,7 @@
 #import "MPDatabasePackageController.h"
 #import "MPDatabasePackageController+Protected.h"
 
+#import <Feather/Feather.h>
 #import <Feather/MPManagedObject+Protected.h>
 #import "RegexKitLite.h"
 
@@ -286,7 +287,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 {
     /*
     NSString *dbName = [self.remoteDatabaseURL lastPathComponent];
-    CBLDatabase *remoteDB = [CouchDatabase databaseNamed:dbName onServerWithURL:[self.packageController remoteURL]];
+    CBLDatabase *remoteDB = [CBLDatabase databaseNamed:dbName onServerWithURL:[self.packageController remoteURL]];
     RESTOperation *remoteDBInfo = [remoteDB GET];
     [remoteDBInfo onCompletion:^{}];
     [remoteDBInfo wait];
@@ -659,7 +660,34 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 @end
 
+@implementation CBLQuery (MPDatabase)
+
+- (CBLQueryEnumerator *)run
+{
+    NSError *err = nil;
+    CBLQueryEnumerator *qenum = nil;
+    if (!(qenum = [self run:&err]))
+    {
+        [[self.database.packageController notificationCenter] postErrorNotification:err];
+    }
+    return qenum;
+}
+
+@end
+
 @implementation MPMetadata
+
+- (BOOL)save
+{
+    NSError *err = nil;
+    BOOL success = [self save:&err];
+    
+    if (!success)
+        [[NSNotificationCenter defaultCenter] postErrorNotification:err];
+    
+    return success;
+}
+
 @end
 
 @implementation MPLocalMetadata

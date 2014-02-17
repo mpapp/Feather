@@ -70,4 +70,7 @@
 
 - (BOOL)save:(NSError *__autoreleasing *)outError;
 
+/** Saves, and on error posts an error notification to object's embedded object's package controller's notification center. */
+- (BOOL)save;
+
 @end

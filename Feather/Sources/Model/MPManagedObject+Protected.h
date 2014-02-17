@@ -29,7 +29,7 @@
 /* MPManagedObject & MPEmbeddedObject need some otherwise private state of CouchModel exposed. */
 @interface CBLModel (Private) <MPEmbeddingObject>
 
-- (void)couchDocumentChanged:(CBLDocument *)doc;
+- (void)CBLDocumentChanged:(CBLDocument *)doc;
 -   (id)externalizePropertyValue: (id)value;
 - (void)cacheValue:(id)value ofProperty:(NSString *)property changed:(BOOL)changed;
 - (CBLModel *)getModelProperty:(NSString*)property;

@@ -229,9 +229,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return _managedObjectSubclasses;
 }
 
-- (BOOL)managesDocumentWithDictionary:(NSDictionary *)couchDocumentDict
+- (BOOL)managesDocumentWithDictionary:(NSDictionary *)CBLDocumentDict
 {
-    NSString *objectType = [couchDocumentDict managedObjectType];
+    NSString *objectType = [CBLDocumentDict managedObjectType];
     
     if (!objectType) return NO;
     return [self.managedObjectSubclasses containsObject:objectType];

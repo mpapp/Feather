@@ -9,7 +9,7 @@
 #import "MPManagedObjectsController.h"
 #import "MPManagedObject.h"
 
-@class CouchDocument;
+@class CBLDocument;
 
 @interface MPManagedObjectsController (Protected)
 

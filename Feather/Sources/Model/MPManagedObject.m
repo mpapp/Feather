@@ -320,6 +320,41 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return [super saveModels:models error:outError];
 }
 
+- (BOOL)save
+{
+    NSError *err = nil;
+    BOOL success;
+    if (!(success = [self save:&err]))
+    {
+        MPDatabasePackageController *pkgc = [self.database packageController];
+        [pkgc.notificationCenter postErrorNotification:err];
+        return NO;
+    }
+    
+    return success;
+}
+
++ (BOOL)saveModels:(NSArray *)models
+{
+    if (!models || models.count == 0)
+        return YES;
+    
+    MPManagedObject *mo = models[0];
+    
+    for (id o in models)
+    {
+        assert([o isKindOfClass:mo.class]);
+        assert([o isKindOfClass:self]);
+    }
+    
+    BOOL success;
+    NSError *err = nil;
+    if (!(success = [mo.class saveModels:models error:&err]))
+        [[mo.database.packageController notificationCenter] postErrorNotification:err];
+    
+    return success;
+}
+
 - (BOOL)save:(NSError *__autoreleasing *)outError
 {
     assert(_controller);
@@ -360,6 +395,19 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     {
         [_controller didUpdateObject:self];
     }
+}
+
+- (BOOL)deleteDocument
+{
+    NSError *outError = nil;
+    BOOL success = YES;
+    if (!(success = [self deleteDocument:&outError]))
+    {
+        [[self.database.packageController notificationCenter] postErrorNotification:outError];
+        return NO;
+    }
+    
+    return success;
 }
 
 - (BOOL)deleteDocument:(NSError *__autoreleasing *)outError

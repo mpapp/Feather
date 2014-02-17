@@ -66,7 +66,7 @@ typedef enum MPManagedObjectsControllerErrorCode
   * base class implementation would return `NO` (results in undefined behaviour).
   * @return YES if document is managed by self, NO if not. 
   * There should not be multiple MPManagedObjectsControllers returning YES for any given document dictionary. */
-- (BOOL)managesDocumentWithDictionary:(NSDictionary *)couchDocumentDict;
+- (BOOL)managesDocumentWithDictionary:(NSDictionary *)CBLDocumentDict;
 
 - (BOOL)managesObjectsOfClass:(Class)class;
 

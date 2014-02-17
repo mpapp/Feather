@@ -13,6 +13,7 @@
 #import "MPManagedObject+Protected.h"
 #import "MPEmbeddedObject+Protected.h"
 #import "MPEmbeddedPropertyContainingMixin.h"
+#import "NSNotificationCenter+ErrorNotification.h"
 
 #import "Mixin.h"
 
@@ -84,6 +85,7 @@
         _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
         _properties = [propertiesDict mutableCopy];
         
+        // TODO: make embedded objects thread-safely unique
         MPEmbeddedObject *obj = [embeddingObject embeddedObjectWithIdentifier:self.identifier];
         if (!obj)
             [embeddingObject cacheEmbeddedObjectByIdentifier:self];
@@ -109,6 +111,13 @@
         _properties[@"_id"] = [NSString stringWithFormat:@"%@:%@",
                                NSStringFromClass([self class]), [[NSUUID UUID] UUIDString]];
         _properties[@"objectType"] = NSStringFromClass([self class]);
+        
+        // TODO: make embedded objects thread-safely unique
+        MPEmbeddedObject *obj = [embeddingObject embeddedObjectWithIdentifier:self.identifier];
+        if (!obj)
+            [embeddingObject cacheEmbeddedObjectByIdentifier:self];
+        else
+            return obj;
     }
     
     return self;
@@ -351,6 +360,19 @@
     return [_embeddingObject save:err];
 }
 
+- (BOOL)save
+{
+    NSError *err = nil;
+    BOOL success;
+    if (!(success = [self save:&err]))
+    {
+        [[NSNotificationCenter defaultCenter] postErrorNotification:err];
+        return NO;
+    }
+    
+    return success;
+}
+
 - (void)markNeedsSave
 {
     assert(_embeddingObject);
@@ -389,7 +411,7 @@
     if (!rawValue)
         return nil;
     
-    // Look up the CouchDocument:
+    // Look up the CBLDocument:
     if (![rawValue isKindOfClass: [NSString class]]) {
         MPLog(@"Model-valued property %@ of %@ is not a string", property, self);
         return nil;

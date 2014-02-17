@@ -53,9 +53,9 @@
 /** An object used as a container for attachments in a snapshot database. MPSnapshottedObject instances do not have associated attachments, but  */
 @interface MPSnapshottedAttachment : MPManagedObject
 
-/** Creates a new snapshotted attachment for a snapshot controller's database using the data and content type of a CouchAttachment.
+/** Creates a new snapshotted attachment for a snapshot controller's database using the data and content type of a CBLAttachment.
   * @param controller A MPSnapshotsController whose database this snapshot is saved to. Must be non-nil.
-  * @param attachment A CouchAttachment from which the data and the content type is retrieved from. Must be non-nil.
+  * @param attachment A CBLAttachment from which the data and the content type is retrieved from. Must be non-nil.
   * @param err An optional error pointer.
  */
 - (instancetype)initWithSnapshotsController:(MPSnapshotsController *)controller
