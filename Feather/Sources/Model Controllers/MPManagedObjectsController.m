@@ -567,40 +567,152 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (NSString *)bundledResourceDatabaseName
 {
-    return nil; // overload in subclass to load bundled data
+    return nil; // Override in subclass to load bundled data
 }
+
+- (NSBundle *)bundledResourcesBundle
+{
+    static NSBundle *bundle = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^
+    {
+        NSBundle *mainBundle = [NSBundle mainBundle];
+        NSString *identifier = [mainBundle objectForInfoDictionaryKey:@"MPBundledResourcesBundleIdentifier"];
+        NSString *path = [mainBundle objectForInfoDictionaryKey:@"MPBundledResourcesBundlePath"];
+        
+        if (identifier)
+        {
+            bundle = [NSBundle bundleWithIdentifier:identifier];
+            assert(bundle); // Check Info.plist configuration
+        }
+        else if (path)
+        {
+            if ([path hasPrefix:@".."])
+                path = [mainBundle.bundlePath stringByAppendingPathComponent:path];
+            bundle = [NSBundle bundleWithPath:path];
+            assert(bundle); // Check Info.plist configuration
+        }
+        else
+        {
+            bundle = mainBundle;
+        }
+    });
+    
+    assert(bundle); // Bundled resources bundle must definitely not be nil
+    return bundle;
+}
+
 
 - (BOOL)loadsBundledResourcesSynchronously
 {
-    return [NSBundle inTestSuite];
+    return NO;
+    //return [NSBundle inTestSuite];
+}
+
+/**
+ 
+ When needed, copies bundled database resources from the app bundle into an application support subdirectory.
+ 
+ This is to avoid both hitting app sandbox boundaries, *and* breaking app bundle code signing (which is in effect even if we're not running inside the sandbox.)
+ 
+ @return `YES` if bundled resources were prepared succesfully; `NO` otherwise.
+ 
+ */
+- (NSURL *)prepareBundledResourceDatabase
+{
+    NSString *resourceDatabaseName = self.bundledResourceDatabaseName;
+    if (!resourceDatabaseName)
+        return nil;
+    
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSURL *supportURL = [fm URLForApplicationSupportDirectoryNamed:resourceDatabaseName];
+    
+    //
+    // If resources haven't been copied into application support already by a previous run, let's do it now
+    //
+    BOOL isDirectory = NO;
+    
+    if (![fm fileExistsAtPath:supportURL.path isDirectory:&isDirectory])
+    {
+        NSError *error = nil;
+        BOOL success = [fm createDirectoryAtURL:supportURL
+                    withIntermediateDirectories:YES
+                                     attributes:nil
+                                          error:&error];
+        
+        if (!success)
+        {
+            MPLog(@"Failed to create bundles directory under %@: %@", supportURL, error);
+            return nil;
+        }
+        
+        NSMutableArray *resourceURLs = [NSMutableArray array];
+        NSBundle *resourceBundle = [self bundledResourcesBundle];
+        NSURL *mainDatabaseFileURL = [resourceBundle URLForResource:resourceDatabaseName withExtension:@"touchdb"];
+        assert(mainDatabaseFileURL); // Cannot proceed without a main database file
+        [resourceURLs addObject:mainDatabaseFileURL];
+        
+        NSURL *resourceURL = [resourceBundle URLForResource:resourceDatabaseName withExtension:@"touchdb-wal"];
+        if (resourceURL)
+            [resourceURLs addObject:resourceURL];
+
+        resourceURL = [resourceBundle URLForResource:resourceDatabaseName withExtension:@"touchdb-shm"];
+        if (resourceURL)
+            [resourceURLs addObject:resourceURL];
+        
+        resourceURL = [resourceBundle URLForResource:MPStringF(@"%@ attachments", resourceDatabaseName) withExtension:@""];
+        if (resourceURL)
+            [resourceURLs addObject:resourceURL];
+        
+        for (NSURL *resourceURL in resourceURLs)
+        {
+            NSURL *targetURL = [supportURL URLByAppendingPathComponent:[resourceURL lastPathComponent]];
+            MPLog(@"%@ is not in place yet, so copying from bundled resource at %@", [targetURL path], [resourceURL path]);
+            BOOL success = [fm copyItemAtURL:resourceURL toURL:targetURL error:&error];
+            if (!success)
+            {
+                MPLog(@"Failed to copy bundled resource from %@ into %@: %@", [resourceURL path], [targetURL path], error);
+                return nil;
+            }
+        }
+        
+        MPLog(@"Finished one-off set-up of bundled resource %@ database", resourceDatabaseName);
+    }
+    else
+    {
+        assert(isDirectory);
+    }
+    
+    return [supportURL URLByAppendingPathComponent:MPStringF(@"%@.touchdb", resourceDatabaseName)];
 }
 
 - (void)loadBundledResources
 {
-    NSString *resourceDBName = self.bundledResourceDatabaseName;
-    if (!resourceDBName)
+    NSURL *bundledDatabaseURL = [self prepareBundledResourceDatabase];
+    if (!bundledDatabaseURL)
         return;
     
+    NSString *bundledDatabaseName = [bundledDatabaseURL.lastPathComponent stringByDeletingPathExtension];
+    NSString *bundledDatabasePath = [bundledDatabaseURL path];
+
     NSFileManager *fm = [NSFileManager defaultManager];
-    NSString *bundledBundlesPath = [[NSBundle mainBundle] pathForResource:resourceDBName ofType:@"touchdb"];
-    NSString *md5 = [fm md5DigestStringAtPath:bundledBundlesPath];
+    NSString *md5 = [fm md5DigestStringAtPath:bundledDatabasePath];
+    NSString *checksumKey = [NSString stringWithFormat:@"bundled-%@-md5", bundledDatabaseName];
+    
     MPMetadata *metadata = [self.db metadata];
-    
-    NSString *checksumKey = [NSString stringWithFormat:@"bundled-%@-md5", resourceDBName];
-    
-    
     if ([[metadata getValueOfProperty:checksumKey] isEqualToString:md5])
         return;
     
     // kept as nil if loading is intended to be asynchronous.
-    dispatch_semaphore_t blocker = self.loadsBundledResourcesSynchronously ? nil : dispatch_semaphore_create(0);
+    dispatch_semaphore_t blocker = self.loadsBundledResourcesSynchronously ? dispatch_semaphore_create(0) : nil;
     
-    [self.db pullFromDatabaseAtPath:bundledBundlesPath
+    [self.db pullFromDatabaseAtPath:bundledDatabasePath
               withCompletionHandler:
      ^(NSError *err) {
          if (err)
          {
-             NSLog(@"ERROR! Could not load bundled data from '%@.touchdb': %@", resourceDBName, err);
+             NSLog(@"ERROR! Could not load bundled data from '%@.touchdb': %@", bundledDatabaseName, err);
          }
          else
          {
@@ -630,7 +742,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     NSArray *returnedObjects = nil;
     MPMetadata *metadata = [self.db metadata];
     
-    NSURL *jsonURL = [[NSBundle mainBundle] URLForResource:resourceName withExtension:extension];
+    NSURL *jsonURL = [self.bundledResourcesBundle URLForResource:resourceName withExtension:extension];
+    assert(jsonURL); // JSON probably not included in resources properly; remember that resources may be in a separate bundle than the *current* main bundle
     NSFileManager *fm = [NSFileManager defaultManager];
     NSString *md5 = [fm md5DigestStringAtPath:[jsonURL path]];
     

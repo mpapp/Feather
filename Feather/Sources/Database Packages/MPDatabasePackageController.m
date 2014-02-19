@@ -350,62 +350,62 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 #pragma mark - Temporary copy creation
 
-- (NSURL *)makeTemporaryCopyWithError:(NSError **)err
+- (BOOL)makeTemporaryCopyIntoRootDirectoryWithURL:(NSURL *)rootURL error:(NSError **)error;
 {
-    assert(self.delegate);
-    assert(self.delegate.packageRootURL);
-    
-    NSURL *packageRootURL = [[self delegate] packageRootURL];
+    if (!rootURL)
+        return NO;
+
+    if (error)
+        *error = nil;
     
     NSFileManager *fm = [[NSFileManager alloc] init];
     
-    NSURL *cachesURL = [fm URLForDirectory:NSCachesDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:err];
-    
-    if (!cachesURL) { return nil; }
-    
-    NSURL *temporaryDirectoryURL = [cachesURL URLByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
-    BOOL isDirectory, exists = [fm fileExistsAtPath:temporaryDirectoryURL.path isDirectory:&isDirectory];
+    BOOL isDirectory, exists = [fm fileExistsAtPath:rootURL.path isDirectory:&isDirectory];
     
     if (exists && !isDirectory)
     {
-        if (!isDirectory && err)
-            *err = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
+        if (!isDirectory && error)
+            *error = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
                                        code:MPDatabasePackageControllerErrorCodeFileNotDirectory
                                    userInfo:@{NSLocalizedDescriptionKey :
-                    [NSString stringWithFormat:@"File at URL %@ is not a directory", temporaryDirectoryURL]}];
-        return nil;
+                    [NSString stringWithFormat:@"File at URL %@ is not a directory", rootURL]}];
+        return NO;
     }
     else if (!exists)
     {
-        BOOL success = [fm createDirectoryAtURL:temporaryDirectoryURL withIntermediateDirectories:NO attributes:nil error:err];
+        BOOL success = [fm createDirectoryAtURL:rootURL withIntermediateDirectories:YES attributes:nil error:error];
         
-        if (!success) {
-            MPLog(@"Failed to create temporary directory %@", temporaryDirectoryURL);
-            return nil; // TODO: apply proper error propagation here
+        if (!success)
+        {
+            MPLog(@"Failed to create temporary directory %@", rootURL);
+            return NO;
+        }
+    }
+        
+    MPTemporaryDatabasePackageCopyFileManagerDelegate *fmDelegate = [[MPTemporaryDatabasePackageCopyFileManagerDelegate alloc] init];
+    fm.delegate = fmDelegate;
+    
+    NSArray *contents = [fm contentsOfDirectoryAtPath:self.path error:error];
+    if (!contents)
+    {
+        MPLog(@"Failed to get contents of directory '%@': %@", self.path, *error);
+        return NO;
+    }
+    
+    for (NSString *filename in contents)
+    {
+        NSURL *sourceURL = [[NSURL fileURLWithPath:self.path] URLByAppendingPathComponent:filename];
+        NSURL *targetURL = [rootURL URLByAppendingPathComponent:filename];
+        
+        BOOL success = [fm copyItemAtURL:sourceURL toURL:targetURL error:error];
+        if (!success)
+        {
+            MPLog(@"Failed to copy '%@' into '%@': %@", sourceURL.path, targetURL, *error);
+            return NO;
         }
     }
     
-    NSURL *temporaryURL = nil;
-    
-    do
-    {
-        NSString *s = [[[NSProcessInfo processInfo] globallyUniqueString] substringToIndex:8];
-        temporaryURL = [temporaryDirectoryURL URLByAppendingPathComponent:MPStringF(@"%@_%i.%@", s, (rand() % 10000), packageRootURL.path.pathExtension)];
-    }
-    while ([fm fileExistsAtPath:temporaryURL.path]);
-    
-    MPLog(@"Will make temporary document copy into %@", temporaryURL);
-    
-    MPTemporaryDatabasePackageCopyFileManagerDelegate *fmDelegate = [[MPTemporaryDatabasePackageCopyFileManagerDelegate alloc] init];
-    fm.delegate = fmDelegate;
-    BOOL success = [fm copyItemAtURL:packageRootURL toURL:temporaryURL error:err];
-    
-    if (!success)
-    {
-        return nil;
-    }
-    
-    return temporaryURL;
+    return YES;
 }
 
 #pragma mark - Databases

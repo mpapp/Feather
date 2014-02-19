@@ -120,9 +120,13 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
     NSFileManager *fm = [NSFileManager defaultManager];
     BOOL isDir = NO;
     
-    NSString *containingDir = [[self sharedDatabasesPath] stringByDeletingLastPathComponent];
-    if ([fm fileExistsAtPath:containingDir isDirectory:&isDir] && isDir &&
-        [fm fileExistsAtPath:[self sharedDatabasesPath]]) return YES;
+    NSString *sharedDatabasesPath = [self sharedDatabasesPath];
+    NSString *containingDir = [sharedDatabasesPath stringByDeletingLastPathComponent];
+    
+    if ([fm fileExistsAtPath:containingDir isDirectory:&isDir] && isDir && [fm fileExistsAtPath:sharedDatabasesPath])
+    {
+        return YES;
+    }
     
     if (!isDir)
     { if (err)
@@ -177,17 +181,17 @@ static Class _shoeboxPackageControllerClass = nil;
 
 + (void)registerShoeboxPackageControllerClass:(Class)class
 {
-    assert(!_shoeboxPackageControllerClass);
+    assert(!_shoeboxPackageControllerClass || [class isSubclassOfClass:_shoeboxPackageControllerClass]);
     
     // is non-nil, and subclass of shoebox controller (and not the abstract base class itself)
     assert(class &&
            [class isSubclassOfClass:[MPShoeboxPackageController class]] &&
            (class != [MPShoeboxPackageController class]));
     
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    //static dispatch_once_t onceToken;
+    //dispatch_once(&onceToken, ^{
         _shoeboxPackageControllerClass = class;
-    });
+    //});
 }
 
 static MPShoeboxPackageController *_sharedInstance = nil;

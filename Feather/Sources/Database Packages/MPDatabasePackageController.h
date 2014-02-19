@@ -75,7 +75,7 @@ typedef enum MPDatabasePackageControllerErrorCode
 @property (readonly, strong) MPSearchIndexController *searchIndexController;
 
 /** @return A file URL to the root directory of a temporary copy of the package. */
-- (NSURL *)makeTemporaryCopyWithError:(NSError **)err;
+- (BOOL)makeTemporaryCopyIntoRootDirectoryWithURL:(NSURL *)rootURL error:(NSError **)error;
 
 /** 
  * Initializes a database package controller at a given path, with an optional delegate and error pointer.
@@ -211,3 +211,4 @@ typedef enum MPDatabasePackageControllerErrorCode
 + (NSArray *)orderedRootSectionClassNames;
 
 @end
+
