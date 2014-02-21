@@ -28,6 +28,8 @@ extern inline BOOL MPStateToBoolean(NSInteger state);
                                  bottomOffset:(CGFloat)bottomOffset
                                    leftOffset:(CGFloat)leftOffset;
 
+- (void)replaceSubviewsWithSubviewConstrainedToSuperViewEdges:(NSView *)subview;
+
 - (BOOL) hasSubview:(NSView *)subview;
 
 - (NSLayoutConstraint *) heightConstraint;
@@ -48,5 +50,8 @@ extern inline BOOL MPStateToBoolean(NSInteger state);
 
 - (void) showWithHeight:(CGFloat)height;
 - (void) showWithHeight:(CGFloat)height andAnimate:(BOOL)animate;
+
+- (NSString *)superviewPathString;
+- (NSArray *)superviewPath;
 
 @end
