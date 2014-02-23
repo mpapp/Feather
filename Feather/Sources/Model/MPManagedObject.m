@@ -341,9 +341,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     
     MPManagedObject *mo = models[0];
     
-    for (id o in models)
+    for (MPManagedObject *o in models)
     {
         assert([o isKindOfClass:mo.class]);
+        assert(o.controller == mo.controller);
         assert([o isKindOfClass:self]);
     }
     
