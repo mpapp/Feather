@@ -162,12 +162,6 @@ typedef enum MPDatabaseErrorCode
 /** A query enumerator to get documents with the specified IDs. */
 - (CBLQueryEnumerator *)getDocumentsWithIDs:(NSArray *)docIDs;
 
-/** Get managed object model objects for documents specified by the ID from the database. */
-- (MPManagedObject *)getManagedObjectWithID:(NSString *)identifier;
-
-/** Get document by ID. Returns nil if no object were found. */
-- (CBLDocument *)getDocumentWithID:(NSString *)identifier;
-
 /** Get plain JSON encodable objects for query enumerator. */
 - (NSArray *)plainObjectsFromQueryEnumeratorKeys:(CBLQueryEnumerator *)rows;
 

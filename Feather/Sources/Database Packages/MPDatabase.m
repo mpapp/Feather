@@ -438,7 +438,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     BOOL isExternalChange = notification.userInfo[@"external"];
     for (CBLDatabaseChange *change in notification.userInfo[@"changes"])
     {
-        CBLDocument *doc = [_packageController getDocumentWithID:change.documentID];
+        CBLDocument *doc = [self.database existingDocumentWithID:change.documentID];
         [_packageController didChangeDocument:doc
                                        source:isExternalChange
                                                 ? MPManagedObjectChangeSourceExternal
@@ -617,18 +617,6 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         [objs addObject:mo];
     }
     return objs;
-}
-
-- (MPManagedObject *)getManagedObjectWithID:(NSString *)identifier
-{
-    return [[self getManagedObjectsWithIDs:@[identifier]] firstObject];
-}
-
-- (CBLDocument *)getDocumentWithID:(NSString *)docID
-{
-    CBLQueryEnumerator *qe = [self getDocumentsWithIDs:@[docID]];
-    assert(qe.count < 2);
-    return qe.nextRow.document;
 }
 
 - (CBLQueryEnumerator *)getDocumentsWithIDs:(NSArray *)docIDs
