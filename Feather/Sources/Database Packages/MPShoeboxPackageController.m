@@ -188,6 +188,11 @@ static Class _shoeboxPackageControllerClass = nil;
     });
 }
 
++ (Class)sharedShoeboxPackageControllerClass
+{
+    return _shoeboxPackageControllerClass;
+}
+
 static MPShoeboxPackageController *_sharedInstance = nil;
 static dispatch_once_t onceToken;
 + (instancetype)sharedShoeboxController
