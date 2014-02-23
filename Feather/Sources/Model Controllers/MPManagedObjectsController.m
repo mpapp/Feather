@@ -396,7 +396,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 - (NSArray *)allObjects
 {
     NSError *err = nil;
-    NSArray *objs = [self managedObjectsForQueryEnumerator:[[self allObjectsQuery] run:&err]];
+    
+    CBLQuery *q = [self allObjectsQuery];
+    NSArray *objs = [self managedObjectsForQueryEnumerator:[q run:&err]];
     if (!objs)
     {
         [[self.packageController notificationCenter] postErrorNotification:err];
@@ -411,7 +413,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     assert(identifier);
     Class cls = [MPManagedObject managedObjectClassFromDocumentID:identifier];
     assert(cls);
-    CBLDocument *doc = [self.db.database getDocumentWithID:identifier];
+    CBLDocument *doc = [self.db.database existingDocumentWithID:identifier];
     if (!doc) return nil;
     
     return [cls modelForDocument:doc];
@@ -475,7 +477,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         Class moClass = NSClassFromString([d managedObjectType]);
         assert(moClass);
         
-        CBLDocument *doc = [self.db.database getDocumentWithID:docID];
+        CBLDocument *doc = [self.db.database existingDocumentWithID:docID];
         MPManagedObject *mo = doc ? [moClass modelForDocument:doc] : nil;
         
         if (mo)
@@ -563,7 +565,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
             }
             else
             {
-                modelObj.document = row.document;
+                assert(modelObj.document == row.document);
             }
             
             assert([modelObj isKindOfClass:[MPManagedObject class]]);
