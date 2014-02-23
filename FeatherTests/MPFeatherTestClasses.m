@@ -13,7 +13,8 @@
 
 + (void)initialize
 {
-    if (self == [MPFeatherTestPackageController class])
+    if (self == [MPFeatherTestPackageController class]
+        && ![MPShoeboxPackageController sharedShoeboxPackageControllerClass])
     {
         [self registerShoeboxPackageControllerClass:self];
     }
