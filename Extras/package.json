@@ -1,0 +1,21 @@
+{
+  "name": "manuscripts-utilities",
+  "version": "0.0.1",
+  "description": "Toolkit for filtering and manipulating Feather document packages",
+  "main": "cbl.js",
+  "dependencies": {
+    "commander": "~1.0.5",
+    "sqlite3": "~2.1.5",
+    "async": "~0.2.10"
+  },
+  "engines": {
+    "node": "0.8.x",
+    "npm": "1.1.x"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matias Piipari",
+  "license": "Proprietary"
+}
