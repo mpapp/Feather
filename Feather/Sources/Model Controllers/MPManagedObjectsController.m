@@ -111,7 +111,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         }
         
         [self loadBundledResourcesWithCompletionHandler:^(NSError *err) {
-            [[self.packageController notificationCenter] postErrorNotification:err];
+            if (err)
+                [[self.packageController notificationCenter] postErrorNotification:err];
         }];
     }
 
@@ -615,7 +616,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     
     NSFileManager *fm = [NSFileManager defaultManager];
     NSString *bundledBundlesPath
-        = [[NSBundle mainBundle] pathForResource:resourceDBName ofType:@"touchdb"];
+        = [[NSBundle mainBundle] pathForResource:resourceDBName ofType:@"cblite"];
     
     NSString *md5 = [fm md5DigestStringAtPath:bundledBundlesPath];
     MPMetadata *metadata = [self.db metadata];
