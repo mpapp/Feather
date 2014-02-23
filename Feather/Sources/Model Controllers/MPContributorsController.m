@@ -53,6 +53,9 @@ NSString * const MPContributorRoleTranslator = @"translator";
     CBLView *view = [self.db.database viewNamed:allObjsViewName];
     [view setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
      {
+         if (![self managesDocumentWithDictionary:doc])
+             return;
+         
          // if role has not been set, assume the author has role 'author'
          if (!doc[@"role"] || [doc[@"role"] isEqualToString:MPContributorRoleAuthor])
          {
@@ -61,7 +64,7 @@ NSString * const MPContributorRoleTranslator = @"translator";
          }
          
          emit(doc[@"role"], nil);
-     } version:@"1.0"];
+     } version:@"1.1"];
 }
 
 - (NSArray *)contributorsInRole:(NSString *)role
@@ -107,7 +110,9 @@ NSString * const MPContributorRoleTranslator = @"translator";
 
 - (void)refreshCachedContributors
 {
-    _cachedContributors = [[self allObjects] sortedArrayUsingComparator:^NSComparisonResult(MPContributor *a, MPContributor *b) {
+    _cachedContributors
+        = [[self allObjects] sortedArrayUsingComparator:
+           ^NSComparisonResult(MPContributor *a, MPContributor *b) {
         if (a.priority > b.priority) return NSOrderedDescending;
         else if (a.priority < b.priority) return NSOrderedAscending;
         
