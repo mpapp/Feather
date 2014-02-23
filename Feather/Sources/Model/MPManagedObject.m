@@ -952,8 +952,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (MPEmbeddedObject *)getEmbeddedObjectProperty:(NSString *)property
 {
-    //id value = [self getValueOfProperty:property];
-    id value = self.properties[property];
+    id value = [self getUnsavedValueOfProperty:property];
     
     assert(!value || [value isKindOfClass:[MPEmbeddedObject class]]);
     
