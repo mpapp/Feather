@@ -140,9 +140,9 @@
                                if (!objectID) return nil;
                                Class moClass = [MPManagedObject managedObjectClassFromDocumentID:objectID];
                                CBLDatabase *db = [_self databaseForModelProperty:propNameStr];
-                               
-                               MPManagedObject *mo = [moClass modelForDocument:[db getDocumentWithID:objectID]];
-                               return mo;
+                               CBLDocument *doc = [db existingDocumentWithID:objectID];
+                               assert([doc.modelObject isKindOfClass:moClass]);
+                               return (MPManagedObject *)doc.modelObject;
                            }
                            setterImplementation:^(MPManagedObject *_self, MPManagedObject *setObj) {
                                [_self setValue:[setObj.document documentID] ofProperty:propNameStr];
