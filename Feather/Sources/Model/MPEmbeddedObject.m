@@ -79,12 +79,13 @@
         assert(key);
         assert(embeddingObject);
         
-        _embeddingKey = key;
         _embeddingObject = embeddingObject;
+        _embeddingKey = key;
         
-        _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
         _properties = [propertiesDict mutableCopy];
-        
+
+        _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
+
         // TODO: make embedded objects thread-safely unique
         MPEmbeddedObject *obj = [embeddingObject embeddedObjectWithIdentifier:self.identifier];
         if (!obj)
@@ -104,13 +105,15 @@
         assert(embeddingObject);
         assert(embeddingKey);
         
-        self.embeddingObject = embeddingObject;
-        self.embeddingKey = embeddingKey;
+        _embeddingObject = embeddingObject;
+        _embeddingKey = embeddingKey;
         
         _properties = [NSMutableDictionary dictionaryWithCapacity:10];
         _properties[@"_id"] = [NSString stringWithFormat:@"%@:%@",
                                NSStringFromClass([self class]), [[NSUUID UUID] UUIDString]];
         _properties[@"objectType"] = NSStringFromClass([self class]);
+        
+        _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
         
         // TODO: make embedded objects thread-safely unique
         MPEmbeddedObject *obj = [embeddingObject embeddedObjectWithIdentifier:self.identifier];
