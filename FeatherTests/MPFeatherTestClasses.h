@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import <Feather/Feather.h>
-#import "MPTitledProtocol.h"
+#import <Feather/MPTitledProtocol.h>
 
 @class MPEmbeddedTestObject;
 
