@@ -28,7 +28,7 @@ typedef enum MPDatabaseErrorCode
  * The database is managed by a MPDatabasePackageController. */
 @interface MPDatabase : NSObject
 
-/** The filesystem path to the database .touchdb file. */
+/** The filesystem path to the database .cblite file. */
 @property (readonly, copy) NSString *path;
 
 /** Name of the database, which is unique per MPDatabasePackageController, and used to derive the database's filesystem path and the remote URL. Immutable, readonly property set during instantiation. */
@@ -63,7 +63,7 @@ typedef enum MPDatabaseErrorCode
                  ensureCreated:(BOOL)ensureCreated
                          error:(NSError **)err;
 
-/** 
+/**
  * @param server CouchServer from which the database is to be found. Should be one of the CouchServers owned by the database controller (2nd parameter).
  * @param packageController The database controller which manages this database.
  * @param name A name which is unique for the database package in which this database is contained.
@@ -103,7 +103,7 @@ typedef enum MPDatabaseErrorCode
                    replication:(CBLReplication **)replication
                          error:(NSError **)err;
 
-/** Start a continuous, persistent pull and push replication with a remote database. 
+/** Start a continuous, persistent pull and push replication with a remote database.
   * @param syncHandler A completion handler run when the request which begins the replication is completed. */
 - (BOOL)syncWithRemote:(NSError **)error;
 
