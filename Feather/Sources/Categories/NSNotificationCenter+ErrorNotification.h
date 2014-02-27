@@ -8,7 +8,7 @@
 @protocol MPErrorNotificationObserver;
 
 @interface NSNotificationCenter (FeatherError)
-- (void)postErrorNotification:(NSError *)error;
+- (void)postErrorNotification:(NSError *)error __attribute__((nonnull));
 - (void)addErrorObserver:(id<MPErrorNotificationObserver>)errorObserver;
 @end
 

@@ -18,7 +18,7 @@
 
 + (NSString *)idForSnapshottedObjectWithDocumentID:(NSString *)documentID
                                         revisionID:(NSString *)revisionID
-                                        inDatabase:(CouchDatabase *)db;
+                                        inDatabase:(CBLDatabase *)db;
 
 - (MPSnapshottedObject *)initWithController:(MPSnapshotsController *)sc
                                    snapshot:(MPSnapshot *)snapshot

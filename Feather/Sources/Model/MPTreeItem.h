@@ -22,6 +22,6 @@
 
 @property (readonly, weak) id packageController;
 
-- (id)save;
+- (BOOL)save;
 
 @end

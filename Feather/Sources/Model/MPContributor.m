@@ -9,7 +9,7 @@
 #import "MPContributor.h"
 #import "MPContributorsController.h"
 
-#import <CouchCocoa/CouchCocoa.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 
 @implementation MPContributor
 @dynamic category, role;

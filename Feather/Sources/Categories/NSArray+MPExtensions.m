@@ -129,7 +129,7 @@
 {
     if (self.count > 0)
     {
-        id object = [self objectAtIndex:0];
+        id object = self[0];
         [self removeObjectAtIndex:0];
         return object;
     }
@@ -173,7 +173,7 @@ NSArray *MPNilToEmptyArray(NSArray *array) {
         static NSArray *__emptyArray = nil;
         
         if (__emptyArray == nil) {
-            __emptyArray = [NSArray array];
+            __emptyArray = @[];
         }
         
         return __emptyArray;
