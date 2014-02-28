@@ -7,6 +7,7 @@
 //
 
 #import "MPManagedObject.h"
+#import <CouchbaseLite/CouchbaseLite.h>
 
 @interface MPManagedObject (Protected)
 
@@ -26,19 +27,18 @@
 #pragma mark -
 
 /* MPManagedObject & MPEmbeddedObject need some otherwise private state of CouchModel exposed. */
-@interface CouchModel (Private) <MPEmbeddingObject>
+@interface CBLModel (Private) <MPEmbeddingObject>
 
-- (void)couchDocumentChanged:(CouchDocument *)doc;
+- (void)CBLDocumentChanged:(CBLDocument *)doc;
 -   (id)externalizePropertyValue: (id)value;
 - (void)cacheValue:(id)value ofProperty:(NSString *)property changed:(BOOL)changed;
-- (CouchModel*) getModelProperty: (NSString*)property;
+- (CBLModel *)getModelProperty:(NSString*)property;
 - (void)markNeedsSave;
 
 @end
 
-@interface CouchModel (PrivateExtensions) <MPEmbeddingObject>
-@property (strong, readwrite) CouchDocument *document;
-@property (strong, readonly) NSMutableDictionary *properties;
+@interface CBLModel (PrivateExtensions) <MPEmbeddingObject>
+@property (strong, readwrite) CBLDocument *document;
 
 - (void)markNeedsNoSave; // propagates needsSave = false to object's embedded properties
 @end

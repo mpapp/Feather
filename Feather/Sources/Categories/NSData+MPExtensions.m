@@ -97,7 +97,7 @@
 	{
         temp[0] = temp[1] = temp[2] = 0;
         (void)sprintf(temp, "%02x", bytes[i]);
-        [hex appendString:[NSString stringWithUTF8String:temp]];
+        [hex appendString:@(temp)];
     }
     return hex;
 }

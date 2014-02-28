@@ -33,7 +33,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "5FDB331A1705CB950049EBB5"
-               BuildableName = "FeatherTests.octest"
+               BuildableName = "FeatherTests.xctest"
                BlueprintName = "FeatherTests"
                ReferencedContainer = "container:Feather.xcodeproj">
             </BuildableReference>

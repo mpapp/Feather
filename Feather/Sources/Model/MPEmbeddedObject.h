@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <CouchCocoa/CouchCocoa.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 #import "MPEmbeddedPropertyContainingMixin.h"
 
 @protocol MPWaitingOperation;
@@ -15,8 +15,6 @@
 /** Protocol used to mark objects which can embed MPEmbeddedObject instances. */
 @protocol MPEmbeddingObject <MPEmbeddedPropertyContaining, NSObject>
 
-- (id<MPWaitingOperation>)save;
-
 @property (readonly) bool needsSave;
 
 /** Propagates needsSave = true towards embedding object. */
@@ -24,6 +22,8 @@
 
 /** Propagates needsSave = false through the embedded properties of the object. */
 - (void)markNeedsNoSave;
+
+- (BOOL)save:(NSError **)err;
 
 @property (readonly, strong) NSMutableSet *changedNames;
 
@@ -35,17 +35,11 @@
 
 @end
 
-/** Protocol used to mark operations which can be made to wait until any pending network activity is finished.
-  * @return  YES on a successfully finished operation, NO on error. */
-@protocol MPWaitingOperation <NSObject>
-- (BOOL)wait;
-@end
-
-#pragma mark - 
+#pragma mark -
 
 /** A model object that can be embedded as values in MPManagedObject's keys. 
   * MPEmbeddedObject itself conforms to MPEmbeddingObject because it can embed other objects. */
-@interface MPEmbeddedObject : CouchDynamicObject <MPEmbeddingObject>
+@interface MPEmbeddedObject : MYDynamicObject <MPEmbeddingObject>
 
 @property (readonly, copy) NSString *identifier;
 
@@ -54,7 +48,7 @@
 
 @property (readonly, strong) NSMutableSet *changedNames;
 
-- (CouchDatabase *)databaseForModelProperty:(NSString *)property;
+- (CBLDatabase *)databaseForModelProperty:(NSString *)property;
 
 - (instancetype)initWithEmbeddingObject:(id<MPEmbeddingObject>)embeddingObject embeddingKey:(NSString *)embeddingKey;
 
@@ -74,7 +68,9 @@
                              embeddingObject:(id<MPEmbeddingObject>)embeddingObject
                                 embeddingKey:(NSString *)key;
 
-@end
+- (BOOL)save:(NSError *__autoreleasing *)outError;
 
-@interface RESTOperation (MPWaitingOperation) <MPWaitingOperation>
+/** Saves, and on error posts an error notification to object's embedded object's package controller's notification center. */
+- (BOOL)save;
+
 @end

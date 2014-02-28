@@ -10,13 +10,12 @@
 #import "MPSnapshot+Protected.h"
 #import "MPSnapshotsController+Protected.h"
 #import "MPManagedObjectsController+Protected.h"
-
+#import "NSNotificationCenter+ErrorNotification.h"
 #import "MPDatabase.h"
 
 #import "NSArray+MPExtensions.h"
 
-#import <CouchCocoa/CouchCocoa.h>
-#import <TouchDB/TouchDB.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 
 @class MPSnapshottedObjectsController;
 @class MPSnapshottedAttachment, MPSnapshottedAttachmentsController;
@@ -28,14 +27,17 @@
 
 @implementation MPSnapshotsController
 
-- (instancetype)initWithPackageController:(MPDatabasePackageController *)packageController database:(MPDatabase *)db
+- (instancetype)initWithPackageController:(MPDatabasePackageController *)packageController
+                                 database:(MPDatabase *)db
+                                    error:(NSError *__autoreleasing *)err
 {
-    if (self = [super initWithPackageController:packageController database:db])
+    if (self = [super initWithPackageController:packageController database:db error:err])
     {
         _snapshottedObjectsController
-            = [[MPSnapshottedObjectsController alloc] initWithPackageController:packageController database:db];
+            = [[MPSnapshottedObjectsController alloc] initWithPackageController:packageController database:db error:err];
+        
         _snapshottedAttachmentsController
-            = [[MPSnapshottedAttachmentsController alloc] initWithPackageController:packageController database:db];
+            = [[MPSnapshottedAttachmentsController alloc] initWithPackageController:packageController database:db error:err];
     }
     
     return self;
@@ -46,11 +48,21 @@
     return [MPSnapshot class];
 }
 
-- (void)newSnapshotWithName:(NSString *)name snapshotHandler:(void (^)(MPSnapshot *snapshot))snapshotHandler
+- (void)newSnapshotWithName:(NSString *)name
+            snapshotHandler:(void (^)(MPSnapshot *snapshot, NSError *err))snapshotHandler
 {
+    NSError *e = nil;
     MPSnapshot *snapshot = [[MPSnapshot alloc] initWithController:self name:name];
-    [snapshot save];
-    snapshotHandler(snapshot);
+    if (![snapshot save:&e])
+    {
+        assert(e);
+        snapshotHandler(nil, e);
+    }
+    else
+    {
+        assert(!e);
+        snapshotHandler(snapshot, nil);
+    }
 }
 
 - (MPSnapshottedObject *)snapshotOfObject:(MPManagedObject *)obj forSnapshot:(MPSnapshot *)snapshot
@@ -64,9 +76,9 @@
     return sobj;
 }
 
-- (void)configureDesignDocument:(CouchDesignDocument *)designDoc
+- (void)configureViews
 {
-    [super configureDesignDocument:designDoc];
+    [super configureViews];
 }
 
 - (NSArray *)snapshottedObjectsForSnapshot:(MPSnapshot *)snapshot
@@ -92,8 +104,9 @@
 @implementation MPSnapshottedObjectsController
 
 - (instancetype)initWithSnapshotsController:(MPSnapshotsController *)controller
+                                      error:(NSError **)err
 {
-    if (self = [super initWithPackageController:controller.packageController database:controller.db])
+    if (self = [super initWithPackageController:controller.packageController database:controller.db error:err])
     {
         _snapshotsController = controller;
     }
@@ -101,27 +114,38 @@
     return self;
 }
 
-- (void)configureDesignDocument:(CouchDesignDocument *)designDoc
+- (void)configureViews
 {
-    [super configureDesignDocument:designDoc];
+    [super configureViews];
+    CBLView *snapshottedObjectsBySnapshotIDView = [self.db.database viewNamed:@"snapshottedObjectsBySnapshotID"];
+    assert(snapshottedObjectsBySnapshotIDView);
     
-    [designDoc defineViewNamed:@"snapshottedObjectsBySnapshotID" mapBlock:^(NSDictionary *doc, TDMapEmitBlock emit) {
-        
+    [snapshottedObjectsBySnapshotIDView setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
+    {
         if ([doc[@"objectType"] isEqualToString:@"MPSnapshottedObject"])
             emit(doc[@"snapshotID"], nil);
     } version:@"1.0"];
 }
 
-- (CouchQuery *)snapshottedObjectsQueryForSnapshot:(MPSnapshot *)snapshot
+- (CBLQuery *)snapshottedObjectsQueryForSnapshot:(MPSnapshot *)snapshot
 {
-    CouchQuery *q = [self.designDocument queryViewNamed:@"snapshottedObjectsBySnapshotID"];
+    CBLQuery *q = [[self.db.database viewNamed:@"snapshottedObjectsBySnapshotID"] createQuery];
     q.prefetch = YES;
+    assert(q);
+    
     return q;
 }
 
 - (NSArray *)snapshottedObjectsForSnapshot:(MPSnapshot *)snapshot
 {
-    return [self managedObjectsForQueryEnumerator:[[self snapshottedObjectsQueryForSnapshot:snapshot] rows]];
+    NSError *err = nil;
+    CBLQueryEnumerator *qenum = [[self snapshottedObjectsQueryForSnapshot:snapshot] run:&err];
+    if (!qenum)
+    {
+        assert(err);
+        [[self.packageController notificationCenter] postErrorNotification:err];
+    }
+    return [self managedObjectsForQueryEnumerator:qenum];
 }
 
 @end
@@ -131,9 +155,9 @@
 
 @implementation MPSnapshottedAttachmentsController
 
-- (instancetype)initWithSnapshotsController:(MPSnapshotsController *)controller
+- (instancetype)initWithSnapshotsController:(MPSnapshotsController *)controller error:(NSError **)err
 {
-    if (self = [super initWithPackageController:controller.packageController database:controller.db])
+    if (self = [super initWithPackageController:controller.packageController database:controller.db error:err])
     {
         _snapshotsController = controller;
     }
@@ -141,38 +165,48 @@
     return self;
 }
 
-- (void)configureDesignDocument:(CouchDesignDocument *)designDoc
+- (void)configureViews
 {
-    [super configureDesignDocument:designDoc];
+    [super configureViews];
     
-    [designDoc defineViewNamed:@"snapshottedAttachmentsBySnapshotID" mapBlock:^(NSDictionary *doc, TDMapEmitBlock emit)
-    {
-        if ([doc[@"objectType"] isEqualToString:@"MPSnapshottedAttachment"])
-            emit(doc[@"snapshotID"], nil);
-    } version:@"1.0"];
+    CBLView *snapshottedAttachmentsBySnapshotIDView = [self.db.database viewNamed:@"snapshottedAttachmentsBySnapshotID"];
+    [snapshottedAttachmentsBySnapshotIDView setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
+     {
+         if ([doc[@"objectType"] isEqualToString:@"MPSnapshottedAttachment"])
+             emit(doc[@"snapshotID"], nil);
+     } version:@"1.0"];
     
-    [designDoc defineViewNamed:@"snapshottedAttachmentsBySHA"  mapBlock:^(NSDictionary *doc, TDMapEmitBlock emit)
-    {
+    CBLView *snapshottedAttachmentsBySHAView = [self.db.database viewNamed:@"snapshottedAttachmentsBySnapshotID"];
+    [snapshottedAttachmentsBySHAView setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit) {
         if ([doc[@"objectType"] isEqualToString:@"MPSnapshottedAttachment"])
             emit(doc[@"sha"], nil);
     } version:@"1.0"];
 }
 
-- (CouchQuery *)snapshottedAttachmentsQueryForSnapshot:(MPSnapshot *)snapshot
+- (CBLQuery *)snapshottedAttachmentsQueryForSnapshot:(MPSnapshot *)snapshot
 {
-    CouchQuery *q = [self.designDocument queryViewNamed:@"snapshottedAttachmentsBySnapshotID"];
+    CBLQuery *q = [[self.db.database viewNamed:@"snapshottedAttachmentsBySnapshotID"] createQuery];
     q.prefetch = YES;
     return q;
 }
 
 - (NSArray *)snapshottedAttachmentsForSnapshot:(MPSnapshot *)snapshot
 {
-    return [self managedObjectsForQueryEnumerator:[[self snapshottedAttachmentsQueryForSnapshot:snapshot] rows]];
+    NSError *err = nil;
+    
+    CBLQueryEnumerator *qenum = [[self snapshottedAttachmentsQueryForSnapshot:snapshot] run:&err];
+    if (!qenum)
+    {
+        [[self.packageController notificationCenter] postErrorNotification:err];
+        return nil;
+    }
+    
+    return [self managedObjectsForQueryEnumerator:qenum];
 }
 
-- (CouchQuery *)snapshottedAttachmentsQueryForSHA:(NSString *)sha
+- (CBLQuery *)snapshottedAttachmentsQueryForSHA:(NSString *)sha
 {
-    CouchQuery *q = [self.designDocument queryViewNamed:@"snapshottedAttachmentsBySHA"];
+    CBLQuery *q = [[self.db.database viewNamed:@"snapshottedAttachmentsBySHA"] createQuery];
     q.prefetch = YES;
     q.key = sha;
     return q;
@@ -180,8 +214,18 @@
 
 - (MPSnapshottedAttachment *)snapshottedAttachmentForSHA:(NSString *)sha
 {
-    NSArray *attachmentsForSHA = [self managedObjectsForQueryEnumerator:[[self snapshottedAttachmentsQueryForSHA:sha] rows]];
-    assert(attachmentsForSHA.count <= 1); // TODO: Handle syncing conflict? More than one can be harmless, one of the objects needs deleting. Which one of multiples is deleted makes no difference
+    NSError *err = nil;
+    NSArray *attachmentsForSHA = [self managedObjectsForQueryEnumerator:[[self snapshottedAttachmentsQueryForSHA:sha] run:&err]];
+    
+    if (!attachmentsForSHA)
+    {
+        [[self.packageController notificationCenter] postErrorNotification:err];
+        return nil;
+    }
+    
+    // TODO: Handle syncing conflict?
+    // More than one can be harmless, one of the objects needs deleting. Which one of multiples is deleted makes no difference
+    assert(attachmentsForSHA.count <= 1);
     return [attachmentsForSHA firstObject];
 }
 

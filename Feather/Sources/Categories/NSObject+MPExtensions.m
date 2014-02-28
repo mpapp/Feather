@@ -10,7 +10,8 @@
 #import "NSArray+MPExtensions.h"
 #import "NSString+MPExtensions.h"
 
-#import <CouchCocoa/CouchDynamicObject.h>
+#import <CouchbaseLite/CouchbaseLite.h>
+#import <CouchbaseLite/MYDynamicObject.h>
 #import <objc/runtime.h>
 
 inline id MPNilToObject(id object, id defaultObject)
@@ -129,7 +130,7 @@ inline id MPNilToObject(id object, id defaultObject)
               return patternBlock(moClass, propName);
           }]];
         
-        [dict setObject:readWritePropertyNamesMatchingPattern forKey:moClassName];
+        dict[moClassName] = readWritePropertyNamesMatchingPattern;
     }
     
     return [dict copy];
@@ -145,7 +146,7 @@ inline id MPNilToObject(id object, id defaultObject)
     
     if (self == [NSObject class]) return [NSSet set];
     
-    NSSet* cachedPropertyNames = [classToNames objectForKey:self];
+    NSSet* cachedPropertyNames = classToNames[self];
     if (cachedPropertyNames)
         return cachedPropertyNames;
     
@@ -157,11 +158,11 @@ inline id MPNilToObject(id object, id defaultObject)
     if (propertiesExcludingSuperclass) {
         objc_property_t* propertyPtr = propertiesExcludingSuperclass;
         while (*propertyPtr)
-            [propertyNames addObject:[NSString stringWithUTF8String:property_getName(*propertyPtr++)]];
+            [propertyNames addObject:@(property_getName(*propertyPtr++))];
         free(propertiesExcludingSuperclass);
     }
     [propertyNames unionSet:[[self superclass] propertyKeys]];
-    [classToNames setObject: propertyNames forKey: (id)self];
+    classToNames[(id)self] = propertyNames;
     return propertyNames;
 }
 
@@ -172,15 +173,15 @@ inline id MPNilToObject(id object, id defaultObject)
 
 #pragma mark -
 
-// From CouchCocoa's CouchDynamicObject
-// Look up the encoded type of a property, and whether it's settable or readonly
-+ (Class) classOfProperty: (NSString*)propertyName
+// From MYUtilities MYDynamicObject
+// Look up the encoded type of a property, and whether it's readwrite / readonly
++ (Class)classOfProperty:(NSString *)propertyName
 {
     Class declaredInClass;
     const char* propertyType;
-    if (!getPropertyInfo(self, propertyName, NO, &declaredInClass, &propertyType))
+    if (!MYGetPropertyInfo(self, propertyName, NO, &declaredInClass, &propertyType))
         return Nil;
-    return classFromType(propertyType);
+    return MYClassFromType(propertyType);
 }
 
 - (id)performNonLeakingSelector:(SEL)selector

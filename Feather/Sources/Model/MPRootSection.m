@@ -38,7 +38,6 @@
                                                                              withString:@""];
     
     Class class = NSClassFromString(className);
-    NSLog(@"Class name is %@, class is %@", className, NSStringFromClass(class));
     assert([class isSubclassOfClass:[MPManagedObject class]]);
     
     return class;
@@ -112,7 +111,7 @@
     return [_packageController rootSections];
 }
 
-- (id)save
+- (BOOL)save
 { @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return nil; }
 
 - (NSUInteger)childCount

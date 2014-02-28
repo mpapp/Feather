@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "MPContributorsController.h"
 
-#import <TouchDB/TouchDB.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 
 typedef void (^MPPullCompletionHandler)(NSDictionary *errDict);
 
 @class MPDatabase, MPSnapshot;
-@class CouchDocument;
+@class CBLDocument;
 
 @class MPSearchIndexController;
 
@@ -42,13 +42,13 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** A MPDatabasePackageController manages a number of MPDatabase objects and MPManagedObjectsController, which in turn manage the MPManagedObject instances stored in the databases. The databases owned by a MPDatabasePackageController can be replicated with a remote CouchDB server. All of the databases of a MPDatabasePackageController are stored on the same CouchServer, also owned by the MPDatabasePackageController. This combination of databases under a shared server (either a shared filesystem root directory in the case of TouchDB, or a base URI in a remote CouchDB server) is called a _database package_.
  *
  * In Feather.app, MPDatabasePackageController's subclass MPFeatherPackageController is the controller which the NSDocument subclass MPDocument relies on for reading and writing Feather document packages. There is however no dependence on Feather or a document based design in MPDatabasePackageController. It is intended to be crossplatform. */
-@interface MPDatabasePackageController : NSObject <TDViewCompiler, NSNetServiceDelegate, NSNetServiceBrowserDelegate>
+@interface MPDatabasePackageController : NSObject <CBLViewCompiler, NSNetServiceDelegate, NSNetServiceBrowserDelegate>
 
 /** The filesystem path of the database package. */
 @property (strong, readonly) NSString *path;
 
 /** The database server for this database package. */
-@property (strong, readonly) CouchServer *server;
+@property (strong, readonly) CBLManager *server;
 
 /** The base remote URL for the document package. NOTE! An abstract method. */
 @property (strong, readonly) NSURL *remoteURL;
@@ -72,8 +72,6 @@ typedef enum MPDatabasePackageControllerErrorCode
   * Default implementation returns NO, overload to toggle on full-text indexing (see also MPManagedObject FTS indexing related properties and methods.) */
 @property (readonly) BOOL indexesObjectFullTextContents;
 
-@property (readonly, strong) MPSearchIndexController *searchIndexController;
-
 /** @return A file URL to the root directory of a temporary copy of the package. */
 - (NSURL *)makeTemporaryCopyWithError:(NSError **)err;
 
@@ -84,8 +82,9 @@ typedef enum MPDatabasePackageControllerErrorCode
  * @param err An error pointer.
  * */
 - (instancetype)initWithPath:(NSString *)path
-          delegate:(id<MPDatabasePackageControllerDelegate>)delegate
-             error:(NSError *__autoreleasing *)err;
+                    readOnly:(BOOL)readOnly
+                    delegate:(id<MPDatabasePackageControllerDelegate>)delegate
+                       error:(NSError *__autoreleasing *)err;
 
 /** Closes all the database package's databases. */
 - (void)close;
@@ -104,9 +103,9 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** @return YES if a controller exists in this package controller for a managed object class. */
 - (BOOL)controllerExistsForManagedObjectClass:(Class)class;
 
-/** Return the controller for a CouchDocument object, based on its database and the document's objectType property.
- * @param document A CouchDocument containing a serialised MPManagedObject (including a key 'objectType' whose value matches the name of one of the MPManagedObject subclasses). */
-- (MPManagedObjectsController *)controllerForDocument:(CouchDocument *)document;
+/** Return the controller for a CBLDocument object, based on its database and the document's objectType property.
+ * @param document A CBLDocument containing a serialised MPManagedObject (including a key 'objectType' whose value matches the name of one of the MPManagedObject subclasses). */
+- (MPManagedObjectsController *)controllerForDocument:(CBLDocument *)document;
 
 /** The remote base URL for a local MPDatabase object.
   * @param database A local MPDatabase. */
@@ -124,17 +123,19 @@ typedef enum MPDatabasePackageControllerErrorCode
  * @param baseURL The remote base URL for which to return the database URLs. */
 + (NSArray *)databaseURLsForBaseURI:(NSURL *)baseURL;
 
-/** Push replicate asynchronously to a remote database package.
- * @param pushHandler A completion handler for the push RESTOperation. Called in response to the initial push operation having completed for all of the databases of this package, not when the full replication consisting of potentially multiple further requests has finished (replication is stateful and consists of multiple requests). */
-- (void)pushToRemoteWithCompletionHandler:(void (^)(NSDictionary *errDict))pushHandler;
+/** Push asynchronously to a remote database package.
+ * @param errorDict A dictionary of errors for *starting* replications (i.e. there can be errors during the asynchronous replication that are not captured here), keys being database names. 
+ **/
+- (BOOL)pushToRemoteWithErrorDictionary:(NSDictionary **)errorDict;
 
-/** Pull replicate asynchronously to a remote database package.
- * @param pullHandler A completion handler for the push RESTOperation. Called in response to the initial push operation having completed for all of the databases of this package, not when the full replication consisting of potentially multiple further requests has finished (replication is stateful and consists of multiple requests). */
-- (void)pullFromRemoteWithCompletionHandler:(void (^)(NSDictionary *errDict))pullHandler;
+/** Pull asynchronously from a remote database package.
+ * @param errorDict A dictionary of errors for *starting* replications (i.e. there can be errors during the asynchronous replication that are not captured here), keys being database names. 
+ **/
+- (void)pullFromRemoteWithErrorDictionary:(NSDictionary **)errorDict;
 
 /** Pull and push asynchronously to a remote database package.
-  * @param syncHandler A completion handler for the pull and push operations. Called in response to all of the pull and push operations  */
-- (void)syncWithCompletionHandler:(void (^)(NSDictionary *errDict))syncHandler;
+   * @param errorDict A dictionary of errors for *starting* replications (i.e. there can be errors during the asynchronous replication that are not captured here), keys being database names. */
+- (BOOL)syncWithRemote:(NSDictionary **)errorDict;
 
 /** Name for the push filter function used for the given database. Nil return value means that no push filter is to be used. Default implementation uses no push filter. If this method returns nil for a given db, the subclass must implement -create */
 - (NSString *)pushFilterNameForDatabaseNamed:(NSString *)db;
@@ -151,7 +152,7 @@ typedef enum MPDatabasePackageControllerErrorCode
 
 /** Returns a new filter block with the given name to act as a push filter for the specified database.
  * Overloadable by subclasses, but not intended to be called manually. Gets called if -pushFilterNameForDatabaseNamed: returns a non-nil filter name for a db. If filterName is non-nil, *must* return a non-nil value. */
-- (TD_FilterBlock)createPushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db;
+- (CBLFilterBlock)createPushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db;
 
 /** Name of the pull filter for the given database. Nil return value means that no pull filter is to be used. Default implementation uses no push filter. */
 - (NSString *)pullFilterNameForDatabaseNamed:(NSString *)dbName;
@@ -194,8 +195,9 @@ typedef enum MPDatabasePackageControllerErrorCode
 @property (strong, readonly) MPSnapshotsController *snapshotsController;
 
 /** Create and persist a snapshot of this package.
-  * @param name A name for the snapshot. Must be non-nil, but not necessarily unique. */
-- (MPSnapshot *)newSnapshotWithName:(NSString *)name;
+  * @param name A name for the snapshot. Must be non-nil, but not necessarily unique.
+  * @param An optional error pointer. */
+- (MPSnapshot *)newSnapshotWithName:(NSString *)name error:(NSError **)err;
 
 /** Restore the state of the database package using a named snapshot.
  * @param name The name of the snapshot to restore the state for the package from.

@@ -9,13 +9,5 @@
 #import <Feather/Feather.h>
 
 @interface MPShoeboxPackageController ()
-{
-    MPDatabase *_sharedDatabase;
-    MPDatabase *_globalSharedDatabase;
-}
-
-@property (readwrite, strong) MPDatabase *sharedDatabase;
-@property (readwrite, strong) MPDatabase *globalSharedDatabase;
-@property (readwrite, strong) CouchServer *globalSharedDatabaseServer;
-
+@property (readwrite, strong, nonatomic) MPDatabase *sharedDatabase;
 @end

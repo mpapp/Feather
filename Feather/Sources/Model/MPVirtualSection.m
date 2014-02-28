@@ -86,10 +86,19 @@
 
 - (NSInteger)priority { return [self.parent.children indexOfObject:self]; }
 
-- (id)save { @throw [[MPUnexpectedSelectorException alloc] initWithSelector:_cmd]; return nil; }
+- (BOOL)save
+{
+    @throw [[MPUnexpectedSelectorException alloc] initWithSelector:_cmd];
+    return nil;
+}
 
-- (NSString *)thumbnailImageName { @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return nil; }
-- (NSString *)placeholderString { return @"Untitled"; }
+- (NSString *)thumbnailImageName {
+    @throw [MPAbstractMethodException exceptionWithSelector:_cmd];
+    return nil;
+}
+- (NSString *)placeholderString {
+    return @"Untitled";
+}
 
 - (BOOL)isEditable { return NO; }
 
@@ -155,7 +164,10 @@
 - (NSString *)placeholderString { return _wrappedObject.placeholderString; }
 - (BOOL)isEditable { return YES; }
 
-- (id)save { return [_wrappedObject save]; }
+- (BOOL)save:(NSError **)err
+{
+    return [_wrappedObject save:err];
+}
 
 - (NSArray *)children { return @[]; }
 

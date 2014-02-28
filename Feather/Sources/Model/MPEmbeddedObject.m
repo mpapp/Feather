@@ -13,24 +13,13 @@
 #import "MPManagedObject+Protected.h"
 #import "MPEmbeddedObject+Protected.h"
 #import "MPEmbeddedPropertyContainingMixin.h"
+#import "NSNotificationCenter+ErrorNotification.h"
 
 #import "Mixin.h"
 
-#import <CouchCocoa/CouchCocoa.h>
-#import <CouchCocoa/CouchModelFactory.h>
-#import <CouchCocoa/RESTBody.h>
+#import <CouchbaseLite/CouchbaseLite.h>
 
 #import <objc/runtime.h>
-
-/* A private class for saving embedded objects. */
-@interface MPSaveOperation : NSObject <MPWaitingOperation>
-
-@property (readwrite, strong) MPEmbeddedObject *embeddedObject;
-@property (readwrite, strong) id<MPWaitingOperation> embeddingSaveOperation;
-
-- (instancetype)initWithEmbeddedObject:(MPEmbeddedObject *)embeddedObject;
-
-@end
 
 @interface MPEmbeddedObject ()
 {
@@ -40,6 +29,21 @@
 @end
 
 @implementation MPEmbeddedObject
+
+#ifdef DEBUG
+
++ (NSMutableSet *)embeddedObjectIDs
+{
+    static NSMutableSet *embeddedObjectIDs = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        embeddedObjectIDs = [NSMutableSet set];
+    });
+    
+    return embeddedObjectIDs;
+}
+
+#endif
 
 + (void)initialize
 {
@@ -54,13 +58,17 @@
     @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
 }
 
-- (instancetype)initWithJSONString:(NSString *)jsonString embeddingObject:(id<MPEmbeddingObject>)embeddingObject embeddingKey:(NSString *)key
+- (instancetype)initWithJSONString:(NSString *)jsonString
+                   embeddingObject:(id<MPEmbeddingObject>)embeddingObject
+                      embeddingKey:(NSString *)key
 {
     NSMutableDictionary *propertiesDict = [jsonString objectFromJSONString];
     return [self initWithDictionary:propertiesDict embeddingObject:embeddingObject embeddingKey:key];
 }
 
-- (instancetype)initWithDictionary:(NSDictionary *)propertiesDict embeddingObject:(id<MPEmbeddingObject>)embeddingObject embeddingKey:(NSString *)key
+- (instancetype)initWithDictionary:(NSDictionary *)propertiesDict
+                   embeddingObject:(id<MPEmbeddingObject>)embeddingObject
+                      embeddingKey:(NSString *)key
 {
     if (self = [super init])
     {
@@ -71,13 +79,19 @@
         assert(key);
         assert(embeddingObject);
         
-        _embeddingKey = key;
         _embeddingObject = embeddingObject;
+        _embeddingKey = key;
         
-        _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
         _properties = [propertiesDict mutableCopy];
-        
-        [embeddingObject cacheEmbeddedObjectByIdentifier:self];
+
+        _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
+
+        // TODO: make embedded objects thread-safely unique
+        MPEmbeddedObject *obj = [embeddingObject embeddedObjectWithIdentifier:self.identifier];
+        if (!obj)
+            [embeddingObject cacheEmbeddedObjectByIdentifier:self];
+        else
+            return obj;
     }
     
     return self;
@@ -91,13 +105,22 @@
         assert(embeddingObject);
         assert(embeddingKey);
         
-        self.embeddingObject = embeddingObject;
-        self.embeddingKey = embeddingKey;
+        _embeddingObject = embeddingObject;
+        _embeddingKey = embeddingKey;
         
         _properties = [NSMutableDictionary dictionaryWithCapacity:10];
         _properties[@"_id"] = [NSString stringWithFormat:@"%@:%@",
                                NSStringFromClass([self class]), [[NSUUID UUID] UUIDString]];
         _properties[@"objectType"] = NSStringFromClass([self class]);
+        
+        _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
+        
+        // TODO: make embedded objects thread-safely unique
+        MPEmbeddedObject *obj = [embeddingObject embeddedObjectWithIdentifier:self.identifier];
+        if (!obj)
+            [embeddingObject cacheEmbeddedObjectByIdentifier:self];
+        else
+            return obj;
     }
     
     return self;
@@ -107,7 +130,8 @@
                              embeddingObject:(id<MPEmbeddingObject>)embeddingObject
                                 embeddingKey:(NSString *)key
 {
-    if (!string) return nil;
+    if (!string)
+        return nil;
     
     Class cls = nil;
     NSDictionary *dictionary = [string objectFromJSONString];
@@ -165,10 +189,11 @@
 
 - (void)setEmbeddingKey:(NSString *)embeddingKey
 {
-    if (embeddingKey && _embeddingKey == embeddingKey) return;
+    if (embeddingKey && _embeddingKey == embeddingKey)
+        return;
     
     // should be set only once to a non-null value (shouldn't try setting to non-null value B after setting to A)
-    assert(!_embeddingKey);
+    assert(!_embeddingKey || [_embeddingKey isEqualToString:embeddingKey]);
     
     _embeddingKey = embeddingKey;
 }
@@ -256,13 +281,13 @@
 {
     if ([value isKindOfClass:[NSData class]])
     {
-        value = [RESTBody base64WithData:value];
+        value = [CBLJSON base64StringWithData:value];
     }
     else if ([value isKindOfClass:[NSDate class]])
     {
-        value = [RESTBody JSONObjectWithDate:value];
+        value = [CBLJSON JSONObjectWithDate:value];
     }
-    else if ([value isKindOfClass:[CouchModel class]])
+    else if ([value isKindOfClass:[CBLModel class]])
     {
         assert([value document]);
         value = [[value document] documentID];
@@ -333,9 +358,22 @@
     return [self.dictionaryRepresentation JSONString];
 }
 
-- (MPSaveOperation *)save
+- (BOOL)save:(NSError **)err
 {
-    return [[MPSaveOperation alloc] initWithEmbeddedObject:self];
+    return [_embeddingObject save:err];
+}
+
+- (BOOL)save
+{
+    NSError *err = nil;
+    BOOL success;
+    if (!(success = [self save:&err]))
+    {
+        [[NSNotificationCenter defaultCenter] postErrorNotification:err];
+        return NO;
+    }
+    
+    return success;
 }
 
 - (void)markNeedsSave
@@ -356,7 +394,7 @@
 
 #pragma mark - Accessor implementations
 
-- (CouchDatabase *)databaseForModelProperty:(NSString *)property
+- (CBLDatabase *)databaseForModelProperty:(NSString *)property
 {
     id<MPEmbeddingObject> embedder = self;
     while (![(embedder = self.embeddingObject) isKindOfClass:[MPManagedObject class]])
@@ -370,19 +408,19 @@
 }
 
 // adapted from CouchModel
-- (CouchModel *)getModelProperty:(NSString *)property
+- (CBLModel *)getModelProperty:(NSString *)property
 {
     NSString* rawValue = [self getValueOfProperty:property];
     if (!rawValue)
         return nil;
     
-    // Look up the CouchDocument:
+    // Look up the CBLDocument:
     if (![rawValue isKindOfClass: [NSString class]]) {
         MPLog(@"Model-valued property %@ of %@ is not a string", property, self);
         return nil;
     }
     
-    CouchDocument* doc = [[self databaseForModelProperty: property] documentWithID:rawValue];
+    CBLDocument* doc = [[self databaseForModelProperty: property] documentWithID:rawValue];
     if (!doc)
     {
         MPLog(@"Unable to get document from property %@ of %@ (value='%@')",
@@ -391,8 +429,9 @@
     }
     
     // Ask factory to get/create model; if it doesn't know, use the declared class:
-    CouchModel* value = [doc.database.modelFactory modelForDocument: doc];
-    if (!value) {
+    CBLModel *value = [doc.database.modelFactory modelForDocument: doc];
+    if (!value)
+    {
         Class declaredClass = [[self class] classOfProperty: property];
         value = [declaredClass modelForDocument: doc];
         if (!value)
@@ -491,11 +530,14 @@
 {
     id value = _properties[property];
     
-    if ([value isKindOfClass:[NSString class]])
-        { value = [RESTBody dateWithJSONObject:value]; }
+    if ([value isKindOfClass:[NSString class]]) {
+        value = [CBLJSON dateWithJSONObject:value];
+    }
     
-    if (value && ![value isKindOfClass:[NSDate class]])
-        { MPLog(@"Unable to decode date from property %@ of %@", property, self); return nil; }
+    if (value && ![value isKindOfClass:[NSDate class]]) {
+        MPLog(@"Unable to decode date from property %@ of %@", property, self);
+        return nil;
+    }
     
     //if (value)
     //    [self cacheValue: value ofProperty: property changed: NO];
@@ -508,10 +550,12 @@
 {
     id value = _properties[property];
     
-    if ([value isKindOfClass:[NSString class]])
-        { value = [RESTBody dataWithBase64:value]; }
-    else if (value && ![value isKindOfClass:[NSData data]])
-        { MPLog(@"Unable to decode Base64 data from property %@ of %@", property, self); return nil; }
+    if ([value isKindOfClass:[NSString class]]) {
+        value = [CBLJSON dataWithBase64String:value];
+    }
+    else if (value && ![value isKindOfClass:[NSData data]]) {
+        MPLog(@"Unable to decode Base64 data from property %@ of %@", property, self); return nil;
+    }
     
     //if (value) // TODO: Cache decoded values.
     //    [self cacheValue:value ofProperty: property changed: NO];
@@ -540,7 +584,7 @@
         {
             return [receiver getDateProperty: property];
         });
-    } else if ([propertyClass isSubclassOfClass:[CouchModel class]])
+    } else if ([propertyClass isSubclassOfClass:[CBLModel class]])
     {
         return imp_implementationWithBlock(^id(MPEmbeddedObject *receiver)
         {
@@ -565,7 +609,8 @@
     }
 }
 
-- (void)setModel:(CouchModel *)model forProperty:(NSString *)property
+- (void)setModel:(CBLModel *)model
+     forProperty:(NSString *)property
 {
     if (_properties[property]
         && ([_properties[property] isEqualToString:model.document.documentID]
@@ -587,9 +632,9 @@
 
 + (IMP)impForSetterOfProperty:(NSString *)property ofClass:(Class)propertyClass
 {
-    if ([propertyClass isSubclassOfClass:[CouchModel class]])
+    if ([propertyClass isSubclassOfClass:[CBLModel class]])
     {
-        return imp_implementationWithBlock(^(MPEmbeddedObject *receiver, CouchModel *value)
+        return imp_implementationWithBlock(^(MPEmbeddedObject *receiver, CBLModel *value)
         {
             [receiver setModel:value forProperty:property];
         });
@@ -662,13 +707,13 @@
 {
     if (propertyType[0] == _C_ULNG_LNG)
     {
-        return imp_implementationWithBlock(^unsigned long long(CouchDynamicObject* receiver) {
+        return imp_implementationWithBlock(^unsigned long long(MYDynamicObject *receiver) {
             return [[receiver getValueOfProperty:property] unsignedLongValue];
         });
     }
     else if (propertyType[0] == _C_LNG_LNG)
     {
-        return imp_implementationWithBlock(^long long(CouchDynamicObject* receiver) {
+        return imp_implementationWithBlock(^long long(MYDynamicObject *receiver) {
             return [[receiver getValueOfProperty:property] longLongValue];
         });
     }
@@ -680,41 +725,23 @@
 {
     if (propertyType[0] == _C_ULNG_LNG)
     {
-        return imp_implementationWithBlock(^(CouchDynamicObject* receiver, unsigned long long value) {
-            [receiver setValue:[NSNumber numberWithUnsignedLongLong:value] ofProperty:property];
+        return imp_implementationWithBlock(^(MYDynamicObject *receiver, unsigned long long value) {
+            [receiver setValue:@(value) ofProperty:property];
         });
     }
     else if (propertyType[0] == _C_LNG_LNG)
     {
-        return imp_implementationWithBlock(^(CouchDynamicObject* receiver, long long value) {
-            [receiver setValue:[NSNumber numberWithLongLong:value] ofProperty:property];
+        return imp_implementationWithBlock(^(MYDynamicObject *receiver, long long value) {
+            [receiver setValue:@(value) ofProperty:property];
         });
     }
     
     return [super impForSetterOfProperty:property ofType:propertyType];
 }
 
-@end
-
-#pragma mark - saving
-
-@implementation MPSaveOperation
-
-- (instancetype)initWithEmbeddedObject:(MPEmbeddedObject *)embeddedObject
+- (NSString *)description
 {
-    if (self = [super init])
-    {
-        _embeddedObject = embeddedObject;
-        _embeddingSaveOperation = [_embeddedObject.embeddingObject save];
-    }
-    
-    return self;
-}
-
-- (BOOL)wait
-{
-    assert(_embeddingSaveOperation);
-    return [_embeddingSaveOperation wait];
+    return [NSString stringWithFormat:@"<%@ %@>", NSStringFromClass(self.class), self.properties];
 }
 
 @end
