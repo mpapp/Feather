@@ -159,4 +159,5 @@ typedef enum MPManagedObjectsControllerErrorCode
 
 @interface CBLDocument (MPManagedObjectExtensions)
 - (Class) managedObjectClass;
+- (NSURL *)URL;
 @end
