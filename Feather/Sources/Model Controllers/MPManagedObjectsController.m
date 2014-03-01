@@ -635,7 +635,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     CBLReplication *replication = nil;
     
     NSError *err = nil;
-    if (![self.db pullFromDatabaseAtPath:bundledBundlesPath replication:&replication error:&err])
+    if (![self.db pullFromDatabaseAtPath:bundledBundlesPath
+                             replication:&replication error:&err])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             completionHandler(err);
@@ -643,8 +644,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         return;
     }
     
+    __weak NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     __weak MPManagedObjectsController *weakSelf = self;
-    NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     __block id observer =
         [nc addObserverForName:kCBLReplicationChangeNotification
                         object:replication queue:[NSOperationQueue mainQueue]
@@ -672,14 +673,17 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                      NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
                      [nc postNotificationName:MPManagedObjectsControllerLoadedBundledResourcesNotification object:self];
                  }
+                 
+                 [nc removeObserver:observer];
              }
-             else
+             else if (r.status == kCBLReplicationStopped)
              {
                  NSLog(@"ERROR! Failed to pull from bundled database.");
                  [[self.packageController notificationCenter] postErrorNotification:r.lastError];
+                 
+                 [nc removeObserver:observer];
              }
              
-             [[NSNotificationCenter defaultCenter] removeObserver:observer];
          }];
 }
 
@@ -873,6 +877,11 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     assert(objectType);
     
     return NSClassFromString(objectType);
+}
+
+- (NSURL *)URL
+{
+    return [self.database.internalURL URLByAppendingPathComponent:self.documentID];
 }
 
 @end

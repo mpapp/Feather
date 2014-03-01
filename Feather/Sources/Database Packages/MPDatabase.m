@@ -29,9 +29,9 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
+#import <CouchbaseLite/Logging.h>
 
 NSString * const MPDatabaseErrorDomain = @"MPDatabaseErrorDomain";
-
 NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; //same name used in serverside CouchDB.
 
 @interface MPDatabase ()
@@ -77,6 +77,9 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 {
     if (self = [super init])
     {
+        EnableLogTo(CBLReplication, YES);
+        EnableLogTo(Sync, YES);
+        
         _server = server;
         
         _name = name;
@@ -238,7 +241,6 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     return [self.packageController remoteDatabaseCredentialsForLocalDatabase:self];
 }
 
-#warning Implement -validateRemoteDatabaseURL:error:
 + (BOOL)validateRemoteDatabaseURL:(NSURL *)url error:(NSError **)err
 {
     /*
@@ -294,7 +296,6 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     
     return remoteDBInfo.response.statusCode == 200;
      */
-#warning Implement -remoteDatabaseExists
     return NO;
 }
 
@@ -400,14 +401,14 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
                    replication:(CBLReplication *__autoreleasing *)replication
                          error:(NSError *__autoreleasing *)err
 {
-    CBLManager *server = [[CBLManager alloc] initWithDirectory:path options:nil error:err];
+    CBLManager *server = [[CBLManager alloc] initWithDirectory:[path stringByDeletingLastPathComponent] options:nil error:err];
     if (!server)
     {
         return NO;
     }
     
-    CBLDatabase *db = [server databaseNamed:path.lastPathComponent.stringByDeletingPathExtension error:err];
-    
+    CBLDatabase *db = [server databaseNamed:[[path lastPathComponent] stringByDeletingPathExtension]
+                                      error:err];
     if (!db)
     {
         return NO;
