@@ -41,13 +41,13 @@
     return self;
 }
 
-+ (NSString *)idForSnapshotWithName:(NSString *)name inDatabase:(CouchDatabase *)db
++ (NSString *)idForSnapshotWithName:(NSString *)name inDatabase:(CBLDatabase *)db
 {
     assert(name);
     return [NSString stringWithFormat:@"%@:%@", NSStringFromClass([self class]), name];
 }
 
-- (NSString *)idForNewDocumentInDatabase:(CouchDatabase *)db
+- (NSString *)idForNewDocumentInDatabase:(CBLDatabase *)db
 {
     assert(__name);
     return [[self class] idForSnapshotWithName:__name inDatabase:db];
@@ -110,7 +110,7 @@
 
 + (NSString *)idForSnapshottedObjectWithDocumentID:(NSString *)documentID
                                         revisionID:(NSString *)revisionID
-                                        inDatabase:(CouchDatabase *)db
+                                        inDatabase:(CBLDatabase *)db
 {
     assert(documentID);
     assert(revisionID);
@@ -118,7 +118,7 @@
             NSStringFromClass(self), documentID, revisionID];
 }
 
-- (NSString *)idForNewDocumentInDatabase:(CouchDatabase *)db
+- (NSString *)idForNewDocumentInDatabase:(CBLDatabase *)db
 {
     assert(__snapshottedDocumentID);
     assert(__snapshottedRevisionID);
@@ -181,7 +181,7 @@
 @interface MPSnapshottedAttachment ()
 @property (readwrite, copy) NSString *sha;
 @property (readwrite, copy) NSString *contentType;
-@property (readwrite, strong) CouchAttachment *attachment;
+@property (readwrite, strong) CBLAttachment *attachment;
 @end
 
 @implementation MPSnapshottedAttachment
@@ -192,12 +192,13 @@
 }
 
 - (instancetype)initWithSnapshotsController:(MPSnapshotsController *)controller
-                       attachment:(CouchAttachment *)attachment
+                                 attachment:(CBLAttachment *)attachment
+                                      error:(NSError **)err
 {
     assert(controller);
     assert(attachment);
     
-    NSData *attachmentBody = attachment.body;
+    NSData *attachmentBody = attachment.content;
     assert(attachmentBody);
     
     NSString *shaDigest = [attachmentBody sha1DigestString];
@@ -216,11 +217,13 @@
         NSString *contentType = attachment.contentType;
         assert(contentType);
         
-        [[self save] wait];
+        if (![self save:err])
+            return nil;
         
         self.sha = shaDigest;
         self.contentType = [attachment contentType];
-        self.attachment = [self createAttachmentWithName:@"attachment" type:contentType body:attachmentBody];
+        
+        [self setAttachmentNamed:@"attachment" withContentType:contentType content:attachmentBody];
     }
     
     return self;

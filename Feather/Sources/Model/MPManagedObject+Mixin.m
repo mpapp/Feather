@@ -40,7 +40,7 @@
     for (NSUInteger i = 0; i < protocolCount; i++)
     {
         Protocol *conformingProtocol = conformingProtocols[i];
-        NSString *conformingProtocolName = [NSString stringWithUTF8String:protocol_getName(conformingProtocol)];
+        NSString *conformingProtocolName = @(protocol_getName(conformingProtocol));
         
         if (patternBlock(conformingProtocolName))
         {
@@ -59,9 +59,9 @@
     {
         objc_property_t prop = props[i];
         const char *propName = property_getName(prop);
-        NSString *propNameStr = [NSString stringWithUTF8String:propName];
+        NSString *propNameStr = @(propName);
         const char *attribs = property_getAttributes(prop);
-        NSString *attribStr = [NSString stringWithUTF8String:attribs];
+        NSString *attribStr = @(attribs);
         
         [self implementPropertyWithName:propNameStr attributeString:attribStr overloadMethods:overloadMethods];
         
@@ -139,9 +139,10 @@
                                NSString *objectID = [_self getValueOfProperty:propNameStr];
                                if (!objectID) return nil;
                                Class moClass = [MPManagedObject managedObjectClassFromDocumentID:objectID];
-                               CouchDatabase *db = [_self databaseForModelProperty:propNameStr];
-                               MPManagedObject *mo = [moClass modelForDocument:[db getDocumentWithID:objectID]];
-                               return mo;
+                               CBLDatabase *db = [_self databaseForModelProperty:propNameStr];
+                               CBLDocument *doc = [db existingDocumentWithID:objectID];
+                               assert([doc.modelObject isKindOfClass:moClass]);
+                               return (MPManagedObject *)doc.modelObject;
                            }
                            setterImplementation:^(MPManagedObject *_self, MPManagedObject *setObj) {
                                [_self setValue:[setObj.document documentID] ofProperty:propNameStr];
@@ -290,7 +291,7 @@
     }
     
     //e.g. @@, q@
-    NSString *getterNameStr = [NSString stringWithUTF8String:getterName];
+    NSString *getterNameStr = @(getterName);
     SEL getterSel = NSSelectorFromString(getterNameStr);
     
     if (!class_getInstanceMethod(self, getterSel))
@@ -317,12 +318,12 @@
             
             // construct 'setPropertyName:'
             strncpy(setterName, "set", 3);
-            strncpy(&setterName[3], [[[NSString stringWithUTF8String:propName] stringByMakingSentenceCase] UTF8String], propNameLen);
+            strncpy(&setterName[3], [[@(propName) stringByMakingSentenceCase] UTF8String], propNameLen);
             strncpy(&setterName[propNameLen + 3], ":\0", 2);
         }
         
         //e.g. v@:@, vq:@
-        NSString *setterNameStr = [NSString stringWithUTF8String:setterName];
+        NSString *setterNameStr = @(setterName);
         SEL setterSel = NSSelectorFromString(setterNameStr);
         
         if (!class_getInstanceMethod(self, setterSel))

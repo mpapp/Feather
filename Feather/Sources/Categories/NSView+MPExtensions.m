@@ -72,6 +72,12 @@ typedef NS_ENUM(NSUInteger, MPViewDimension)
                                              topOffset:0 rightOffset:0 bottomOffset:0 leftOffset:0];
 }
 
+- (void)replaceSubviewsWithSubviewConstrainedToSuperViewEdges:(NSView *)subview
+{
+    [self setSubviews:@[]];
+    [self addSubviewConstrainedToSuperViewEdges:subview];
+}
+
 - (void)addSubviewConstrainedToSuperViewEdges:(NSView *)aView
                                     topOffset:(CGFloat)topOffset
                                   rightOffset:(CGFloat)rightOffset
@@ -290,6 +296,36 @@ typedef NS_ENUM(NSUInteger, MPViewDimension)
 {
     self.hidden = NO;
     [MPAnimatorOrConstraint(self.heightConstraint, animate) setConstant:height];
+}
+
+- (NSString *)superviewPathString
+{
+    NSMutableString *ms = [NSMutableString string];
+    
+    for (NSView *view in [self superviewPath])
+    {
+        [ms appendString:NSStringFromClass(view.class)];
+        if (view.identifier)
+            [ms appendFormat:@" (%@)", view.identifier];
+        if (view != self)
+            [ms appendString:@" > "];
+    }
+    
+    return ms;
+}
+
+- (NSArray *)superviewPath
+{
+    NSMutableArray *path = [NSMutableArray array];
+    NSView *view = self;
+    
+    while (view)
+    {
+        [path insertObject:view atIndex:0];
+        view = view.superview;
+    }
+    
+    return path;
 }
 
 @end

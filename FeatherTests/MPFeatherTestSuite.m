@@ -10,12 +10,26 @@
 #import <Feather/MPManagedObject.h>
 
 #import "MPFeatherTestSuite.h"
+#import "MPFeatherTestClasses.h"
 #import <Feather/NSBundle+MPExtensions.h>
 #import <Feather/NSArray+MPExtensions.h>
 #import <Feather/MPDatabasePackageController+Protected.h>
 #import "RegexKitLite.h"
 
 @implementation MPFeatherTestSuite
+
++ (void)initialize
+{
+    if (self == [MPFeatherTestSuite class])
+    {
+        [MPFeatherTestPackageController class]; // this will cause shoebox class initialisation.
+    }
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
 
 - (void)setUp
 {

@@ -46,8 +46,7 @@
     XCTAssertTrue(obj.needsSave, @"Embedding object should be marked needing save.");
     XCTAssertTrue(obj.embeddedTestObject, @"Embedded object should be marked needing save.");
     
-    id<MPWaitingOperation> saveOp = [obj.embeddedTestObject save];
-    XCTAssertTrue([saveOp wait], @"Setting the embedded object succeeds.");
+    XCTAssertTrue([obj.embeddedTestObject save:nil], @"Setting the embedded object succeeds.");
     
     XCTAssertTrue(!obj.embeddedTestObject.needsSave,
                  @"Embedded object doesn't need saving after saving.");
@@ -83,13 +82,14 @@
     XCTAssertTrue(obj.embeddedTestObject.properties[@"aStringTypedProperty"] != nil,
                  @"aStringTypedProperty is present in the embedded object's properties.");
     
-    [[obj.embeddedTestObject save] wait];
+    NSError *err = nil;
+    XCTAssertTrue([obj.embeddedTestObject save:&err], @"Embedded object saving succeeds.");
 
     XCTAssertTrue(!obj.embeddedTestObject.needsSave, @"Managed object property value has been set and object doesn't need saving.");
     obj.embeddedTestObject.embeddedManagedObjectProperty = obj;
     XCTAssertTrue(obj.embeddedTestObject.needsSave, @"Managed object property value has been set and object needs saving.");
     
-    [[obj.embeddedTestObject save] wait];
+    XCTAssertTrue([obj.embeddedTestObject save:&err], @"Embedded object saving succeeds.");
 
     XCTAssertTrue(!obj.needsSave, @"Managed object property value has been set and embedding object no longer needs saving.");
     XCTAssertTrue(!obj.embeddedTestObject.needsSave, @"Managed object property value has been set and object no longer needs saving.");
@@ -106,26 +106,14 @@
     XCTAssertTrue([[[obj embeddedTestObject] embeddedArrayOfTestObjects] containsObject:foo], @"Array contains the expected object");
     XCTAssertTrue([[[obj embeddedTestObject] embeddedArrayOfTestObjects] count] == 1, @"Array contains only the expected object");
     
-    [[obj save] wait];
+    XCTAssertTrue([obj save:nil], @"Saving the object succeeds.");
     
     NSLog(@"Object: %@", [[obj embeddedTestObject] embeddedArrayOfTestObjects]);
     
     XCTAssertTrue(![obj needsSave], @"Object no longer needs saving");
     XCTAssertTrue(![obj.embeddedTestObject needsSave], @"Object no longer needs saving");
 
-    NSArray *objsByTitle = [tpkg.searchIndexController objectsWithMatchingTitle:@"foo"];
-    XCTAssertTrue(objsByTitle.count == 1, @"There are objects in the search index with matching");
-    
-    NSArray *objsByDesc = [tpkg.searchIndexController objectsWithMatchingDesc:@"bar"];
-    XCTAssertTrue(objsByDesc.count == 1, @"There are objects in the search index with matching");
-    
-    [[obj deleteDocument] wait];
-    
-    objsByTitle = [tpkg.searchIndexController objectsWithMatchingTitle:@"foo"];
-    XCTAssertTrue(objsByTitle.count == 0, @"There should be no objects in the search index with matching title any longer");
-    
-    objsByDesc = [tpkg.searchIndexController objectsWithMatchingDesc:@"bar"];
-    XCTAssertTrue(objsByDesc.count == 0, @"There should be no objects in the search index with matching desc any longer");
+    XCTAssertTrue([obj deleteDocument:nil], @"Deleting the document succeeds");
     
 }
 

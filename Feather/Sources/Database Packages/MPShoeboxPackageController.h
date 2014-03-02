@@ -44,6 +44,9 @@ extern NSString * const MPDefaultsKeySharedPackageUDID;
 /** Register the subclass of MPShoeboxPackageController used by this application. Should be called exactly once in the +initialize of the subclass, with itself given as the argument. */
 + (void)registerShoeboxPackageControllerClass:(Class)class;
 
+/** The currently registered shared shoebox package controller class. */
++ (Class)sharedShoeboxPackageControllerClass;
+
 /** The base directory for the shoebox's data. */
 + (NSString *)sharedDatabasesPath;
 

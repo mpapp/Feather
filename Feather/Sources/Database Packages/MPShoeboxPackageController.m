@@ -16,6 +16,8 @@
 #import "MPManagedObject+Protected.h"
 #import "NSObject+MPExtensions.h"
 #import "NSFileManager+MPExtensions.h"
+#import "NSNotificationCenter+ErrorNotification.h"
+
 #import "MPException.h"
 
 NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUDID";
@@ -32,7 +34,9 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
 
 - (instancetype)initWithError:(NSError *__autoreleasing *)err
 {
-    if (self = [super initWithPath:[[self class] sharedDatabasesPath] delegate:nil error:err])
+    self = [super initWithPath:[[self class] sharedDatabasesPath] readOnly:NO delegate:nil error:err];
+    
+    if (self)
     {
         assert(self.server);
         assert(_sharedDatabase);
@@ -44,45 +48,40 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
         if (!identifier)
         {
             [_sharedDatabase.metadata setValue:[[NSUUID UUID] UUIDString] ofProperty:@"identifier"];
-            [[[_sharedDatabase metadata] save] wait];
+            if (![[_sharedDatabase metadata] save:err])
+                return nil;
         }
         
         /* The global database is _not_ a TouchDB server but a CouchDB server. */
         
         // wait for possible further subclass initialisation to finish.
         dispatch_async(dispatch_get_main_queue(), ^{
-            
             if (self.synchronizesWithRemote)
             {
-                _globalSharedDatabaseServer
-                    = [[CouchServer alloc] initWithURL:[self remoteURL]];
-                
-                _globalSharedDatabase
-                    = [[MPDatabase alloc] initWithServer:_globalSharedDatabaseServer
-                                       packageController:self name:[self remoteGlobalSharedDatabaseName]
-                                           ensureCreated:NO
-                                                   error:err];
-                    
+                NSDictionary *errDict = nil;
                 if ([self synchronizesUserData])
-                    [self syncWithCompletionHandler:^(NSDictionary *errDict) { }];
-                
+                    [self syncWithRemote:&errDict];
                 
                 if ([self sharesUserData])
                 {
                     NSURL *url = [self remoteGlobalSharedDatabaseURL];
                     
-                    [_sharedDatabase pushPersistentlyToDatabaseAtURL:url
-                                                        continuously:YES
-                                               withCompletionHandler:^(NSError *err) { }];
-                    [_sharedDatabase pullPersistentlyFromDatabaseAtURL:url
-                                                          continuously:YES
-                                                 withCompletionHandler:^(NSError *err) { }];
+                    CBLReplication *push = nil;
+                    NSError *pushErr = nil;
+                    
+                    CBLReplication *pull = nil;
+                    NSError *pullErr = nil;
+                    [_sharedDatabase pushToDatabaseAtURL:url replication:&push error:&pushErr];
+                    [_sharedDatabase pullFromDatabaseAtURL:url replication:&pull error:&pullErr];
+                    
+                    if (pushErr)
+                        [self.notificationCenter postErrorNotification:pushErr];
+                    
+                    if (pullErr)
+                        [self.notificationCenter postErrorNotification:pullErr];
                 }
             }
         });
-    }
-    else {
-        return nil;
     }
     
     return self;
@@ -111,7 +110,8 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
 + (NSString *)sharedDatabasesPath
 {
     NSFileManager *fm = [NSFileManager defaultManager];
-    return [[fm applicationSupportFolder] stringByAppendingPathComponent:[[NSBundle appBundle] bundleNameString]];
+    NSString *path = [[fm applicationSupportFolder] stringByAppendingPathComponent:[[NSBundle appBundle] bundleNameString]];
+    return path;
 }
 
 + (BOOL)createSharedDatabasesPathWithError:(NSError **)err
@@ -119,9 +119,13 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
     NSFileManager *fm = [NSFileManager defaultManager];
     BOOL isDir = NO;
     
-    NSString *containingDir = [[self sharedDatabasesPath] stringByDeletingLastPathComponent];
-    if ([fm fileExistsAtPath:containingDir isDirectory:&isDir] && isDir &&
-        [fm fileExistsAtPath:[self sharedDatabasesPath]]) return YES;
+    NSString *sharedDatabasesPath = [self sharedDatabasesPath];
+    NSString *containingDir = [sharedDatabasesPath stringByDeletingLastPathComponent];
+    
+    if ([fm fileExistsAtPath:containingDir isDirectory:&isDir] && isDir && [fm fileExistsAtPath:sharedDatabasesPath])
+    {
+        return YES;
+    }
     
     if (!isDir)
     { if (err)
@@ -176,17 +180,22 @@ static Class _shoeboxPackageControllerClass = nil;
 
 + (void)registerShoeboxPackageControllerClass:(Class)class
 {
-    assert(!_shoeboxPackageControllerClass);
+    assert(!_shoeboxPackageControllerClass || [class isSubclassOfClass:_shoeboxPackageControllerClass]);
     
     // is non-nil, and subclass of shoebox controller (and not the abstract base class itself)
     assert(class &&
            [class isSubclassOfClass:[MPShoeboxPackageController class]] &&
            (class != [MPShoeboxPackageController class]));
     
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    //static dispatch_once_t onceToken;
+    //dispatch_once(&onceToken, ^{
         _shoeboxPackageControllerClass = class;
-    });
+    //});
+}
+
++ (Class)sharedShoeboxPackageControllerClass
+{
+    return _shoeboxPackageControllerClass;
 }
 
 static MPShoeboxPackageController *_sharedInstance = nil;
@@ -260,7 +269,7 @@ static dispatch_once_t onceToken;
     return [self applyFilterWhenPullingFromDatabaseAtURL:url toDatabase:database];
 }
 
-- (TD_FilterBlock)createPushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db{
+- (CBLFilterBlock)createPushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db{
     assert(filterName);
     assert([filterName isEqualToString:[self pushFilterNameForDatabaseNamed:db.name]]);
     assert(db);
@@ -268,12 +277,15 @@ static dispatch_once_t onceToken;
     
     if ([filterName isEqualToString:[self pushFilterNameForDatabaseNamed:db.name]])
     {
-        [db defineFilterNamed:filterName block:^BOOL(TD_Revision *revision, NSDictionary *params)
-         {
-             return [revision.properties[@"shared"] boolValue];
-         }];
+        [db.database setFilterNamed:
+            [self qualifiedFilterNameForFilterName:filterName database:db]
+                            asBlock:
+         ^BOOL(CBLSavedRevision *revision, NSDictionary *params)
+        {
+            return [revision.properties[@"shared"] boolValue];
+        }];
         
-        TD_FilterBlock block = [db filterWithName:filterName];
+        CBLFilterBlock block = [db filterWithQualifiedName:filterName];
         assert(block);
         return block;
     }
@@ -282,11 +294,18 @@ static dispatch_once_t onceToken;
     return nil;
 }
 
-- (TD_FilterBlock)pushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db
+- (NSString *)qualifiedFilterNameForFilterName:(NSString *)filterName database:(MPDatabase *)db
+{
+    return [NSString stringWithFormat:@"%@/%@", db.name, filterName];
+}
+
+- (CBLFilterBlock)pushFilterBlockWithName:(NSString *)filterName
+                              forDatabase:(MPDatabase *)db
 {
     assert(db);
-    TD_FilterBlock block = [db filterWithName:filterName];
-    if (block) return block;
+    CBLFilterBlock block = [db filterWithQualifiedName:filterName];
+    if (block)
+        return block;
     
     block = [self createPushFilterBlockWithName:filterName forDatabase:db];
     //assert(block);

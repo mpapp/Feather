@@ -25,5 +25,6 @@
 #import <Feather/NSSet+MPExtensions.h>
 
 #import <Feather/NSDictionary+MPManagedObjectExtensions.h>
+#import <Feather/NSNotificationCenter+ErrorNotification.h>
 
 #import "MPException.h"

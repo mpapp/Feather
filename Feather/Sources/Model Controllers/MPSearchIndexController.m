@@ -25,12 +25,13 @@
 #import "NSArray+MPExtensions.h"
 
 #import <FMDatabase.h>
+#import <FMResultSet.h>
 
 NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerErrorDomain";
 
 @interface MPSearchIndexController ()
 @property (readwrite, weak) MPDatabasePackageController *packageController;
-@property (readwrite, strong) FMDatabase *searchIndexDatabase;
+@property (readwrite, strong) CBL_FMDatabase *searchIndexDatabase;
 @property (readwrite, strong) dispatch_queue_t indexQueue;
 @property (readwrite, strong) NSError *lastError;
 @end
@@ -100,7 +101,7 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
     return [self.packageController.path stringByAppendingPathComponent:@"search-index.fts"];
 }
 
-+ (NSDictionary *)errorDictionaryForLastError:(FMDatabase *)db
++ (NSDictionary *)errorDictionaryForLastError:(CBL_FMDatabase *)db
 {
     return @{@"code":@([db lastErrorCode] ? [db lastErrorCode] : 0), NSLocalizedDescriptionKey:[db lastErrorMessage] ? [db lastErrorMessage] : @""};
 }
@@ -113,8 +114,14 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
     
     BOOL dbSuccess = YES;
 		
-    FMDatabase *db = [FMDatabase databaseWithPath:self.path];
-    dbSuccess = [db open];
+    CBL_FMDatabase *db = [CBL_FMDatabase databaseWithPath:self.path];
+    
+    int flags =  SQLITE_OPEN_FILEPROTECTION_COMPLETEUNLESSOPEN
+                 | SQLITE_OPEN_READWRITE
+                 | SQLITE_OPEN_CREATE;
+    
+    dbSuccess = [db openWithFlags:flags];
+    
     if (!dbSuccess)
     {
         if (err)
@@ -149,7 +156,8 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
 {
     BOOL successful = YES;
     
-    [self.searchIndexDatabase beginTransaction];
+    #warning re-introduce transaction support.
+    //[self.searchIndexDatabase beginTransaction];
     
     {
         for (MPManagedObject *mo in objects)
@@ -159,10 +167,11 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
         }
     }
     
-    if (!successful)
-        [self.searchIndexDatabase rollback];
-    else
-        [self.searchIndexDatabase commit];
+    #warning re-introduce transaction support.
+    //if (!successful)
+    //    [self.searchIndexDatabase rollback];
+    //else
+    //    [self.searchIndexDatabase commit];
 }
 
 - (BOOL)indexManagedObject:(MPManagedObject *)object error:(NSError *__autoreleasing *)err
@@ -271,7 +280,7 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
     return success;
 }
 
-- (NSArray *)objectsForResultSet:(FMResultSet *)results
+- (NSArray *)objectsForResultSet:(CBL_FMResultSet *)results
 {
     NSMutableArray *objects = [NSMutableArray arrayWithCapacity:100];
     while ([results next])
@@ -297,7 +306,7 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
 {
     assert(title);
     
-    __block FMResultSet *results = nil;
+    __block CBL_FMResultSet *results = nil;
     
     dispatch_sync(_indexQueue, ^{
         results = [self.searchIndexDatabase executeQuery:@"SELECT DISTINCT _id,objectType FROM search_data WHERE search_data MATCH ?"
@@ -319,7 +328,7 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
 {
     assert(desc);
     
-    __block FMResultSet *results = nil;
+    __block CBL_FMResultSet *results = nil;
     
     dispatch_sync(_indexQueue, ^{
         results = [self.searchIndexDatabase executeQuery:
@@ -343,7 +352,7 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
 {
     assert(contents);
     
-    __block FMResultSet *results = nil;
+    __block CBL_FMResultSet *results = nil;
     
     dispatch_sync(_indexQueue, ^{
         [self.searchIndexDatabase executeQuery:
@@ -364,7 +373,7 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
 
 - (NSArray *)objectsMatchingQuery:(NSString *)query
 {
-    __block FMResultSet *results = nil;
+    __block CBL_FMResultSet *results = nil;
     
     dispatch_sync(_indexQueue, ^{
         results = [self.searchIndexDatabase executeQuery:

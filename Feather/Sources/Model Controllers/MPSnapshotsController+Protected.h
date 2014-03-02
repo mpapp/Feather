@@ -28,7 +28,8 @@
 /** A weak back pointer to this controller's snapshots controller (always non-nil). */
 @property (readonly, weak) MPSnapshotsController *snapshotsController;
 
-- (instancetype)initWithSnapshotsController:(MPSnapshotsController *)controller;
+- (instancetype)initWithSnapshotsController:(MPSnapshotsController *)controller
+                                      error:(NSError **)err;
 
 /** Returns the snapshotted objects for a snapshot.
   * @param snapshot The snapshot for which to return snapshotted objects for. */
@@ -45,7 +46,7 @@
 /** A weak back pointer to this controller's snapshots controller (always non-nil). */
 @property (readonly, weak) MPSnapshotsController *snapshotsController;
 
-- (instancetype)initWithSnapshotsController:(MPSnapshotsController *)controller;
+- (instancetype)initWithSnapshotsController:(MPSnapshotsController *)controller error:(NSError **)err;
 
 /** Returns the snapshotted attachments for a snapshot. 
   * @param snapshot The snapshot for which to return snapshotted objects for. */

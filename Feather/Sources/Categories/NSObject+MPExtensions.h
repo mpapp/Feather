@@ -9,7 +9,15 @@
 #import <Foundation/Foundation.h>
 
 
-extern inline id MPNilToObject(id object, id defaultObject);
+NS_INLINE id MPNilToObject(id object, id defaultObject)
+{
+    return (object != nil) ? object : defaultObject;
+}
+
+NS_INLINE id MPNilToNSNull(id object)
+{
+    return MPNilToObject(object, NSNull.null);
+}
 
 
 @interface NSObject (Feather)

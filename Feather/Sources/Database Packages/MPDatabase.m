@@ -13,44 +13,52 @@
 #import "MPDatabasePackageController.h"
 #import "MPDatabasePackageController+Protected.h"
 
+#import <Feather/Feather.h>
 #import <Feather/MPManagedObject+Protected.h>
 #import "RegexKitLite.h"
 
 #import "NSArray+MPExtensions.h"
-#import <Feather/NSBundle+MPExtensions.h>
 #import "MPException.h"
+
+#import <Feather/NSNotificationCenter+MPExtensions.h>
+#import <Feather/NSNotificationCenter+ErrorNotification.h>
+#import <Feather/NSBundle+MPExtensions.h>
+
+#import <CouchbaseLite/CouchbaseLite.h>
 
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-#import <CouchCocoa/CouchCocoa.h>
-#import <CouchCocoa/CouchReplication.h>
-#import <TouchDB/TouchDB.h>
+#import <CouchbaseLite/Logging.h>
 
 NSString * const MPDatabaseErrorDomain = @"MPDatabaseErrorDomain";
-
 NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; //same name used in serverside CouchDB.
 
 @interface MPDatabase ()
 {
-    CouchDesignDocument *_primaryDesignDocument;
-    CouchChangeTracker *_changeTracker;
-    NSTimer *_replicationRestartTimer;
 }
 
 @property (readonly, strong) dispatch_queue_t queryQueue;
 @property (readwrite, strong) MPMetadata *cachedMetadata;
 @property (readwrite, strong) MPLocalMetadata *cachedLocalMetadata;
 
+
+/** Currently ongoing one-off pull replications. Used when opening a database from a remote. */
+@property (readonly, strong) NSMutableSet *currentPulls;
+
+/** Currently ongoing one-off push replications. */
+@property (readonly, strong) NSMutableSet *currentPushes;
+
+
 @end
 
 @implementation MPDatabase
 
-- (instancetype)initWithServer:(CouchServer *)server
-  packageController:(MPDatabasePackageController *)packageController
-                name:(NSString *)name
-       ensureCreated:(BOOL)ensureCreated
-               error:(NSError **)err
+- (instancetype)initWithServer:(CBLManager *)server
+             packageController:(MPDatabasePackageController *)packageController
+                          name:(NSString *)name
+                 ensureCreated:(BOOL)ensureCreated
+                         error:(NSError **)err
 {
     return [self initWithServer:server packageController:packageController name:name
                   ensureCreated:ensureCreated
@@ -59,121 +67,120 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
                           error:err];
 }
 
-- (instancetype)initWithServer:(CouchServer *)server
-  packageController:(MPDatabasePackageController *)packageController
-                name:(NSString *)name
-       ensureCreated:(BOOL)ensureCreated
-      pushFilterName:(NSString *)pushFilterName
-      pullFilterName:(NSString *)pullFilterName
-               error:(NSError **)err
+- (instancetype)initWithServer:(CBLManager *)server
+             packageController:(MPDatabasePackageController *)packageController
+                          name:(NSString *)name
+                 ensureCreated:(BOOL)ensureCreated
+                pushFilterName:(NSString *)pushFilterName
+                pullFilterName:(NSString *)pullFilterName
+                         error:(NSError **)err
 {
     if (self = [super init])
     {
+        EnableLogTo(CBLReplication, YES);
+        EnableLogTo(Sync, YES);
+        
         _server = server;
         
         _name = name;
         
         _packageController = packageController;
         
-        _database = [_server databaseNamed:[MPDatabase sanitizedDatabaseIDWithString:name]];
-        
-        if (ensureCreated)
-            if (![_database ensureCreated:err]) return nil;
+        NSError *err = nil;
+        _database = [_server databaseNamed:[MPDatabase sanitizedDatabaseIDWithString:name] error:&err];
         
         objc_setAssociatedObject(_database, "dbp", self, OBJC_ASSOCIATION_ASSIGN);
         
-        _currentPersistentPulls = [NSMutableArray arrayWithCapacity:5];
-        _currentPullOperations = [NSMutableArray arrayWithCapacity:5];
-        _currentPushOperations = [NSMutableArray arrayWithCapacity:5];
-        _currentPersistentPushes = [NSMutableArray arrayWithCapacity:5];
-        _currentOneOffPulls = [NSMutableArray arrayWithCapacity:5];
-        _currentOneOffPushes = [NSMutableArray arrayWithCapacity:5];
+        _currentPulls = [NSMutableSet setWithCapacity:5];
+        _currentPushes = [NSMutableSet setWithCapacity:5];
         
         _queryQueue =
             dispatch_queue_create(
-                [[NSString stringWithFormat:@"com.piipari.db[%@][%@]", server.URL.path, name] UTF8String],
+                [[NSString stringWithFormat:@"com.piipari.db[%@][%@]", server.internalURL.path, name] UTF8String],
                                   DISPATCH_QUEUE_SERIAL);
-        
-        _database.tracksChanges = YES;
-        
+                
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(databaseDidChange:)
-                                                     name:kCouchDatabaseChangeNotification
+                                                     name:kCBLDatabaseChangeNotification
                                                    object:_database];
-        
-        [_database onChange:^(CouchDocument *doc, BOOL externalChange) {
-            assert(_packageController);
-            [_packageController didChangeDocument:doc source:externalChange ? MPManagedObjectChangeSourceExternal : MPManagedObjectChangeSourceAPI];
-        }];
-        
+         
         _pushFilterName = pushFilterName;
         _pullFilterName = pullFilterName;
         
-        if ([server isKindOfClass:[CouchTouchDBServer class]])
+         __weak MPDatabase *slf = self;
+         
+         [self.database setValidationNamed:@"validate-managed-object"
+         asBlock:^(CBLRevision *newRevision, id<CBLValidationContext> context) {
+             MPDatabase *strongSelf = slf;
+             [strongSelf validateRevision:newRevision validationContext:context];
+         }];
+         
+         // used for backbone-couchdb bridging
+         [[self.database viewNamed:@"by-object-type"]
+          setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
         {
-            [self.primaryDesignDocument setValidationBlock:
-             ^BOOL(TD_Revision *newRevision, id<TD_ValidationContext> context)
-             {
-                 if (newRevision.deleted) return YES;
-                 
-                 BOOL managedObjectTypeIncluded = newRevision.properties.managedObjectType != nil;
-                 
-                 BOOL idHasValidPrefix = NO;
-                 if (managedObjectTypeIncluded)
-                     idHasValidPrefix = [newRevision.docID hasPrefix:newRevision.properties.managedObjectType];
-                 
-                 if (managedObjectTypeIncluded)
-                 {
-                     if (!idHasValidPrefix)
-                     {
-                         NSLog(@"Attempting to save a managed object '%@' without object type as a prefix in _id -- this will fail: %@",
-                               newRevision.docID, [newRevision properties]);
-                         return NO;
-                     }
-                     
-                     Class cls = NSClassFromString(newRevision.properties.managedObjectType);
-                     if (!cls)
-                     {
-                         NSLog(@"Attempting to save a managed object '%@' with an unexpected object type '%@' -- this will fail.",
-                               newRevision.docID, newRevision.properties.managedObjectType);
-                         return NO;
-                     }
-                     else
-                     {
-                         if (![cls validateRevision:newRevision])
-                         {
-                             NSLog(@"Attempting to save a managed object '%@' which does not validate as %@ -- this will fail.",
-                                   newRevision.docID, NSStringFromClass(cls));
-                             return NO;
-                         }
-                     }
-                     
-                     return idHasValidPrefix;
-                 }
-                 
-                 if (!idHasValidPrefix)
-                     idHasValidPrefix = [newRevision.docID hasPrefix:@"MPMetadata"];
-                 
-                 if (!idHasValidPrefix)
-                     idHasValidPrefix = [newRevision.docID hasPrefix:@"MPLocalMetadata"];
-                 
-                 if (!idHasValidPrefix)
-                     NSLog(@"Attempting to save an object '%@' without the expected _id prefix -- this will fail: %@",
-                           newRevision.docID, [newRevision properties]);
-                     
-                 return idHasValidPrefix;
-             }];
-        }
-        
-        
+            if (doc[@"objectType"])
+                emit(doc[@"objectType"], doc);
+        } version:@"1.0"];
     }
     
     return self;
 }
+         
+ - (BOOL)validateRevision:(CBLRevision *)newRevision validationContext:(id<CBLValidationContext>)context
+ {
+     if (newRevision.isDeletion) return YES;
+     
+     BOOL managedObjectTypeIncluded = newRevision.properties.managedObjectType != nil;
+     
+     BOOL idHasValidPrefix = NO;
+     if (managedObjectTypeIncluded)
+         idHasValidPrefix = [newRevision.document.documentID hasPrefix:newRevision.properties.managedObjectType];
+     
+     if (managedObjectTypeIncluded)
+     {
+         if (!idHasValidPrefix)
+         {
+             NSLog(@"Attempting to save a managed object '%@' without object type as a prefix in _id -- this will fail: %@", newRevision.document.documentID, [newRevision properties]);
+             return NO;
+         }
+         
+         Class cls = NSClassFromString(newRevision.properties.managedObjectType);
+         if (!cls)
+         {
+             NSLog(@"Attempting to save a managed object '%@' with an unexpected object type '%@' -- this will fail.",
+                   newRevision.document.documentID, newRevision.properties.managedObjectType);
+             return NO;
+         }
+         else
+         {
+             if (![cls validateRevision:newRevision])
+             {
+                 NSLog(@"Attempting to save a managed object '%@' which does not validate as %@ -- this will fail.",
+                       newRevision.document.documentID, NSStringFromClass(cls));
+                 return NO;
+             }
+         }
+         
+         return idHasValidPrefix;
+     }
+     
+     if (!idHasValidPrefix)
+         idHasValidPrefix = [newRevision.document.documentID hasPrefix:@"MPMetadata"];
+     
+     if (!idHasValidPrefix)
+         idHasValidPrefix = [newRevision.document.documentID hasPrefix:@"MPLocalMetadata"];
+     
+     if (!idHasValidPrefix)
+         NSLog(@"Attempting to save an object '%@' without the expected _id prefix -- this will fail: %@",
+               newRevision.document.documentID, newRevision.properties);
+     
+     return idHasValidPrefix;
+ }
 
 - (BOOL)validateFilters
 {
-    if (_pushFilterName && ![self filterWithName:self.pushFilterName])
+    if (_pushFilterName && ![self filterWithQualifiedName:self.pushFilterName])
     {
         // indicates a serious bug, should crash also release builds.
         @throw [NSException exceptionWithName:@"MPFilterValidationException"
@@ -186,55 +193,26 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     return YES;
 }
 
-- (CouchDesignDocument *)primaryDesignDocument
+- (void)defineFilterNamed:(NSString *)name block:(CBLFilterBlock)block
 {
-    if (!_primaryDesignDocument)
-    {
-        assert([self name]);
-        assert(self.database);
-        _primaryDesignDocument = [self.database designDocumentWithName:[self name]];
-        
-        // used for backbone-couchdb bridging
-        [_primaryDesignDocument defineViewNamed:@"by-object-type" mapBlock:^(NSDictionary *doc, TDMapEmitBlock emit) {
-            if (doc[@"objectType"])
-                emit(doc[@"objectType"], doc);
-        } version:@"1.0"];
-    }
-    
-    return _primaryDesignDocument;
-}
-
-// Filters defined via MPDatabase to not expose primaryDesignDocument in public interface.
-// This is so there is no temptation to add custom views / filters there.
-- (void)defineFilterNamed:(NSString *)name block:(TD_FilterBlock)block
-{
-    assert(![self.primaryDesignDocument filters][name]);
-    [self.primaryDesignDocument defineFilterNamed:name block:block];
-    
-    // GCD fun! The -defineFilterNamed: call above actually causes work to be scheduled on the TouchDB thread.
-    // this helps make it synchronized.
-    dispatch_semaphore_t synchronizer = dispatch_semaphore_create(0);
-    [(CouchTouchDBServer *)self.database.server tellTDDatabaseNamed:[self name] to:^(TD_Database *tdb) {
-        dispatch_semaphore_signal(synchronizer);
-    }];
-    
-    dispatch_semaphore_wait(synchronizer, DISPATCH_TIME_FOREVER);
+    assert(![self.database filterNamed:name]);
+    [self.database setFilterNamed:name asBlock:block];
 }
 
 - (void)dealloc
 {
     objc_removeAssociatedObjects(_database);
     
-    for (id persistentPull in _currentPersistentPulls)
+    for (id pull in _currentPulls)
     {
-        if ([persistentPull observationInfo])
-            [persistentPull removeObserver:self forKeyPath:@"completed" context:nil];
+        if ([pull observationInfo])
+            [pull removeObserver:self forKeyPath:@"completed" context:nil];
     }
     
-    for (id persistentPush in _currentPersistentPushes)
+    for (id push in _currentPushes)
     {
-        if ([persistentPush observationInfo])
-            [persistentPush removeObserver:self forKeyPath:@"completed" context:nil];
+        if ([push observationInfo])
+            [push removeObserver:self forKeyPath:@"completed" context:nil];
     }
     
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -265,6 +243,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 + (BOOL)validateRemoteDatabaseURL:(NSURL *)url error:(NSError **)err
 {
+    /*
     if (!url)
     {
         if (err)
@@ -274,7 +253,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         return NO;
     }
     
-    RESTOperation *dbInfo = [[CouchDatabase databaseWithURL:url] GET];
+    RESTOperation *dbInfo = [[CBLDatabase databaseWithURL:url] GET];
     
     __block NSError *validationError = nil;
     [dbInfo onCompletion:^{
@@ -287,7 +266,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         }
     }];
     [dbInfo wait];
-    
+    */
     return YES;
 }
 
@@ -299,163 +278,173 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 }
 - (NSString *)qualifiedPullFilterName { return self.pullFilterName; }
 
-- (TD_FilterBlock)filterWithName:(NSString *)name
+- (CBLFilterBlock)filterWithQualifiedName:(NSString *)name
 {
     assert(name);
-    __block TD_FilterBlock blk = nil;
-
-    dispatch_semaphore_t synchronizer = dispatch_semaphore_create(0);
-    [(CouchTouchDBServer *)self.database.server tellTDDatabaseNamed:[self name] to:^(TD_Database *tdb) {
-        blk = [tdb filterNamed:[NSString stringWithFormat:@"%@/%@", [self name], name]];
-        dispatch_semaphore_signal(synchronizer);
-    }];
-    
-    dispatch_semaphore_wait(synchronizer, DISPATCH_TIME_FOREVER);
-    return blk;
+    return [self.database filterNamed:[NSString stringWithFormat:@"%@/%@", self.name, name]];
 }
+
 
 - (BOOL)remoteDatabaseExists
 {
+    /*
     NSString *dbName = [self.remoteDatabaseURL lastPathComponent];
-    CouchDatabase *remoteDB = [CouchDatabase databaseNamed:dbName onServerWithURL:[self.packageController remoteURL]];
+    CBLDatabase *remoteDB = [CBLDatabase databaseNamed:dbName onServerWithURL:[self.packageController remoteURL]];
     RESTOperation *remoteDBInfo = [remoteDB GET];
     [remoteDBInfo onCompletion:^{}];
     [remoteDBInfo wait];
     
     return remoteDBInfo.response.statusCode == 200;
+     */
+    return NO;
 }
 
-- (void)pushToRemoteWithCompletionHandler:(void (^)(NSError *err))pushHandler
+- (BOOL)pushToRemote:(CBLReplication **)replication error:(NSError **)err
 {
     NSError *e = nil;
-    if (![MPDatabase validateRemoteDatabaseURL:self.remoteDatabaseURL error:&e]) { pushHandler(e); return; }
+    if (![MPDatabase validateRemoteDatabaseURL:self.remoteDatabaseURL error:&e])
+    {
+        return NO;
+    }
     
-    [self _pushToRemoteWithCompletionHandler:pushHandler];
+    return [self _pushToRemote:replication error:err];
 }
 
-- (void)_pushToRemoteWithCompletionHandler:(void (^)(NSError *err))pushHandler
+- (BOOL)_pushToRemote:(CBLReplication **)replication error:(NSError **)err
 {
-    [self pushToDatabaseAtURL:self.remoteDatabaseURL withCompletionHandler:pushHandler];
+    return [self pushToDatabaseAtURL:self.remoteDatabaseURL replication:replication error:err];
 }
 
-- (void)pushToDatabaseAtURL:(NSURL *)url
-       withCompletionHandler:(void (^)(NSError *err))pushHandler
+- (BOOL)pushToDatabaseAtURL:(NSURL *)url
+                replication:(CBLReplication **)replication
+                      error:(NSError *__autoreleasing *)err
 {
     [self validateFilters];
     
-    CouchReplication *oneOffPush = [self.database pushToDatabaseAtURL:url];
+    CBLReplication *oneOffPush = [self.database createPushReplication:url];
+    oneOffPush.continuous = NO;
     
     if ([self.packageController applyFilterWhenPushingToDatabaseAtURL:url fromDatabase:self])
         oneOffPush.filter = self.qualifiedPushFilterName;
     
-    [_currentOneOffPushes addObject:oneOffPush];
+    [_currentPushes addObject:oneOffPush];
     
-    RESTOperation *pushOperation = [oneOffPush start];
-    [_currentPushOperations addObject:pushOperation];
+    [oneOffPush start];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(replicationDidChange:)
+                                                 name:kCBLReplicationChangeNotification
+                                               object:oneOffPush];
     
-    [pushOperation onCompletion:^{
-        MPLog(@"Pushing to remote %@ finished.", self.remoteDatabaseURL);
-        [_currentPushOperations removeObject:pushOperation];
-        pushHandler(pushOperation.error);
-    }];
+    if (replication)
+        *replication = oneOffPush;
+    
+    return YES;
+}
+         
+- (void)replicationDidChange:(NSNotification *)notification
+{
+    CBLReplication *replication = notification.object;
+    MPLog(@"Pushing to remote %@ finished.", self.remoteDatabaseURL);
+    
+    if (replication.status == kCBLReplicationStopped)
+    {
+        [_currentPushes removeObject:replication];
+        [_currentPulls removeObject:replication];
+        
+        if (replication.lastError)
+        {
+            [[self.packageController notificationCenter] postErrorNotification:replication.lastError];
+        }
+        
+        // remove the observation once status reaches kCBLReplicationStopped
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:kCBLReplicationChangeNotification object:replication];
+    }
 }
 
-- (void)pushPersistentlyToDatabaseAtURL:(NSURL *)url continuously:(BOOL)continuously
-                  withCompletionHandler:(void (^)(NSError *))pushHandler
+- (BOOL)pullFromRemote:(CBLReplication **)replication error:(NSError **)err
+{
+    if (![MPDatabase validateRemoteDatabaseURL:self.remoteDatabaseURL error:err])
+        return NO;
+    
+    return [self _pullFromRemote:replication error:err];
+}
+
+- (BOOL)_pullFromRemote:(CBLReplication **)replication error:(NSError **)err
+{
+    return [self pullFromDatabaseAtURL:self.remoteDatabaseURL
+                           replication:replication
+                                 error:err];
+}
+
+- (BOOL)pullFromDatabaseAtURL:(NSURL *)url
+                  replication:(CBLReplication *__autoreleasing *)replication
+                        error:(NSError **)err
 {
     [self validateFilters];
     
-    CouchPersistentReplication *push = [self.database replicationToDatabaseAtURL:url];
-    
-    if ([self.packageController applyFilterWhenPushingToDatabaseAtURL:url fromDatabase:self])
-        push.filter = self.qualifiedPushFilterName;
-    
-    [_currentPersistentPushes addObject:push];
-    push.continuous = continuously;
-    
-    [self addObserver:self forPersistentReplication:push];
-}
-
-- (void)pullFromRemoteWithCompletionHandler:(void (^)(NSError *))pullHandler
-{
-    NSError *e = nil;
-    if (![MPDatabase validateRemoteDatabaseURL:self.remoteDatabaseURL error:&e]) { pullHandler(e); return; }
-    
-    [self _pullFromRemoteWithCompletionHandler:pullHandler];
-}
-
-- (void)_pullFromRemoteWithCompletionHandler:(void (^)(NSError *err))pullHandler
-{
-    [self pullFromDatabaseAtURL:self.remoteDatabaseURL withCompletionHandler:pullHandler];
-}
-
-- (void)pullFromDatabaseAtURL:(NSURL *)url
-        withCompletionHandler:(void (^)(NSError *))pullHandler
-{
-    [self validateFilters];
-    
-    CouchReplication *oneOffPull = [self.database pullFromDatabaseAtURL:url];
+    CBLReplication *oneOffPull = [self.database createPullReplication:url];
+    oneOffPull.continuous = NO;
     
     if ([self.packageController applyFilterWhenPullingFromDatabaseAtURL:url toDatabase:self])
         oneOffPull.filter = self.qualifiedPullFilterName;
     
-    [_currentOneOffPulls addObject:oneOffPull];
+    [oneOffPull start];
+    [_currentPulls addObject:oneOffPull];
     
-    RESTOperation *pullOperation = [oneOffPull start];
-    [_currentPullOperations addObject:pullOperation];
+    if (replication)
+        *replication = oneOffPull;
     
-    [pullOperation onCompletion:^{
-        MPLog(@"Pushing to remote %@ finished.", self.remoteDatabaseURL);
-        [_currentPullOperations removeObject:pullOperation];
-        pullHandler(pullOperation.error);
-    }];
+    return YES;
 }
 
-- (void)pullPersistentlyFromDatabaseAtURL:(NSURL *)url continuously:(BOOL)continuously
-        withCompletionHandler:(void (^)(NSError *))pullHandler
+- (BOOL)pullFromDatabaseAtPath:(NSString *)path
+                   replication:(CBLReplication *__autoreleasing *)replication
+                         error:(NSError *__autoreleasing *)err
 {
-    [self validateFilters];
+    CBLManager *server = [[CBLManager alloc] initWithDirectory:[path stringByDeletingLastPathComponent] options:nil error:err];
+    if (!server)
+    {
+        return NO;
+    }
     
-    CouchPersistentReplication *pull = [self.database replicationFromDatabaseAtURL:url];
+    CBLDatabase *db = [server databaseNamed:[[path lastPathComponent] stringByDeletingPathExtension]
+                                      error:err];
+    if (!db)
+    {
+        return NO;
+    }
     
-    if ([self.packageController applyFilterWhenPullingFromDatabaseAtURL:url toDatabase:self])
-        pull.filter = self.qualifiedPullFilterName;
+    CBLReplication *repl = [db createPushReplication:self.database.internalURL];
+    repl.continuous = NO;
+    repl.createTarget = NO;
     
-    [_currentPersistentPulls addObject:pull];
-    pull.continuous = continuously;
+    [repl start];
     
-    [self addObserver:self forPersistentReplication:pull];
+    if (replication)
+        *replication = repl;
+    
+    return YES;
 }
-
-- (void)pullFromDatabaseAtPath:(NSString *)path withCompletionHandler:(void (^)(NSError *))pullHandler
-{
-    CouchServer *server = [[CouchTouchDBServer alloc] initWithServerPath:[path stringByDeletingLastPathComponent] options:nil];
-    CouchDatabase *db = [server databaseNamed:[[path lastPathComponent] stringByDeletingPathExtension]];
-    CouchReplication *repl = [db pushToDatabaseAtURL:self.database.URL];
-    [repl setContinuous:NO];
-    [repl setCreateTarget:NO];
-    
-    RESTOperation *replOp = [repl start];
-    [replOp onCompletion:^{
-        MPLog(@"Pull complete (%@).", repl.error);
-        pullHandler(repl.error);
-    }];
-}
-
-/*
-- (void)restartPersistentReplications:(NSTimer *)timer
-{
-    [_currentPersistentPull restart];
-    //[_currentPersistentPush restart];
-}
- */
 
 - (void)databaseDidChange:(NSNotification *)notification
 {
-    CouchDatabase *db = (CouchDatabase *)notification.object;
-    if (db != self.database) return;
+    assert(_packageController);
     
-    NSLog(@"Database changed: %@", notification.object);
+    CBLDatabase *db = (CBLDatabase *)notification.object;
+    NSLog(@"Database changed: %@", db);
+    
+    if (db != self.database)
+        return;
+    
+    BOOL isExternalChange = notification.userInfo[@"external"];
+    for (CBLDatabaseChange *change in notification.userInfo[@"changes"])
+    {
+        CBLDocument *doc = [self.database existingDocumentWithID:change.documentID];
+        [_packageController didChangeDocument:doc
+                                       source:isExternalChange
+                                                ? MPManagedObjectChangeSourceExternal
+                                                : MPManagedObjectChangeSourceAPI];
+    }
 }
 
 - (BOOL)ensureRemoteDatabaseCreated:(NSError **)err
@@ -464,41 +453,30 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 }
 
 // https://github.com/couchbaselabs/TouchDB-iOS/wiki/Guide%3A-Replication
-- (void)syncWithRemoteWithCompletionHandler:(void (^)(NSError *err))syncHandler
+- (BOOL)syncWithRemote:(NSError **)error
 {
     [self validateFilters];
     
-    NSError *error = nil;
-    if (![self ensureRemoteDatabaseCreated:&error])
-    {
-        assert(error);
-        syncHandler(error);
-        return;
-    }
-     
-    NSArray *replications = [self.database replicateWithURL:self.remoteDatabaseURL exclusively:NO];
+    if (![self ensureRemoteDatabaseCreated:error])
+        return NO;
     
-    CouchPersistentReplication *currentPersistentPull = replications[0];
-    currentPersistentPull.continuous = YES;
-    [_currentPersistentPulls addObject:currentPersistentPull];
+    CBLReplication *pull = [self.database createPullReplication:self.remoteDatabaseURL];
+    pull.continuous = YES;
+    [_currentPulls addObject:pull];
     
-    CouchPersistentReplication *currentPersistentPush = replications[1];
-    currentPersistentPush.continuous = YES;
-    [_currentPersistentPushes addObject:currentPersistentPush];
+    CBLReplication *push = [self.database createPushReplication:self.remoteDatabaseURL];
+    push.continuous = YES;
+    [_currentPushes addObject:push];
     
-    [self addObserver:self forPersistentReplication:currentPersistentPull];
-    [self addObserver:self forPersistentReplication:currentPersistentPush];
+    [self addObserver:self forPersistentReplication:pull];
+    [self addObserver:self forPersistentReplication:push];
     
-    /*
-    [NSObject performAsynchronousBlockInMainQueue:^{
-        _replicationRestartTimer =
-        [NSTimer scheduledTimerWithTimeInterval:30.0f target:self selector:@selector(restartPersistentReplications:) userInfo:nil repeats:YES];
-    }];
-     */
+    return YES;
 }
 
-- (void)addObserver:(id)object forPersistentReplication:(CouchPersistentReplication *)replication
+- (void)addObserver:(id)object forPersistentReplication:(CBLReplication *)replication
 {
+    #warning check through that these properties are still the ones to observe
     [replication addObserver:self forKeyPath:@"completed" options:0 context:NULL];
     [replication addObserver:self forKeyPath:@"status" options:0 context:NULL];
     [replication addObserver:self forKeyPath:@"total" options:0 context:NULL];
@@ -506,11 +484,16 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     [replication addObserver:self forKeyPath:@"mode" options:0 context:NULL];
 }
 
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
-                         change:(NSDictionary *)change context:(void *)context
+- (void) observeValueForKeyPath:(NSString *)keyPath
+         ofObject:(id)object
+         change:(NSDictionary *)change
+         context:(void *)context
 {
-    if ([_currentPersistentPulls containsObject:object] || [_currentPersistentPushes containsObject:object])
+    if ([_currentPulls containsObject:object]
+        || [_currentPushes containsObject:object])
     {
+        CBLReplication *replication = object;
+        
         NSUInteger completedPull = 0;
         NSUInteger totalPull = 0;
         NSUInteger completedPush = 0;
@@ -518,11 +501,15 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         NSUInteger completed = 0;
         NSUInteger total = 0;
         
-        for (CouchPersistentReplication *pull in _currentPersistentPulls)
-            { completedPull += pull.completed; totalPull += pull.total; }
+        for (CBLReplication *pull in _currentPulls)
+            {
+                completedPull += pull.completedChangesCount; totalPull += pull.changesCount;
+            }
         
-        for (CouchPersistentReplication *push in _currentPersistentPushes)
-            { completedPush += push.completed; totalPush += push.total; }
+        for (CBLReplication *push in _currentPushes)
+            {
+                completedPush += push.completedChangesCount; totalPush += push.changesCount;
+            }
         
         completed = completedPull + completedPush;
         total = totalPull + totalPush;
@@ -531,7 +518,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         {
             NSLog(@"Replication status: %lu / %lu of pull, %lu / %lu of push in mode %d (%.2f total)",
                       completedPull, totalPull,
-                      completedPush, totalPush, [(CouchPersistentReplication *)object mode],
+                      completedPush, totalPush, replication.status,
                       completed / (float)total);
         }
         else if (total > 0)
@@ -556,12 +543,12 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         NSString *metadataDocID = [NSString stringWithFormat:@"MPMetadata:%@", [self name]];
         _cachedMetadata = [MPMetadata modelForDocument:[self.database documentWithID:metadataDocID] ];
         assert(_cachedMetadata);
-        NSError *err = nil;
         
-        if (![[_cachedMetadata save] wait:&err] && err)
+        NSError *err = nil;
+        if (![_cachedMetadata save:&err])
         {
             NSLog(@"ERROR! Failed to save database metadata: %@", _cachedMetadata);
-            [[NSAlert alertWithError:err] runModal];
+            [[self.packageController notificationCenter] postErrorNotification:err];
         }
     }
     
@@ -573,14 +560,14 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     if (!_cachedLocalMetadata)
     {
         NSString *localMetadataDocID = [NSString stringWithFormat:@"_local/MPMetadata:%@", [self name]];
-        _cachedLocalMetadata = [MPMetadata modelForDocument:[self.database documentWithID:localMetadataDocID]];
+        _cachedLocalMetadata = [MPLocalMetadata modelForDocument:[self.database documentWithID:localMetadataDocID]];
         assert(_cachedLocalMetadata);
         
         NSError *err = nil;
-        if (![[_cachedLocalMetadata save] wait:&err] && err)
+        if ([_cachedLocalMetadata save:&err])
         {
             NSLog(@"ERROR! Failed to save database metadata: %@", _cachedLocalMetadata);
-            [[NSAlert alertWithError:err] runModal];
+            [[self.packageController notificationCenter] postErrorNotification:err];
         }
     }
     
@@ -590,7 +577,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 @end
 
 
-@implementation CouchDynamicObject (Feather)
+@implementation MYDynamicObject (Feather)
 
 - (void)setValuesForPropertiesWithDictionary:(NSDictionary *)keyedValues
 {
@@ -602,7 +589,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 @end
 
-@implementation CouchDatabase (Feather)
+@implementation CBLDatabase (Feather)
 
 - (id)managedObjectDatabaseBackpointer
 {
@@ -621,11 +608,11 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 - (NSArray *)getManagedObjectsWithIDs:(NSArray *)ids
 {
     assert([self packageController]);
-    CouchQueryEnumerator *rows = [[self getDocumentsWithIDs:ids] rows];
+    CBLQueryEnumerator *rows = [self getDocumentsWithIDs:ids];
     NSMutableArray *objs = [NSMutableArray arrayWithCapacity:rows.count];
-    for (CouchQueryRow *row in rows)
+    for (CBLQueryRow *row in rows)
     {
-        CouchDocument *doc = row.document;
+        CBLDocument *doc = row.document;
         MPManagedObject *mo = [[MPManagedObject managedObjectClassFromDocumentID:doc.documentID] modelForDocument:doc];
         assert(mo);
         [objs addObject:mo];
@@ -633,35 +620,64 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     return objs;
 }
 
-- (MPManagedObject *)getManagedObjectWithID:(NSString *)identifier
+- (CBLQueryEnumerator *)getDocumentsWithIDs:(NSArray *)docIDs
 {
-    return [[self getManagedObjectsWithIDs:@[identifier]] firstObject];
-}
-
-// TODO: Include this in CouchCocoa itself
-- (CouchDocument *)getDocumentWithID:(NSString *)docID
-{
-    CouchQuery *query = [self getAllDocuments];
-    query.keys = @[docID];
+    CBLQuery *query = [self createAllDocumentsQuery];
+    query.keys = docIDs;
     query.prefetch = YES;
     
-    CouchQueryEnumerator *rows = [query rows];
-    assert(rows.count == 0 || rows.count == 1);
+    NSError *err = nil;
+    CBLQueryEnumerator *rows = [query run:&err];
     
-    return [rows nextRow].document;
+    if (!rows)
+    {
+        NSLog(@"ERROR! Failed to get documents with IDs '%@':\n%@", docIDs, err);
+    }
+    
+    return rows;
 }
 
-- (NSArray *)plainObjectsFromQueryEnumeratorKeys:(CouchQueryEnumerator *)rows
+- (NSArray *)plainObjectsFromQueryEnumeratorKeys:(CBLQueryEnumerator *)rows
 {
     NSMutableArray* entries = [NSMutableArray arrayWithCapacity:rows.count];
-    for (CouchQueryRow *row in rows)
+    for (CBLQueryRow *row in rows)
     {
-        [entries addObject:[row key]];
+        [entries addObject:row.key];
     }
     return entries;
 }
 
 @end
 
+@implementation CBLQuery (MPDatabase)
+
+- (CBLQueryEnumerator *)run
+{
+    NSError *err = nil;
+    CBLQueryEnumerator *qenum = nil;
+    if (!(qenum = [self run:&err]))
+    {
+        [[self.database.packageController notificationCenter] postErrorNotification:err];
+    }
+    return qenum;
+}
+
+@end
+
 @implementation MPMetadata
+
+- (BOOL)save
+{
+    NSError *err = nil;
+    BOOL success = [self save:&err];
+    
+    if (!success)
+        [[NSNotificationCenter defaultCenter] postErrorNotification:err];
+    
+    return success;
+}
+
+@end
+
+@implementation MPLocalMetadata
 @end

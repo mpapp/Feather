@@ -94,10 +94,10 @@ inline NSMutableString *MPMutableStringForString(NSString *s)
 - (NSString *) repr {
     NSMutableString *myRepr = [[NSMutableString alloc] initWithString:self];
     NSRange myRange = NSMakeRange(0, [self length]);
-    NSArray *toReplace = [NSArray arrayWithObjects:@"\0", @"\a", @"\b", @"\t", @"\n", @"\f", @"\r", @"\e", nil];
-    NSArray *replaceWith = [NSArray arrayWithObjects:@"\\0", @"\\a", @"\\b", @"\\t", @"\\n", @"\\f", @"\\r", @"\\e", nil];
+    NSArray *toReplace = @[@"\0", @"\a", @"\b", @"\t", @"\n", @"\f", @"\r", @"\e"];
+    NSArray *replaceWith = @[@"\\0", @"\\a", @"\\b", @"\\t", @"\\n", @"\\f", @"\\r", @"\\e"];
     for (NSUInteger i = 0, count = [toReplace count]; i < count; ++i) {
-        [myRepr replaceOccurrencesOfString:[toReplace objectAtIndex:i] withString:[replaceWith objectAtIndex:i] options:0 range:myRange];
+        [myRepr replaceOccurrencesOfString:toReplace[i] withString:replaceWith[i] options:0 range:myRange];
     }
     NSString *retStr = [NSString stringWithFormat:@"\"%@\"", myRepr];
     //[myRepr release];
