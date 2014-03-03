@@ -77,8 +77,8 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 {
     if (self = [super init])
     {
-        EnableLogTo(CBLReplication, YES);
-        EnableLogTo(Sync, YES);
+        //EnableLogTo(CBLReplication, YES);
+        //EnableLogTo(Sync, YES);
         
         _server = server;
         
