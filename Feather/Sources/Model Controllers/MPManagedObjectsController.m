@@ -880,7 +880,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (NSURL *)URL
 {
-    return [self.database.internalURL URLByAppendingPathComponent:self.documentID];
+    NSURL *URL = [self.database.internalURL URLByAppendingPathComponent:self.documentID];
+    return URL;
 }
 
 @end

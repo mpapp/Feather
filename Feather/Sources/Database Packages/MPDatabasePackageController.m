@@ -100,22 +100,23 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         _controllerDictionary = [NSMutableDictionary dictionaryWithCapacity:20];
         
         [self makeNotificationCenter];
-        
-#ifdef DEBUG
-        NSDictionary *headers = @{
-            @"Access-Control-Allow-Origin"      : @"*",
-            @"Access-Control-Allow-Credentials" : @"true",
-            @"Access-Control-Allow-Methods"     : @"POST, GET, PUT, DELETE, OPTIONS",
-            @"Access-Control-Allow-Headers"     : @"origin, x-csrftoken, content-type, accept"
-        };
-#else
-        #warning Make editor interactions behave in a CORS-safe way.
-        NSDictionary *headers = nil;
-#endif
+
         CBLManagerOptions opts;
         opts.readOnly = NO;
         
         _server = [[CBLManager alloc] initWithDirectory:_path options:&opts error:err];
+        
+#ifdef DEBUG
+        [_server.customHTTPHeaders addEntriesFromDictionary:@{
+                                  @"Access-Control-Allow-Origin"      : @"*",
+                                  @"Access-Control-Allow-Credentials" : @"true",
+                                  @"Access-Control-Allow-Methods"     : @"POST, GET, PUT, DELETE, OPTIONS",
+                                  @"Access-Control-Allow-Headers"     : @"origin, x-csrftoken, content-type, accept"
+                                  }];
+#else
+#warning Make editor interactions behave in a CORS-safe way.
+        NSDictionary *headers = nil;
+#endif
         
         _managedObjectsControllers = [NSMutableSet setWithCapacity:20];
         
