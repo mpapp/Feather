@@ -163,8 +163,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         _pulls = [[NSMutableArray alloc] initWithCapacity:[[[self class] databaseNames] count]];
         _completedPulls = [[NSMutableArray alloc] initWithCapacity:[[[self class] databaseNames] count]];
         
-        NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
-        if ([defs valueForKey:@"MPDefaultsKeySyncPeerlessly"] && [self synchronizesPeerlessly])
+        if ([self synchronizesPeerlessly])
         {
             [self startListener];
         }
