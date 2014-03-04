@@ -109,9 +109,11 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 #ifdef DEBUG
         [_server.customHTTPHeaders addEntriesFromDictionary:@{
                                   @"Access-Control-Allow-Origin"      : @"*",
-                                  @"Access-Control-Allow-Credentials" : @"true",
-                                  @"Access-Control-Allow-Methods"     : @"POST, GET, PUT, DELETE, OPTIONS",
-                                  @"Access-Control-Allow-Headers"     : @"origin, x-csrftoken, content-type, accept"
+                                  @"Access-Control-Allow-Credentials" : @"false",
+                                  @"Access-Control-Allow-Methods"     : @"GET, POST, PUT, DELETE, OPTIONS",
+                                  @"Access-Control-Allow-Headers"     : @"Origin, X-CSRFToken, Content-Type, Accept",
+                                  @"Pragma"                           : @"no-cache",
+                                  @"Cache-Control"                    : @"no-cache"
                                   }];
 #else
 #warning Make editor interactions behave in a CORS-safe way.
