@@ -354,7 +354,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
      } version:@"1.0"];
 
     __weak id weakSelf = self;
-    [self.db.database setFilterNamed:@"managed-objects-filter"
+    [self.db.database setFilterNamed:MPStringF(@"%@/managed-objects-filter", NSStringFromClass(self.class))
                              asBlock:
      ^BOOL(CBLSavedRevision *revision, NSDictionary *params)
     {
