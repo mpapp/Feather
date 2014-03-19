@@ -32,7 +32,8 @@ typedef enum MPDatabasePackageControllerErrorCode
     MPDatabasePackageControllerErrorCodeUnknown = 0,
     MPDatabasePackageControllerErrorCodeNoSuchSnapshot = 1,
     MPDatabasePackageControllerErrorCodeUnexpectedResponse = 2,
-    MPDatabasePackageControllerErrorCodeFileNotDirectory = 3
+    MPDatabasePackageControllerErrorCodeFileNotDirectory = 3,
+    MPDatabasePackageControllerErrorCodeDirectoryAlreadyExists = 4
 } MPDatabasePackageControllerErrorCode;
 
 
@@ -73,7 +74,10 @@ typedef enum MPDatabasePackageControllerErrorCode
 @property (readonly) BOOL indexesObjectFullTextContents;
 
 /** @return A file URL to the root directory of a temporary copy of the package. */
-- (BOOL)makeTemporaryCopyIntoRootDirectoryWithURL:(NSURL *)rootURL error:(NSError **)error;
+- (BOOL)makeTemporaryCopyIntoRootDirectoryWithURL:(NSURL *)rootURL
+                                overwriteIfExists:(BOOL)overwrite
+                                     failIfExists:(BOOL)failIfExists
+                                            error:(NSError **)error;
 
 /** 
  * Initializes a database package controller at a given path, with an optional delegate and error pointer.
