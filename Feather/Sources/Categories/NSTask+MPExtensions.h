@@ -19,4 +19,6 @@ typedef void (^MPTaskTerminationHandler)(NSTask *task);
        atDirectoryPath:(NSString *)path
     terminationHandler:(MPTaskTerminationHandler)terminationHandler;
 
+- (NSString *)commandLine;
+
 @end

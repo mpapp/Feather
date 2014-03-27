@@ -43,4 +43,9 @@
     return task;
 }
 
+- (NSString *)commandLine
+{
+    return [NSString stringWithFormat:@"%@ %@", self.launchPath, [self.arguments componentsJoinedByString:@" "]];
+}
+
 @end
