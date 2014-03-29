@@ -16,6 +16,8 @@
 #import <Feather/MPDatabasePackageController+Protected.h>
 #import "RegexKitLite.h"
 
+#import <Feather/MPException.h>
+
 @implementation MPFeatherTestSuite
 
 + (void)initialize
@@ -138,7 +140,7 @@
             
             NSArray *objs = [moc objectsFromContentsOfArrayJSONAtURL:url error:&err];
             
-            MPLog(@"Loaded %lu fixture objects from %@", objs.count, url);
+            NSLog(@"Loaded %lu fixture objects from %@", objs.count, url);
             
             if (err) break;
         }
