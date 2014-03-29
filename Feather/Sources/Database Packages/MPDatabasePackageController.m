@@ -328,7 +328,11 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 #pragma mark - Temporary copy creation
 
-- (BOOL)makeTemporaryCopyIntoRootDirectoryWithURL:(NSURL *)rootURL error:(NSError **)error;
+// TODO: replace BOOL flags with a option bits argument, include a sync-by-overwriting-differing-contained-items option (for updates of the bundled shared stuff)
+- (BOOL)makeTemporaryCopyIntoRootDirectoryWithURL:(NSURL *)rootURL
+                                overwriteIfExists:(BOOL)overwrite
+                                     failIfExists:(BOOL)failIfExists
+                                            error:(NSError *__autoreleasing *)error
 {
     if (!rootURL)
         return NO;
@@ -337,29 +341,54 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         *error = nil;
     
     NSFileManager *fm = [[NSFileManager alloc] init];
-    
     BOOL isDirectory, exists = [fm fileExistsAtPath:rootURL.path isDirectory:&isDirectory];
     
-    if (exists && !isDirectory)
+    if (exists)
     {
-        if (!isDirectory && error)
-            *error = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
-                                       code:MPDatabasePackageControllerErrorCodeFileNotDirectory
-                                   userInfo:@{NSLocalizedDescriptionKey :
-                    [NSString stringWithFormat:@"File at URL %@ is not a directory", rootURL]}];
-        return NO;
+        if (!overwrite)
+        {
+            if (error && failIfExists)
+            {
+                if (!isDirectory)
+                {
+                    *error = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
+                                                 code:MPDatabasePackageControllerErrorCodeFileNotDirectory
+                                             userInfo:@{NSLocalizedDescriptionKey : [NSString stringWithFormat:@"File at '%@' is not a directory", rootURL.path]}];
+                }
+                else
+                {
+                    *error = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
+                                                 code:MPDatabasePackageControllerErrorCodeDirectoryAlreadyExists
+                                             userInfo:@{NSLocalizedDescriptionKey : [NSString stringWithFormat:@"Directory at '%@' already exists", rootURL.path]}];
+                }
+                return NO;
+            }
+            
+            MPLog(@"Temporary directory at '%@' already exists, will do nothing, as instructed", rootURL.path);
+            return YES;
+        }
     }
-    else if (!exists)
+    
+    if (exists && overwrite)
+    {
+        BOOL success = [fm removeItemAtURL:rootURL error:error];
+        MPLog(@"Failed to remove existing temporary directory at '%@'", rootURL.path);
+        if (!success)
+            return NO;
+        exists = NO;
+    }
+    
+    if (!exists)
     {
         BOOL success = [fm createDirectoryAtURL:rootURL withIntermediateDirectories:YES attributes:nil error:error];
-        
         if (!success)
         {
-            MPLog(@"Failed to create temporary directory %@", rootURL);
+            MPLog(@"Failed to create temporary directory '%@'", rootURL.path);
             return NO;
         }
     }
-        
+    
+    
     MPTemporaryDatabasePackageCopyFileManagerDelegate *fmDelegate = [[MPTemporaryDatabasePackageCopyFileManagerDelegate alloc] init];
     fm.delegate = fmDelegate;
     
