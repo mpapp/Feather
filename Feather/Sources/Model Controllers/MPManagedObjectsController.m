@@ -109,14 +109,17 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                 [_self hasRemovedManagedObject:notification.object];
             }];
         }
-
-        [self loadBundledResourcesWithCompletionHandler:^(NSError *err) {
-            if (err)
-                [[self.packageController notificationCenter] postErrorNotification:err];
-        }];
     }
 
     return self;
+}
+
+- (void)didInitialize
+{
+    [self loadBundledResourcesWithCompletionHandler:^(NSError *err) {
+        if (err)
+            [[self.packageController notificationCenter] postErrorNotification:err];
+    }];
 }
 
 - (void)dealloc
@@ -617,6 +620,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 - (void)loadBundledResourcesWithCompletionHandler:(void(^)(NSError *err))completionHandler
 {
     NSString *resourceDBName = self.bundledResourceDatabaseName;
+    NSString *checksumKey = [NSString stringWithFormat:@"bundled-%@-md5", resourceDBName];
 
     // nothing to do if there is no resource for this controller
     if (!resourceDBName)
@@ -629,12 +633,29 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
     NSFileManager *fm = [NSFileManager defaultManager];
     NSString *bundledBundlesPath
-        = [[NSBundle mainBundle] pathForResource:resourceDBName ofType:@"cblite"];
-
+        = [[NSBundle appBundle] pathForResource:resourceDBName ofType:@"cblite"];
+    
+    NSError *err = nil;
+    NSURL *tempBundledBundlesDirURL = [[NSFileManager defaultManager] temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:checksumKey error:&err];
+    NSString *tempBundledBundlesPath = [tempBundledBundlesDirURL.path stringByAppendingPathComponent:[bundledBundlesPath lastPathComponent]];
+    
+    if (!tempBundledBundlesPath)
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler(err);
+        });
+    }
+    
+    if (![[NSFileManager defaultManager] copyItemAtPath:bundledBundlesPath toPath:tempBundledBundlesPath error:&err])
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler(err);
+        });
+    }
+    
     NSString *md5 = [fm md5DigestStringAtPath:bundledBundlesPath];
 
     MPMetadata *metadata = [self.db metadata];
-    NSString *checksumKey = [NSString stringWithFormat:@"bundled-%@-md5", resourceDBName];
 
     // this version already loaded
     if ([[metadata getValueOfProperty:checksumKey] isEqualToString:md5])
@@ -647,8 +668,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
     CBLReplication *replication = nil;
 
-    NSError *err = nil;
-    if (![self.db pullFromDatabaseAtPath:bundledBundlesPath
+    if (![self.db pullFromDatabaseAtPath:tempBundledBundlesPath
                              replication:&replication error:&err])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -656,6 +676,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         });
         return;
     }
+    
+    __block BOOL shouldRun = YES;
 
     __weak NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     __weak MPManagedObjectsController *weakSelf = self;
@@ -688,6 +710,12 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                  }
 
                  [nc removeObserver:observer];
+                 shouldRun = NO;
+                 NSError *err = nil;
+                 if (![[NSFileManager defaultManager] removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
+                 {
+                     NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
+                 }
              }
              else if (r.status == kCBLReplicationStopped)
              {
@@ -695,8 +723,24 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                  [[self.packageController notificationCenter] postErrorNotification:r.lastError];
 
                  [nc removeObserver:observer];
+                 shouldRun  = NO;
+                 
+                 NSError *err = nil;
+                 if (![[NSFileManager defaultManager] removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
+                 {
+                     NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
+                 }
              }
         }];
+    
+    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+    int i = 0;
+    while(shouldRun
+          && [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]])
+    {
+        i += 1;
+    };
+    MPLog(@"Completed loading resources for %@ (%d)", self, i);
 }
 
 #pragma mark - Loading bundled objects

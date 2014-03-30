@@ -10,6 +10,8 @@
 #import "NSError+MPExtensions.h"
 #import "NSString+MPExtensions.h"
 #import "NSData+MPExtensions.h"
+#import "NSBundle+MPExtensions.h"
+
 #import <CommonCrypto/CommonDigest.h>
 
 NSString * const NSFileManagerFeatherExtensionsErrorDomain = @"NSFileManagerFeatherExtensionsErrorDomain";
@@ -76,7 +78,7 @@ NSString * const NSFileManagerFeatherExtensionsErrorDomain = @"NSFileManagerFeat
         return nil;
     }
     
-    NSURL *applicationCachesDirectoryURL = [cachesRootDirectoryURL URLByAppendingPathComponent:[[NSBundle mainBundle] bundleIdentifier]];
+    NSURL *applicationCachesDirectoryURL = [cachesRootDirectoryURL URLByAppendingPathComponent:[[NSBundle appBundle] bundleIdentifier]];
     BOOL createIntermediates = (subdirectoryName.length > 0);
     NSURL *URL = createIntermediates ? [applicationCachesDirectoryURL URLByAppendingPathComponent:subdirectoryName] : applicationCachesDirectoryURL;
     

@@ -20,14 +20,6 @@
 
 @implementation FeatherTests
 
-+ (void)initialize
-{
-    if (self == [FeatherTests class])
-    {
-        [MPFeatherTestPackageController class]; // this will cause shoebox class initialisation.
-    }
-}
-
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -164,6 +156,9 @@
 #endif
     
     [super tearDown];
+    
+    if ([[MPShoeboxPackageController sharedShoeboxPackageControllerClass] isSubclassOfClass:[MPFeatherTestPackageController class]])
+        [MPShoeboxPackageController deregisterShoeboxPackageControllerClass];
 }
 
 // test suites which need to act as a MPDatabasePackageControllerDelegate need to overload this.

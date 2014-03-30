@@ -10,6 +10,7 @@
 #import "MPManagedObject.h"
 
 @class CBLDocument;
+@class MPDatabasePackageController;
 
 @interface MPManagedObjectsController (Protected)
 
@@ -26,6 +27,8 @@
 
 - (void)registerObject:(MPManagedObject *)mo;
 - (void)deregisterObject:(MPManagedObject *)mo;
+
+- (void)didInitialize;
 
 @property (readonly, strong) dispatch_queue_t queryQueue;
 
