@@ -340,12 +340,23 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 #pragma mark -
 #pragma mark Managed object CRUD
 
+- (void)viewNamed:(NSString *)name setMapBlock:(CBLMapBlock)block version:(NSString *)version
+{
+    [self.packageController registerViewName:name];
+    [[self.db.database viewNamed:name] setMapBlock:block version:version];
+}
+
+- (void)viewNamed:(NSString *)name setMapBlock:(CBLMapBlock)block setReduceBlock:(CBLReduceBlock)reduceBlock version:(NSString *)version
+{
+    [self.packageController registerViewName:name];
+    [[self.db.database viewNamed:name] setMapBlock:block reduceBlock:reduceBlock version:version];
+}
+
 - (void)configureViews
 {
     [[self.db.database viewNamed:@"objectsByPrototypeID"]
      setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
      {
-
          if (doc[@"prototypeID"])
              emit(doc[@"prototypeID"], nil);
          else
@@ -365,7 +376,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (NSString *)allObjectsViewName
 {
-    return [NSString stringWithFormat:@"%@s", [[self class] managedObjectClassName]];
+    return [NSString stringWithFormat:@"all-%@s", [[self class] managedObjectClassName]];
 }
 
 - (CBLQuery *)allObjectsQuery
@@ -470,6 +481,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     {
         if (![d isManagedObjectDictionary:err]) {
             NSLog(@"ERROR: %@", *err);
+            assert(false);
             return nil;
         }
         NSString *docID = [d managedObjectDocumentID];
@@ -534,7 +546,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
             }
             else
             {
-                modelObj.document = row.document;
+                assert(modelObj.document);
+                //modelObj.document = row.document;
             }
 
             assert([modelObj isKindOfClass:[MPManagedObject class]]);
@@ -697,7 +710,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     NSArray *returnedObjects = nil;
     MPMetadata *metadata = [self.db metadata];
 
-    NSURL *jsonURL = [[NSBundle mainBundle] URLForResource:resourceName withExtension:extension];
+    NSURL *jsonURL = [[NSBundle appBundle] URLForResource:resourceName withExtension:extension];
     NSFileManager *fm = [NSFileManager defaultManager];
     NSString *md5 = [fm md5DigestStringAtPath:[jsonURL path]];
 

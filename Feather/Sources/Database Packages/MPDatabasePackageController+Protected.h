@@ -19,6 +19,8 @@
 @property (strong, readwrite) NSMutableArray *completedPulls;
 @property (strong, readwrite) MPPullCompletionHandler pullCompletionHandler;
 
+- (void)registerViewName:(NSString *)viewName;
+
 @property (strong, readwrite) MPDatabase *primaryDatabase;
 
 /** Abstract method which is to be overloaded in subclasses of MPDatabasePackageController 

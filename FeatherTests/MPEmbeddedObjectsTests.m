@@ -16,6 +16,17 @@
 
 @implementation MPEmbeddedObjectsTests
 
+- (void)setUp
+{
+    [MPShoeboxPackageController deregisterShoeboxPackageControllerClass];
+    [MPShoeboxPackageController registerShoeboxPackageControllerClass:[MPFeatherTestPackageController class]]
+}
+
+- (void)tearDown
+{
+    [MPShoeboxPackageController deregisterShoeboxPackageControllerClass];
+}
+
 - (void)testEmbeddedObjectCreation
 {
     MPFeatherTestPackageController *tpkg = [MPFeatherTestPackageController sharedPackageController];

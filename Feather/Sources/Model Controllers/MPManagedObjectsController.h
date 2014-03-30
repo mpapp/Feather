@@ -135,6 +135,10 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** @return an array of managed objects contained in the query enumerator given as argument. */
 - (NSArray *)managedObjectsForQueryEnumerator:(CBLQueryEnumerator *)rows;
 
+- (void)viewNamed:(NSString *)name setMapBlock:(CBLMapBlock)block setReduceBlock:(CBLReduceBlock)reduceBlock version:(NSString *)version;
+
+- (void)viewNamed:(NSString *)name setMapBlock:(CBLMapBlock)block version:(NSString *)version;
+
 /** All objects managed by this controller. */
 @property (readonly, strong) NSArray *allObjects;
 

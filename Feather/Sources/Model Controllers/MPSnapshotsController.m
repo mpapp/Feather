@@ -117,14 +117,12 @@
 - (void)configureViews
 {
     [super configureViews];
-    CBLView *snapshottedObjectsBySnapshotIDView = [self.db.database viewNamed:@"snapshottedObjectsBySnapshotID"];
-    assert(snapshottedObjectsBySnapshotIDView);
     
-    [snapshottedObjectsBySnapshotIDView setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
-    {
-        if ([doc[@"objectType"] isEqualToString:@"MPSnapshottedObject"])
-            emit(doc[@"snapshotID"], nil);
-    } version:@"1.0"];
+    [self viewNamed:@"snapshottedObjectsBySnapshotID" setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
+     {
+         if ([doc[@"objectType"] isEqualToString:@"MPSnapshottedObject"])
+             emit(doc[@"snapshotID"], nil);
+     } version:@"1.0"];
 }
 
 - (CBLQuery *)snapshottedObjectsQueryForSnapshot:(MPSnapshot *)snapshot
@@ -169,15 +167,14 @@
 {
     [super configureViews];
     
-    CBLView *snapshottedAttachmentsBySnapshotIDView = [self.db.database viewNamed:@"snapshottedAttachmentsBySnapshotID"];
-    [snapshottedAttachmentsBySnapshotIDView setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
+    [self viewNamed:@"snapshottedAttachmentsBySnapshotID" setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
      {
          if ([doc[@"objectType"] isEqualToString:@"MPSnapshottedAttachment"])
              emit(doc[@"snapshotID"], nil);
      } version:@"1.0"];
     
-    CBLView *snapshottedAttachmentsBySHAView = [self.db.database viewNamed:@"snapshottedAttachmentsBySnapshotID"];
-    [snapshottedAttachmentsBySHAView setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit) {
+    [self viewNamed:@"snapshottedAttachmentsBySHA" setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
+     {
         if ([doc[@"objectType"] isEqualToString:@"MPSnapshottedAttachment"])
             emit(doc[@"sha"], nil);
     } version:@"1.0"];

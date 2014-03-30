@@ -187,10 +187,12 @@ static Class _shoeboxPackageControllerClass = nil;
            [class isSubclassOfClass:[MPShoeboxPackageController class]] &&
            (class != [MPShoeboxPackageController class]));
     
-    //static dispatch_once_t onceToken;
-    //dispatch_once(&onceToken, ^{
-        _shoeboxPackageControllerClass = class;
-    //});
+    _shoeboxPackageControllerClass = class;
+}
+
++ (void)deregisterShoeboxPackageControllerClass
+{
+    _shoeboxPackageControllerClass = nil;
 }
 
 + (Class)sharedShoeboxPackageControllerClass

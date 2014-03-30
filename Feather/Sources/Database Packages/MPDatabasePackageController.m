@@ -79,6 +79,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 @property (strong, readwrite) CBLListener *databaseListener;
 @property (strong, readwrite) NSNetService *databaseListenerService;
 
+@property (strong, readonly) NSMutableSet *registeredViewNames;
+
 @end
 
 @implementation MPDatabasePackageController
@@ -189,6 +191,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         }
         
         _rootSections = [rootSections copy];
+        
+        _registeredViewNames = [NSMutableSet setWithCapacity:128];
         
         [[self class] didOpenPackage];
     }
@@ -948,6 +952,12 @@ static NSUInteger packagesOpened = 0;
     
     assert(![_managedObjectsControllers containsObject:moc]);
     [_managedObjectsControllers addObject:moc];
+}
+
+- (void)registerViewName:(NSString *)viewName
+{
+    assert(![_registeredViewNames containsObject:viewName]);
+    [_registeredViewNames addObject:viewName];
 }
 
 - (void)setPulls:(NSMutableArray *)pulls { _pulls = pulls; }

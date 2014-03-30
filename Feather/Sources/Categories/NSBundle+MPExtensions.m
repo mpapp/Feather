@@ -31,7 +31,6 @@
     return [[NSProcessInfo processInfo] environment][@"MPUnitTest"];
 }
 
-/** Returns the main bundle for non-unit test targets, and the unit test bundle for the unit tests. */
 + (NSBundle *)appBundle
 {
     if ([self inTestSuite])
@@ -62,7 +61,7 @@
 {
     assert([name hasSuffix:@".xpc"]);
     
-    NSBundle *mainBundle = [NSBundle mainBundle];
+    NSBundle *mainBundle = [NSBundle appBundle];
     NSBundle *bundle =
         [NSBundle bundleWithPath:
             [[mainBundle bundlePath] stringByAppendingPathComponent:
