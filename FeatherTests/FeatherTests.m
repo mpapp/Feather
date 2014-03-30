@@ -9,7 +9,7 @@
 #import <Feather/Feather.h>
 #import <Feather/MPManagedObject.h>
 
-#import "MPFeatherTestSuite.h"
+#import "FeatherTests.h"
 #import "MPFeatherTestClasses.h"
 #import <Feather/NSBundle+MPExtensions.h>
 #import <Feather/NSArray+MPExtensions.h>
@@ -18,11 +18,11 @@
 
 #import <Feather/MPException.h>
 
-@implementation MPFeatherTestSuite
+@implementation FeatherTests
 
 + (void)initialize
 {
-    if (self == [MPFeatherTestSuite class])
+    if (self == [FeatherTests class])
     {
         [MPFeatherTestPackageController class]; // this will cause shoebox class initialisation.
     }

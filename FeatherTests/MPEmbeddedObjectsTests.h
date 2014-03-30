@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import "MPFeatherTestSuite.h"
+#import "FeatherTests.h"
 
-@interface MPEmbeddedObjectsTests : MPFeatherTestSuite
+@interface MPEmbeddedObjectsTests : FeatherTests
 
 @end

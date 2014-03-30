@@ -36,9 +36,21 @@
 {
     if ([self inTestSuite])
     {
-        Class testClass = NSClassFromString(@"MPExtensionTests");
+        static NSBundle *appBundle = nil;
+        
+        if (appBundle)
+            return appBundle;
+        
+        // test suites should be run with the env var MPExecutableName included.
+        // It's used to derive a 'main' class and from it the bundle.
+        NSString *executableName = [[NSProcessInfo processInfo] environment][@"MPExecutableName"];
+        assert(executableName);
+        
+        Class testClass = NSClassFromString(executableName);
         assert(testClass);
-        return [NSBundle bundleForClass:testClass];
+        appBundle = [NSBundle bundleForClass:testClass];
+        
+        return appBundle;
     }
     else
     {

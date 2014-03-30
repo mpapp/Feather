@@ -55,7 +55,7 @@
 		5FDB331E1705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
 		5FDB33211705CB950049EBB5 /* Feather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33031705CB950049EBB5 /* Feather.framework */; };
 		5FDB33271705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB33251705CB950049EBB5 /* InfoPlist.strings */; };
-		5FDB332A1705CB950049EBB5 /* MPFeatherTestSuite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33291705CB950049EBB5 /* MPFeatherTestSuite.m */; };
+		5FDB332A1705CB950049EBB5 /* FeatherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33291705CB950049EBB5 /* FeatherTests.m */; };
 		5FDB33D41705D0DA0049EBB5 /* RegexKitLite.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33D21705D0D90049EBB5 /* RegexKitLite.h */; };
 		5FDB33D51705D0DA0049EBB5 /* RegexKitLite.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33D31705D0D90049EBB5 /* RegexKitLite.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -w"; }; };
 		5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33D71705D1380049EBB5 /* libicucore.dylib */; };
@@ -119,7 +119,7 @@
 		5FDB3AA017079ED80049EBB5 /* MPShoeboxPackageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A9E17079ED70049EBB5 /* MPShoeboxPackageController.m */; };
 		5FDB3AA81707A36D0049EBB5 /* Feather.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33131705CB950049EBB5 /* Feather.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3AA91707ABBE0049EBB5 /* MPTreeItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5FDCF2D8171043A80039DAED /* MPFeatherTestSuite.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33281705CB950049EBB5 /* MPFeatherTestSuite.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5FDCF2D8171043A80039DAED /* FeatherTests.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33281705CB950049EBB5 /* FeatherTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2EE171045990039DAED /* MPFeatherTestClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2ED171045990039DAED /* MPFeatherTestClasses.m */; };
 		5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */; };
@@ -313,8 +313,8 @@
 		5FDB331B1705CB950049EBB5 /* FeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FDB33241705CB950049EBB5 /* FeatherTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FeatherTests-Info.plist"; sourceTree = "<group>"; };
 		5FDB33261705CB950049EBB5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5FDB33281705CB950049EBB5 /* MPFeatherTestSuite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MPFeatherTestSuite.h; sourceTree = "<group>"; };
-		5FDB33291705CB950049EBB5 /* MPFeatherTestSuite.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MPFeatherTestSuite.m; sourceTree = "<group>"; };
+		5FDB33281705CB950049EBB5 /* FeatherTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeatherTests.h; sourceTree = "<group>"; };
+		5FDB33291705CB950049EBB5 /* FeatherTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeatherTests.m; sourceTree = "<group>"; };
 		5FDB33C21705CF260049EBB5 /* libcommonCrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcommonCrypto.dylib; path = usr/lib/system/libcommonCrypto.dylib; sourceTree = SDKROOT; };
 		5FDB33D21705D0D90049EBB5 /* RegexKitLite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegexKitLite.h; path = "External/RegexKitLite-4.0/RegexKitLite.h"; sourceTree = SOURCE_ROOT; };
 		5FDB33D31705D0D90049EBB5 /* RegexKitLite.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RegexKitLite.m; path = "External/RegexKitLite-4.0/RegexKitLite.m"; sourceTree = SOURCE_ROOT; };
@@ -543,8 +543,8 @@
 			isa = PBXGroup;
 			children = (
 				5FDB33231705CB950049EBB5 /* Supporting Files */,
-				5FDB33281705CB950049EBB5 /* MPFeatherTestSuite.h */,
-				5FDB33291705CB950049EBB5 /* MPFeatherTestSuite.m */,
+				5FDB33281705CB950049EBB5 /* FeatherTests.h */,
+				5FDB33291705CB950049EBB5 /* FeatherTests.m */,
 				5F293BFC170E191F001C2111 /* MPExtensionTests.h */,
 				5F293BFD170E191F001C2111 /* MPExtensionTests.m */,
 				5F293C05170E2980001C2111 /* MPEmbeddedObjectsTests.h */,
@@ -795,7 +795,7 @@
 				5F293BA0170CAECC001C2111 /* MPEmbeddedObject.h in Headers */,
 				5F293BF5170DFD4E001C2111 /* UICKeyChainStore.h in Headers */,
 				5F293C1F170E3B62001C2111 /* MPPlaceHolding.h in Headers */,
-				5FDCF2D8171043A80039DAED /* MPFeatherTestSuite.h in Headers */,
+				5FDCF2D8171043A80039DAED /* FeatherTests.h in Headers */,
 				D932296417268E37006880C2 /* NSTask+MPExtensions.h in Headers */,
 				5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */,
 				5F1850261711707800079040 /* MPExtensions.h in Headers */,
@@ -869,6 +869,11 @@
 			attributes = {
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Matias Piipari";
+				TargetAttributes = {
+					5FDB331A1705CB950049EBB5 = {
+						TestTargetID = 5FDB33021705CB950049EBB5;
+					};
+				};
 			};
 			buildConfigurationList = 5FDB32FC1705CB950049EBB5 /* Build configuration list for PBXProject "Feather" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -1089,7 +1094,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FDB332A1705CB950049EBB5 /* MPFeatherTestSuite.m in Sources */,
+				5FDB332A1705CB950049EBB5 /* FeatherTests.m in Sources */,
 				5F293C00170E1935001C2111 /* MPExtensionTests.m in Sources */,
 				5F293C07170E2980001C2111 /* MPEmbeddedObjectsTests.m in Sources */,
 				5FDCF2EE171045990039DAED /* MPFeatherTestClasses.m in Sources */,
@@ -1138,6 +1143,74 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		5F4DF37918E7834800E7D65A /* Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Testing;
+		};
+		5F4DF37A18E7834800E7D65A /* Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_VERSION = A;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
+				HEADER_SEARCH_PATHS = "\"$SRCROOT/External/couchbase-lite-ios/vendor/fmdb/src\"";
+				INFOPLIST_FILE = "Feather/Feather-Info.plist";
+				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SDKROOT)/usr/lib/system\"",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				WRAPPER_EXTENSION = framework;
+			};
+			name = Testing;
+		};
+		5F4DF37B18E7834800E7D65A /* Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = "\"${DEVELOPER_FRAMEWORKS_DIR}\"";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
+				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Testing;
+		};
 		5FDB332B1705CB950049EBB5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -1161,7 +1234,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
 			};
@@ -1184,7 +1257,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -1274,6 +1347,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5FDB332B1705CB950049EBB5 /* Debug */,
+				5F4DF37918E7834800E7D65A /* Testing */,
 				5FDB332C1705CB950049EBB5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1283,6 +1357,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5FDB332E1705CB950049EBB5 /* Debug */,
+				5F4DF37A18E7834800E7D65A /* Testing */,
 				5FDB332F1705CB950049EBB5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -1292,6 +1367,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5FDB33311705CB950049EBB5 /* Debug */,
+				5F4DF37B18E7834800E7D65A /* Testing */,
 				5FDB33321705CB950049EBB5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
