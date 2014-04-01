@@ -1185,7 +1185,8 @@
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$SRCROOT/External/couchbase-lite-ios/vendor/fmdb/src\"";
 				INFOPLIST_FILE = "Feather/Feather-Info.plist";
-				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
+				LD_DYLIB_INSTALL_NAME = "@rpath/../Frameworks/$(EXECUTABLE_PATH)";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
@@ -1280,7 +1281,8 @@
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$SRCROOT/External/couchbase-lite-ios/vendor/fmdb/src\"";
 				INFOPLIST_FILE = "Feather/Feather-Info.plist";
-				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
+				LD_DYLIB_INSTALL_NAME = "@rpath/../Frameworks/$(EXECUTABLE_PATH)";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",
@@ -1305,7 +1307,8 @@
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				HEADER_SEARCH_PATHS = "\"$SRCROOT/External/couchbase-lite-ios/vendor/fmdb/src\"";
 				INFOPLIST_FILE = "Feather/Feather-Info.plist";
-				LD_DYLIB_INSTALL_NAME = "@executable_path/../Frameworks/$(EXECUTABLE_PATH)";
+				LD_DYLIB_INSTALL_NAME = "@rpath/../Frameworks/$(EXECUTABLE_PATH)";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SDKROOT)/usr/lib/system\"",

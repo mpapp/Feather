@@ -733,14 +733,14 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
              }
         }];
     
-    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
+/*    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
     int i = 0;
     while(shouldRun
           && [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]])
     {
         i += 1;
     };
-    MPLog(@"Completed loading resources for %@ (%d)", self, i);
+    MPLog(@"Completed loading resources for %@ (%d)", self, i);*/
 }
 
 #pragma mark - Loading bundled objects
