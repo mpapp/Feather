@@ -4,6 +4,7 @@
 
 #ifdef __OBJC__
     #import <Cocoa/Cocoa.h>
+    #import <AvailabilityMacros.h>
 
     #ifdef DEBUG
         #define MPLog(fmt, ...) NSLog(fmt, ##__VA_ARGS__)
