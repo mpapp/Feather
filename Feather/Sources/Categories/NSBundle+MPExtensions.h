@@ -22,4 +22,7 @@
  *  @return YES if bundle loader is a test suite runner, NO otherwise. */
 + (BOOL)inTestSuite;
 
++ (BOOL)isCommandLineTool;
++ (BOOL)isXPCService;
+
 @end

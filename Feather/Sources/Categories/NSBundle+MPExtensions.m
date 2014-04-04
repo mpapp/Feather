@@ -8,6 +8,9 @@
 
 #import <Feather/NSBundle+MPExtensions.h>
 
+#import <P2Core/NSString+P2Extensions.h>
+
+
 @implementation NSBundle (Feather)
 
 - (NSString *)bundleNameString
@@ -31,6 +34,18 @@
     return [[NSProcessInfo processInfo] environment][@"MPUnitTest"];
 }
 
++ (BOOL)isCommandLineTool
+{
+    BOOL b = ([[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSMainNibFile"] == nil); // TODO: this is not very airtight logic
+    return b;
+}
+
++ (BOOL)isXPCService
+{
+    BOOL b = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundlePackageType"] isEqualToString:@"XPC!"];
+    return b;
+}
+
 + (NSBundle *)appBundle
 {
     if ([self inTestSuite])
@@ -51,6 +66,14 @@
         
         return appBundle;
     }
+    /*else if ([self isCommandLineTool] || [self isXPCService])
+    {
+        NSString *executablePath = [[[[NSProcessInfo processInfo] arguments][0] stringByStandardizingPath] stringByResolvingSymlinksInPath];
+        NSString *bundlePath = [executablePath substringUpTo:@".app"];
+        assert(bundlePath);
+        NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
+        return bundle;
+    }*/
     else
     {
         return [self mainBundle];

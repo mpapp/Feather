@@ -116,6 +116,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (void)didInitialize
 {
+    if ([NSBundle isCommandLineTool] || [NSBundle isXPCService])
+        return;
+    
     [self loadBundledResourcesWithCompletionHandler:^(NSError *err) {
         if (err)
             [[self.packageController notificationCenter] postErrorNotification:err];
@@ -632,29 +635,44 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     }
 
     NSFileManager *fm = [NSFileManager defaultManager];
-    NSString *bundledBundlesPath
-        = [[NSBundle appBundle] pathForResource:resourceDBName ofType:@"cblite"];
+    
+    NSString *attachmentsDirectoryName = MPStringF(@"%@ attachments", resourceDBName);
+    NSString *bundledBundlesPath = [[NSBundle appBundle] pathForResource:resourceDBName ofType:@"cblite"];
+    NSString *bundledAttachmentsPath = [[NSBundle appBundle] pathForResource:attachmentsDirectoryName ofType:@""];
     
     NSError *err = nil;
-    NSURL *tempBundledBundlesDirURL = [[NSFileManager defaultManager] temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:checksumKey error:&err];
+    NSURL *tempBundledBundlesDirURL = [fm temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:checksumKey error:&err];
     NSString *tempBundledBundlesPath = [tempBundledBundlesDirURL.path stringByAppendingPathComponent:[bundledBundlesPath lastPathComponent]];
+    NSString *tempAttachmentsPath = [tempBundledBundlesDirURL.path stringByAppendingPathComponent:attachmentsDirectoryName];
     
-    if (!tempBundledBundlesPath)
+    if (!tempBundledBundlesPath || !tempAttachmentsPath)
+    {
+        err = [NSError errorWithDomain:MPManagedObjectErrorDomain code:1 userInfo:@{NSLocalizedDescriptionKey:MPStringF(@"Failed to derive temporary paths from %@ and %@", bundledBundlesPath, bundledAttachmentsPath)}];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler(err);
+        });
+    }
+    
+    if (![fm copyItemAtPath:bundledBundlesPath toPath:tempBundledBundlesPath error:&err])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             completionHandler(err);
         });
     }
     
-    if (![[NSFileManager defaultManager] copyItemAtPath:bundledBundlesPath toPath:tempBundledBundlesPath error:&err])
+    if ([fm fileExistsAtPath:bundledAttachmentsPath])
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(err);
-        });
+        if (![fm copyItemAtPath:bundledAttachmentsPath toPath:tempAttachmentsPath error:&err])
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(err);
+            });
+        }
     }
     
     NSString *md5 = [fm md5DigestStringAtPath:bundledBundlesPath];
-
+    // TODO: check md5 for attachments also
+    
     MPMetadata *metadata = [self.db metadata];
 
     // this version already loaded
@@ -685,7 +703,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         [nc addObserverForName:kCBLReplicationChangeNotification
                         object:replication queue:[NSOperationQueue mainQueue]
                     usingBlock:
-        ^(NSNotification *note) {
+        ^(NSNotification *note)
+    {
              MPManagedObjectsController *strongSelf = weakSelf;
              CBLReplication *r = note.object;
              assert(replication == r);
@@ -712,7 +731,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                  [nc removeObserver:observer];
                  shouldRun = NO;
                  NSError *err = nil;
-                 if (![[NSFileManager defaultManager] removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
+                 if (![fm removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
                  {
                      NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
                  }
@@ -726,7 +745,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                  shouldRun  = NO;
                  
                  NSError *err = nil;
-                 if (![[NSFileManager defaultManager] removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
+                 if (![fm removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
                  {
                      NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
                  }

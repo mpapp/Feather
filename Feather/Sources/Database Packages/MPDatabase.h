@@ -29,7 +29,7 @@ typedef enum MPDatabaseErrorCode
 @interface MPDatabase : NSObject
 
 /** The filesystem path to the database .cblite file. */
-@property (readonly, copy) NSString *path;
+//@property (readonly, copy) NSString *path;
 
 /** Name of the database, which is unique per MPDatabasePackageController, and used to derive the database's filesystem path and the remote URL. Immutable, readonly property set during instantiation. */
 @property (readonly, copy) NSString *name;

@@ -114,28 +114,38 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
     return path;
 }
 
-+ (BOOL)createSharedDatabasesPathWithError:(NSError **)err
++ (BOOL)createSharedDatabasesPathWithError:(NSError *__autoreleasing*)error
 {
     NSFileManager *fm = [NSFileManager defaultManager];
-    BOOL isDir = NO;
+    BOOL isDirectory = NO;
     
     NSString *sharedDatabasesPath = [self sharedDatabasesPath];
     NSString *containingDir = [sharedDatabasesPath stringByDeletingLastPathComponent];
     
-    if ([fm fileExistsAtPath:containingDir isDirectory:&isDir] && isDir && [fm fileExistsAtPath:sharedDatabasesPath])
-    {
+    if ([fm fileExistsAtPath:containingDir isDirectory:&isDirectory] && isDirectory && [fm fileExistsAtPath:sharedDatabasesPath])
         return YES;
-    }
     
-    if (!isDir)
-    { if (err)
-        *err = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
-                                          code:MPDatabasePackageControllerErrorCodeFileNotDirectory
-                                      userInfo:@{NSLocalizedDescriptionKey : @"Directory containig the shared databases path does not exist"}];
+    if (!isDirectory)
+    {
+        if (error)
+            *error = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
+                                       code:MPDatabasePackageControllerErrorCodeFileNotDirectory
+                                   userInfo:@{NSLocalizedDescriptionKey : @"Directory containig the shared databases path does not exist"}];
         return NO;
     }
     
-    if (![fm createDirectoryAtPath:[self sharedDatabasesPath] withIntermediateDirectories:YES attributes:nil error:err])
+    BOOL canCreateSharedDatabases = !([NSBundle isCommandLineTool] || [NSBundle isXPCService]);
+    
+    if (!canCreateSharedDatabases)
+    {
+        if (error)
+            *error = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
+                                         code:MPDatabasePackageControllerErrorCodeCannotInitializeSharedDatabases
+                                     userInfo:@{NSLocalizedDescriptionKey : @"Cannot initialize shared databases; only main application can set them up"}];
+        return NO;
+    }
+    
+    if (![fm createDirectoryAtPath:[self sharedDatabasesPath] withIntermediateDirectories:YES attributes:nil error:error])
     {
         return NO;
     }

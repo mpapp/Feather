@@ -33,7 +33,8 @@ typedef enum MPDatabasePackageControllerErrorCode
     MPDatabasePackageControllerErrorCodeNoSuchSnapshot = 1,
     MPDatabasePackageControllerErrorCodeUnexpectedResponse = 2,
     MPDatabasePackageControllerErrorCodeFileNotDirectory = 3,
-    MPDatabasePackageControllerErrorCodeDirectoryAlreadyExists = 4
+    MPDatabasePackageControllerErrorCodeDirectoryAlreadyExists = 4,
+    MPDatabasePackageControllerErrorCodeCannotInitializeSharedDatabases = 5
 } MPDatabasePackageControllerErrorCode;
 
 
