@@ -27,6 +27,8 @@
 
 #import "RegexKitLite.h"
 
+#import <Feather/NSObject+MPExtensions.h>
+
 #import <CouchbaseLite/CouchbaseLite.h>
 #import <CouchbaseLiteListener/CBLListener.h>
 
@@ -106,7 +108,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         CBLManagerOptions opts;
         opts.readOnly = NO;
         
+        _serverQueueToken = [[NSUUID UUID] unsignedLongValue];
         _server = [[CBLManager alloc] initWithDirectory:_path options:&opts error:err];
+        _server.dispatchQueue = mp_dispatch_queue_create(_path, _serverQueueToken, DISPATCH_QUEUE_SERIAL);
         
 #ifdef DEBUG
         [_server.customHTTPHeaders addEntriesFromDictionary:@{
@@ -134,7 +138,6 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
                                                  pushFilterName:pushFilterName
                                                  pullFilterName:[self pullFilterNameForDatabaseNamed:dbName]
                                                           error:err];
-            
             if (!db) { return nil; }
             [self setValue:db forKey:[NSString stringWithFormat:@"%@Database", db.name]];
             
@@ -484,7 +487,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     
     for (MPDatabase *db in databases)
     {
-        [db.server close];
+        mp_dispatch_sync(db.server.dispatchQueue, [db.packageController serverQueueToken], ^{
+            [db.server close];
+        });
     }
 }
 

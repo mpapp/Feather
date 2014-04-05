@@ -36,6 +36,9 @@
 
 + (BOOL)isCommandLineTool
 {
+    if ([self inTestSuite])
+        return NO;
+    
     BOOL b = ([[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSMainNibFile"] == nil); // TODO: this is not very airtight logic
     return b;
 }

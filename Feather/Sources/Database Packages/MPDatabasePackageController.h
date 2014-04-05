@@ -52,6 +52,8 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** The database server for this database package. */
 @property (strong, readonly) CBLManager *server;
 
+@property (readonly) NSUInteger serverQueueToken;
+
 /** The base remote URL for the document package. NOTE! An abstract method. */
 @property (strong, readonly) NSURL *remoteURL;
 

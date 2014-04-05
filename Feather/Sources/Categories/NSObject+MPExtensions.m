@@ -221,3 +221,55 @@
 }
 
 @end
+
+
+dispatch_queue_t mp_dispatch_queue_create(NSString *label, NSUInteger queueSpecificToken, dispatch_queue_attr_t attr)
+{
+    dispatch_queue_t q = dispatch_queue_create([label UTF8String], attr);
+    
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000 || MAC_OS_X_VERSION_MIN_REQUIRED >= 1080
+	const void * key = (__bridge const void *)q;
+#else
+	const void * key = (const void *)q;
+#endif
+	
+    // no token is set if it were 0
+    if (queueSpecificToken)
+        dispatch_queue_set_specific(q,
+                                    key,
+                                    (void *)queueSpecificToken, NULL);
+    
+    return q;
+}
+
+void mp_dispatch_sync(dispatch_queue_t q, NSUInteger queueSpecificToken, dispatch_block_t block)
+{
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000 || MAC_OS_X_VERSION_MIN_REQUIRED >= 1080
+	const void * key = (__bridge const void *)q;
+#else
+	const void * key = (const void *)q;
+#endif
+    
+    const NSUInteger token = (const NSUInteger)dispatch_get_specific(key);
+    
+    if (token == queueSpecificToken)
+        block();
+    else
+        dispatch_sync(q, block);
+}
+
+void mp_dispatch_async(dispatch_queue_t q, NSUInteger queueSpecificToken, dispatch_block_t block)
+{
+#if __IPHONE_OS_VERSION_MIN_REQUIRED >= 60000 || MAC_OS_X_VERSION_MIN_REQUIRED >= 1080
+	const void * key = (__bridge const void *)q;
+#else
+	const void * key = (const void *)q;
+#endif
+    
+    const NSUInteger token = (const NSUInteger)dispatch_get_specific(key);
+    
+    if (token == queueSpecificToken)
+        block();
+    else
+        dispatch_async(q, block);
+}

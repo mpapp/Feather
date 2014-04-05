@@ -85,7 +85,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
         [packageController registerManagedObjectsController:self];
 
-        [self configureViews];
+        mp_dispatch_sync(db.server.dispatchQueue, [self.packageController serverQueueToken], ^{
+            [self configureViews];
+        });
 
         if ([self observesManagedObjectChanges])
         {
@@ -110,6 +112,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
             }];
         }
     }
+    
 
     return self;
 }
@@ -413,16 +416,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (NSArray *)allObjects
 {
-    NSError *err = nil;
-
     CBLQuery *q = [self allObjectsQuery];
-    NSArray *objs = [self managedObjectsForQueryEnumerator:[q run:&err]];
-    if (!objs)
-    {
-        [[self.packageController notificationCenter] postErrorNotification:err];
-        return nil;
-    }
-
+    NSArray *objs = [self managedObjectsForQueryEnumerator:[q run]];
     return objs;
 }
 
@@ -684,73 +679,82 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         return;
     }
 
-    CBLReplication *replication = nil;
-
-    if (![self.db pullFromDatabaseAtPath:tempBundledBundlesPath
-                             replication:&replication error:&err])
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(err);
-        });
-        return;
-    }
-    
     __block BOOL shouldRun = YES;
-
-    __weak NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-    __weak MPManagedObjectsController *weakSelf = self;
-    __block id observer =
-        [nc addObserverForName:kCBLReplicationChangeNotification
-                        object:replication queue:[NSOperationQueue mainQueue]
-                    usingBlock:
-        ^(NSNotification *note)
-    {
-             MPManagedObjectsController *strongSelf = weakSelf;
-             CBLReplication *r = note.object;
-             assert(replication == r);
-             if (r.status == kCBLReplicationStopped && !r.lastError)
-             {
-                 [metadata setValue:md5 ofProperty:checksumKey];
-
-                 NSError *metadataSaveErr = nil;
-                 if (![metadata save:&metadataSaveErr])
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
+    ^{
+        CBLReplication *replication = nil;
+        
+        NSError *error = nil;
+        if (![self.db pullFromDatabaseAtPath:tempBundledBundlesPath
+                                 replication:&replication error:&error])
+        {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                completionHandler(error);
+            });
+            return;
+        }
+        
+        __weak NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+        __weak MPManagedObjectsController *weakSelf = self;
+        __block id observer =
+            [nc addObserverForName:kCBLReplicationChangeNotification
+                            object:replication queue:[NSOperationQueue mainQueue]
+                        usingBlock:
+            ^(NSNotification *note)
+        {
+                 MPManagedObjectsController *strongSelf = weakSelf;
+                 CBLReplication *r = note.object;
+                 assert(replication == r);
+                 if (r.status == kCBLReplicationStopped && !r.lastError)
                  {
-                     NSLog(@"ERROR! Could not load bundled data from '%@.touchdb': %@", resourceDBName, metadataSaveErr);
+                     [metadata setValue:md5 ofProperty:checksumKey];
 
-                     [[strongSelf.packageController notificationCenter]
-                        postErrorNotification:metadataSaveErr];
+                     NSError *metadataSaveErr = nil;
+                     if (![metadata save:&metadataSaveErr])
+                     {
+                         NSLog(@"ERROR! Could not load bundled data from '%@.touchdb': %@", resourceDBName, metadataSaveErr);
+
+                         [[strongSelf.packageController notificationCenter]
+                            postErrorNotification:metadataSaveErr];
+                     }
+                     else
+                     {
+                         NSLog(@"Loaded bundled resource %@", resourceDBName);
+
+                         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+                         [nc postNotificationName:MPManagedObjectsControllerLoadedBundledResourcesNotification object:self];
+                     }
+
+                     [nc removeObserver:observer];
+                     shouldRun = NO;
+                     NSError *err = nil;
+                     if (![fm removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
+                     {
+                         NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
+                     }
                  }
-                 else
+                 else if (r.status == kCBLReplicationStopped)
                  {
-                     NSLog(@"Loaded bundled resource %@", resourceDBName);
+                     NSLog(@"ERROR! Failed to pull from bundled database.");
+                     [[self.packageController notificationCenter] postErrorNotification:r.lastError];
 
-                     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-                     [nc postNotificationName:MPManagedObjectsControllerLoadedBundledResourcesNotification object:self];
+                     [nc removeObserver:observer];
+                     shouldRun  = NO;
+                     
+                     NSError *err = nil;
+                     if (![fm removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
+                     {
+                         NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
+                     }
                  }
-
-                 [nc removeObserver:observer];
-                 shouldRun = NO;
-                 NSError *err = nil;
-                 if (![fm removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
-                 {
-                     NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
-                 }
-             }
-             else if (r.status == kCBLReplicationStopped)
-             {
-                 NSLog(@"ERROR! Failed to pull from bundled database.");
-                 [[self.packageController notificationCenter] postErrorNotification:r.lastError];
-
-                 [nc removeObserver:observer];
-                 shouldRun  = NO;
-                 
-                 NSError *err = nil;
-                 if (![fm removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
-                 {
-                     NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
-                 }
-             }
-        }];
+            }];
+    });
+    
+    //while (shouldRun)
+	//	[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+    
+    NSLog(@"Finished loading bundled resources for %@", self);
     
 /*    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
     int i = 0;
@@ -948,9 +952,11 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (Class)managedObjectClass
 {
-    NSString *objectType = self.properties[@"objectType"];
+    __block NSString *objectType = nil;
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [self.database.packageController serverQueueToken], ^{
+        objectType = self.properties[@"objectType"];
+    });
     assert(objectType);
-
     return NSClassFromString(objectType);
 }
 

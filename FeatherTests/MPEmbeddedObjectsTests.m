@@ -19,7 +19,7 @@
 - (void)setUp
 {
     [MPShoeboxPackageController deregisterShoeboxPackageControllerClass];
-    [MPShoeboxPackageController registerShoeboxPackageControllerClass:[MPFeatherTestPackageController class]]
+    [MPShoeboxPackageController registerShoeboxPackageControllerClass:[MPFeatherTestPackageController class]];
 }
 
 - (void)tearDown

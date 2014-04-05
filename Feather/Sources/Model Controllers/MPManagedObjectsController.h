@@ -117,8 +117,13 @@ typedef enum MPManagedObjectsControllerErrorCode
  * @param db The database of whose objects this controller manages. Must be one of the databases of the database controller given as the first argument.
  * @param err An optional error pointer. */
 - (instancetype)initWithPackageController:(MPDatabasePackageController *)packageController
-                                 database:(MPDatabase *)db
-                                    error:(NSError **)err;
+                                 database:(MPDatabase *)db error:(NSError **)err;
+
+/**
+ * A callback fired after the hosting MPDatabasePackageController for a MPManagedObjectsController has finished initialising all its managed objects controller 
+ * (you can run code dependent on other managed objects controller here).
+ */
+- (void)didInitialize;
 
 /** Configure the design document of this controller. Can (and commonly is) overloaded by subclasses, but not to be called manually. */
 - (void)configureViews __attribute__((objc_requires_super));

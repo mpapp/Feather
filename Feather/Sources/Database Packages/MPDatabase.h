@@ -34,7 +34,7 @@ typedef enum MPDatabaseErrorCode
 /** Name of the database, which is unique per MPDatabasePackageController, and used to derive the database's filesystem path and the remote URL. Immutable, readonly property set during instantiation. */
 @property (readonly, copy) NSString *name;
 
-/** The CouchServer instance which owns this database (the server can have multiple databases and is itself managed by MPDatabasePackageController). */
+/** The CBLManager instance which owns this database (the server can have multiple databases and is itself managed by MPDatabasePackageController). */
 @property (readonly, strong) CBLManager *server;
 
 /** The CBLDatabase instance wrapped by the MPDatabase instance.  */

@@ -86,8 +86,10 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         
         _packageController = packageController;
         
-        NSError *err = nil;
-        _database = [_server databaseNamed:[MPDatabase sanitizedDatabaseIDWithString:name] error:&err];
+        __block NSError *err = nil;
+        mp_dispatch_sync(_server.dispatchQueue, packageController.serverQueueToken, ^{
+            _database = [_server databaseNamed:[MPDatabase sanitizedDatabaseIDWithString:name] error:&err];
+        });
         
         objc_setAssociatedObject(_database, "dbp", self, OBJC_ASSOCIATION_ASSIGN);
         
@@ -116,12 +118,15 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
          }];
          
          // used for backbone-couchdb bridging
-         [[self.database viewNamed:@"by-object-type"]
-          setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
-        {
-            if (doc[@"objectType"])
-                emit(doc[@"objectType"], doc);
-        } version:@"1.0"];
+        
+        mp_dispatch_sync(_server.dispatchQueue, [self.packageController serverQueueToken], ^{
+            [[self.database viewNamed:@"by-object-type"]
+             setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
+             {
+                 if (doc[@"objectType"])
+                     emit(doc[@"objectType"], doc);
+             } version:@"1.0"];
+        });
     }
     
     return self;
@@ -439,11 +444,15 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     BOOL isExternalChange = notification.userInfo[@"external"];
     for (CBLDatabaseChange *change in notification.userInfo[@"changes"])
     {
-        CBLDocument *doc = [self.database existingDocumentWithID:change.documentID];
-        [_packageController didChangeDocument:doc
-                                       source:isExternalChange
-                                                ? MPManagedObjectChangeSourceExternal
-                                                : MPManagedObjectChangeSourceAPI];
+        __block CBLDocument *doc = nil;
+        mp_dispatch_sync(self.database.manager.dispatchQueue, [self.packageController serverQueueToken],
+        ^{
+            doc = [self.database existingDocumentWithID:change.documentID];
+        });
+        [_packageController didChangeDocument:doc source:isExternalChange
+         ? MPManagedObjectChangeSourceExternal
+         : MPManagedObjectChangeSourceAPI];
+            
     }
 }
 
@@ -653,12 +662,15 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 - (CBLQueryEnumerator *)run
 {
-    NSError *err = nil;
-    CBLQueryEnumerator *qenum = nil;
-    if (!(qenum = [self run:&err]))
-    {
-        [[self.database.packageController notificationCenter] postErrorNotification:err];
-    }
+    __block CBLQueryEnumerator *qenum = nil;
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [[self.database packageController] serverQueueToken], ^{
+        NSError *err = nil;
+        if (!(qenum = [self run:&err]))
+        {
+            [[self.database.packageController notificationCenter] postErrorNotification:err];
+        }
+        
+    });
     return qenum;
 }
 
@@ -668,13 +680,26 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 - (BOOL)save
 {
-    NSError *err = nil;
-    BOOL success = [self save:&err];
+    __block NSError *err = nil;
+    __block BOOL success = NO;
+    
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [self.database.packageController serverQueueToken], ^{
+        success = [self save:&err];
+    });
     
     if (!success)
         [[NSNotificationCenter defaultCenter] postErrorNotification:err];
     
     return success;
+}
+
+- (id)getValueOfProperty:(NSString *)property
+{
+    __block id value = nil;
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [[self.database packageController] serverQueueToken], ^{
+        value = [super getValueOfProperty:property];
+    });
+    return value;
 }
 
 @end

@@ -366,8 +366,13 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     
     [self updateTimestamps];
     
-    BOOL success;
-    if ((success = [super save:outError]))
+    __block BOOL success = NO;
+    
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [self.database.packageController serverQueueToken], ^{
+        success = [super save:outError];
+    });
+    
+    if (success)
     {
         for (NSString *propertyKey in self.class.embeddedProperties)
         {
@@ -449,8 +454,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (void)didLoadFromDocument
 {
     //NSLog(@"Did load");
-    NSError *err = nil;
-    NSArray *conflictingRevs = [self.document getConflictingRevisions:&err];
+    __block NSError *err = nil;
+    __block NSArray *conflictingRevs = nil;
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [self.database.packageController serverQueueToken], ^{
+        conflictingRevs = [self.document getConflictingRevisions:&err];
+    });
     
     if (!conflictingRevs)
     {
@@ -544,7 +552,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"[%@, rev:%@]", self.document.documentID, self.document.currentRevisionID];
+    __block NSString *desc = nil;
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [self.database.packageController serverQueueToken], ^{
+        desc = [NSString stringWithFormat:@"[%@, rev:%@]", self.document.documentID, self.document.currentRevisionID];
+    });
+    return desc;
 }
 
 - (void)setCreatedAt:(NSDate *)createdAt { assert(createdAt); [self setValue:@([createdAt timeIntervalSince1970]) ofProperty:@"createdAt"]; }
