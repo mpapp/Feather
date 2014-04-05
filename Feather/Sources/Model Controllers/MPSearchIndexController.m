@@ -118,7 +118,8 @@ NSString * const MPSearchIndexControllerErrorDomain = @"MPSearchIndexControllerE
     
     int flags =  SQLITE_OPEN_FILEPROTECTION_COMPLETEUNLESSOPEN
                  | SQLITE_OPEN_READWRITE
-                 | SQLITE_OPEN_CREATE;
+                 | SQLITE_OPEN_CREATE   
+                 | SQLITE_OPEN_SHAREDCACHE;
     
     dbSuccess = [db openWithFlags:flags];
     

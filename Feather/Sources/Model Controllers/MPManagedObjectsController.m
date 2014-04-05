@@ -63,9 +63,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return nil;
 }
 
-- (instancetype)initWithPackageController:(MPDatabasePackageController *)packageController
-                                 database:(MPDatabase *)db
-                                    error:(NSError **)err
+- (instancetype)initWithPackageController:(MPDatabasePackageController *)packageController database:(MPDatabase *)db error:(NSError **)err
 {
     // MPManagedObjectsController is abstract
     assert([self class] != [MPManagedObjectsController class]);
@@ -426,8 +424,14 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     assert(identifier);
     Class cls = [MPManagedObject managedObjectClassFromDocumentID:identifier];
     assert(cls);
-    CBLDocument *doc = [self.db.database existingDocumentWithID:identifier];
-    if (!doc) return nil;
+    __block CBLDocument *doc = nil;
+    
+    mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.packageController serverQueueToken], ^{
+        doc = [self.db.database existingDocumentWithID:identifier];
+    });
+    
+    if (!doc)
+        return nil;
 
     return [cls modelForDocument:doc];
 }
@@ -490,10 +494,14 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
         Class moClass = NSClassFromString([d managedObjectType]);
         assert(moClass);
-
-        CBLDocument *doc = [self.db.database existingDocumentWithID:docID];
+        
+        __block CBLDocument *doc = nil;
+        mp_dispatch_sync([(CBLManager *)[self.packageController server] dispatchQueue], [self.packageController serverQueueToken], ^{
+            doc = [self.db.database existingDocumentWithID:docID];
+        });
+        
         MPManagedObject *mo = doc ? [moClass modelForDocument:doc] : nil;
-
+        
         if (mo)
         {
             [mo setValuesForPropertiesWithDictionary:d];
@@ -615,8 +623,11 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return nil; // overload in subclass to load bundled data
 }
 
+
 - (void)loadBundledResourcesWithCompletionHandler:(void(^)(NSError *err))completionHandler
 {
+    assert([NSThread isMainThread]);
+    
     NSString *resourceDBName = self.bundledResourceDatabaseName;
     NSString *checksumKey = [NSString stringWithFormat:@"bundled-%@-md5", resourceDBName];
 
@@ -679,91 +690,94 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         return;
     }
 
+    //__block BOOL shouldRun = YES;
+    
+    CBLReplication *replication = nil;
+    
     __block BOOL shouldRun = YES;
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),
-    ^{
-        CBLReplication *replication = nil;
         
-        NSError *error = nil;
-        if (![self.db pullFromDatabaseAtPath:tempBundledBundlesPath
-                                 replication:&replication error:&error])
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(error);
-            });
-            return;
-        }
-        
-        __weak NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-        __weak MPManagedObjectsController *weakSelf = self;
-        __block id observer =
-            [nc addObserverForName:kCBLReplicationChangeNotification
-                            object:replication queue:[NSOperationQueue mainQueue]
-                        usingBlock:
-            ^(NSNotification *note)
-        {
-                 MPManagedObjectsController *strongSelf = weakSelf;
-                 CBLReplication *r = note.object;
-                 assert(replication == r);
-                 if (r.status == kCBLReplicationStopped && !r.lastError)
-                 {
-                     [metadata setValue:md5 ofProperty:checksumKey];
-
-                     NSError *metadataSaveErr = nil;
-                     if (![metadata save:&metadataSaveErr])
-                     {
-                         NSLog(@"ERROR! Could not load bundled data from '%@.touchdb': %@", resourceDBName, metadataSaveErr);
-
-                         [[strongSelf.packageController notificationCenter]
-                            postErrorNotification:metadataSaveErr];
-                     }
-                     else
-                     {
-                         NSLog(@"Loaded bundled resource %@", resourceDBName);
-
-                         NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-                         [nc postNotificationName:MPManagedObjectsControllerLoadedBundledResourcesNotification object:self];
-                     }
-
-                     [nc removeObserver:observer];
-                     shouldRun = NO;
-                     NSError *err = nil;
-                     if (![fm removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
-                     {
-                         NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
-                     }
-                 }
-                 else if (r.status == kCBLReplicationStopped)
-                 {
-                     NSLog(@"ERROR! Failed to pull from bundled database.");
-                     [[self.packageController notificationCenter] postErrorNotification:r.lastError];
-
-                     [nc removeObserver:observer];
-                     shouldRun  = NO;
-                     
-                     NSError *err = nil;
-                     if (![fm removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
-                     {
-                         NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
-                     }
-                 }
-            }];
-    });
-    
-    //while (shouldRun)
-	//	[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
-    
-    NSLog(@"Finished loading bundled resources for %@", self);
-    
-/*    NSRunLoop *runLoop = [NSRunLoop currentRunLoop];
-    int i = 0;
-    while(shouldRun
-          && [runLoop runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]])
+    NSError *error = nil;
+    if (![self.db pullFromDatabaseAtPath:tempBundledBundlesPath
+                             replication:&replication error:&error])
     {
-        i += 1;
-    };
-    MPLog(@"Completed loading resources for %@ (%d)", self, i);*/
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler(error);
+        });
+        return;
+    }
+    
+    __weak NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+    __weak MPManagedObjectsController *weakSelf = self;
+    __block id replicationObserver =
+        [nc addObserverForName:kCBLReplicationChangeNotification
+                        object:replication queue:[NSOperationQueue mainQueue]
+                    usingBlock:
+        ^(NSNotification *note)
+    {
+             MPManagedObjectsController *strongSelf = weakSelf;
+             CBLReplication *r = note.object;
+             assert(replication == r);
+             if (r.status == kCBLReplicationStopped && !r.lastError)
+             {
+                 [metadata setValue:md5 ofProperty:checksumKey];
+
+                 
+                 __block BOOL metadataSaveSuccess = NO;
+                 __block NSError *metadataSaveErr = nil;
+                 mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.packageController serverQueueToken], ^{
+                     metadataSaveSuccess = [metadata save:&metadataSaveErr];
+                 });
+                 
+                 if (!metadataSaveSuccess)
+                 {
+                     NSLog(@"ERROR! Could not load bundled data from '%@.touchdb': %@", resourceDBName, metadataSaveErr);
+
+                     [[strongSelf.packageController notificationCenter]
+                        postErrorNotification:metadataSaveErr];
+                 }
+                 else
+                 {
+                     NSLog(@"Loaded bundled resource %@", resourceDBName);
+
+                     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+                     [nc postNotificationName:MPManagedObjectsControllerLoadedBundledResourcesNotification object:self];
+                 }
+
+                 [nc removeObserver:replicationObserver];
+                 
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     shouldRun = NO;
+                 });
+                 NSError *err = nil;
+                 if (![fm removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
+                 {
+                     NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
+                 }
+             }
+             else if (r.status == kCBLReplicationStopped)
+             {
+                 NSLog(@"ERROR! Failed to pull from bundled database.");
+                 [[self.packageController notificationCenter] postErrorNotification:r.lastError];
+
+                 [nc removeObserver:replicationObserver];
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     shouldRun = NO;
+                 });
+                 
+                 NSError *err = nil;
+                 if (![fm removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
+                 {
+                     NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
+                 }
+             }
+        }];
+    
+    while (shouldRun)
+    {
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
+    }
+    
+    MPLog(@"Completed loading resources for %@", self);
 }
 
 #pragma mark - Loading bundled objects
@@ -799,7 +813,13 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         else
         {
             [metadata setValue:md5 ofProperty:dataChecksumKey];
-            if (![metadata save:err])
+            
+            __block BOOL successfullySaved = NO;
+            mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.db.packageController serverQueueToken], ^{
+                successfullySaved = [metadata save:err];
+            });
+            
+            if (!successfullySaved)
                 return NO;
         }
     }
@@ -825,7 +845,12 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 {
     assert(object.controller == self);
     assert(self.db);
-    MPLog(@"Did save object %@:\n%@ in %@", object, [[object document] properties], self.db.database.internalURL);
+    
+    #ifdef DEBUG
+    mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.packageController serverQueueToken], ^{
+        MPLog(@"Did save object %@:\n%@ in %@", object, [[object document] properties], self.db.database.internalURL);
+    });
+    #endif
 
     NSNotificationCenter *nc = [_packageController notificationCenter]; assert(nc);
 

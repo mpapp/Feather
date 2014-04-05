@@ -307,9 +307,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 + (BOOL)saveModels:(NSArray *)models error:(NSError *__autoreleasing *)outError
 {
+    MPManagedObjectsController *moc = [[models firstObject] controller];
     for (MPManagedObject *mo in models)
     {
         assert([mo isKindOfClass:[MPManagedObject class]]);
+        assert(mo.controller == moc);
         
         if (!mo.document.modelObject)
             mo.document.modelObject = mo;
@@ -317,7 +319,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         [mo updateTimestamps];
     }
     
-    return [super saveModels:models error:outError];
+    __block BOOL success = NO;
+    mp_dispatch_sync(moc.db.database.manager.dispatchQueue, [moc.packageController serverQueueToken], ^{
+        success = [super saveModels:models error:outError];
+    });
+    
+    return success;
 }
 
 - (BOOL)save

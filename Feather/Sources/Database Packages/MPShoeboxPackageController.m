@@ -52,7 +52,13 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
         if (!identifier)
         {
             [_sharedDatabase.metadata setValue:[[NSUUID UUID] UUIDString] ofProperty:@"identifier"];
-            if (![[_sharedDatabase metadata] save:err])
+
+            __block BOOL savingSucceeded = NO;
+            mp_dispatch_sync(self.server.dispatchQueue, self.serverQueueToken, ^{
+                savingSucceeded = [[_sharedDatabase metadata] save:err];
+            });
+            
+            if (!savingSucceeded)
                 return nil;
         }
         

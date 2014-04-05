@@ -28,8 +28,6 @@
 - (void)registerObject:(MPManagedObject *)mo;
 - (void)deregisterObject:(MPManagedObject *)mo;
 
-- (void)didInitialize;
-
 @property (readonly, strong) dispatch_queue_t queryQueue;
 
 @end
