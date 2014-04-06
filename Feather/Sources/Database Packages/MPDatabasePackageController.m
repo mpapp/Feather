@@ -171,7 +171,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         _pulls = [[NSMutableArray alloc] initWithCapacity:[[[self class] databaseNames] count]];
         _completedPulls = [[NSMutableArray alloc] initWithCapacity:[[[self class] databaseNames] count]];
         
-        if ([self synchronizesPeerlessly])
+        if (![NSBundle isCommandLineTool]
+            && ![NSBundle isXPCService]
+            && ![NSBundle inTestSuite]
+            && [self synchronizesPeerlessly])
         {
             [self startListener];
         }
@@ -659,6 +662,9 @@ static NSUInteger packagesOpened = 0;
 
 - (void)startListener
 {
+    assert(![NSBundle inTestSuite]);
+    assert(![NSBundle isCommandLineTool]);
+    assert(![NSBundle isXPCService]);
     assert(!_databaseListener);
     assert(_server);
     
