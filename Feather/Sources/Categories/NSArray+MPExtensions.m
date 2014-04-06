@@ -123,6 +123,9 @@
 {
     NSArray *objs = [self mapObjectsUsingBlock:^id(id o, NSUInteger idx) {
         id rep = [o JSONStringRepresentation:err];
+        
+        // TODO: don't de/reserialise just to get objects into a JSON encodable state.
+        rep = [NSJSONSerialization JSONObjectWithData:[rep dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
         return rep ? rep : [NSNull null];
     }];
     
