@@ -1196,6 +1196,22 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return NSPasteboardReadingAsPropertyList;
 }
 
+#pragma mark -
+
+- (NSString *)JSONStringRepresentation:(NSError **)err
+{
+    NSDictionary *props = self.propertiesToSave;
+    assert(props);
+    
+    NSData *data = [NSJSONSerialization dataWithJSONObject:props options:NSJSONWritingPrettyPrinted error:err];
+    
+    if (!data)
+        return nil;
+    
+    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    return str;
+}
+
 @end
 
 @implementation MPManagedObject (Protected)

@@ -8,7 +8,6 @@
 
 #import "NSArray+MPExtensions.h"
 
-
 @implementation NSArray (Feather)
 
 - (id)firstObject { return self.count > 0 ? self[0] : nil; }
@@ -118,6 +117,21 @@
 -(NSArray *)arrayByFlatteningArray
 {
     return [self valueForKeyPath:@"@unionOfArrays.self"];
+}
+
+- (NSString *)JSONStringRepresentation:(NSError **)err
+{
+    NSArray *objs = [self mapObjectsUsingBlock:^id(id o, NSUInteger idx) {
+        id rep = [o JSONStringRepresentation:err];
+        return rep ? rep : [NSNull null];
+    }];
+    
+    NSData *data = [NSJSONSerialization dataWithJSONObject:objs options:NSJSONWritingPrettyPrinted error:err];
+    if (!data)
+        return nil;
+    
+    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    return str;
 }
 
 @end

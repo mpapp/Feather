@@ -157,6 +157,9 @@ typedef NS_ENUM(NSInteger, MPManagedObjectChangeSource)
 /** The pasteboard representation type name for the object. Can be overloaded by subclasses which wish to use a different representation type than what MPManagedObject provides. */
 + (NSString *)pasteboardTypeName;
 
+/** A JSON encodable string representation of the object. By default the representation does not contain referenced objects, but subclasses can override to embed ("denormalise") referenced objects. */
+- (NSString *)JSONStringRepresentation:(NSError **)err;
+
 /**
 * Initialise a managed object with a new document managed by the specified controller.
  * @param controller The managed object controller for this object. Must not be nil.
