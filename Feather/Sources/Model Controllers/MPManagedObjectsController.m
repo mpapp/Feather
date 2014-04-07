@@ -788,6 +788,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                     dataChecksumMetadataKey:(NSString *)dataChecksumKey
                                       error:(NSError **)err
 {
+    if ([NSBundle isXPCService] || [NSBundle isCommandLineTool])
+        return preloadedObjects;
+    
     NSArray *returnedObjects = nil;
     MPMetadata *metadata = [self.db metadata];
 
