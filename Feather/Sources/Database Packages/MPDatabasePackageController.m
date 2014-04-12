@@ -206,6 +206,13 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return self;
 }
 
+- (void)dealloc
+{
+    // db should not be observing notifications after its package controller is deallocated.
+    for (MPDatabase *db in self.databases)
+        [self.notificationCenter removeObserver:db];
+}
+
 - (BOOL)synchronizesSnapshots { return NO; }
 
 - (BOOL)synchronizesWithRemote { return NO; }

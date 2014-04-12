@@ -84,6 +84,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         
         _name = name;
         
+        assert(packageController);
         _packageController = packageController;
         
         __block NSError *err = nil;
@@ -433,11 +434,15 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 - (void)databaseDidChange:(NSNotification *)notification
 {
+    if (!_packageController)
+        return;
+    
     assert(_packageController);
     
     CBLDatabase *db = (CBLDatabase *)notification.object;
     NSLog(@"Database changed: %@", db);
     
+    assert(db == self.database);
     if (db != self.database)
         return;
     
