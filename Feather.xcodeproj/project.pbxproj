@@ -52,6 +52,8 @@
 		5FCC0220170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */; };
 		5FD0E13318F082BD00789CC9 /* NSUUID+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FD0E13118F082BD00789CC9 /* NSUUID+MPExtensions.h */; };
 		5FD0E13418F082BD00789CC9 /* NSUUID+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD0E13218F082BD00789CC9 /* NSUUID+MPExtensions.m */; };
+		5FDB1F4B18F8C84800B3290D /* NSAttributedString+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB1F4918F8C84800B3290D /* NSAttributedString+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5FDB1F4C18F8C84800B3290D /* NSAttributedString+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB1F4A18F8C84800B3290D /* NSAttributedString+MPExtensions.m */; };
 		5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
 		5FDB33111705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB330F1705CB950049EBB5 /* InfoPlist.strings */; };
 		5FDB331E1705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
@@ -305,6 +307,8 @@
 		5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MPManagedObjectExtensions.m"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.m"; sourceTree = "<group>"; };
 		5FD0E13118F082BD00789CC9 /* NSUUID+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUUID+MPExtensions.h"; sourceTree = "<group>"; };
 		5FD0E13218F082BD00789CC9 /* NSUUID+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUUID+MPExtensions.m"; sourceTree = "<group>"; };
+		5FDB1F4918F8C84800B3290D /* NSAttributedString+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributedString+MPExtensions.h"; path = "Sources/Categories/NSAttributedString+MPExtensions.h"; sourceTree = "<group>"; };
+		5FDB1F4A18F8C84800B3290D /* NSAttributedString+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributedString+MPExtensions.m"; path = "Sources/Categories/NSAttributedString+MPExtensions.m"; sourceTree = "<group>"; };
 		5FDB33031705CB950049EBB5 /* Feather.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Feather.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FDB33061705CB950049EBB5 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		5FDB33091705CB950049EBB5 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -624,6 +628,8 @@
 				5F779F9B172BD3D20011C4DD /* NSView+MPExtensions.m */,
 				5FD0E13118F082BD00789CC9 /* NSUUID+MPExtensions.h */,
 				5FD0E13218F082BD00789CC9 /* NSUUID+MPExtensions.m */,
+				5FDB1F4918F8C84800B3290D /* NSAttributedString+MPExtensions.h */,
+				5FDB1F4A18F8C84800B3290D /* NSAttributedString+MPExtensions.m */,
 			);
 			name = "Cocoa Categories";
 			sourceTree = "<group>";
@@ -789,6 +795,7 @@
 				5FDB3A9617079DD10049EBB5 /* MPDatabasePackageController+Protected.h in Headers */,
 				5FDB3A9B17079EAE0049EBB5 /* NSNotificationCenter+ErrorNotification.h in Headers */,
 				5FDB3A9F17079ED80049EBB5 /* MPShoeboxPackageController.h in Headers */,
+				5FDB1F4B18F8C84800B3290D /* NSAttributedString+MPExtensions.h in Headers */,
 				5FDB33D41705D0DA0049EBB5 /* RegexKitLite.h in Headers */,
 				5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */,
 				5FDB34541705DB570049EBB5 /* JSONKit.h in Headers */,
@@ -1090,6 +1097,7 @@
 				5F3D380F1725D8E000D19D7C /* MPBundlableMixin.m in Sources */,
 				5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */,
 				D932296517268E37006880C2 /* NSTask+MPExtensions.m in Sources */,
+				5FDB1F4C18F8C84800B3290D /* NSAttributedString+MPExtensions.m in Sources */,
 				5F6857DB17287F0800FE06B0 /* MPRootSection.m in Sources */,
 				5F779F9D172BD3D20011C4DD /* NSView+MPExtensions.m in Sources */,
 				5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */,

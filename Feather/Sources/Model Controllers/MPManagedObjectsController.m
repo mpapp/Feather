@@ -788,6 +788,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                     dataChecksumMetadataKey:(NSString *)dataChecksumKey
                                       error:(NSError **)err
 {
+    if ([NSBundle isXPCService] || [NSBundle isCommandLineTool])
+        return preloadedObjects;
+    
     NSArray *returnedObjects = nil;
     MPMetadata *metadata = [self.db metadata];
 
@@ -838,7 +841,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 {
     assert(object.controller == self);
     assert(self.db);
-    MPLog(@"Will save object %@", object);
+    //MPLog(@"Will save object %@", object);
 }
 
 - (void)didSaveObject:(MPManagedObject *)object

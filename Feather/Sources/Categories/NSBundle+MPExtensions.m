@@ -8,9 +8,6 @@
 
 #import <Feather/NSBundle+MPExtensions.h>
 
-#import <P2Core/NSString+P2Extensions.h>
-
-
 @implementation NSBundle (Feather)
 
 - (NSString *)bundleNameString
