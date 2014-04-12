@@ -841,7 +841,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 {
     assert(object.controller == self);
     assert(self.db);
-    MPLog(@"Will save object %@", object);
+    //MPLog(@"Will save object %@", object);
 }
 
 - (void)didSaveObject:(MPManagedObject *)object
