@@ -29,8 +29,12 @@
     
     if (delta < 0) {
         if (-delta < 1 * MINUTE) {
-            relativeString = (components.second == 1) ? @"One second from now" : [NSString stringWithFormat:@"%lu seconds from now",components.second];
-            
+            if (-delta <= 1) {
+                relativeString = @"just now";
+            }
+            else {
+                relativeString = (components.second == 1) ? @"One second from now" : [NSString stringWithFormat:@"%lu seconds from now",components.second];
+            }
         } else if (-delta < 2 * MINUTE) {
             relativeString =  @"a minute from now";
             
@@ -57,7 +61,11 @@
             
         }
     } else if (delta < 1 * MINUTE) {
-        relativeString = (components.second == 1) ? @"One second ago" : [NSString stringWithFormat:@"%lu seconds ago",components.second];
+        if (delta < 5) {
+            relativeString = @"just now";
+        } else {
+            relativeString = (components.second == 1) ? @"One second ago" : [NSString stringWithFormat:@"%lu seconds ago",components.second];
+        }
         
     } else if (delta < 2 * MINUTE) {
         relativeString =  @"a minute ago";
