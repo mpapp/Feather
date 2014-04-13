@@ -14,6 +14,7 @@
 #import <CouchbaseLite/MYDynamicObject.h>
 #import <objc/runtime.h>
 
+#import "DiffMatchPatch.h"
 
 @implementation NSObject (Feather)
 
@@ -273,3 +274,181 @@ void mp_dispatch_async(dispatch_queue_t q, NSUInteger queueSpecificToken, dispat
     else
         dispatch_async(q, block);
 }
+
+#pragma mark - Charles Parnot's object diffing
+
+
+@implementation NSObject (FDPropertyListDiff)
+
+- (BOOL)isPlist
+{
+    return [self isKindOfClass:[NSString class]] | [self isKindOfClass:[NSArray class]] | [self isKindOfClass:[NSDictionary class]] | [self isKindOfClass:[NSNumber class]];
+}
+
+#define MAX_CHARS 60
+
+- (NSString *)diffDescription
+{
+    if ([self isKindOfClass:[NSDictionary class]] || [self isKindOfClass:[NSArray class]])
+    {
+        NSString *shortDescription = [self description];
+        if ([shortDescription length] > MAX_CHARS)
+            shortDescription = [[shortDescription substringToIndex:MAX_CHARS] stringByAppendingString:@"..."];
+        return [NSString stringWithFormat:@"%@ entries: %@", @([(id)self count]), shortDescription];
+    }
+    
+    else if ([self isKindOfClass:[NSData class]])
+    {
+        NSString *shortDescription = [self description];
+        if ([shortDescription length] > MAX_CHARS)
+            shortDescription = [[shortDescription substringToIndex:MAX_CHARS] stringByAppendingString:@"..."];
+        return [NSString stringWithFormat:@"%@ bytes: %@", @([(id)self length]), shortDescription];
+    }
+    
+    else if ([self isKindOfClass:[NSString class]])
+    {
+        return [NSString stringWithFormat:@"%@ characters: %@", @([(id)self length]), [self description]];
+    }
+    
+    else
+        return [self description];
+}
+
+- (void)appendToString:(NSMutableString *)diff
+        diffWithObject:(id)otherObject
+            identifier:(id)identifier
+          excludedKeys:(NSSet *)excludedKeys
+{
+    id object1 = self;
+    id object2 = otherObject;
+    BOOL bothArrays  = [object1 isKindOfClass:[NSArray class]]      && [object2 isKindOfClass:[NSArray class]];
+    BOOL bothSets    = [object1 isKindOfClass:[NSSet class]]        && [object2 isKindOfClass:[NSSet class]];
+    BOOL bothDics    = [object1 isKindOfClass:[NSDictionary class]] && [object2 isKindOfClass:[NSDictionary class]];
+    
+    if (bothArrays)
+    {
+        NSArray *array1 = object1;
+        NSArray *array2 = object2;
+        if ([array1 count] != [array2 count])
+        {
+            [diff appendFormat:@"@@ %@.@count @@\n", identifier];
+            [diff appendFormat:@"- %@ objects\n", @([array1 count])];
+            [diff appendFormat:@"+ %@ objects\n", @([array2 count])];
+            return;
+        }
+        for (NSUInteger index = 0; index < [array1 count]; index++)
+        {
+            id arrayObject1 = array1[index];
+            id arrayObject2 = array2[index];
+            [arrayObject1 appendToString:diff diffWithObject:arrayObject2 identifier:[NSString stringWithFormat:@"%@[%@]", identifier, @(index)] excludedKeys:excludedKeys];
+        }
+    }
+    
+    else if (bothSets)
+    {
+        NSSet *set1 = object1;
+        NSSet *set2 = object2;
+        if ([set1 count] != [set2 count])
+        {
+            [diff appendFormat:@"@@ %@.@count @@\n", identifier];
+            [diff appendFormat:@"- %@ objects\n", @([set1 count])];
+            [diff appendFormat:@"+ %@ objects\n", @([set2 count])];
+            return;
+        }
+        if (![set1 isEqualToSet:set2])
+        {
+            NSMutableSet *onlySet1 = [NSMutableSet setWithSet:set1];
+            NSMutableSet *onlySet2 = [NSMutableSet setWithSet:set2];
+            [onlySet1 minusSet:set2];
+            [onlySet2 minusSet:set1];
+            NSArray *array1 = [onlySet1 allObjects];
+            NSArray *array2 = [onlySet2 allObjects];
+            [array1 appendToString:diff diffWithObject:array2 identifier:[NSString stringWithFormat:@"%@.allObjects", identifier] excludedKeys:excludedKeys];
+        }
+    }
+    
+    else if (bothDics)
+    {
+        // distinct keys and shared keys
+        NSDictionary *dic1 = object1;
+        NSDictionary *dic2 = object2;
+        NSSet *keys1 = [NSSet setWithArray:[dic1 allKeys]];
+        NSSet *keys2 = [NSSet setWithArray:[dic2 allKeys]];
+        NSMutableSet *distinctKeys1 = nil;
+        NSMutableSet *distinctKeys2 = nil;
+        NSMutableSet *sharedKeys = [NSMutableSet setWithSet:keys1];
+        [sharedKeys minusSet:excludedKeys];
+        if (![keys1 isEqualToSet:keys2])
+        {
+            distinctKeys1 = [NSMutableSet setWithSet:keys1];
+            [distinctKeys1 minusSet:excludedKeys];
+            [distinctKeys1 minusSet:keys2];
+            distinctKeys2 = [NSMutableSet setWithSet:keys2];
+            [distinctKeys2 minusSet:excludedKeys];
+            [distinctKeys2 minusSet:keys1];
+            [sharedKeys minusSet:distinctKeys1];
+            [sharedKeys minusSet:distinctKeys2];
+        }
+        
+        // distinct keys
+        if ([distinctKeys1 count] > 0 || [distinctKeys2 count] > 0)
+        {
+            for (NSString *key in distinctKeys1)
+            {
+                [diff appendFormat:@"@@ %@.%@ @@\n", identifier, key];
+                [diff appendFormat:@"- %@\n", [dic1[key] diffDescription]];
+            }
+            for (NSString *key in distinctKeys2)
+            {
+                [diff appendFormat:@"@@ %@.%@ @@\n", identifier, key];
+                [diff appendFormat:@"+ %@\n", [dic2[key] diffDescription]];
+            }
+        }
+        
+        // shared keys
+        for (NSString *key in sharedKeys)
+        {
+            id dicObject1 = dic1[key];
+            id dicObject2 = dic2[key];
+            [dicObject1 appendToString:diff diffWithObject:dicObject2 identifier:[NSString stringWithFormat:@"%@.%@", identifier, key] excludedKeys:excludedKeys];
+        }
+    }
+    
+    else if (![object1 isEqual:object2])
+    {
+        [diff appendFormat:@"@@ %@ @@\n", identifier];
+        [diff appendFormat:@"- [%@] %@\n", NSStringFromClass([object1 class]), [object1 diffDescription]];
+        [diff appendFormat:@"+ [%@] %@\n", NSStringFromClass([object2 class]), [object2 diffDescription]];
+    }
+}
+
+- (NSString *)differencesWithPropertyListEncodable:(id)otherPlist
+                                        identifier:(NSString *)identifier
+                                      excludedKeys:(NSSet *)excludedKeys
+{
+    NSMutableString *diff = [NSMutableString string];
+    [self appendToString:diff diffWithObject:otherPlist identifier:identifier excludedKeys:excludedKeys];
+    return [NSString stringWithString:diff];
+}
+
+@end
+
+@implementation NSString (NSStringDiff)
+- (NSString *)prettyHTMLDiffWithString:(NSString *)otherString
+{
+#if TARGET_OS_IPHONE
+    // iOS device
+#elif TARGET_IPHONE_SIMULATOR
+    // iOS Simulator
+#elif TARGET_OS_MAC
+    // Other kinds of Mac OS
+    DiffMatchPatch *diffObject = [[DiffMatchPatch alloc] init];
+    NSMutableArray *diffs = [diffObject diff_mainOfOldString:self andNewString:otherString];
+    return [diffObject diff_prettyHtml:diffs];
+#else
+    // Unsupported platform
+#endif
+    return nil;
+}
+@end
+
