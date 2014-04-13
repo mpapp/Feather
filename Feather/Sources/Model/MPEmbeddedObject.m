@@ -420,7 +420,7 @@
         return nil;
     }
     
-    CBLDocument* doc = [[self databaseForModelProperty: property] documentWithID:rawValue];
+    CBLDocument* doc = [[self databaseForModelProperty: property] existingDocumentWithID:rawValue];
     if (!doc)
     {
         MPLog(@"Unable to get document from property %@ of %@ (value='%@')",
