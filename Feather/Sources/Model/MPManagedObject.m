@@ -653,7 +653,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     [self setValue:prototypeID ofProperty:@"prototypeID"];
 }
 
-- (MPManagedObject *)prototype
+- (id)prototype
 {
     return [self.controller prototypeForObject:self];
 }
