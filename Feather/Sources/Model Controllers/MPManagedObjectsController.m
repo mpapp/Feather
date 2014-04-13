@@ -255,7 +255,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return ^(NSDictionary *doc, CBLMapEmitBlock emit)
     {
         if (![self managesDocumentWithDictionary:doc]) return;
-        emit(doc[@"_id"], nil);
+        emit(doc[@"_id"], doc);
     };
 }
 
@@ -774,7 +774,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     
     while (shouldRun)
     {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.005]];
     }
     
     MPLog(@"Completed loading resources for %@", self);
