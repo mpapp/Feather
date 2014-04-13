@@ -10,3 +10,6 @@
 [submodule "External/couchbase-lite-ios"]
 	path = External/couchbase-lite-ios
 	url = git@github.com:mz2/couchbase-lite-ios.git
+[submodule "External/google-diff-match-patch"]
+	path = External/google-diff-match-patch
+	url = git@github.com:mz2/google-diff-match-patch.git

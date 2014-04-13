@@ -71,3 +71,17 @@ NSString * const MPManagedObjectDictionaryErrorDomain = @"MPManagedObjectDiction
 }
 
 @end
+
+
+@implementation NSMutableDictionary (MPManagedObject)
+
+- (void)setManagedObjectType:(NSString *)managedObjectType
+{
+    if ([managedObjectType isEqual:self.managedObjectType])
+        return;
+    
+    assert(![self managedObjectType]);
+    self[@"objectType"] = managedObjectType;
+}
+
+@end
