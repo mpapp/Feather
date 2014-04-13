@@ -29,12 +29,7 @@
     
     if (delta < 0) {
         if (-delta < 1 * MINUTE) {
-            if (-delta <= 1) {
-                relativeString = @"just now";
-            }
-            else {
-                relativeString = (components.second == 1) ? @"One second from now" : [NSString stringWithFormat:@"%lu seconds from now",components.second];
-            }
+            relativeString = @"just now";
         } else if (-delta < 2 * MINUTE) {
             relativeString =  @"a minute from now";
             

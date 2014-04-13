@@ -851,7 +851,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     
     #ifdef DEBUG
     mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.packageController serverQueueToken], ^{
-        MPLog(@"Did save object %@:\n%@ in %@", object, [[object document] properties], self.db.database.internalURL);
+        MPLog(@"Did save object %@ in %@", object, self.db.database.internalURL);
     });
     #endif
 
