@@ -56,6 +56,8 @@
 		5FADC6F818FADB33006F4119 /* NSString+UnicharUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FADC6EB18FADB33006F4119 /* NSString+UnicharUtilities.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5FADC6F918FADB33006F4119 /* NSString+UriCompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FADC6EC18FADB33006F4119 /* NSString+UriCompatibility.h */; };
 		5FADC6FA18FADB33006F4119 /* NSString+UriCompatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FADC6ED18FADB33006F4119 /* NSString+UriCompatibility.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		5FADC70218FAFBAD006F4119 /* NSImage+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FADC70018FAFBAD006F4119 /* NSImage+MPExtensions.h */; };
+		5FADC70318FAFBAD006F4119 /* NSImage+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FADC70118FAFBAD006F4119 /* NSImage+MPExtensions.m */; };
 		5FC752E71746E287007818A0 /* NSDate+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC752E81746E287007818A0 /* NSDate+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752E61746E287007818A0 /* NSDate+MPExtensions.m */; };
 		5FC752FF1746E294007818A0 /* NSString+MPSearchIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752FD1746E294007818A0 /* NSString+MPSearchIndex.h */; };
@@ -322,6 +324,8 @@
 		5FADC6EB18FADB33006F4119 /* NSString+UnicharUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+UnicharUtilities.m"; path = "External/google-diff-match-patch/objectivec/NSString+UnicharUtilities.m"; sourceTree = SOURCE_ROOT; };
 		5FADC6EC18FADB33006F4119 /* NSString+UriCompatibility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+UriCompatibility.h"; path = "External/google-diff-match-patch/objectivec/NSString+UriCompatibility.h"; sourceTree = SOURCE_ROOT; };
 		5FADC6ED18FADB33006F4119 /* NSString+UriCompatibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+UriCompatibility.m"; path = "External/google-diff-match-patch/objectivec/NSString+UriCompatibility.m"; sourceTree = SOURCE_ROOT; };
+		5FADC70018FAFBAD006F4119 /* NSImage+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+MPExtensions.h"; path = "Sources/Categories/NSImage+MPExtensions.h"; sourceTree = "<group>"; };
+		5FADC70118FAFBAD006F4119 /* NSImage+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+MPExtensions.m"; path = "Sources/Categories/NSImage+MPExtensions.m"; sourceTree = "<group>"; };
 		5FBC5D9E18AFBF33000A2AD1 /* fmdb.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = fmdb.xcodeproj; path = "External/couchbase-lite-ios/vendor/fmdb/fmdb.xcodeproj"; sourceTree = "<group>"; };
 		5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+MPExtensions.h"; path = "Sources/Categories/NSDate+MPExtensions.h"; sourceTree = "<group>"; };
 		5FC752E61746E287007818A0 /* NSDate+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+MPExtensions.m"; path = "Sources/Categories/NSDate+MPExtensions.m"; sourceTree = "<group>"; };
@@ -677,6 +681,8 @@
 				5FD0E13218F082BD00789CC9 /* NSUUID+MPExtensions.m */,
 				5FDB1F4918F8C84800B3290D /* NSAttributedString+MPExtensions.h */,
 				5FDB1F4A18F8C84800B3290D /* NSAttributedString+MPExtensions.m */,
+				5FADC70018FAFBAD006F4119 /* NSImage+MPExtensions.h */,
+				5FADC70118FAFBAD006F4119 /* NSImage+MPExtensions.m */,
 			);
 			name = "Cocoa Categories";
 			sourceTree = "<group>";
@@ -813,6 +819,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FADC70218FAFBAD006F4119 /* NSImage+MPExtensions.h in Headers */,
 				5FDB3819170702470049EBB5 /* NSError+MPExtensions.h in Headers */,
 				5FDB381D170702650049EBB5 /* NSString+MPExtensions.h in Headers */,
 				5FDB38211707027E0049EBB5 /* NSSet+MPExtensions.h in Headers */,
@@ -1113,6 +1120,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D990D32717704A7100735807 /* NSTextField+MPExtensions.m in Sources */,
+				5FADC70318FAFBAD006F4119 /* NSImage+MPExtensions.m in Sources */,
 				5FDB33D51705D0DA0049EBB5 /* RegexKitLite.m in Sources */,
 				5FDB34391705D90A0049EBB5 /* Mixin.m in Sources */,
 				5FDB34551705DB570049EBB5 /* JSONKit.m in Sources */,
