@@ -18,10 +18,27 @@
 #define MPRangeContainsRange(r, r2) ((r.location <= r2.location) && ((r.location + r.length) <= (r2.location + r2.length)))
 
 
-extern inline NSString *MPNilToEmptyString(NSString *s);
-extern inline NSString *MPNilOrEmptyStringToString(NSString *s, NSString *s2);
-extern inline NSString *MPNilToString(NSString *s, NSString *s2);
-extern inline NSMutableString *MPMutableStringForString(NSString *s);
+NS_INLINE NSString *MPNilToEmptyString(NSString *s) {
+    return (s != nil) ? s : @"";
+}
+
+NS_INLINE  NSString *MPNilOrEmptyStringToString(NSString *s, NSString *s2)
+{
+    return ((s.length > 0) ? s : s2);
+}
+
+NS_INLINE  NSString *MPNilToString(NSString *s, NSString *s2)
+{
+    return (s != nil) ? s : MPNilToEmptyString(s2);
+}
+
+NS_INLINE  NSMutableString *MPMutableStringForString(NSString *s)
+{
+    if ([s isKindOfClass:NSMutableString.class]) {
+        return (NSMutableString *)s;
+    }
+    return [NSMutableString stringWithString:s];
+}
 
 
 @interface NSString (Feather)
