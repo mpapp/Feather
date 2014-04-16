@@ -1241,7 +1241,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         Class moClass = [properties managedObjectType] ? NSClassFromString([properties managedObjectType]) : [self class];
         assert(moClass == [_controller managedObjectClass] ||
                [moClass isSubclassOfClass:[_controller managedObjectClass]]);
-        self.objectType = [properties managedObjectType];
+        self.objectType =  NSStringFromClass(moClass); //[properties managedObjectType];
         
         [_controller registerObject:self];
 
