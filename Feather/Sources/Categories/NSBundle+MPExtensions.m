@@ -6,9 +6,8 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Feather/NSBundle+MPExtensions.h>
 
-#import <P2Core/NSString+P2Extensions.h>
+#import <Feather/NSBundle+MPExtensions.h>
 
 
 @implementation NSBundle (Feather)
