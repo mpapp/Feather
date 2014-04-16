@@ -54,4 +54,6 @@ extern BOOL MPStateToBoolean(NSInteger state);
 - (NSString *)superviewPathString;
 - (NSArray *)superviewPath;
 
+- (NSData *)PDFDataForRect:(CGRect)rect;
+
 @end
