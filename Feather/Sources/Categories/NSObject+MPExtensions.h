@@ -63,3 +63,22 @@ extern "C" {
 #if defined __cplusplus
 };
 #endif
+
+
+
+@interface NSObject (FDPropertyListDiff)
+
+/**
+ *  A string represention of differences between self and another object. Both self and the compared to object must be plist-encodable.
+ *
+ *  @param otherPlist   Object to compare to.
+ *  @param identifier   An identifier included for all diff entries in the output string.
+ *  @param excludedKeys Keys to exclude for dictionary comparisons, and recursively for all key path components in all the possible key paths in the object tree (if nil or empty, none excluded).
+ *
+ *  @return A patch-like formatted string representing all differences. If there are no differences, string is empty.
+ */
+- (NSString *)differencesWithPropertyListEncodable:(id)otherPlist
+                                        identifier:(NSString *)identifier
+                                      excludedKeys:(NSSet *)excludedKeys;
+
+@end

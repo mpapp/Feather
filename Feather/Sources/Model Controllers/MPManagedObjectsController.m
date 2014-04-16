@@ -255,7 +255,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return ^(NSDictionary *doc, CBLMapEmitBlock emit)
     {
         if (![self managesDocumentWithDictionary:doc]) return;
-        emit(doc[@"_id"], nil);
+        emit(doc[@"_id"], doc);
     };
 }
 
@@ -774,7 +774,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     
     while (shouldRun)
     {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.005]];
     }
     
     MPLog(@"Completed loading resources for %@", self);
@@ -841,7 +841,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 {
     assert(object.controller == self);
     assert(self.db);
-    MPLog(@"Will save object %@", object);
+    //MPLog(@"Will save object %@", object);
 }
 
 - (void)didSaveObject:(MPManagedObject *)object
@@ -851,7 +851,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     
     #ifdef DEBUG
     mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.packageController serverQueueToken], ^{
-        MPLog(@"Did save object %@:\n%@ in %@", object, [[object document] properties], self.db.database.internalURL);
+        MPLog(@"Did save object %@ in %@", object, self.db.database.internalURL);
     });
     #endif
 

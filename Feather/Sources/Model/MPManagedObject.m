@@ -263,31 +263,6 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     self.controller = moc;
 }
 
-+ (instancetype)modelForDocument:(CBLDocument *)document
-{
-    assert(document);
-    assert(document.database);
-    
-    if (document.modelObject)
-    {
-        assert([document.modelObject isKindOfClass:self.class]);
-        return (id)document.modelObject;
-    }
-    
-    CBLModel *cm = [super modelForDocument:document];
-    assert ([cm isKindOfClass:[MPManagedObject class]]);
-
-    MPManagedObject *mo = (MPManagedObject *)cm;
-    
-    if (!mo.controller)
-        [mo setControllerWithDocument:document];
-    
-    assert(mo.controller);
-    assert([document.properties[@"objectType"] isEqualToString:NSStringFromClass(self)]);
-        
-    return mo;
-}
-
 - (void)updateTimestamps
 {
     BOOL createdAtExists = [self createdAt] != nil;
@@ -369,7 +344,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     assert(self.document);
     [_controller willSaveObject:self];
     
-    if (!self.document.modelObject) self.document.modelObject = self;
+    assert(self.document.modelObject);
+    if (!self.document.modelObject)
+        self.document.modelObject = self;
     
     [self updateTimestamps];
     
@@ -390,7 +367,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         }
     }
     
-    [self saveCompleted];
+    if (success)
+        [self saveCompleted];
     
     return success;
 }
@@ -490,6 +468,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 {
     return _controller;
 }
+
 
 - (void)setDocument:(CBLDocument *)document
 {
@@ -653,7 +632,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     [self setValue:prototypeID ofProperty:@"prototypeID"];
 }
 
-- (MPManagedObject *)prototype
+- (id)prototype
 {
     return [self.controller prototypeForObject:self];
 }
@@ -1216,6 +1195,31 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 @implementation MPManagedObject (Protected)
 
++ (instancetype)modelForDocument:(CBLDocument *)document
+{
+    assert(document);
+    assert(document.database);
+    
+    if (document.modelObject)
+    {
+        assert([document.modelObject isKindOfClass:self.class]);
+        return (id)document.modelObject;
+    }
+    
+    CBLModel *cm = [super modelForDocument:document];
+    assert ([cm isKindOfClass:[MPManagedObject class]]);
+    
+    MPManagedObject *mo = (MPManagedObject *)cm;
+    
+    if (!mo.controller)
+        [mo setControllerWithDocument:document];
+    
+    assert(mo.controller);
+    assert([document.properties[@"objectType"] isEqualToString:NSStringFromClass(self)]);
+    
+    return mo;
+}
+
 - (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller
                                       properties:(NSDictionary *)properties
                                       documentID:(NSString *)identifier
@@ -1227,7 +1231,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     _controller = controller;
     _newDocumentID = identifier;
     
-    if (self = [super initWithNewDocumentInDatabase:controller.db.database])
+    self = [super initWithNewDocumentInDatabase:controller.db.database];
+    if (self)
     {
         assert(_controller);
         [self didInitialize];
@@ -1277,6 +1282,42 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (void)setController:(MPManagedObjectsController *)controller
 {
     _controller = controller;
+}
+
+- (void)setValue:(id)value ofProperty:(NSString *)property
+{
+    // should not be setting objectType to nil.
+    if ([property isEqualTo:@"objectType"])
+    {
+        NSString *existingObjectType = [self getValueOfProperty:@"objectType"];
+        assert(value);
+        
+        if (existingObjectType)
+        {
+            if (![value isEqual:existingObjectType])
+                @throw [NSException exceptionWithName:@"MPInvalidArgumentException" reason:@"Trying to reset objectType" userInfo:nil];
+            
+            return; // nothing to do (value is the same)
+        }
+    }
+    
+    // should not be setting _id to nil
+    if ([property isEqual:@"_id"])
+    {
+        assert(value);
+        
+        NSString *existingID = [self getValueOfProperty:@"_id"];
+        
+        if (existingID)
+        {
+            if (![value isEqual:existingID])
+                @throw [NSException exceptionWithName:@"MPInvalidArgumentException" reason:@"Trying to reset _id" userInfo:nil];
+            
+            return; // nothing to do (value is the same)
+        }
+    }
+    
+    [super setValue:value ofProperty:property];
 }
 
 @end

@@ -29,3 +29,10 @@ typedef enum MPManagedObjectDictionaryValidationErrorCode
 - (BOOL)isManagedObjectDictionary:(NSError **)error;
 
 @end
+
+@interface NSMutableDictionary (MPManagedObject)
+
+@property (readwrite, copy) NSString *managedObjectType;
+
+
+@end
