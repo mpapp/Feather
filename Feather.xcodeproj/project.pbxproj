@@ -43,6 +43,8 @@
 		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
 		5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
+		5FA0D11519012D19005BC968 /* NSIndexSet+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FA0D11319012D19005BC968 /* NSIndexSet+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5FA0D11619012D19005BC968 /* NSIndexSet+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA0D11419012D19005BC968 /* NSIndexSet+MPExtensions.m */; };
 		5FADC6EE18FADB33006F4119 /* DiffMatchPatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FADC6E118FADB33006F4119 /* DiffMatchPatch.h */; };
 		5FADC6EF18FADB33006F4119 /* DiffMatchPatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FADC6E218FADB33006F4119 /* DiffMatchPatch.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5FADC6F018FADB33006F4119 /* DiffMatchPatchCFUtilities.c in Sources */ = {isa = PBXBuildFile; fileRef = 5FADC6E318FADB33006F4119 /* DiffMatchPatchCFUtilities.c */; };
@@ -311,6 +313,8 @@
 		5F95F2D71739A94300E8C845 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPIndexableMixin.h; path = Sources/Model/MPIndexableMixin.h; sourceTree = "<group>"; };
 		5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPIndexableMixin.m; path = Sources/Model/MPIndexableMixin.m; sourceTree = "<group>"; };
+		5FA0D11319012D19005BC968 /* NSIndexSet+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSIndexSet+MPExtensions.h"; path = "Sources/Categories/NSIndexSet+MPExtensions.h"; sourceTree = "<group>"; };
+		5FA0D11419012D19005BC968 /* NSIndexSet+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSIndexSet+MPExtensions.m"; path = "Sources/Categories/NSIndexSet+MPExtensions.m"; sourceTree = "<group>"; };
 		5FADC6E118FADB33006F4119 /* DiffMatchPatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DiffMatchPatch.h; path = "External/google-diff-match-patch/objectivec/DiffMatchPatch.h"; sourceTree = SOURCE_ROOT; };
 		5FADC6E218FADB33006F4119 /* DiffMatchPatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DiffMatchPatch.m; path = "External/google-diff-match-patch/objectivec/DiffMatchPatch.m"; sourceTree = SOURCE_ROOT; };
 		5FADC6E318FADB33006F4119 /* DiffMatchPatchCFUtilities.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = DiffMatchPatchCFUtilities.c; path = "External/google-diff-match-patch/objectivec/DiffMatchPatchCFUtilities.c"; sourceTree = SOURCE_ROOT; };
@@ -683,6 +687,8 @@
 				5FDB1F4A18F8C84800B3290D /* NSAttributedString+MPExtensions.m */,
 				5FADC70018FAFBAD006F4119 /* NSImage+MPExtensions.h */,
 				5FADC70118FAFBAD006F4119 /* NSImage+MPExtensions.m */,
+				5FA0D11319012D19005BC968 /* NSIndexSet+MPExtensions.h */,
+				5FA0D11419012D19005BC968 /* NSIndexSet+MPExtensions.m */,
 			);
 			name = "Cocoa Categories";
 			sourceTree = "<group>";
@@ -870,6 +876,7 @@
 				5FADC6F718FADB33006F4119 /* NSString+UnicharUtilities.h in Headers */,
 				D932296417268E37006880C2 /* NSTask+MPExtensions.h in Headers */,
 				5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */,
+				5FA0D11519012D19005BC968 /* NSIndexSet+MPExtensions.h in Headers */,
 				5F1850261711707800079040 /* MPExtensions.h in Headers */,
 				5F18505E1711B13900079040 /* MPEmbeddedObject+Protected.h in Headers */,
 				5F3D380A1725D8A600D19D7C /* MPCategorizableMixin.h in Headers */,
@@ -1141,6 +1148,7 @@
 				5FDB3842170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.m in Sources */,
 				5FDB3A06170793550049EBB5 /* NSData+Base64.m in Sources */,
 				5FADC6FA18FADB33006F4119 /* NSString+UriCompatibility.m in Sources */,
+				5FA0D11619012D19005BC968 /* NSIndexSet+MPExtensions.m in Sources */,
 				5FDB3A401707992B0049EBB5 /* MPManagedObject.m in Sources */,
 				5FADC6F818FADB33006F4119 /* NSString+UnicharUtilities.m in Sources */,
 				5FDB3A421707992B0049EBB5 /* MPManagedObject+Mixin.m in Sources */,

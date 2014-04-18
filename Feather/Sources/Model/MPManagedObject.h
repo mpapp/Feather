@@ -154,8 +154,28 @@ typedef NS_ENUM(NSInteger, MPManagedObjectChangeSource)
 /** Human readable name for the type */
 + (NSString *)humanReadableName;
 
-/** The pasteboard representation type name for the object. Can be overloaded by subclasses which wish to use a different representation type than what MPManagedObject provides. */
-+ (NSString *)pasteboardTypeName;
+/** The pasteboard representation type name for a full representation of the object (all its properties included). 
+ * Can be overloaded by subclasses which wish to use a different representation type than what MPManagedObject provides. */
++ (NSString *)pasteboardFullObjectTypeName;
+
+/** The pasteboard representation type name for a representation of the object which only identifies it globally (intended for passing references to existing objects. */
++ (NSString *)pasteboardObjectIDTypeName;
+
+/**
+ *  The pasteboard representation type name for a representation of a collection of managed object IDs.
+ */
++ (NSString *)pasteboardObjectIDArrayTypeName;
+
+/** A representation of the object with identifier, object type and database package ID keys included. 
+ * The dictionary can be resolved to an existing object with +objectWithReferableDictionaryRepresentation. */
+@property (readonly) NSDictionary *referableDictionaryRepresentation;
+
++ (id)objectWithReferableDictionaryRepresentation:(NSDictionary *)referableDictionaryRep;
+
+/**
+ *  Returns an object ID array pasteboard representation for a collection of managed objects.
+ */
++ (NSData *)pasteboardObjectIDPropertyListForObjects:(NSArray *)objectIDDictionaries error:(NSError **)err;
 
 /** A JSON encodable string representation of the object. By default the representation does not contain referenced objects, but subclasses can override to embed ("denormalise") referenced objects. */
 - (NSString *)JSONStringRepresentation:(NSError **)err;
