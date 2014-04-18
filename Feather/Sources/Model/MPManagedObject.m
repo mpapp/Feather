@@ -52,6 +52,10 @@
 
 NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 
+NSString *const MPPasteboardTypeManagedObjectFull = @"com.piipari.mo.id.plist";
+NSString *const MPPasteboardTypeManagedObjectID = @"com.piipari.mo.id.plist";
+NSString *const MPPasteboardTypeManagedObjectIDArray = @"com.piipari.mo.array.plist";
+
 #if MP_DEBUG_ZOMBIE_MODELS
 static NSMapTable *_modelObjectByIdentifierMap = nil;
 #endif
@@ -1139,26 +1143,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 #pragma mark - NSPasteboardWriting & NSPasteboardReading
 
-+ (NSString *)pasteboardFullObjectTypeName
-{
-    return @"com.piipari.mo.plist";
-}
-
-+ (NSString *)pasteboardObjectIDTypeName
-{
-    return @"com.piipari.mo.id.plist";
-}
-
-+ (NSString *)pasteboardObjectIDArrayTypeName
-{
-    return @"com.piipari.mo.array.plist";
-}
-
 - (NSArray *)writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
-    return @[ [[self class] pasteboardFullObjectTypeName],
-              [[self class] pasteboardObjectIDTypeName],
-              [[self class] pasteboardObjectIDArrayTypeName] ];
+    
+    return @[ MPPasteboardTypeManagedObjectFull,
+              MPPasteboardTypeManagedObjectID,
+              MPPasteboardTypeManagedObjectIDArray ];
 }
 
 - (NSDictionary *)referableDictionaryRepresentation
@@ -1173,24 +1163,23 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (id)pasteboardPropertyListForType:(NSString *)type
 {
     // Only these two types should be called directly on MPManagedObject instances (ObjectID array type is for a collection of objects)
-    assert([type isEqual:[self.class pasteboardFullObjectTypeName]]
-           || [type isEqual:[self.class pasteboardObjectIDTypeName]]);
+    assert([type isEqual:MPPasteboardTypeManagedObjectFull]
+           || [type isEqual:MPPasteboardTypeManagedObjectID]);
     
     NSString *errorStr = nil;
     NSData *dataRep = nil;
-    if ([type isEqual:[self.class pasteboardFullObjectTypeName]])
+    if ([type isEqual:MPPasteboardTypeManagedObjectFull])
     {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:self.propertiesToSave];
         dict[@"databasePackageID"] = ((MPDatabasePackageController *)(self.controller.packageController)).identifier;
         
-        assert([type isEqualToString:[[self class] pasteboardFullObjectTypeName]]);
+        assert([type isEqualToString:MPPasteboardTypeManagedObjectFull]);
         dataRep = [NSPropertyListSerialization dataFromPropertyList:dict
                                                              format:NSPropertyListXMLFormat_v1_0
                                                    errorDescription:&errorStr];
     }
-    else if ([type isEqual:[self.class pasteboardObjectIDTypeName]])
+    else if ([type isEqual:MPPasteboardTypeManagedObjectID])
     {
-        assert([type isEqualToString:[[self class] pasteboardFullObjectTypeName]]);
         dataRep = [NSPropertyListSerialization dataFromPropertyList:self.referableDictionaryRepresentation
                                                              format:NSPropertyListXMLFormat_v1_0
                                                    errorDescription:&errorStr];
@@ -1218,38 +1207,32 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 + (NSArray *)readableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
-    return @[ [[self class] pasteboardFullObjectTypeName],
-              [[self class] pasteboardObjectIDTypeName] ];
+    return @[ MPPasteboardTypeManagedObjectFull,
+              MPPasteboardTypeManagedObjectID ];
 }
 
 + (NSPasteboardReadingOptions)readingOptionsForType:(NSString *)type pasteboard:(NSPasteboard *)pasteboard
 {
-    assert([type isEqualToString:[[self class] pasteboardFullObjectTypeName]]
-           || [type isEqualToString:[[self class] pasteboardObjectIDTypeName]]);
+    assert([type isEqualToString:MPPasteboardTypeManagedObjectFull]
+           || [type isEqualToString:MPPasteboardTypeManagedObjectID]);
     return NSPasteboardReadingAsPropertyList;
 }
 
 - (id)initWithPasteboardPropertyList:(id)propertyList ofType:(NSString *)type
 {
-    assert([type isEqualToString:[[self class] pasteboardFullObjectTypeName]]
-           || [type isEqualToString:[[self class] pasteboardObjectIDTypeName]]);
+    assert([type isEqualToString:MPPasteboardTypeManagedObjectFull]
+           || [type isEqualToString:MPPasteboardTypeManagedObjectID]);
 
-    if ([type isEqual:[self.class pasteboardFullObjectTypeName]])
-    {
-        id obj = [self initWithPasteboardObjectIDPropertyList:propertyList ofType:[self.class pasteboardObjectIDTypeName]];
-        
-        if (obj)
+    id obj = [self initWithPasteboardObjectIDPropertyList:propertyList ofType:MPPasteboardTypeManagedObjectID];
+    if ([type isEqual:MPPasteboardTypeManagedObjectFull] && obj)
             [obj setValuesForPropertiesWithDictionary:propertyList];
-        
-        return obj;
-    }
     
-    return nil;
+    return obj;
 }
 
 - (id)initWithPasteboardObjectIDPropertyList:(id)propertyList ofType:(NSString *)type
 {
-    assert([type isEqual:[self.class pasteboardObjectIDTypeName]]);
+    assert([type isEqual:MPPasteboardTypeManagedObjectID]);
     
     assert(self.class == NSClassFromString([propertyList managedObjectType]));
     assert([propertyList isKindOfClass:[NSDictionary class]]);

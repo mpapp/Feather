@@ -37,6 +37,14 @@ typedef NS_ENUM(NSInteger, MPManagedObjectChangeSource)
     MPManagedObjectChangeSourceExternal = 2     // changes coming in from external source ( e.g. replication )
 };
 
+/** Pasteboard type for a full managed object. */
+extern NSString *const MPPasteboardTypeManagedObjectFull;
+
+/** Pasteboard type for a minimal managed object representation with necessary identifiers to find the object by its ID and package controller ID. */
+extern NSString *const MPPasteboardTypeManagedObjectID;
+
+/** Pasteboard type for an array of object ID representations. */
+extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 
 /** An empty tag protocol used to signify objects which can be referenced across database boundaries.
   * This information is used to determine the correct controller for an object. */
@@ -153,18 +161,6 @@ typedef NS_ENUM(NSInteger, MPManagedObjectChangeSource)
 
 /** Human readable name for the type */
 + (NSString *)humanReadableName;
-
-/** The pasteboard representation type name for a full representation of the object (all its properties included). 
- * Can be overloaded by subclasses which wish to use a different representation type than what MPManagedObject provides. */
-+ (NSString *)pasteboardFullObjectTypeName;
-
-/** The pasteboard representation type name for a representation of the object which only identifies it globally (intended for passing references to existing objects. */
-+ (NSString *)pasteboardObjectIDTypeName;
-
-/**
- *  The pasteboard representation type name for a representation of a collection of managed object IDs.
- */
-+ (NSString *)pasteboardObjectIDArrayTypeName;
 
 /** A representation of the object with identifier, object type and database package ID keys included. 
  * The dictionary can be resolved to an existing object with +objectWithReferableDictionaryRepresentation. */
