@@ -45,6 +45,37 @@ NS_INLINE id MPNilToNSNull(id object)
 
 + (void)performInMainQueueAfterDelay:(NSTimeInterval)delay block:(void (^)(void))block;
 
+/**
+ *  A method swizzling handler block: returns a new method implementation, receiving as its argument the original implementation (allows calling the original).
+ *
+ *  @param originalImplementation Handler receives
+ *
+ *  @return Returns the new method implementation which is used to replace the old. 
+ */
+typedef IMP (^MPMethodImplementationProvider)(IMP originalImplementation);
+
+typedef id(^MPMethodImplementationBlockProvider)(IMP originalImplementation);
+
+/**
+ *  Replace instance method with specified selector with an implementation returned by the provided implementation provider block.
+ *
+ *  @param selector Selector of the instance method to be replaced.
+ *  @param swizzler A block whose return value is a new implementation
+ */
++ (void)replaceInstanceMethodWithSelector:(SEL)selector implementationProvider:(MPMethodImplementationProvider)swizzler;
+
++ (void)replaceInstanceMethodWithSelector:(SEL)selector implementationBlockProvider:(MPMethodImplementationBlockProvider)swizzler;
+
+/**
+ *  Replace class method with specified selector with an implementation returned by the provided implementation provider block.
+ *
+ *  @param selector Selector of the instance method to be replaced.
+ *  @param swizzler A block whose return value is a new implementation
+ */
++ (void)replaceClassMethodWithSelector:(SEL)selector implementationProvider:(MPMethodImplementationProvider)swizzler;
+
++ (void)replaceClassMethodWithSelector:(SEL)selector implementationBlockProvider:(MPMethodImplementationBlockProvider)swizzler;
+
 @end
 
 #if defined __cplusplus
