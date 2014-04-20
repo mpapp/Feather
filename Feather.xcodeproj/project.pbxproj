@@ -58,7 +58,7 @@
 		5FADC6F818FADB33006F4119 /* NSString+UnicharUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FADC6EB18FADB33006F4119 /* NSString+UnicharUtilities.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5FADC6F918FADB33006F4119 /* NSString+UriCompatibility.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FADC6EC18FADB33006F4119 /* NSString+UriCompatibility.h */; };
 		5FADC6FA18FADB33006F4119 /* NSString+UriCompatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FADC6ED18FADB33006F4119 /* NSString+UriCompatibility.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		5FADC70218FAFBAD006F4119 /* NSImage+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FADC70018FAFBAD006F4119 /* NSImage+MPExtensions.h */; };
+		5FADC70218FAFBAD006F4119 /* NSImage+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FADC70018FAFBAD006F4119 /* NSImage+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FADC70318FAFBAD006F4119 /* NSImage+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FADC70118FAFBAD006F4119 /* NSImage+MPExtensions.m */; };
 		5FC752E71746E287007818A0 /* NSDate+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC752E81746E287007818A0 /* NSDate+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752E61746E287007818A0 /* NSDate+MPExtensions.m */; };

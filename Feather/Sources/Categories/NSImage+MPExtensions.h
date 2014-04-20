@@ -12,4 +12,15 @@
 
 - (NSImage *)roundCornersImageCornerRadius:(NSInteger)radius;
 
+@property (readonly) CGImageRef CGImage;
+
+@end
+
+// Kindly contributed by Charles Parnot (FDFoundation)
+@interface NSImage (FDImageDiff)
+
+- (BOOL)isPixelEqualToImage:(NSImage *)image;
+
+- (CGFloat)pixelDifferenceWithImage:(NSImage *)image;
+
 @end
