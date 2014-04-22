@@ -12,6 +12,7 @@
 
 #import <CouchbaseLite/CouchbaseLite.h>
 #import <CouchbaseLite/MYDynamicObject.h>
+
 #import <objc/runtime.h>
 
 #import "DiffMatchPatch.h"
@@ -218,7 +219,68 @@
     int64_t delta = (int64_t)(1.0e9 * delay);
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, delta), dispatch_get_main_queue(), block);
+}
+
+#pragma mark - Swizzling
+
++ (void)replaceInstanceMethodWithSelector:(SEL)selector implementationProvider:(MPMethodImplementationProvider)swizzler
+{
+    Method origMethod = class_getInstanceMethod(self, selector);
+    [self replaceMethodImplementation:origMethod withSelector:selector implementationProvider:swizzler];
+}
+
++ (void)replaceInstanceMethodWithSelector:(SEL)selector implementationBlockProvider:(MPMethodImplementationBlockProvider)swizzler
+{
+    Method origMethod = class_getInstanceMethod(self, selector);
+    [self replaceMethodImplementation:origMethod withSelector:selector implementationBlockProvider:swizzler];
+}
+
++ (void)replaceClassMethodWithSelector:(SEL)selector implementationProvider:(MPMethodImplementationProvider)swizzler;
+{
+    Method origMethod = class_getClassMethod(self, selector);
+    [self replaceMethodImplementation:origMethod withSelector:selector implementationProvider:swizzler];
+}
+
++ (void)replaceClassMethodWithSelector:(SEL)selector implementationBlockProvider:(MPMethodImplementationBlockProvider)swizzler;
+{
+    Method origMethod = class_getClassMethod(self, selector);
+    [self replaceMethodImplementation:origMethod withSelector:selector implementationBlockProvider:swizzler];
+}
+
++ (void)replaceMethodImplementation:(Method)origMethod
+                       withSelector:(SEL)selector
+             implementationProvider:(MPMethodImplementationProvider)swizzler
+{
+    assert(origMethod);
     
+    const char *typeEncoding = method_getTypeEncoding(origMethod);
+    
+    IMP origImpl = method_getImplementation(origMethod);
+    IMP newImpl = swizzler(origImpl);
+    
+    if (!class_addMethod(self, selector, newImpl, typeEncoding))
+    {
+        BOOL replacementSuccessful = class_replaceMethod(self, selector, newImpl, typeEncoding);
+        assert(replacementSuccessful);
+    }
+}
+
++ (void)replaceMethodImplementation:(Method)origMethod
+                       withSelector:(SEL)selector
+        implementationBlockProvider:(MPMethodImplementationBlockProvider)swizzler
+{
+    assert(origMethod);
+    
+    const char *typeEncoding = method_getTypeEncoding(origMethod);
+    
+    IMP origImpl = method_getImplementation(origMethod);
+    IMP newImpl = imp_implementationWithBlock(swizzler(origImpl));
+    
+    if (!class_addMethod(self, selector, newImpl, typeEncoding))
+    {
+        BOOL replacementSuccessful = class_replaceMethod(self, selector, newImpl, typeEncoding);
+        assert(replacementSuccessful);
+    }
 }
 
 @end

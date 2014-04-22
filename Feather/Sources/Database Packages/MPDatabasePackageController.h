@@ -211,6 +211,8 @@ typedef enum MPDatabasePackageControllerErrorCode
  * @param err An error pointer. */
 - (BOOL)restoreFromSnapshotWithName:(NSString *)name error:(NSError **)err;
 
+/** Returns a database package controller with the specified identifier, if one happens to be currently open. */
++ (MPDatabasePackageController *)databasePackageControllerWithIdentifier:(NSString *)identifier;
 
 @property (strong, readonly) NSArray *rootSections;
 @property (strong, readonly) NSArray *nonEmptyRootSections;

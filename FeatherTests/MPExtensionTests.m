@@ -17,6 +17,19 @@
 #import <Feather/NSObject+MPExtensions.h>
 #import <Feather/NSBundle+MPExtensions.h>
 
+#import <objc/runtime.h>
+
+@interface MPSwizzlingTestObject : NSObject
+- (BOOL)exampleMethod:(BOOL)boolArgument;
+@end
+
+@implementation MPSwizzlingTestObject
+- (BOOL)exampleMethod:(BOOL)boolArgument
+{
+    return boolArgument;
+}
+@end
+
 @implementation MPExtensionTests
 
 - (void)testCommonAncestry
@@ -70,6 +83,25 @@
 
 - (void)testBundleExtensions {
     XCTAssertTrue([NSBundle inTestSuite], @"Correctly detected as being in a test suite.");
+}
+
+- (void)testSwizzling
+{
+    MPSwizzlingTestObject *obj = [[MPSwizzlingTestObject alloc] init];
+    XCTAssertTrue([obj exampleMethod:YES],  @"Before swizzling should return YES when argument is YES");
+    XCTAssertFalse([obj exampleMethod:NO],  @"Before swizzling should return NO when argument is NO");
+    
+    [MPSwizzlingTestObject replaceInstanceMethodWithSelector:@selector(exampleMethod:)
+                                 implementationBlockProvider:^id(IMP originalImplementation) {
+        return ^(MPSwizzlingTestObject* receiver, BOOL boolArgument) {
+            BOOL origValue = originalImplementation(receiver, @selector(exampleMethod:), boolArgument);
+            BOOL retVal = !origValue;
+            return retVal;
+        };
+    }];
+    
+    XCTAssertFalse([obj exampleMethod:YES], @"After swizzling should return NO when argument is YES");
+    XCTAssertTrue([obj exampleMethod:NO],   @"After swizzling should return YES when argument is NO");
 }
 
 @end
