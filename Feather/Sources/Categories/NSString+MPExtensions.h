@@ -11,7 +11,8 @@
 
 #define MPCharacterAtIndex(s, i) (CFStringGetCharacterAtIndex((CFStringRef)s, i))
 #define MPLastIndexOfString(s) (((s != nil) && (s.length > 0)) ? (s.length - 1) : NSNotFound)
-#define MPStringF(format, ...) ([NSString stringWithFormat:format, __VA_ARGS__])
+#define MPStringWithFormat(format, ...) ([NSString stringWithFormat:format, __VA_ARGS__])
+#define MPStringF(format, ...) ([NSString stringWithFormat:format, __VA_ARGS__]) // Deprecated
 
 #define MPFullRange(s) NSMakeRange(0, s.length)
 #define MPLastIndexOfRange(r) (r.location + r.length - 1)
