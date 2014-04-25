@@ -58,6 +58,59 @@
 		5FADC6FA18FADB33006F4119 /* NSString+UriCompatibility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FADC6ED18FADB33006F4119 /* NSString+UriCompatibility.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5FADC70218FAFBAD006F4119 /* NSImage+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FADC70018FAFBAD006F4119 /* NSImage+MPExtensions.h */; };
 		5FADC70318FAFBAD006F4119 /* NSImage+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FADC70118FAFBAD006F4119 /* NSImage+MPExtensions.m */; };
+		5FB3D91F190B18C00042A63D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D91E190B18C00042A63D /* Foundation.framework */; };
+		5FB3D924190B18C00042A63D /* Feather_iOS.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5FB3D923190B18C00042A63D /* Feather_iOS.h */; };
+		5FB3D926190B18C00042A63D /* Feather_iOS.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FB3D925190B18C00042A63D /* Feather_iOS.m */; };
+		5FB3D92C190B18C00042A63D /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEA8B4F18A81E0100A7C14B /* XCTest.framework */; };
+		5FB3D92D190B18C00042A63D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D91E190B18C00042A63D /* Foundation.framework */; };
+		5FB3D92F190B18C00042A63D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D92E190B18C00042A63D /* UIKit.framework */; };
+		5FB3D932190B18C00042A63D /* libFeather-iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D91D190B18C00042A63D /* libFeather-iOS.a */; };
+		5FB3D938190B18C00042A63D /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FB3D936190B18C00042A63D /* InfoPlist.strings */; };
+		5FB3D93A190B18C00042A63D /* Feather_iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FB3D939190B18C00042A63D /* Feather_iOSTests.m */; };
+		5FB3D951190B18CD0042A63D /* MPDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A8C17079DD10049EBB5 /* MPDatabase.m */; };
+		5FB3D952190B18D00042A63D /* MPDatabasePackageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A8E17079DD10049EBB5 /* MPDatabasePackageController.m */; };
+		5FB3D953190B18D10042A63D /* MPShoeboxPackageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A9E17079ED70049EBB5 /* MPShoeboxPackageController.m */; };
+		5FB3D954190B18D60042A63D /* MPManagedObjectsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A59170799B30049EBB5 /* MPManagedObjectsController.m */; };
+		5FB3D955190B18D60042A63D /* MPContributorsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A7717079AEC0049EBB5 /* MPContributorsController.m */; };
+		5FB3D956190B18D90042A63D /* MPSearchIndexController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC753021746E2AA007818A0 /* MPSearchIndexController.m */; };
+		5FB3D957190B18D90042A63D /* NSString+MPSearchIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752FE1746E294007818A0 /* NSString+MPSearchIndex.m */; };
+		5FB3D958190B18E50042A63D /* MPManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A3B1707992B0049EBB5 /* MPManagedObject.m */; };
+		5FB3D959190B18E50042A63D /* MPEmbeddedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293B9F170CAECC001C2111 /* MPEmbeddedObject.m */; };
+		5FB3D95A190B18E50042A63D /* MPSnapshot.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A7B17079B1E0049EBB5 /* MPSnapshot.m */; };
+		5FB3D95B190B18E50042A63D /* MPSnapshotsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A7117079ABB0049EBB5 /* MPSnapshotsController.m */; };
+		5FB3D95C190B18E50042A63D /* MPContributor.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A6917079A750049EBB5 /* MPContributor.m */; };
+		5FB3D95D190B18E50042A63D /* MPRootSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6857D917287F0800FE06B0 /* MPRootSection.m */; };
+		5FB3D95E190B18E50042A63D /* MPVirtualSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F68579E1727C38900FE06B0 /* MPVirtualSection.m */; };
+		5FB3D95F190B18EF0042A63D /* MPBundlableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D380D1725D8E000D19D7C /* MPBundlableMixin.m */; };
+		5FB3D960190B18EF0042A63D /* MPCategorizableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D38091725D8A600D19D7C /* MPCategorizableMixin.m */; };
+		5FB3D961190B18EF0042A63D /* MPManagedObject+Mixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A3D1707992B0049EBB5 /* MPManagedObject+Mixin.m */; };
+		5FB3D962190B18EF0042A63D /* MPCacheableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293B9A170CAD65001C2111 /* MPCacheableMixin.m */; };
+		5FB3D963190B18EF0042A63D /* MPEmbeddedPropertyContainingMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */; };
+		5FB3D964190B18EF0042A63D /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
+		5FB3D965190B19140042A63D /* NSArray+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB382C170702CD0049EBB5 /* NSArray+MPExtensions.m */; };
+		5FB3D966190B19140042A63D /* NSArray+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */; };
+		5FB3D967190B19140042A63D /* NSNotificationCenter+ErrorNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A9A17079EAB0049EBB5 /* NSNotificationCenter+ErrorNotification.m */; };
+		5FB3D968190B19140042A63D /* NSDate+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752E61746E287007818A0 /* NSDate+MPExtensions.m */; };
+		5FB3D969190B19140042A63D /* NSDictionary+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3830170702F40049EBB5 /* NSDictionary+MPExtensions.m */; };
+		5FB3D96A190B19140042A63D /* NSDictionary+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3834170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.m */; };
+		5FB3D96B190B19140042A63D /* NSError+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3818170702470049EBB5 /* NSError+MPExtensions.m */; };
+		5FB3D96C190B19140042A63D /* NSString+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB381C170702650049EBB5 /* NSString+MPExtensions.m */; };
+		5FB3D96D190B19140042A63D /* NSSet+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB38201707027E0049EBB5 /* NSSet+MPExtensions.m */; };
+		5FB3D96E190B19140042A63D /* NSBundle+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3824170702990049EBB5 /* NSBundle+MPExtensions.m */; };
+		5FB3D96F190B19140042A63D /* NSObject+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3828170702B50049EBB5 /* NSObject+MPExtensions.m */; };
+		5FB3D970190B19140042A63D /* NSNotificationCenter+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3840170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.m */; };
+		5FB3D971190B19140042A63D /* NSFileManager+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3838170703850049EBB5 /* NSFileManager+MPExtensions.m */; };
+		5FB3D972190B19140042A63D /* NSData+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB383C1707038F0049EBB5 /* NSData+MPExtensions.m */; };
+		5FB3D973190B19140042A63D /* NSTask+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D932296317268E37006880C2 /* NSTask+MPExtensions.m */; };
+		5FB3D974190B19140042A63D /* NSView+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F779F9B172BD3D20011C4DD /* NSView+MPExtensions.m */; };
+		5FB3D975190B19140042A63D /* NSUUID+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD0E13218F082BD00789CC9 /* NSUUID+MPExtensions.m */; };
+		5FB3D976190B19140042A63D /* NSAttributedString+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB1F4A18F8C84800B3290D /* NSAttributedString+MPExtensions.m */; };
+		5FB3D977190B19140042A63D /* MPException.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A8617079C020049EBB5 /* MPException.m */; };
+		5FB3D987190B1AA00042A63D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D986190B1AA00042A63D /* CFNetwork.framework */; };
+		5FB3D989190B1AA50042A63D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D988190B1AA50042A63D /* Security.framework */; };
+		5FB3D98B190B1AAC0042A63D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D98A190B1AAC0042A63D /* SystemConfiguration.framework */; };
+		5FB3D98D190B1AB20042A63D /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D98C190B1AB20042A63D /* libsqlite3.dylib */; };
+		5FB3D98F190B1AB80042A63D /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D98E190B1AB80042A63D /* libz.dylib */; };
 		5FC752E71746E287007818A0 /* NSDate+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC752E81746E287007818A0 /* NSDate+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752E61746E287007818A0 /* NSDate+MPExtensions.m */; };
 		5FC752FF1746E294007818A0 /* NSString+MPSearchIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752FD1746E294007818A0 /* NSString+MPSearchIndex.h */; };
@@ -250,6 +303,13 @@
 			remoteGlobalIDString = 270B3DE91489359000E0A926;
 			remoteInfo = "CBL Mac";
 		};
+		5FB3D930190B18C00042A63D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FDB32F91705CB950049EBB5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5FB3D91C190B18C00042A63D;
+			remoteInfo = "Feather-iOS";
+		};
 		5FBC5DAF18AFBF33000A2AD1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5FBC5D9E18AFBF33000A2AD1 /* fmdb.xcodeproj */;
@@ -272,6 +332,19 @@
 			remoteInfo = Feather;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		5FB3D91B190B18C00042A63D /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+				5FB3D924190B18C00042A63D /* Feather_iOS.h in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		5F1850241711707800079040 /* MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPExtensions.h; path = Sources/Categories/MPExtensions.h; sourceTree = "<group>"; };
@@ -326,6 +399,21 @@
 		5FADC6ED18FADB33006F4119 /* NSString+UriCompatibility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+UriCompatibility.m"; path = "External/google-diff-match-patch/objectivec/NSString+UriCompatibility.m"; sourceTree = SOURCE_ROOT; };
 		5FADC70018FAFBAD006F4119 /* NSImage+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+MPExtensions.h"; path = "Sources/Categories/NSImage+MPExtensions.h"; sourceTree = "<group>"; };
 		5FADC70118FAFBAD006F4119 /* NSImage+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+MPExtensions.m"; path = "Sources/Categories/NSImage+MPExtensions.m"; sourceTree = "<group>"; };
+		5FB3D91D190B18C00042A63D /* libFeather-iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libFeather-iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FB3D91E190B18C00042A63D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		5FB3D922190B18C00042A63D /* Feather-iOS-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Feather-iOS-Prefix.pch"; sourceTree = "<group>"; };
+		5FB3D923190B18C00042A63D /* Feather_iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Feather_iOS.h; sourceTree = "<group>"; };
+		5FB3D925190B18C00042A63D /* Feather_iOS.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Feather_iOS.m; sourceTree = "<group>"; };
+		5FB3D92B190B18C00042A63D /* Feather-iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Feather-iOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FB3D92E190B18C00042A63D /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		5FB3D935190B18C00042A63D /* Feather-iOSTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Feather-iOSTests-Info.plist"; sourceTree = "<group>"; };
+		5FB3D937190B18C00042A63D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		5FB3D939190B18C00042A63D /* Feather_iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Feather_iOSTests.m; sourceTree = "<group>"; };
+		5FB3D986190B1AA00042A63D /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/CFNetwork.framework; sourceTree = DEVELOPER_DIR; };
+		5FB3D988190B1AA50042A63D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
+		5FB3D98A190B1AAC0042A63D /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		5FB3D98C190B1AB20042A63D /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/usr/lib/libsqlite3.dylib; sourceTree = DEVELOPER_DIR; };
+		5FB3D98E190B1AB80042A63D /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/usr/lib/libz.dylib; sourceTree = DEVELOPER_DIR; };
 		5FBC5D9E18AFBF33000A2AD1 /* fmdb.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = fmdb.xcodeproj; path = "External/couchbase-lite-ios/vendor/fmdb/fmdb.xcodeproj"; sourceTree = "<group>"; };
 		5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+MPExtensions.h"; path = "Sources/Categories/NSDate+MPExtensions.h"; sourceTree = "<group>"; };
 		5FC752E61746E287007818A0 /* NSDate+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+MPExtensions.m"; path = "Sources/Categories/NSDate+MPExtensions.m"; sourceTree = "<group>"; };
@@ -430,6 +518,30 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5FB3D91A190B18C00042A63D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FB3D98F190B1AB80042A63D /* libz.dylib in Frameworks */,
+				5FB3D98D190B1AB20042A63D /* libsqlite3.dylib in Frameworks */,
+				5FB3D98B190B1AAC0042A63D /* SystemConfiguration.framework in Frameworks */,
+				5FB3D989190B1AA50042A63D /* Security.framework in Frameworks */,
+				5FB3D987190B1AA00042A63D /* CFNetwork.framework in Frameworks */,
+				5FB3D91F190B18C00042A63D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FB3D928190B18C00042A63D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FB3D92C190B18C00042A63D /* XCTest.framework in Frameworks */,
+				5FB3D932190B18C00042A63D /* libFeather-iOS.a in Frameworks */,
+				5FB3D92F190B18C00042A63D /* UIKit.framework in Frameworks */,
+				5FB3D92D190B18C00042A63D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5FDB32FF1705CB950049EBB5 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -516,6 +628,42 @@
 			name = "google-diff-match-patch";
 			sourceTree = "<group>";
 		};
+		5FB3D920190B18C00042A63D /* Feather-iOS */ = {
+			isa = PBXGroup;
+			children = (
+				5FB3D923190B18C00042A63D /* Feather_iOS.h */,
+				5FB3D925190B18C00042A63D /* Feather_iOS.m */,
+				5FB3D921190B18C00042A63D /* Supporting Files */,
+			);
+			path = "Feather-iOS";
+			sourceTree = "<group>";
+		};
+		5FB3D921190B18C00042A63D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5FB3D922190B18C00042A63D /* Feather-iOS-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		5FB3D933190B18C00042A63D /* Feather-iOSTests */ = {
+			isa = PBXGroup;
+			children = (
+				5FB3D939190B18C00042A63D /* Feather_iOSTests.m */,
+				5FB3D934190B18C00042A63D /* Supporting Files */,
+			);
+			path = "Feather-iOSTests";
+			sourceTree = "<group>";
+		};
+		5FB3D934190B18C00042A63D /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				5FB3D935190B18C00042A63D /* Feather-iOSTests-Info.plist */,
+				5FB3D936190B18C00042A63D /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		5FBC5D9F18AFBF33000A2AD1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -530,6 +678,8 @@
 			children = (
 				5FDB330C1705CB950049EBB5 /* Feather */,
 				5FDB33221705CB950049EBB5 /* FeatherTests */,
+				5FB3D920190B18C00042A63D /* Feather-iOS */,
+				5FB3D933190B18C00042A63D /* Feather-iOSTests */,
 				5FDB33051705CB950049EBB5 /* Frameworks */,
 				5FDB33041705CB950049EBB5 /* Products */,
 				5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */,
@@ -542,6 +692,8 @@
 			children = (
 				5FDB33031705CB950049EBB5 /* Feather.framework */,
 				5FDB331B1705CB950049EBB5 /* FeatherTests.xctest */,
+				5FB3D91D190B18C00042A63D /* libFeather-iOS.a */,
+				5FB3D92B190B18C00042A63D /* Feather-iOSTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -549,6 +701,11 @@
 		5FDB33051705CB950049EBB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5FB3D98E190B1AB80042A63D /* libz.dylib */,
+				5FB3D98C190B1AB20042A63D /* libsqlite3.dylib */,
+				5FB3D98A190B1AAC0042A63D /* SystemConfiguration.framework */,
+				5FB3D988190B1AA50042A63D /* Security.framework */,
+				5FB3D986190B1AA00042A63D /* CFNetwork.framework */,
 				5F95F2D71739A94300E8C845 /* libsqlite3.dylib */,
 				5FDB3A07170793B20049EBB5 /* libz.dylib */,
 				5FDB33D71705D1380049EBB5 /* libicucore.dylib */,
@@ -556,6 +713,8 @@
 				5FEA8B4F18A81E0100A7C14B /* XCTest.framework */,
 				5F293BF7170DFD77001C2111 /* Security.framework */,
 				5FDB33061705CB950049EBB5 /* Cocoa.framework */,
+				5FB3D91E190B18C00042A63D /* Foundation.framework */,
+				5FB3D92E190B18C00042A63D /* UIKit.framework */,
 				5FDB33081705CB950049EBB5 /* Other Frameworks */,
 			);
 			name = Frameworks;
@@ -897,6 +1056,41 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		5FB3D91C190B18C00042A63D /* Feather-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5FB3D94F190B18C00042A63D /* Build configuration list for PBXNativeTarget "Feather-iOS" */;
+			buildPhases = (
+				5FB3D919190B18C00042A63D /* Sources */,
+				5FB3D91A190B18C00042A63D /* Frameworks */,
+				5FB3D91B190B18C00042A63D /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Feather-iOS";
+			productName = "Feather-iOS";
+			productReference = 5FB3D91D190B18C00042A63D /* libFeather-iOS.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		5FB3D92A190B18C00042A63D /* Feather-iOSTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5FB3D950190B18C00042A63D /* Build configuration list for PBXNativeTarget "Feather-iOSTests" */;
+			buildPhases = (
+				5FB3D927190B18C00042A63D /* Sources */,
+				5FB3D928190B18C00042A63D /* Frameworks */,
+				5FB3D929190B18C00042A63D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5FB3D931190B18C00042A63D /* PBXTargetDependency */,
+			);
+			name = "Feather-iOSTests";
+			productName = "Feather-iOSTests";
+			productReference = 5FB3D92B190B18C00042A63D /* Feather-iOSTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		5FDB33021705CB950049EBB5 /* Feather */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5FDB332D1705CB950049EBB5 /* Build configuration list for PBXNativeTarget "Feather" */;
@@ -945,6 +1139,9 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Matias Piipari";
 				TargetAttributes = {
+					5FB3D92A190B18C00042A63D = {
+						TestTargetID = 5FDB33021705CB950049EBB5;
+					};
 					5FDB331A1705CB950049EBB5 = {
 						TestTargetID = 5FDB33021705CB950049EBB5;
 					};
@@ -974,6 +1171,8 @@
 			targets = (
 				5FDB33021705CB950049EBB5 /* Feather */,
 				5FDB331A1705CB950049EBB5 /* FeatherTests */,
+				5FB3D91C190B18C00042A63D /* Feather-iOS */,
+				5FB3D92A190B18C00042A63D /* Feather-iOSTests */,
 			);
 		};
 /* End PBXProject section */
@@ -1080,6 +1279,14 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		5FB3D929190B18C00042A63D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FB3D938190B18C00042A63D /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5FDB33011705CB950049EBB5 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1115,6 +1322,61 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5FB3D919190B18C00042A63D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FB3D953190B18D10042A63D /* MPShoeboxPackageController.m in Sources */,
+				5FB3D957190B18D90042A63D /* NSString+MPSearchIndex.m in Sources */,
+				5FB3D96F190B19140042A63D /* NSObject+MPExtensions.m in Sources */,
+				5FB3D95D190B18E50042A63D /* MPRootSection.m in Sources */,
+				5FB3D977190B19140042A63D /* MPException.m in Sources */,
+				5FB3D96C190B19140042A63D /* NSString+MPExtensions.m in Sources */,
+				5FB3D962190B18EF0042A63D /* MPCacheableMixin.m in Sources */,
+				5FB3D926190B18C00042A63D /* Feather_iOS.m in Sources */,
+				5FB3D963190B18EF0042A63D /* MPEmbeddedPropertyContainingMixin.m in Sources */,
+				5FB3D975190B19140042A63D /* NSUUID+MPExtensions.m in Sources */,
+				5FB3D958190B18E50042A63D /* MPManagedObject.m in Sources */,
+				5FB3D95E190B18E50042A63D /* MPVirtualSection.m in Sources */,
+				5FB3D960190B18EF0042A63D /* MPCategorizableMixin.m in Sources */,
+				5FB3D965190B19140042A63D /* NSArray+MPExtensions.m in Sources */,
+				5FB3D951190B18CD0042A63D /* MPDatabase.m in Sources */,
+				5FB3D966190B19140042A63D /* NSArray+MPManagedObjectExtensions.m in Sources */,
+				5FB3D970190B19140042A63D /* NSNotificationCenter+MPExtensions.m in Sources */,
+				5FB3D954190B18D60042A63D /* MPManagedObjectsController.m in Sources */,
+				5FB3D974190B19140042A63D /* NSView+MPExtensions.m in Sources */,
+				5FB3D976190B19140042A63D /* NSAttributedString+MPExtensions.m in Sources */,
+				5FB3D973190B19140042A63D /* NSTask+MPExtensions.m in Sources */,
+				5FB3D95F190B18EF0042A63D /* MPBundlableMixin.m in Sources */,
+				5FB3D956190B18D90042A63D /* MPSearchIndexController.m in Sources */,
+				5FB3D969190B19140042A63D /* NSDictionary+MPExtensions.m in Sources */,
+				5FB3D972190B19140042A63D /* NSData+MPExtensions.m in Sources */,
+				5FB3D961190B18EF0042A63D /* MPManagedObject+Mixin.m in Sources */,
+				5FB3D967190B19140042A63D /* NSNotificationCenter+ErrorNotification.m in Sources */,
+				5FB3D955190B18D60042A63D /* MPContributorsController.m in Sources */,
+				5FB3D96E190B19140042A63D /* NSBundle+MPExtensions.m in Sources */,
+				5FB3D952190B18D00042A63D /* MPDatabasePackageController.m in Sources */,
+				5FB3D959190B18E50042A63D /* MPEmbeddedObject.m in Sources */,
+				5FB3D95C190B18E50042A63D /* MPContributor.m in Sources */,
+				5FB3D96A190B19140042A63D /* NSDictionary+MPManagedObjectExtensions.m in Sources */,
+				5FB3D96D190B19140042A63D /* NSSet+MPExtensions.m in Sources */,
+				5FB3D964190B18EF0042A63D /* MPIndexableMixin.m in Sources */,
+				5FB3D96B190B19140042A63D /* NSError+MPExtensions.m in Sources */,
+				5FB3D95B190B18E50042A63D /* MPSnapshotsController.m in Sources */,
+				5FB3D971190B19140042A63D /* NSFileManager+MPExtensions.m in Sources */,
+				5FB3D95A190B18E50042A63D /* MPSnapshot.m in Sources */,
+				5FB3D968190B19140042A63D /* NSDate+MPExtensions.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5FB3D927190B18C00042A63D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5FB3D93A190B18C00042A63D /* Feather_iOSTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5FDB32FE1705CB950049EBB5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1200,6 +1462,11 @@
 			name = "CBL Mac";
 			targetProxy = 5F8D753F18AE637A00AA4007 /* PBXContainerItemProxy */;
 		};
+		5FB3D931190B18C00042A63D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5FB3D91C190B18C00042A63D /* Feather-iOS */;
+			targetProxy = 5FB3D930190B18C00042A63D /* PBXContainerItemProxy */;
+		};
 		5FDB33201705CB950049EBB5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5FDB33021705CB950049EBB5 /* Feather */;
@@ -1208,6 +1475,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		5FB3D936190B18C00042A63D /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				5FB3D937190B18C00042A63D /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		5FDB330F1705CB950049EBB5 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -1250,6 +1525,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"\"$SRCROOT/External/couchbase-lite-ios/vendor/fmdb/src\"",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -1267,7 +1547,7 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
-				HEADER_SEARCH_PATHS = "\"$SRCROOT/External/couchbase-lite-ios/vendor/fmdb/src\"";
+				HEADER_SEARCH_PATHS = "${inherited}";
 				INFOPLIST_FILE = "Feather/Feather-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@rpath/../Frameworks/$(EXECUTABLE_PATH)";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
@@ -1294,12 +1574,212 @@
 					"$(inherited)",
 					"MP_UNIT_TEST=1",
 				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
 				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
 			};
 			name = Testing;
+		};
+		5FB3D93B190B18C00042A63D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DSTROOT = /tmp/Feather_iOS.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Feather-iOS/Feather-iOS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		5FB3D93C190B18C00042A63D /* Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DSTROOT = /tmp/Feather_iOS.dst;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Feather-iOS/Feather-iOS-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Testing;
+		};
+		5FB3D93D190B18C00042A63D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				DSTROOT = /tmp/Feather_iOS.dst;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Feather-iOS/Feather-iOS-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		5FB3D93E190B18C00042A63D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Feather.framework/Versions/A/Feather";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Feather-iOS/Feather-iOS-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				INFOPLIST_FILE = "Feather-iOSTests/Feather-iOSTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		5FB3D93F190B18C00042A63D /* Testing */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Feather.framework/Versions/A/Feather";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Feather-iOS/Feather-iOS-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				INFOPLIST_FILE = "Feather-iOSTests/Feather-iOSTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Testing;
+		};
+		5FB3D940190B18C00042A63D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Feather.framework/Versions/A/Feather";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				ENABLE_NS_ASSERTIONS = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Feather-iOS/Feather-iOS-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
+				INFOPLIST_FILE = "Feather-iOSTests/Feather-iOSTests-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
 		};
 		5FDB332B1705CB950049EBB5 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -1324,6 +1804,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"\"$SRCROOT/External/couchbase-lite-ios/vendor/fmdb/src\"",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -1347,6 +1832,11 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"\"$SRCROOT/External/couchbase-lite-ios/vendor/fmdb/src\"",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				SDKROOT = macosx;
 			};
@@ -1363,7 +1853,7 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
-				HEADER_SEARCH_PATHS = "\"$SRCROOT/External/couchbase-lite-ios/vendor/fmdb/src\"";
+				HEADER_SEARCH_PATHS = "${inherited}";
 				INFOPLIST_FILE = "Feather/Feather-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@rpath/../Frameworks/$(EXECUTABLE_PATH)";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
@@ -1389,7 +1879,7 @@
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
-				HEADER_SEARCH_PATHS = "\"$SRCROOT/External/couchbase-lite-ios/vendor/fmdb/src\"";
+				HEADER_SEARCH_PATHS = "${inherited}";
 				INFOPLIST_FILE = "Feather/Feather-Info.plist";
 				LD_DYLIB_INSTALL_NAME = "@rpath/../Frameworks/$(EXECUTABLE_PATH)";
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
@@ -1411,6 +1901,10 @@
 				FRAMEWORK_SEARCH_PATHS = "\"${DEVELOPER_FRAMEWORKS_DIR}\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
 				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1425,6 +1919,10 @@
 				FRAMEWORK_SEARCH_PATHS = "\"${DEVELOPER_FRAMEWORKS_DIR}\"";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+				);
 				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1435,6 +1933,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5FB3D94F190B18C00042A63D /* Build configuration list for PBXNativeTarget "Feather-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5FB3D93B190B18C00042A63D /* Debug */,
+				5FB3D93C190B18C00042A63D /* Testing */,
+				5FB3D93D190B18C00042A63D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		5FB3D950190B18C00042A63D /* Build configuration list for PBXNativeTarget "Feather-iOSTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5FB3D93E190B18C00042A63D /* Debug */,
+				5FB3D93F190B18C00042A63D /* Testing */,
+				5FB3D940190B18C00042A63D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
 		5FDB32FC1705CB950049EBB5 /* Build configuration list for PBXProject "Feather" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
