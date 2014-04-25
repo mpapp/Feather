@@ -6,33 +6,10 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
+
 #import "NSString+MPExtensions.h"
 
 #import "RegexKitLite.h"
-
-
-
-inline NSString *MPNilToEmptyString(NSString *s) {
-    return (s != nil) ? s : @"";
-}
-
-inline NSString *MPNilOrEmptyStringToString(NSString *s, NSString *s2)
-{
-    return ((s.length > 0) ? s : s2);
-}
-
-inline NSString *MPNilToString(NSString *s, NSString *s2)
-{
-    return (s != nil) ? s : MPNilToEmptyString(s2);
-}
-
-inline NSMutableString *MPMutableStringForString(NSString *s)
-{
-    if ([s isKindOfClass:NSMutableString.class]) {
-        return (NSMutableString *)s;
-    }
-    return [NSMutableString stringWithString:s];
-}
 
 
 @implementation NSString (Feather)

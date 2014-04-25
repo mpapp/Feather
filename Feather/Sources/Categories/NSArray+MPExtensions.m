@@ -22,7 +22,7 @@
         [map addObject:mappedVal ? mappedVal : [NSNull null]];
     }];
     
-    return map;
+    return [map copy];
 }
 
 - (id)firstObjectMatching:(BOOL(^)(id evalutedObject))patternBlock

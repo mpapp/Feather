@@ -774,7 +774,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     
     while (shouldRun)
     {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.005]];
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
     }
     
     MPLog(@"Completed loading resources for %@", self);

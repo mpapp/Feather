@@ -93,6 +93,11 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
                     delegate:(id<MPDatabasePackageControllerDelegate>)delegate
              error:(NSError *__autoreleasing *)err
 {
+    // off-main thread access of MPDatabasePackageController is safe,
+    // but initialisation is needed on main thread in order to call -didInitialize safely
+    // after full initialization has finished
+    assert([NSThread isMainThread]);
+    
     if (self = [super init])
     {
         assert(path);
@@ -201,9 +206,41 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         _registeredViewNames = [NSMutableSet setWithCapacity:128];
         
         [[self class] didOpenPackage];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.class registerDatabasePackageController:self];
+        });
     }
     
     return self;
+}
+
++ (NSMapTable *)databasePackageControllerRegistry
+{
+    static NSMapTable *reg = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        reg = [NSMapTable strongToWeakObjectsMapTable];
+    });
+               
+    return reg;
+}
+
++ (void)registerDatabasePackageController:(MPDatabasePackageController *)packageController
+{
+    // there should not be two or more database package controllers in memory at the same time.
+    // for instance, if a package controller is duplicated, its identifier should be modified.
+    assert(![[self databasePackageControllerRegistry] objectForKey:packageController.identifier]);
+    [self.databasePackageControllerRegistry setObject:packageController forKey:packageController.identifier];
+}
+
++ (void)deregisterDatabasePackageController:(MPDatabasePackageController *)packageController
+{
+    [self.databasePackageControllerRegistry removeObjectForKey:packageController.identifier];
+}
+
++ (MPDatabasePackageController *)databasePackageControllerWithIdentifier:(NSString *)identifier
+{
+    return [self.databasePackageControllerRegistry objectForKey:identifier];
 }
 
 - (void)dealloc
@@ -211,6 +248,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     // db should not be observing notifications after its package controller is deallocated.
     for (MPDatabase *db in self.databases)
         [self.notificationCenter removeObserver:db];
+    
+    [self.class deregisterDatabasePackageController:self];
 }
 
 - (BOOL)synchronizesSnapshots { return NO; }

@@ -114,6 +114,7 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
         }
     });
     
+    assert(udid);
     return udid;
 }
 

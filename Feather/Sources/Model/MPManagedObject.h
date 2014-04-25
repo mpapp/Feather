@@ -37,6 +37,14 @@ typedef NS_ENUM(NSInteger, MPManagedObjectChangeSource)
     MPManagedObjectChangeSourceExternal = 2     // changes coming in from external source ( e.g. replication )
 };
 
+/** Pasteboard type for a full managed object. */
+extern NSString *const MPPasteboardTypeManagedObjectFull;
+
+/** Pasteboard type for a minimal managed object representation with necessary identifiers to find the object by its ID and package controller ID. */
+extern NSString *const MPPasteboardTypeManagedObjectID;
+
+/** Pasteboard type for an array of object ID representations. */
+extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 
 /** An empty tag protocol used to signify objects which can be referenced across database boundaries.
   * This information is used to determine the correct controller for an object. */
@@ -154,8 +162,16 @@ typedef NS_ENUM(NSInteger, MPManagedObjectChangeSource)
 /** Human readable name for the type */
 + (NSString *)humanReadableName;
 
-/** The pasteboard representation type name for the object. Can be overloaded by subclasses which wish to use a different representation type than what MPManagedObject provides. */
-+ (NSString *)pasteboardTypeName;
+/** A representation of the object with identifier, object type and database package ID keys included. 
+ * The dictionary can be resolved to an existing object with +objectWithReferableDictionaryRepresentation. */
+@property (readonly) NSDictionary *referableDictionaryRepresentation;
+
++ (id)objectWithReferableDictionaryRepresentation:(NSDictionary *)referableDictionaryRep;
+
+/**
+ *  Returns an object ID array pasteboard representation for a collection of managed objects.
+ */
++ (NSData *)pasteboardObjectIDPropertyListForObjects:(NSArray *)objectIDDictionaries error:(NSError **)err;
 
 /** A JSON encodable string representation of the object. By default the representation does not contain referenced objects, but subclasses can override to embed ("denormalise") referenced objects. */
 - (NSString *)JSONStringRepresentation:(NSError **)err;

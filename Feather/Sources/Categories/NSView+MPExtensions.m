@@ -328,4 +328,29 @@ typedef NS_ENUM(NSUInteger, MPViewDimension)
     return path;
 }
 
+- (NSData *)PDFDataForRect:(CGRect)rect
+{
+    NSMutableData *data = [NSMutableData data];
+    CGDataConsumerRef consumer = CGDataConsumerCreateWithCFData((CFMutableDataRef)data);
+    
+    CGRect mediaBox = rect;
+    CGContextRef ctx = CGPDFContextCreate(consumer, &mediaBox, NULL);
+    CFRelease(consumer);
+    
+    NSGraphicsContext *gc = [NSGraphicsContext graphicsContextWithGraphicsPort:ctx flipped:NO];
+    
+    CGContextBeginPage(ctx, &mediaBox);
+    CGContextSaveGState(ctx);
+    
+    [self displayRectIgnoringOpacity:mediaBox inContext:gc];
+    
+    CGContextRestoreGState(ctx);
+    CGContextEndPage(ctx);
+    
+    CGPDFContextClose(ctx);
+    CGContextRelease(ctx);
+    
+    return [data copy];
+}
+
 @end

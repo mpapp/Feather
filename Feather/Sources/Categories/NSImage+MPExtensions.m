@@ -59,4 +59,69 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
     return image;
 }
+
+- (CGImageRef)CGImage
+{
+    CGImageRef imageRef = [self CGImageForProposedRect:NULL context:NULL hints:NULL];
+    return imageRef;
+}
+
+@end
+
+@implementation NSImage (FDImageDiff)
+
+- (BOOL)isPixelEqualToImage:(NSImage *)image
+{
+    CFDataRef data1 = CGDataProviderCopyData(CGImageGetDataProvider(self.CGImage));
+    CFDataRef data2 = CGDataProviderCopyData(CGImageGetDataProvider(image.CGImage));
+    
+    BOOL result = NO;
+    if (data1 == NULL && data2 == NULL)
+        result = YES;
+    else if (data1 == NULL || data2 == NULL)
+        result = NO;
+    else
+        result = CFEqual(data1, data2);
+    
+    if (data1)
+        CFRelease(data1);
+    if (data2)
+        CFRelease(data2);
+    return result;
+}
+
+- (CGFloat)pixelDifferenceWithImage:(NSImage *)image
+{
+    if (image == nil)
+        return 1.0;
+    
+    CFDataRef data1 = CGDataProviderCopyData(CGImageGetDataProvider([self CGImage]));
+    CFDataRef data2 = CGDataProviderCopyData(CGImageGetDataProvider([image CGImage]));
+    
+    CGFloat result = 1.0;
+    if (data1 == NULL && data2 == NULL)
+        result = 0.0;
+    else if (data1 == NULL || data2 == NULL)
+        result = 1.0;
+    else if (CFDataGetLength(data1) != CFDataGetLength(data2))
+        result = 1.0;
+    else
+    {
+        const UInt8 *bytes1 = CFDataGetBytePtr(data1);
+        const UInt8 *bytes2 = CFDataGetBytePtr(data2);
+        NSUInteger length = CFDataGetLength(data1);
+        NSUInteger diff = 0;
+        for (NSUInteger i = 0; i < length; i++)
+            diff += abs((int)(bytes1[i]) - (int)(bytes2[i]));
+        diff /= length;
+        result = (CGFloat)diff / (CGFloat)0xFF;
+    }
+    
+    if (data1)
+        CFRelease(data1);
+    if (data2)
+        CFRelease(data2);
+    return result;
+}
+
 @end
