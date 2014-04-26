@@ -1,0 +1,1 @@
+../Feather/Sources/Categories/NSImage+MPExtensions.h
