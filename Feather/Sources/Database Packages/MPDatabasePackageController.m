@@ -30,7 +30,10 @@
 #import <Feather/NSObject+MPExtensions.h>
 
 #import <CouchbaseLite/CouchbaseLite.h>
+
+#ifdef MP_FEATHER_OSX
 #import <CouchbaseLiteListener/CBLListener.h>
+#endif
 
 #import <objc/runtime.h>
 
@@ -78,8 +81,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 @property (strong, readwrite) MPDatabase *snapshotsDatabase;
 
+#ifdef MP_FEATHER_OSX
 @property (strong, readwrite) CBLListener *databaseListener;
 @property (strong, readwrite) NSNetService *databaseListenerService;
+#endif
 
 @property (strong, readonly) NSMutableSet *registeredViewNames;
 
@@ -176,6 +181,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         _pulls = [[NSMutableArray alloc] initWithCapacity:[[[self class] databaseNames] count]];
         _completedPulls = [[NSMutableArray alloc] initWithCapacity:[[[self class] databaseNames] count]];
         
+        #ifdef MP_FEATHER_OSX
         if (![NSBundle isCommandLineTool]
             && ![NSBundle isXPCService]
             && ![NSBundle inTestSuite]
@@ -183,6 +189,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         {
             [self startListener];
         }
+        #endif
         
         // populate root section properties
         NSMutableArray *rootSections = [NSMutableArray arrayWithCapacity:[[self class] orderedRootSectionClassNames].count];
@@ -706,6 +713,13 @@ static NSUInteger packagesOpened = 0;
     dispatch_sync([self packageQueue], ^{ packagesOpened++; });
 }
 
+- (BOOL)indexesObjectFullTextContents
+{
+    return NO;
+}
+
+#ifdef MP_FEATHER_OSX
+
 - (void)startListener
 {
     assert(![NSBundle inTestSuite]);
@@ -761,14 +775,7 @@ static NSUInteger packagesOpened = 0;
     return port;
 }
 
-- (BOOL)indexesObjectFullTextContents
-{
-    return NO;
-}
-
 #pragma mark - Listener advertising
-
-#ifdef MP_FEATHER_OSX
 
 - (NSURL *)databaseListenerURL
 {

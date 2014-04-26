@@ -106,7 +106,6 @@
 		5FB3D987190B1AA00042A63D /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D986190B1AA00042A63D /* CFNetwork.framework */; };
 		5FB3D989190B1AA50042A63D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D988190B1AA50042A63D /* Security.framework */; };
 		5FB3D98B190B1AAC0042A63D /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D98A190B1AAC0042A63D /* SystemConfiguration.framework */; };
-		5FB3D9A6190B1EEA0042A63D /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D751418AE636500AA4007 /* CouchbaseLite.framework */; };
 		5FB3D9A8190B1FEA0042A63D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D9A7190B1FEA0042A63D /* QuartzCore.framework */; };
 		5FB3D9AA190B20060042A63D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D9A9190B20060042A63D /* CoreGraphics.framework */; };
 		5FB3D9AC190B208F0042A63D /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D9AB190B208F0042A63D /* UIKit.framework */; };
@@ -116,7 +115,7 @@
 		5FB3D9B8190B2B510042A63D /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A04170793550049EBB5 /* NSData+Base64.m */; };
 		5FB3D9B9190B2B530042A63D /* UICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293BF4170DFD4E001C2111 /* UICKeyChainStore.m */; };
 		5FB3D9BB190B2C4B0042A63D /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D9BA190B2C4B0042A63D /* CoreFoundation.framework */; };
-		5FB3D9BD190B2C510042A63D /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D9BC190B2C510042A63D /* libicucore.dylib */; };
+		5FC0F238190BF5E700FC8B8E /* libCouchbaseLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D751818AE636500AA4007 /* libCouchbaseLite.a */; };
 		5FC752E71746E287007818A0 /* NSDate+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC752E81746E287007818A0 /* NSDate+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752E61746E287007818A0 /* NSDate+MPExtensions.m */; };
 		5FC752FF1746E294007818A0 /* NSString+MPSearchIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752FD1746E294007818A0 /* NSString+MPSearchIndex.h */; };
@@ -316,13 +315,6 @@
 			remoteGlobalIDString = 5FB3D91C190B18C00042A63D;
 			remoteInfo = "Feather-iOS";
 		};
-		5FB3D9A4190B1EE40042A63D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 27B0B7E61492BB6B00A817AD;
-			remoteInfo = "CBL iOS";
-		};
 		5FBC5DAF18AFBF33000A2AD1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5FBC5D9E18AFBF33000A2AD1 /* fmdb.xcodeproj */;
@@ -336,6 +328,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = EE4290EF12B42F870088BD94;
 			remoteInfo = FMDB;
+		};
+		5FC0F235190BF2C100FC8B8E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 27B0B7A81492B83B00A817AD;
+			remoteInfo = "CBL iOS library";
 		};
 		5FDB331F1705CB950049EBB5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -541,12 +540,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FB3D9BD190B2C510042A63D /* libicucore.dylib in Frameworks */,
+				5FC0F238190BF5E700FC8B8E /* libCouchbaseLite.a in Frameworks */,
 				5FB3D9BB190B2C4B0042A63D /* CoreFoundation.framework in Frameworks */,
 				5FB3D9AC190B208F0042A63D /* UIKit.framework in Frameworks */,
 				5FB3D9AA190B20060042A63D /* CoreGraphics.framework in Frameworks */,
 				5FB3D9A8190B1FEA0042A63D /* QuartzCore.framework in Frameworks */,
-				5FB3D9A6190B1EEA0042A63D /* CouchbaseLite.framework in Frameworks */,
 				5FB3D98B190B1AAC0042A63D /* SystemConfiguration.framework in Frameworks */,
 				5FB3D989190B1AA50042A63D /* Security.framework in Frameworks */,
 				5FB3D987190B1AA00042A63D /* CFNetwork.framework in Frameworks */,
@@ -1096,7 +1094,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				5FB3D9A5190B1EE40042A63D /* PBXTargetDependency */,
+				5FC0F236190BF2C100FC8B8E /* PBXTargetDependency */,
 			);
 			name = "Feather-iOS";
 			productName = "Feather-iOS";
@@ -1499,10 +1497,10 @@
 			target = 5FB3D91C190B18C00042A63D /* Feather-iOS */;
 			targetProxy = 5FB3D930190B18C00042A63D /* PBXContainerItemProxy */;
 		};
-		5FB3D9A5190B1EE40042A63D /* PBXTargetDependency */ = {
+		5FC0F236190BF2C100FC8B8E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "CBL iOS";
-			targetProxy = 5FB3D9A4190B1EE40042A63D /* PBXContainerItemProxy */;
+			name = "CBL iOS library";
+			targetProxy = 5FC0F235190BF2C100FC8B8E /* PBXContainerItemProxy */;
 		};
 		5FDB33201705CB950049EBB5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1654,12 +1652,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/External/couchbase-lite-ios/Include",
+					"$(SRCROOT)/External/couchbase-lite-ios/vendor/MYUtilities/",
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/External/couchbase-lite-ios/Source/API",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1694,12 +1693,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/External/couchbase-lite-ios/Include",
+					"$(SRCROOT)/External/couchbase-lite-ios/vendor/MYUtilities/",
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/External/couchbase-lite-ios/Source/API",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -1731,12 +1731,13 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				HEADER_SEARCH_PATHS = (
+					"$(SRCROOT)/External/couchbase-lite-ios/Include",
+					"$(SRCROOT)/External/couchbase-lite-ios/vendor/MYUtilities/",
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
-					"$(SRCROOT)/External/couchbase-lite-ios/Source/API",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;

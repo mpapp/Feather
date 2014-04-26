@@ -11,7 +11,7 @@
 #import "NSString+MPExtensions.h"
 
 #import <CouchbaseLite/CouchbaseLite.h>
-#import <CouchbaseLite/MYDynamicObject.h>
+#import "MYDynamicObject.h"
 
 #import <objc/runtime.h>
 

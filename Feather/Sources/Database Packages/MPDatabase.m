@@ -29,7 +29,7 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-#import <CouchbaseLite/Logging.h>
+#import "Logging.h"
 
 NSString * const MPDatabaseErrorDomain = @"MPDatabaseErrorDomain";
 NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; //same name used in serverside CouchDB.
