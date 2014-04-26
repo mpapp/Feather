@@ -92,7 +92,7 @@
         if ((c >= ' ' && c < 126) || [NSCharacterSet.alphanumericCharacterSet characterIsMember:c]) {
             [result appendFormat:@"%c", c];
         } else {
-            [result appendFormat:@"\\x%lx", (NSUInteger)c];
+            [result appendFormat:@"\\x%lx", (unsigned long)c];
         }
     }
     

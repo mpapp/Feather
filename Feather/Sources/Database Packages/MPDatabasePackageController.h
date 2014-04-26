@@ -11,6 +11,10 @@
 
 #import <CouchbaseLite/CouchbaseLite.h>
 
+#ifndef NSDocumentChangeType
+typedef NSUInteger NSDocumentChangeType;
+#endif
+
 typedef void (^MPPullCompletionHandler)(NSDictionary *errDict);
 
 @class MPDatabase, MPSnapshot;

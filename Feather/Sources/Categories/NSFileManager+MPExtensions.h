@@ -20,7 +20,9 @@ typedef NS_ENUM(NSUInteger, MPFileTargetErrorCode)
 
 - (NSString *)md5DigestStringAtPath:(NSString *)path;
 
+#ifdef MP_FEATHER_OSX
 - (NSString *)mimeTypeForFileAtURL:(NSURL *)url error:(NSError **)err;
+#endif
 
 - (NSURL *)temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:(NSString *)subdirectoryName
                                                                error:(NSError *__autoreleasing *)outError;

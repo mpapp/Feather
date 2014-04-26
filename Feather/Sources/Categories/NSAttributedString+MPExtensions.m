@@ -60,10 +60,10 @@ int gNSStringGeometricsTypesetterBehavior = NSTypesetterLatestBehavior;
 
 #pragma mark * Given String with Attributes
 
-- (NSSize)sizeForWidth:(float)width
+- (CGSize)sizeForWidth:(float)width
 				height:(float)height
 			attributes:(NSDictionary*)attributes {
-	NSSize answer ;
+	CGSize answer;
     
 	NSAttributedString *astr = [[NSAttributedString alloc] initWithString:self
 															   attributes:attributes] ;
@@ -88,10 +88,10 @@ int gNSStringGeometricsTypesetterBehavior = NSTypesetterLatestBehavior;
 
 #pragma mark * Given String with Font
 
-- (NSSize)sizeForWidth:(float)width
+- (CGSize)sizeForWidth:(float)width
 				height:(float)height
 				  font:(NSFont*)font {
-	NSSize answer = NSZeroSize ;
+	CGSize answer = CGSizeZero;
     
 	if (font == nil) {
 		NSLog(@"[%@ %@]: Error: cannot compute size with nil font", [self class], NSStringFromSelector(_cmd)) ;

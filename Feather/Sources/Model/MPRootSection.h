@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
+#import <Feather/MPThumbnailable.h>
 #import <Feather/Feather.h>
 #import <Feather/MPTreeItem.h>
 #import <Feather/NSNotificationCenter+MPExtensions.h>

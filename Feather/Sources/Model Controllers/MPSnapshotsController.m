@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
+#import "MPDatabasePackageController.h"
 #import "MPSnapshotsController.h"
 #import "MPSnapshot+Protected.h"
 #import "MPSnapshotsController+Protected.h"
@@ -205,7 +206,7 @@
 {
     CBLQuery *q = [[self.db.database viewNamed:@"snapshottedAttachmentsBySHA"] createQuery];
     q.prefetch = YES;
-    q.key = sha;
+    q.keys = @[ sha ];
     return q;
 }
 

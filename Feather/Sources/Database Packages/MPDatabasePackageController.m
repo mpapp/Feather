@@ -738,10 +738,12 @@ static NSUInteger packagesOpened = 0;
             [self.notificationCenter postErrorNotification:e];
         }
         
+        #ifdef MP_FEATHER_OSX
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf advertiseListener];
             [self didStartDatabaseListener];
         });
+        #endif
     }];
 }
 
@@ -764,6 +766,10 @@ static NSUInteger packagesOpened = 0;
     return NO;
 }
 
+#pragma mark - Listener advertising
+
+#ifdef MP_FEATHER_OSX
+
 - (NSURL *)databaseListenerURL
 {
     return [NSURL URLWithString:
@@ -771,7 +777,6 @@ static NSUInteger packagesOpened = 0;
              [[NSHost currentHost] name], self.databaseListenerPort]];
 }
 
-#pragma mark - Listener advertising
 
 - (void)advertiseListener
 {
@@ -897,6 +902,8 @@ static NSUInteger packagesOpened = 0;
 {
     
 }
+
+#endif
 
 #pragma mark - Snapshots
 

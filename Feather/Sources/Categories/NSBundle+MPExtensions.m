@@ -30,7 +30,7 @@
 
 + (BOOL)inTestSuite {
     // FIXME: less hacky implementation, please.
-    return [[NSProcessInfo processInfo] environment][@"MPUnitTest"];
+    return [[NSProcessInfo processInfo] environment][@"MPUnitTest"] != nil;
 }
 
 + (BOOL)isCommandLineTool

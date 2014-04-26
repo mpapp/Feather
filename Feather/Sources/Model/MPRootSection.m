@@ -112,7 +112,7 @@
 }
 
 - (BOOL)save
-{ @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return nil; }
+{ @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return NO; }
 
 - (NSUInteger)childCount
 { return [[self children] count]; }
@@ -129,7 +129,11 @@
 - (NSImage *)thumbnailImage
 {
     NSImage *img = [NSImage imageNamed:[self thumbnailImageName]];
+    
+    #ifdef MP_FEATHER_OSX
     [img setTemplate:YES];
+    #endif
+    
     return img;
 }
 

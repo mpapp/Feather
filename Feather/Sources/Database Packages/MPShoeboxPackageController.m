@@ -283,7 +283,8 @@ static dispatch_once_t onceToken;
     MPDatabase *primaryDB = [self primaryDatabase];
     
     // the primary database is for user only, no filters needed. filter only for the global database.
-    if (database == primaryDB && [url isEqualTo:[primaryDB remoteDatabaseURL]]) return NO;
+    if (database == primaryDB && [url isEqual:[primaryDB remoteDatabaseURL]])
+        return NO;
     
     return YES;
 }

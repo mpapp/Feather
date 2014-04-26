@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#ifdef MP_FEATHER_IOS
+#import <UIKit/UIKit.h>
+@compatibility_alias NSImage UIImage;
+#endif
+
 @protocol MPThumbnailable <NSObject>
 
 @property (readonly, strong) NSImage *thumbnailImage;

@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
+#import "MPThumbnailable.h"
 #import "MPContributor.h"
 #import "MPContributorsController.h"
 
@@ -21,7 +22,16 @@
 #endif
 
 
-- (NSImage *)thumbnailImage { NSImage *img = [NSImage imageNamed:@"face-monkey.png"]; [img setTemplate:YES]; return img;  }
+- (NSImage *)thumbnailImage
+{
+    NSImage *img = [NSImage imageNamed:@"face-monkey.png"];
+    
+    #ifdef MP_FEATHER_OSX
+    [img setTemplate:YES];
+    #endif
+    
+    return img;
+}
 
 - (NSArray *)siblings
 {

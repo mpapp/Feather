@@ -38,6 +38,7 @@ NSString * const NSFileManagerFeatherExtensionsErrorDomain = @"NSFileManagerFeat
 	return nil;
 }
 
+#ifdef MP_FEATHER_OSX
 - (NSString *)mimeTypeForFileAtURL:(NSURL *)url error:(NSError **)err
 {
     NSString *type = [[NSWorkspace sharedWorkspace] typeOfFile:[url path] error:err];
@@ -46,6 +47,7 @@ NSString * const NSFileManagerFeatherExtensionsErrorDomain = @"NSFileManagerFeat
     CFStringRef mimeType = UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)type, kUTTagClassMIMEType);
     return (__bridge_transfer NSString *)mimeType;
 }
+#endif
 
 
 - (NSURL *)temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:(NSString *)subdirectoryName error:(NSError *__autoreleasing *)outError
@@ -126,7 +128,7 @@ NSString * const NSFileManagerFeatherExtensionsErrorDomain = @"NSFileManagerFeat
         }
         else
         {
-            temporaryURL = [URL URLByAppendingPathComponent:MPStringF(@"%@_%li%@", s, i, ext)];
+            temporaryURL = [URL URLByAppendingPathComponent:MPStringF(@"%@_%li%@", s, (unsigned long)i, ext)];
         }
     }
     while ([self fileExistsAtPath:temporaryURL.path]);

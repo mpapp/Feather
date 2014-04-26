@@ -61,7 +61,11 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
  * An abstract base class for all objects contained in a MPDatabase (n per MPDatabase), except for MPMetadata (1 per MPDatabase).
  */
 @interface MPManagedObject : CBLModel
+#ifdef MP_FEATHER_OSX
     <NSPasteboardWriting, NSPasteboardReading, MPCacheable, MPEmbeddingObject>
+#else
+    <MPCacheable, MPEmbeddingObject>
+#endif
 
 /** The managed objects controller which manages (and caches) the object. */
 @property (weak, readonly) MPManagedObjectsController *controller;

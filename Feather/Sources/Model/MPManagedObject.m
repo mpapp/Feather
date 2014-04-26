@@ -513,11 +513,13 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
                             type:(NSString *)type
                            error:(NSError **)err
 {
+    #ifdef MP_FEATHER_OSX
     if (!type && [url isFileURL])
     {
         if (![[NSFileManager defaultManager] mimeTypeForFileAtURL:url error:err])
             return;
     }
+    #endif
 
     if (!type)
     {
@@ -1143,6 +1145,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 #pragma mark - NSPasteboardWriting & NSPasteboardReading
 
+#ifdef MP_FEATHER_OSX
+
 - (NSArray *)writableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
     
@@ -1262,6 +1266,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return obj;
 }
 
+#endif
+
 #pragma mark -
 
 - (NSString *)JSONStringRepresentation:(NSError **)err
@@ -1376,7 +1382,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (void)setValue:(id)value ofProperty:(NSString *)property
 {
     // should not be setting objectType to nil.
-    if ([property isEqualTo:@"objectType"])
+    if ([property isEqual:@"objectType"])
     {
         NSString *existingObjectType = [self getValueOfProperty:@"objectType"];
         assert(value);

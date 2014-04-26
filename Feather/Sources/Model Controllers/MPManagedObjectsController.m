@@ -869,8 +869,13 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     [nc postNotificationName:pastChange object:object];
      */
 
+#ifdef MP_FEATHER_OSX
     if ([[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])
         [[self.packageController delegate] updateChangeCount:NSChangeDone];
+#else
+    if ([[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])
+        [[self.packageController delegate] updateChangeCount:UIDocumentChangeDone];
+#endif
 }
 
 - (void)didUpdateObject:(MPManagedObject *)object
@@ -889,9 +894,14 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
     [nc postNotificationName:pastChange object:object];
     */
-
+    
+#ifdef MP_FEATHER_OSX
     if ([[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])
         [[self.packageController delegate] updateChangeCount:NSChangeDone];
+#else
+    if ([[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])
+        [[self.packageController delegate] updateChangeCount:UIDocumentChangeDone];
+#endif
 }
 
 - (void)willDeleteObject:(MPManagedObject *)object
@@ -917,8 +927,13 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     [nc postNotificationName:[NSNotificationCenter notificationNameForPastChangeOfType:MPChangeTypeRemove
                                                              forManagedObjectClass:[object class]] object:object];
 
+#ifdef MP_FEATHER_OSX
     if ([[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])
         [[self.packageController delegate] updateChangeCount:NSChangeDone];
+#else
+    if ([[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])
+        [[self.packageController delegate] updateChangeCount:UIDocumentChangeDone];
+#endif
 }
 
 - (void)didChangeDocument:(CBLDocument *)doc

@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
+#import "MPDatabasePackageController.h"
 #import "MPContributor.h"
 #import "MPContributorsController.h"
 #import "MPManagedObjectsController+Protected.h"
@@ -71,7 +72,7 @@ NSString * const MPContributorRoleTranslator = @"translator";
 {
     CBLQuery *query = [[self.db.database viewNamed:@"contributorsByRole"] createQuery];
     query.prefetch = YES;
-    query.key = role;
+    query.keys = @[ role ];
     
     NSError *err = nil;
     CBLQueryEnumerator *qenum = [query run:&err];

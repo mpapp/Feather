@@ -6,14 +6,17 @@
 //  Copyright (c) 2014 Matias Piipari. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#ifdef MP_FEATHER_IOS
+#import <UIKit/UIKit.h>
+@compatibility_alias NSFont UIFont;
+#endif
 
 extern int gNSStringGeometricsTypesetterBehavior;
 
 @interface NSAttributedString (MPExtensions)
 
 // Measuring Attributed Strings
-- (NSSize)sizeForWidth:(float)width height:(float)height;
+- (CGSize)sizeForWidth:(float)width height:(float)height;
 - (float)heightForWidth:(float)width;
 - (float)widthForHeight:(float)height;
 
@@ -25,12 +28,12 @@ extern int gNSStringGeometricsTypesetterBehavior;
 @interface NSString (MPExtensions)
 
 // Measuring a String With Attributes
-- (NSSize)sizeForWidth:(float)width height:(float)height attributes:(NSDictionary*)attributes;
+- (CGSize)sizeForWidth:(float)width height:(float)height attributes:(NSDictionary*)attributes;
 - (float)heightForWidth:(float)width attributes:(NSDictionary*)attributes;
 - (float)widthForHeight:(float)height attributes:(NSDictionary*)attributes;
 
 // Measuring a String with a constant Font
-- (NSSize)sizeForWidth:(float)width height:(float)height font:(NSFont*)font;
+- (CGSize)sizeForWidth:(float)width height:(float)height font:(NSFont*)font;
 - (float)heightForWidth:(float)width font:(NSFont*)font;
 - (float)widthForHeight:(float)height font:(NSFont*)font;
 

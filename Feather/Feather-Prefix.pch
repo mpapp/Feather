@@ -3,7 +3,11 @@
 //
 
 #ifdef __OBJC__
-    #import <Cocoa/Cocoa.h>
+    #ifdef MP_FEATHER_OSX
+        #import <Cocoa/Cocoa.h>
+    #else
+        #import <UIKit/UIKit.h>
+    #endif
     #import <AvailabilityMacros.h>
 
     #ifdef DEBUG

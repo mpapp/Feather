@@ -105,7 +105,11 @@
 - (NSImage *)thumbnailImage
 {
     NSImage *img = [NSImage imageNamed:[self thumbnailImageName]];
+    
+    #ifdef MP_FEATHER_OSX
     [img setTemplate:YES];
+    #endif
+    
     return img;
 }
 
