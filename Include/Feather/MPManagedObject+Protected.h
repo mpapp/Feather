@@ -1,0 +1,1 @@
+../../Feather/Sources/Model/MPManagedObject+Protected.h
