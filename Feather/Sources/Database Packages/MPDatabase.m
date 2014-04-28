@@ -440,13 +440,14 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     assert(_packageController);
     
     CBLDatabase *db = (CBLDatabase *)notification.object;
-    NSLog(@"Database changed: %@", db);
+    
+    //MPLog(@"Database changed: %@", db);
     
     assert(db == self.database);
     if (db != self.database)
         return;
     
-    BOOL isExternalChange = notification.userInfo[@"external"];
+    BOOL isExternalChange = notification.userInfo[@"external"] != nil;
     for (CBLDatabaseChange *change in notification.userInfo[@"changes"])
     {
         __block CBLDocument *doc = nil;
