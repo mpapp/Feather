@@ -40,6 +40,7 @@
 		5F779F9D172BD3D20011C4DD /* NSView+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F779F9B172BD3D20011C4DD /* NSView+MPExtensions.m */; };
 		5F779FCC172BDC3C0011C4DD /* MPThumbnailable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F779FB8172BDC180011C4DD /* MPThumbnailable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F779FF6172BE69A0011C4DD /* MPRESTFulResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F779FF4172BE69A0011C4DD /* MPRESTFulResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F7F626E190E48BC0071FD36 /* NSAttributedString+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB1F4A18F8C84800B3290D /* NSAttributedString+MPExtensions.m */; };
 		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
 		5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
@@ -116,6 +117,7 @@
 		5FB3D9B9190B2B530042A63D /* UICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293BF4170DFD4E001C2111 /* UICKeyChainStore.m */; };
 		5FB3D9BB190B2C4B0042A63D /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D9BA190B2C4B0042A63D /* CoreFoundation.framework */; };
 		5FC0F238190BF5E700FC8B8E /* libCouchbaseLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D751818AE636500AA4007 /* libCouchbaseLite.a */; };
+		5FC0F297190C022400FC8B8E /* libCouchbaseLiteListener.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D752418AE636500AA4007 /* libCouchbaseLiteListener.a */; };
 		5FC752E71746E287007818A0 /* NSDate+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC752E81746E287007818A0 /* NSDate+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752E61746E287007818A0 /* NSDate+MPExtensions.m */; };
 		5FC752FF1746E294007818A0 /* NSString+MPSearchIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752FD1746E294007818A0 /* NSString+MPSearchIndex.h */; };
@@ -126,7 +128,6 @@
 		5FD0E13318F082BD00789CC9 /* NSUUID+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FD0E13118F082BD00789CC9 /* NSUUID+MPExtensions.h */; };
 		5FD0E13418F082BD00789CC9 /* NSUUID+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD0E13218F082BD00789CC9 /* NSUUID+MPExtensions.m */; };
 		5FDB1F4B18F8C84800B3290D /* NSAttributedString+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB1F4918F8C84800B3290D /* NSAttributedString+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5FDB1F4C18F8C84800B3290D /* NSAttributedString+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB1F4A18F8C84800B3290D /* NSAttributedString+MPExtensions.m */; };
 		5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
 		5FDB33111705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB330F1705CB950049EBB5 /* InfoPlist.strings */; };
 		5FDB331E1705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
@@ -336,6 +337,13 @@
 			remoteGlobalIDString = 27B0B7A81492B83B00A817AD;
 			remoteInfo = "CBL iOS library";
 		};
+		5FC0F295190C021900FC8B8E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = DA147C1F14BCAC3B0052DA4D;
+			remoteInfo = "CBL Listener iOS";
+		};
 		5FDB331F1705CB950049EBB5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5FDB32F91705CB950049EBB5 /* Project object */;
@@ -540,6 +548,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FC0F297190C022400FC8B8E /* libCouchbaseLiteListener.a in Frameworks */,
 				5FC0F238190BF5E700FC8B8E /* libCouchbaseLite.a in Frameworks */,
 				5FB3D9BB190B2C4B0042A63D /* CoreFoundation.framework in Frameworks */,
 				5FB3D9AC190B208F0042A63D /* UIKit.framework in Frameworks */,
@@ -1094,6 +1103,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5FC0F296190C021900FC8B8E /* PBXTargetDependency */,
 				5FC0F236190BF2C100FC8B8E /* PBXTargetDependency */,
 			);
 			name = "Feather-iOS";
@@ -1433,6 +1443,7 @@
 				5FDB3A06170793550049EBB5 /* NSData+Base64.m in Sources */,
 				5FADC6FA18FADB33006F4119 /* NSString+UriCompatibility.m in Sources */,
 				5FA0D11619012D19005BC968 /* NSIndexSet+MPExtensions.m in Sources */,
+				5F7F626E190E48BC0071FD36 /* NSAttributedString+MPExtensions.m in Sources */,
 				5FDB3A401707992B0049EBB5 /* MPManagedObject.m in Sources */,
 				5FADC6F818FADB33006F4119 /* NSString+UnicharUtilities.m in Sources */,
 				5FDB3A421707992B0049EBB5 /* MPManagedObject+Mixin.m in Sources */,
@@ -1457,7 +1468,6 @@
 				5F3D380F1725D8E000D19D7C /* MPBundlableMixin.m in Sources */,
 				5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */,
 				D932296517268E37006880C2 /* NSTask+MPExtensions.m in Sources */,
-				5FDB1F4C18F8C84800B3290D /* NSAttributedString+MPExtensions.m in Sources */,
 				5F6857DB17287F0800FE06B0 /* MPRootSection.m in Sources */,
 				5F779F9D172BD3D20011C4DD /* NSView+MPExtensions.m in Sources */,
 				5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */,
@@ -1501,6 +1511,11 @@
 			isa = PBXTargetDependency;
 			name = "CBL iOS library";
 			targetProxy = 5FC0F235190BF2C100FC8B8E /* PBXContainerItemProxy */;
+		};
+		5FC0F296190C021900FC8B8E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "CBL Listener iOS";
+			targetProxy = 5FC0F295190C021900FC8B8E /* PBXContainerItemProxy */;
 		};
 		5FDB33201705CB950049EBB5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
