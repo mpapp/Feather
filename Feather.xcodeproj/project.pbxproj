@@ -116,8 +116,6 @@
 		5FB3D9B8190B2B510042A63D /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A04170793550049EBB5 /* NSData+Base64.m */; };
 		5FB3D9B9190B2B530042A63D /* UICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293BF4170DFD4E001C2111 /* UICKeyChainStore.m */; };
 		5FB3D9BB190B2C4B0042A63D /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FB3D9BA190B2C4B0042A63D /* CoreFoundation.framework */; };
-		5FC0F238190BF5E700FC8B8E /* libCouchbaseLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D751818AE636500AA4007 /* libCouchbaseLite.a */; };
-		5FC0F297190C022400FC8B8E /* libCouchbaseLiteListener.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D752418AE636500AA4007 /* libCouchbaseLiteListener.a */; };
 		5FC752E71746E287007818A0 /* NSDate+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC752E81746E287007818A0 /* NSDate+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752E61746E287007818A0 /* NSDate+MPExtensions.m */; };
 		5FC752FF1746E294007818A0 /* NSString+MPSearchIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752FD1746E294007818A0 /* NSString+MPSearchIndex.h */; };
@@ -548,8 +546,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FC0F297190C022400FC8B8E /* libCouchbaseLiteListener.a in Frameworks */,
-				5FC0F238190BF5E700FC8B8E /* libCouchbaseLite.a in Frameworks */,
 				5FB3D9BB190B2C4B0042A63D /* CoreFoundation.framework in Frameworks */,
 				5FB3D9AC190B208F0042A63D /* UIKit.framework in Frameworks */,
 				5FB3D9AA190B20060042A63D /* CoreGraphics.framework in Frameworks */,

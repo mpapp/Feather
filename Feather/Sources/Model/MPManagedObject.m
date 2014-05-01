@@ -1379,7 +1379,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     _controller = controller;
 }
 
-- (void)setValue:(id)value ofProperty:(NSString *)property
+- (BOOL)setValue:(id)value ofProperty:(NSString *)property
 {
     // should not be setting objectType to nil.
     if ([property isEqual:@"objectType"])
@@ -1392,7 +1392,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
             if (![value isEqual:existingObjectType])
                 @throw [NSException exceptionWithName:@"MPInvalidArgumentException" reason:@"Trying to reset objectType" userInfo:nil];
             
-            return; // nothing to do (value is the same)
+            return YES; // nothing to do (value is the same)
         }
     }
     
@@ -1408,11 +1408,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
             if (![value isEqual:existingID])
                 @throw [NSException exceptionWithName:@"MPInvalidArgumentException" reason:@"Trying to reset _id" userInfo:nil];
             
-            return; // nothing to do (value is the same)
+            return YES; // nothing to do (value is the same)
         }
     }
     
-    [super setValue:value ofProperty:property];
+    return [super setValue:value ofProperty:property];
 }
 
 @end
