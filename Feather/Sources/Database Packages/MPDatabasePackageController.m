@@ -721,7 +721,9 @@ static NSUInteger packagesOpened = 0;
         
         [CBLView setCompiler:strongSelf];
         
-        NSUInteger port = 10000 + [[strongSelf class] packagesOpened];
+        NSUInteger port = [strongSelf fixedDatabasePort];
+        if (port == 0)
+            port = 10000 + [[strongSelf class] packagesOpened];
         
         strongSelf.databaseListener = [[CBLListener alloc] initWithManager:_server port:port];
         
@@ -751,6 +753,11 @@ static NSUInteger packagesOpened = 0;
     [_databaseListener stop];
 }
 
+- (NSUInteger)fixedDatabasePort
+{
+    return 0;
+}
+
 - (NSUInteger)databaseListenerPort
 {
     if (!_databaseListener)
@@ -766,9 +773,10 @@ static NSUInteger packagesOpened = 0;
 
 - (NSURL *)databaseListenerURL
 {
-    return [NSURL URLWithString:
+    NSURL *URL = [NSURL URLWithString:
             [NSString stringWithFormat:@"http://%@:%lu",
              [[NSHost currentHost] name], self.databaseListenerPort]];
+    return URL;
 }
 
 #pragma mark - Listener advertising
