@@ -1067,7 +1067,8 @@ static NSUInteger packagesOpened = 0;
 - (void)didChangeDocument:(CBLDocument *)document source:(MPManagedObjectChangeSource)source
 {
     // ignore MPMetadata & MPLocalMetadata
-    if (!document.properties[@"objectType"]) return;
+    if (!document.properties[@"objectType"])
+        return;
     
     MPManagedObjectsController *moc = [self controllerForDocument:document];
     assert(moc);

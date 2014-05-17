@@ -937,12 +937,16 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     // document is not new &  document is deleted => remove change type
     // document is now new & document is NOT deleted => update change type
     MPChangeType changeType = documentIsNew ? MPChangeTypeAdd : (documentIsDeleted ? MPChangeTypeRemove : MPChangeTypeUpdate);
-
-    [nc postNotificationName:[NSNotificationCenter notificationNameForRecentChangeOfType:changeType
-                                                                   forManagedObjectClass:[object class]] object:object userInfo:changeDict];
-
-    [nc postNotificationName:[NSNotificationCenter notificationNameForPastChangeOfType:changeType
-                                                                 forManagedObjectClass:[object class]] object:object userInfo:changeDict];
+    NSString *recentChangeName
+        = [NSNotificationCenter notificationNameForRecentChangeOfType:changeType
+                                                forManagedObjectClass:[object class]];
+    
+    NSString *pastChangeName
+        = [NSNotificationCenter notificationNameForPastChangeOfType:changeType
+                                              forManagedObjectClass:[object class]];
+        
+    [nc postNotificationName:recentChangeName object:object userInfo:changeDict];
+    [nc postNotificationName:pastChangeName object:object userInfo:changeDict];
 }
 
 - (void)didLoadObjectFromDocument:(MPManagedObject *)object

@@ -446,7 +446,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     if (db != self.database)
         return;
     
-    BOOL isExternalChange = notification.userInfo[@"external"];
+    BOOL isExternalChange = [notification.userInfo[@"external"] boolValue];
     for (CBLDatabaseChange *change in notification.userInfo[@"changes"])
     {
         __block CBLDocument *doc = nil;

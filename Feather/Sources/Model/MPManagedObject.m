@@ -435,10 +435,17 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 {
     [super CBLDocument:doc didChange:change];
     
+    // TODO: confirm that responses to external changes are not broken by ignoring local changes here.
+    if (!change.source)
+        return;
+    
     assert(doc == self.document);
-    [_controller didChangeDocument:doc forObject:self source:MPManagedObjectChangeSourceExternal];
+    
+    [_controller didChangeDocument:doc forObject:self source:
+     [change.source.scheme isEqualTo:@"cbl"]
+        ? MPManagedObjectChangeSourceInternal
+        : MPManagedObjectChangeSourceInternal];
 }
-
 
 - (void)didLoadFromDocument
 {
