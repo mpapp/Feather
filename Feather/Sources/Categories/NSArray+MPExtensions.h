@@ -43,6 +43,10 @@ typedef enum MPValueToggleResult
 /**  A JSON encodable string representation of the array. Objects in the array must all implement a method with selector -JSONStringRepresentation: */
 - (NSString *)JSONStringRepresentation:(NSError **)err;
 
+- (NSArray *)allPermutations;
+
+- (NSArray *)arrayByRandomizingOrder;
+
 @end
 
 
