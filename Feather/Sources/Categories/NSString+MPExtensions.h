@@ -57,4 +57,6 @@ NS_INLINE  NSMutableString *MPMutableStringForString(NSString *s)
  */
 - (NSString *) stringByEscapingNonPrintableAndInvisibleCharacters;
 
+- (NSString *)stringByTrimmingToLength:(NSUInteger)len truncate:(BOOL)truncate;
+
 @end

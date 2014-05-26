@@ -31,7 +31,7 @@
     return [str copy];
 }
 
-- (BOOL) containsSubstring:(NSString *)substring
+- (BOOL)containsSubstring:(NSString *)substring
 {
     return ([self rangeOfString:substring].location != NSNotFound);
 }
@@ -81,7 +81,7 @@
     return retStr;
 }
 
-- (NSString *) stringByEscapingNonPrintableAndInvisibleCharacters
+- (NSString *)stringByEscapingNonPrintableAndInvisibleCharacters
 {
     NSMutableString *result = [[NSMutableString alloc] init];
     NSString *s = [self repr];
@@ -97,6 +97,21 @@
     }
     
     return result;
+}
+
+// inspired by NSString_Extensions
+- (NSString *)stringByTrimmingToLength:(NSUInteger)len truncate:(BOOL)truncate
+{
+    if (self.length <= len)
+        return self.copy;
+    
+    NSString *str = [self substringToIndex:len];
+    
+    if (truncate)
+        str = [[str stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]]
+               stringByAppendingString:@"..."];
+    
+    return str;
 }
 
 @end
