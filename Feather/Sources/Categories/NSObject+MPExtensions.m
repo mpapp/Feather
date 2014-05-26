@@ -283,6 +283,17 @@
     }
 }
 
++ (void)runUntilDone:(void (^)(dispatch_block_t))block
+{
+    __block BOOL done = NO;
+    block(^()
+          {
+              done = YES;
+          });
+    while (!done)
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
+}
+
 @end
 
 

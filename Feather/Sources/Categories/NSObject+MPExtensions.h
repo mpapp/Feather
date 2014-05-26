@@ -76,6 +76,15 @@ typedef id(^MPMethodImplementationBlockProvider)(IMP originalImplementation);
 
 + (void)replaceClassMethodWithSelector:(SEL)selector implementationBlockProvider:(MPMethodImplementationBlockProvider)swizzler;
 
+/**
+ * Spins the current runloop until onceDoneBlock() is called.
+ * @warning The run loop sources will be polled every 0.05s - this is not intended for production code, only for testing!
+ *
+ *  @param block a block containing code that should be executed once run loop spinning should end.
+ */
++ (void)runUntilDone:(void (^)(dispatch_block_t onceDoneBlock))block;
+
+
 @end
 
 #if defined __cplusplus
