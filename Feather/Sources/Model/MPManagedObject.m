@@ -547,6 +547,16 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 #pragma mark - Accessors
 
+- (NSDictionary *)propertiesToSave
+{
+    __block NSDictionary *dict = nil;
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [self.database.packageController serverQueueToken], ^{
+        dict = [super propertiesToSave];
+    });
+    
+    return dict;
+}
+
 - (NSString *)description
 {
     __block NSString *desc = nil;
@@ -1336,11 +1346,13 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         assert(moClass == [_controller managedObjectClass] ||
                [moClass isSubclassOfClass:[_controller managedObjectClass]]);
         
-        if (properties)
-            self.objectType = [properties managedObjectType];
+        if (properties && properties.managedObjectType)
+        {
+            assert([properties.managedObjectType isEqualToString:NSStringFromClass(moClass)]);
+            self.objectType = properties.managedObjectType;
+        }
         
         [_controller registerObject:self];
-
         
         NSMutableDictionary *p = properties ? [properties mutableCopy] : [NSMutableDictionary dictionaryWithCapacity:10];
         [p removeObjectForKey:@"_id"];
