@@ -490,7 +490,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 - (void)addObserver:(id)object forPersistentReplication:(CBLReplication *)replication
 {
-    #warning check through that these properties are still the ones to observe
+    // TODO: check through that these properties are still the ones to observe
     [replication addObserver:self forKeyPath:@"completed" options:0 context:NULL];
     [replication addObserver:self forKeyPath:@"status" options:0 context:NULL];
     [replication addObserver:self forKeyPath:@"total" options:0 context:NULL];
