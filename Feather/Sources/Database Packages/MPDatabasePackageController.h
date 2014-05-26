@@ -221,5 +221,8 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** Root section class names ordered in the priority order needed. */
 + (NSArray *)orderedRootSectionClassNames;
 
+- (void)startListenerWithCompletionHandler:(void(^)(NSError *err))completionHandler;
+- (void)stopListener;
+
 @end
 

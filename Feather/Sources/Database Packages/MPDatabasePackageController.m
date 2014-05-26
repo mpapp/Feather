@@ -181,7 +181,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
             && ![NSBundle inTestSuite]
             && [self synchronizesPeerlessly])
         {
-            [self startListener];
+            [self startListenerWithCompletionHandler:^(NSError *err) {
+                
+            }];
         }
         
         // populate root section properties
@@ -703,14 +705,16 @@ static NSUInteger packagesOpened = 0;
 
 + (void)didOpenPackage
 {
-    dispatch_sync([self packageQueue], ^{ packagesOpened++; });
+    dispatch_sync([self packageQueue], ^{
+        packagesOpened++;
+    });
 }
 
-- (void)startListener
+- (void)startListenerWithCompletionHandler:(void(^)(NSError *err))completionHandler
 {
-    assert(![NSBundle inTestSuite]);
     assert(![NSBundle isCommandLineTool]);
     assert(![NSBundle isXPCService]);
+    
     assert(!_databaseListener);
     assert(_server);
     
@@ -738,11 +742,13 @@ static NSUInteger packagesOpened = 0;
         if (![strongSelf.databaseListener start:&e])
         {
             [self.notificationCenter postErrorNotification:e];
+            completionHandler(e);
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf advertiseListener];
             [self didStartDatabaseListener];
+            completionHandler(nil);
         });
     }];
 }
@@ -762,6 +768,7 @@ static NSUInteger packagesOpened = 0;
 {
     if (!_databaseListener)
         return 0;
+    
     NSUInteger port = [_databaseListener port];
     return port;
 }
@@ -787,7 +794,7 @@ static NSUInteger packagesOpened = 0;
 	
 	if (_databaseListener.port > 0)
 	{
-		NSBundle *bundle = [NSBundle mainBundle];
+		NSBundle *bundle = [NSBundle appBundle];
         NSHost   *host = [NSHost currentHost];
         
 		NSDictionary *txtRecordDataDict = @{ @"appVersion"    : [[bundle bundleVersionString] dataUsingEncoding:NSUTF8StringEncoding],
