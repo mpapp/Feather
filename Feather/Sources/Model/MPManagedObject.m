@@ -216,7 +216,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 + (NSString *)idForNewDocumentInDatabase:(CBLDatabase *)db
 {
-    return [NSString stringWithFormat:@"%@:%@", NSStringFromClass([self class]), [[NSUUID UUID] UUIDString]];
+    //return [NSString stringWithFormat:@"%@:%@", NSStringFromClass([self class]), [[NSUUID UUID] UUIDString]];
+    return [NSString stringWithFormat:@"%@_%@", NSStringFromClass([self class]), [[NSUUID UUID] UUIDString]];
 }
 
 + (BOOL)validateRevision:(CBLRevision *)revision
@@ -227,7 +228,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID
 {
     assert(documentID);
-    NSString *className = [documentID componentsSeparatedByString:@":"][0];
+    //NSString *className = [documentID componentsSeparatedByString:@":"][0];
+    NSString *className = [documentID componentsSeparatedByString:@"_"][0];
     Class moClass = NSClassFromString(className);
     assert(moClass);
     assert([moClass isSubclassOfClass:[MPManagedObject class]]);
@@ -246,7 +248,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     assert([self class] != [MPManagedObject class]); // should not call directly on the subclass.
     if (_newDocumentID)
     {
-        BOOL hasCorrectPrefix = [_newDocumentID hasPrefix:[NSString stringWithFormat:@"%@:", NSStringFromClass(self.class)]];
+        //BOOL hasCorrectPrefix = [_newDocumentID hasPrefix:[NSString stringWithFormat:@"%@:", NSStringFromClass(self.class)]];
+        BOOL hasCorrectPrefix = [_newDocumentID hasPrefix:[NSString stringWithFormat:@"%@_", NSStringFromClass(self.class)]];
         assert(hasCorrectPrefix);
     }
 #endif

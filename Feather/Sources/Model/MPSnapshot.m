@@ -44,7 +44,8 @@
 + (NSString *)idForSnapshotWithName:(NSString *)name inDatabase:(CBLDatabase *)db
 {
     assert(name);
-    return [NSString stringWithFormat:@"%@:%@", NSStringFromClass([self class]), name];
+    //return [NSString stringWithFormat:@"%@:%@", NSStringFromClass([self class]), name];
+    return [NSString stringWithFormat:@"%@_%@", NSStringFromClass([self class]), name];
 }
 
 - (NSString *)idForNewDocumentInDatabase:(CBLDatabase *)db

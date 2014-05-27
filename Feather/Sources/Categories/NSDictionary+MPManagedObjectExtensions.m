@@ -48,7 +48,8 @@ NSString * const MPManagedObjectDictionaryErrorDomain = @"MPManagedObjectDiction
         return NO;
     }
     
-    NSArray *docIDComponents = [docID componentsSeparatedByString:@":"];
+    //NSArray *docIDComponents = [docID componentsSeparatedByString:@":"];
+    NSArray *docIDComponents = [docID componentsSeparatedByString:@"_"];
     if ([docIDComponents count] != 2)
     {
         if (error)
