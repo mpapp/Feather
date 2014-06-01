@@ -92,6 +92,8 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
             _database = [_server databaseNamed:[MPDatabase sanitizedDatabaseIDWithString:name] error:&err];
         });
         
+        _database.etagPrefix = self.metadata.document.documentID;
+        
         objc_setAssociatedObject(_database, "dbp", self, OBJC_ASSOCIATION_ASSIGN);
         
         _currentPulls = [NSMutableSet setWithCapacity:5];
