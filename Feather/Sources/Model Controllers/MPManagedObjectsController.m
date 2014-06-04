@@ -10,6 +10,8 @@
 
 #import <Feather/MPManagedObject+Protected.h>
 #import "MPManagedObjectsController+Protected.h"
+
+#import "MPDatabasePackageController.h"
 #import "MPDatabasePackageController+Protected.h"
 
 #import "NSSet+MPExtensions.h"
@@ -869,8 +871,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     [nc postNotificationName:pastChange object:object];
      */
 
-    if ([[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])
-        [[self.packageController delegate] updateChangeCount:NSChangeDone];
+    if ([[self.packageController delegate] conformsToProtocol:@protocol(MPDatabasePackageControllerDelegate)])
+        [(id<MPDatabasePackageControllerDelegate>)[self.packageController delegate] updateChangeCount:NSChangeDone];
 }
 
 - (void)didUpdateObject:(MPManagedObject *)object
@@ -890,8 +892,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     [nc postNotificationName:pastChange object:object];
     */
 
-    if ([[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])
-        [[self.packageController delegate] updateChangeCount:NSChangeDone];
+    if ([[self.packageController delegate] conformsToProtocol:@protocol(MPDatabasePackageControllerDelegate)])
+        [(id<MPDatabasePackageControllerDelegate>)[self.packageController delegate] updateChangeCount:NSChangeDone];
 }
 
 - (void)willDeleteObject:(MPManagedObject *)object
@@ -917,8 +919,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     [nc postNotificationName:[NSNotificationCenter notificationNameForPastChangeOfType:MPChangeTypeRemove
                                                              forManagedObjectClass:[object class]] object:object];
 
-    if ([[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])
-        [[self.packageController delegate] updateChangeCount:NSChangeDone];
+    if ([[self.packageController delegate] conformsToProtocol:@protocol(MPDatabasePackageControllerDelegate)])
+        [(id<MPDatabasePackageControllerDelegate>)[self.packageController delegate] updateChangeCount:NSChangeDone];
+
 }
 
 - (void)didChangeDocument:(CBLDocument *)doc
