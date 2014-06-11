@@ -377,7 +377,11 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
      ^BOOL(CBLSavedRevision *revision, NSDictionary *params)
     {
         id strongSelf = weakSelf;
-        return [strongSelf managesDocumentWithDictionary:revision.properties];
+        BOOL manages = [strongSelf managesDocumentWithDictionary:revision.properties];
+        if (!manages)
+            return NO;
+        
+        return YES;
     }];
 }
 
