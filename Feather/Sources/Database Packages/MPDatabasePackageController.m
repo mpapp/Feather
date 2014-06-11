@@ -38,7 +38,7 @@
 #import <net/if.h>
 #import <ifaddrs.h>
 
-@interface MPTemporaryDatabasePackageCopyFileManagerDelegate : NSObject
+@interface MPTemporaryDatabasePackageCopyFileManagerDelegate : NSObject <NSFileManagerDelegate>
 @end
 
 @implementation MPTemporaryDatabasePackageCopyFileManagerDelegate
@@ -113,7 +113,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         CBLManagerOptions opts;
         opts.readOnly = NO;
         
-        _serverQueueToken = [[NSUUID UUID] unsignedLongValue];
+        NSScanner *scanner = [NSScanner scannerWithString:[[NSUUID UUID] UUIDString]];
+        [scanner scanHexLongLong:&_serverQueueToken];
+        
         _server = [[CBLManager alloc] initWithDirectory:_path options:&opts error:err];
         _server.dispatchQueue = mp_dispatch_queue_create(_path, _serverQueueToken, DISPATCH_QUEUE_SERIAL);
         

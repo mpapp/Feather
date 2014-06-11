@@ -553,7 +553,7 @@
     if ([value isKindOfClass:[NSString class]]) {
         value = [CBLJSON dataWithBase64String:value];
     }
-    else if (value && ![value isKindOfClass:[NSData data]]) {
+    else if (value && ![value isKindOfClass:[NSData class]]) {
         MPLog(@"Unable to decode Base64 data from property %@ of %@", property, self); return nil;
     }
     
