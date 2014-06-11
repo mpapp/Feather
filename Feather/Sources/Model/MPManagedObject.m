@@ -550,7 +550,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (NSDictionary *)propertiesToSave
 {
     __block NSDictionary *dict = nil;
-    mp_dispatch_sync(self.database.manager.dispatchQueue, [self.database.packageController serverQueueToken], ^{
+    mp_dispatch_sync(self.database.manager.dispatchQueue,
+                     [self.database.packageController serverQueueToken], ^{
         dict = [super propertiesToSave];
     });
     
