@@ -92,8 +92,6 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
             _database = [_server databaseNamed:[MPDatabase sanitizedDatabaseIDWithString:name] error:&err];
         });
         
-        _database.etagPrefix = self.metadata.document.documentID;
-        
         objc_setAssociatedObject(_database, "dbp", self, OBJC_ASSOCIATION_ASSIGN);
         
         _currentPulls = [NSMutableSet setWithCapacity:5];
@@ -117,6 +115,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
          [self.database setValidationNamed:@"validate-managed-object"
          asBlock:^(CBLRevision *newRevision, id<CBLValidationContext> context) {
              MPDatabase *strongSelf = slf;
+             assert(![newRevision.properties[@"objectType"] isEqualToString:@"MPElement"]);
              [strongSelf validateRevision:newRevision validationContext:context];
          }];
          
@@ -137,7 +136,8 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
          
  - (BOOL)validateRevision:(CBLRevision *)newRevision validationContext:(id<CBLValidationContext>)context
  {
-     if (newRevision.isDeletion) return YES;
+     if (newRevision.isDeletion)
+         return YES;
      
      BOOL managedObjectTypeIncluded = newRevision.properties.managedObjectType != nil;
      
@@ -410,6 +410,9 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
                          error:(NSError *__autoreleasing *)err
 {
     CBLManager *server = [[CBLManager alloc] initWithDirectory:[path stringByDeletingLastPathComponent] options:nil error:err];
+    objc_setAssociatedObject(server, "dbp", self.packageController, OBJC_ASSOCIATION_ASSIGN);
+    server.etagPrefix = [[NSUUID UUID] UUIDString]; // TODO: persist the etag inside the package for added performance (this gives predictable behaviour: every app start effectively clears the cache).
+    
     if (!server)
     {
         return NO;
@@ -661,6 +664,24 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         [entries addObject:row.key];
     }
     return entries;
+}
+
+@end
+
+@implementation CBLManager (MPDatabase)
+
+- (id)managedObjectDatabaseBackpointer
+{
+    return objc_getAssociatedObject(self, "dbp");
+}
+
+- (id)packageController
+{
+    MPDatabase *dbp = [self managedObjectDatabaseBackpointer];
+    assert(dbp);
+    assert([dbp packageController]);
+    assert([[dbp packageController] isKindOfClass:[MPDatabasePackageController class]]);
+    return [dbp packageController];
 }
 
 @end

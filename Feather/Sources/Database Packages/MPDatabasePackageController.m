@@ -117,7 +117,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         [scanner scanHexLongLong:&_serverQueueToken];
         
         _server = [[CBLManager alloc] initWithDirectory:_path options:&opts error:err];
+        objc_setAssociatedObject(_server, "dbp", self, OBJC_ASSOCIATION_ASSIGN);
+        
         _server.dispatchQueue = mp_dispatch_queue_create(_path, _serverQueueToken, DISPATCH_QUEUE_SERIAL);
+        _server.etagPrefix = [[NSUUID UUID] UUIDString]; // TODO: persist the etag inside the package for added performance (this gives predictable behaviour: every app start effectively clears the cache).
         
 #ifdef DEBUG
         [_server.customHTTPHeaders addEntriesFromDictionary:@{
@@ -145,7 +148,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
                                                  pushFilterName:pushFilterName
                                                  pullFilterName:[self pullFilterNameForDatabaseNamed:dbName]
                                                           error:err];
-            if (!db) { return nil; }
+            if (!db) {
+                return nil;
+            }
             [self setValue:db forKey:[NSString stringWithFormat:@"%@Database", db.name]];
             
             if (pushFilterName)
@@ -828,7 +833,7 @@ static NSUInteger packagesOpened = 0;
 
 - (void)netServiceDidPublish:(NSNetService *)sender
 {
-    MPLog(@"Service for database package %@ published.", [self identifier]);
+    MPLog(@"Service for database package %@ published at port %lu.", [self identifier], [sender port]);
 }
 
 /* The error dictionary will contain two key/value pairs representing the error domain and code (see the NSNetServicesError enumeration for error code constants). It is possible for an error to occur after a successful publication.
