@@ -231,7 +231,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 + (void)registerDatabasePackageController:(MPDatabasePackageController *)packageController
 {
-    // there should not be two or more database package controllers in memory at the same time.
+    // there should not be two or more database package controllers that are identical in memory at the same time.
     // for instance, if a package controller is duplicated, its identifier should be modified.
     assert(![[self databasePackageControllerRegistry] objectForKey:packageController.identifier]);
     [self.databasePackageControllerRegistry setObject:packageController forKey:packageController.identifier];
