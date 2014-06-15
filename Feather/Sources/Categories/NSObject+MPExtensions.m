@@ -278,8 +278,7 @@
     
     if (!class_addMethod(self, selector, newImpl, typeEncoding))
     {
-        BOOL replacementSuccessful = class_replaceMethod(self, selector, newImpl, typeEncoding);
-        assert(replacementSuccessful);
+        class_replaceMethod(self, selector, newImpl, typeEncoding);
     }
 }
 

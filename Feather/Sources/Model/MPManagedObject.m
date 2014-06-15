@@ -118,6 +118,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 /* Looks to be used from within CouchPersistentReplication? Needs some adjusting. - Matias */
 - (instancetype)initWithNewDocumentInDatabase:(CBLDatabase *)database
 {
+    if (![self.class isConcrete])
+        @throw [NSException exceptionWithName:@"MPAbstractClassException" reason:nil userInfo:nil];
+    
     assert(false);
     @throw [NSException exceptionWithName:@"MTInvalidInitException" reason:nil userInfo:nil];
     return nil;
@@ -125,6 +128,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (instancetype)initWithDocument:(CBLDocument *)document
 {
+    if (![self.class isConcrete])
+        @throw [NSException exceptionWithName:@"MPAbstractClassException" reason:nil userInfo:nil];
+    
     if (self = [super initWithDocument:document])
     {
 
@@ -545,9 +551,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return [self setAttachmentNamed:name withContentType:type content:body];
 }
 
-- (BOOL)isConcrete
++ (BOOL)isConcrete
 {
-    return [[self class] subclassesForClass:self.class] == 0;
+    return [[self class] subclassesForClass:self.class].count == 0;
 }
 
 #pragma mark - Accessors
@@ -1334,6 +1340,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
                                       properties:(NSDictionary *)properties
                                       documentID:(NSString *)identifier
 {
+    if (![self.class isConcrete])
+        @throw [NSException exceptionWithName:@"MPAbstractClassException" reason:nil userInfo:nil];
+    
     assert(controller);
     assert(controller.db);
     assert(controller.db.database);

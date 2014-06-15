@@ -7,10 +7,11 @@
 //
 
 #import "MPExtensionTests.h"
-#import "MPContributorsController.h"
-#import "MPContributor.h"
-#import "MPSnapshot.h"
-#import "MPCacheable.h"
+
+#import <Feather/MPContributorsController.h>
+#import <Feather/MPContributor.h>
+#import <Feather/MPSnapshot.h>
+#import <Feather/MPCacheable.h>
 
 #import <Feather/MPManagedObject.h>
 #import <Feather/MPException.h>

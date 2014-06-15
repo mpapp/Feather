@@ -8,6 +8,8 @@
 
 #import <XCTest/XCTest.h>
 
-@interface MPModelFoundationTests : XCTestCase
+#import "FeatherTests.h"
+
+@interface MPModelFoundationTests : FeatherTests
 
 @end

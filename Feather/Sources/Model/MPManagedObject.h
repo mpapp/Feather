@@ -176,6 +176,13 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 /** A JSON encodable string representation of the object. By default the representation does not contain referenced objects, but subclasses can override to embed ("denormalise") referenced objects. */
 - (NSString *)JSONStringRepresentation:(NSError **)err;
 
+/** 
+ * The class is intended to be made concrete instances of. 
+ * Default implementation checks if the class has subclasses, and is considered concrete if it has none. 
+ * This behaviour is something you might want to override in subclasses and is added to guard from accidentally creating instances of objects intended to be abstract (thanks to ObjC / Swift not including an abstract keyword).
+ */
++ (BOOL)isConcrete;
+
 /**
 * Initialise a managed object with a new document managed by the specified controller.
  * @param controller The managed object controller for this object. Must not be nil.

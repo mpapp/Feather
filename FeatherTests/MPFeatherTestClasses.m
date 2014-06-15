@@ -54,6 +54,11 @@
     return @[ @"title", @"desc", @"contents" ];
 }
 
++ (BOOL)isConcrete
+{
+    return YES;
+}
+
 @end
 
 @implementation MPMoreSpecificTestObject
