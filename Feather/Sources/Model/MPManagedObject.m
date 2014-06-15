@@ -545,6 +545,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return [self setAttachmentNamed:name withContentType:type content:body];
 }
 
+- (BOOL)isConcrete
+{
+    return [[self class] subclassesForClass:self.class] == 0;
+}
+
 #pragma mark - Accessors
 
 - (NSDictionary *)propertiesToSave
