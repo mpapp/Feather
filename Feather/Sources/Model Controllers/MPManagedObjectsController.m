@@ -923,9 +923,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     [nc postNotificationName:[NSNotificationCenter notificationNameForPastChangeOfType:MPChangeTypeRemove
                                                              forManagedObjectClass:[object class]] object:object];
 
-    if ([[self.packageController delegate] conformsToProtocol:@protocol(MPDatabasePackageControllerDelegate)])
+    if ([[self.packageController delegate] conformsToProtocol:@protocol(MPDatabasePackageControllerDelegate)]
+        && [[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])
         [(id<MPDatabasePackageControllerDelegate>)[self.packageController delegate] updateChangeCount:NSChangeDone];
-
 }
 
 - (void)didChangeDocument:(CBLDocument *)doc
