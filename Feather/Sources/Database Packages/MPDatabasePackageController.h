@@ -18,6 +18,11 @@ typedef void (^MPPullCompletionHandler)(NSDictionary *errDict);
 
 @class MPSearchIndexController;
 
+/** 
+ * A notification that's fired once the database package listener is ready to be used at a port.
+ */
+extern NSString *const MPDatabasePackageListenerDidStartNotification;
+
 /** A delegate protocol for MPDatabasePackageController's optional delegate. */
 @protocol MPDatabasePackageControllerDelegate <NSObject>
 @property (readonly, strong) NSURL *packageRootURL;

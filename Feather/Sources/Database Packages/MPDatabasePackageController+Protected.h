@@ -25,7 +25,7 @@
 
 /** Abstract method which is to be overloaded in subclasses of MPDatabasePackageController 
   * that use the database listener. */
-- (void)didStartDatabaseListener;
+- (void)didStartManuscriptsPackageListener;
 
 - (void)makeNotificationCenter;
 

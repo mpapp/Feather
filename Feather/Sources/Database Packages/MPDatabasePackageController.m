@@ -38,6 +38,8 @@
 #import <net/if.h>
 #import <ifaddrs.h>
 
+NSString * const MPDatabasePackageListenerDidStartNotification = @"MPDatabasePackageListenerDidStartNotification";
+
 @interface MPTemporaryDatabasePackageCopyFileManagerDelegate : NSObject <NSFileManagerDelegate>
 @end
 
@@ -185,11 +187,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         
         if (![NSBundle isCommandLineTool]
             && ![NSBundle isXPCService]
-            && ![NSBundle inTestSuite]
             && [self synchronizesPeerlessly])
         {
             [self startListenerWithCompletionHandler:^(NSError *err) {
-                
+                [self.notificationCenter postNotificationName:MPDatabasePackageListenerDidStartNotification object:self];
             }];
         }
         
@@ -543,6 +544,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     assert(_managedObjectsControllers);
     assert(databases.count > 0);
     
+    [self.databaseListener stop];
+    
     for (MPDatabase *db in databases)
     {
         mp_dispatch_sync(db.server.dispatchQueue, [db.packageController serverQueueToken], ^{
@@ -754,7 +757,7 @@ static NSUInteger packagesOpened = 0;
         
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf advertiseListener];
-            [self didStartDatabaseListener];
+            [self didStartManuscriptsPackageListener];
             completionHandler(nil);
         });
     }];
@@ -1069,7 +1072,7 @@ static NSUInteger packagesOpened = 0;
     object_setIvar(self, primaryDatabaseIvar, primaryDatabase);
 }
 
-- (void)didStartDatabaseListener
+- (void)didStartManuscriptsPackageListener
 {
     @throw [MPAbstractMethodException exceptionWithSelector:_cmd];
 }

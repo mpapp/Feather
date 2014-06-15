@@ -13,3 +13,6 @@
 [submodule "External/google-diff-match-patch"]
 	path = External/google-diff-match-patch
 	url = git@github.com:mz2/google-diff-match-patch.git
+[submodule "External/NSBundle-OBCodeSigningInfo"]
+	path = External/NSBundle-OBCodeSigningInfo
+	url = git@github.com:mpapp/NSBundle-OBCodeSigningInfo.git
