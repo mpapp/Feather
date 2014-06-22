@@ -124,7 +124,6 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         _server.dispatchQueue = mp_dispatch_queue_create(_path, _serverQueueToken, DISPATCH_QUEUE_SERIAL);
         _server.etagPrefix = [[NSUUID UUID] UUIDString]; // TODO: persist the etag inside the package for added performance (this gives predictable behaviour: every app start effectively clears the cache).
         
-#ifdef DEBUG
         [_server.customHTTPHeaders addEntriesFromDictionary:@{
                                   @"Access-Control-Allow-Origin"      : @"*",
                                   @"Access-Control-Allow-Credentials" : @"false",
@@ -133,10 +132,6 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
                                   @"Pragma"                           : @"no-cache",
                                   @"Cache-Control"                    : @"no-cache"
                                   }];
-#else
-#warning Make editor interactions behave in a CORS-safe way.
-        NSDictionary *headers = nil;
-#endif
         
         _managedObjectsControllers = [NSMutableSet setWithCapacity:20];
         
