@@ -252,8 +252,12 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 {
     // db should not be observing notifications after its package controller is deallocated.
     for (MPDatabase *db in self.databases)
+    {
+        // work on these queues guaranteed to complete before deallocation
+        mp_dispatch_sync(db.database.manager.dispatchQueue, [self serverQueueToken], ^{ });
+        
         [self.notificationCenter removeObserver:db];
-    
+    }
     [self.class deregisterDatabasePackageController:self];
 }
 
