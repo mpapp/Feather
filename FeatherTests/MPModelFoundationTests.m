@@ -10,6 +10,9 @@
 #import "MPFeatherTestClasses.h"
 
 //
+// MPManagedObject
+// |____MPManagedObjectConcretenessTest
+//
 // MPTestObject
 // |____A
 //      |___B
@@ -27,30 +30,40 @@
 //
 @interface MPFeatherTestA : MPTestObject @end
 @implementation MPFeatherTestA
-+ (BOOL)isConcrete {
-    return NO;
-}
++ (BOOL)isConcrete { return NO; }
 @end
+
+@interface MPManagedObjectConcretenessTest : MPManagedObject @end
+@implementation MPManagedObjectConcretenessTest @end
+
+@interface MPManagedObjectConcretenessTestsController : MPManagedObjectsController @end
+@implementation MPManagedObjectConcretenessTestsController @end
 
 @interface MPFeatherTestAsController : MPManagedObjectsController @end
 @implementation MPFeatherTestAsController @end
 
-@interface MPFeatherTestB : MPFeatherTestA @end
-@implementation MPFeatherTestB @end
+@interface MPFeatherTestB : MPFeatherTestA
+@end
+
+@implementation MPFeatherTestB
++ (BOOL)isConcrete { return YES; }
+@end
 
 @interface MPFeatherTestC : MPFeatherTestA @end
-@implementation MPFeatherTestC @end
+@implementation MPFeatherTestC
++ (BOOL)isConcrete { return YES; }
+@end
 
 @interface MPFeatherTestD : MPFeatherTestA @end
 
 @implementation MPFeatherTestD
-+ (BOOL)isConcrete {
-    return YES;
-}
++ (BOOL)isConcrete { return YES; }
 @end
 
 @interface MPFeatherTestE : MPFeatherTestD @end
-@implementation MPFeatherTestE @end
+@implementation MPFeatherTestE
++ (BOOL)isConcrete { return YES; }
+@end
 
 @implementation MPModelFoundationTests
 
@@ -85,11 +98,14 @@
     
     MPTestObject *a, *b, *c, *d, *e;
     
+    XCTAssertTrue(![MPManagedObject isConcrete], @"MPManagedObject is not concrete");
+    XCTAssertTrue([MPManagedObjectConcretenessTest isConcrete], @"MPManagedObjectConcretenessTest is concrete");
+    
     XCTAssertTrue(![MPFeatherTestA isConcrete], @"A is not concrete");
     XCTAssertTrue([MPFeatherTestB isConcrete], @"B is concrete");
-    XCTAssertTrue(![MPFeatherTestC isConcrete], @"C is concrete");
-    XCTAssertTrue(![MPFeatherTestD isConcrete], @"D is concrete");
-    XCTAssertTrue(![MPFeatherTestE isConcrete], @"E is concrete");
+    XCTAssertTrue([MPFeatherTestC isConcrete], @"C is concrete");
+    XCTAssertTrue([MPFeatherTestD isConcrete], @"D is concrete");
+    XCTAssertTrue([MPFeatherTestE isConcrete], @"E is concrete");
 
     XCTAssertThrows(a = [[MPFeatherTestA alloc] initWithNewDocumentForController:ac], @"A cannot be instantiated");
     XCTAssertNoThrow(b = [[MPFeatherTestB alloc] initWithNewDocumentForController:ac], @"B can be instantiated");
