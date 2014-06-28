@@ -719,6 +719,8 @@ static NSUInteger packagesOpened = 0;
     });
 }
 
+static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
+
 - (void)startListenerWithCompletionHandler:(void(^)(NSError *err))completionHandler
 {
     assert(![NSBundle isCommandLineTool]);
@@ -738,22 +740,38 @@ static NSUInteger packagesOpened = 0;
         if (port == 0)
             port = 10000 + [[strongSelf class] packagesOpened];
         
-        strongSelf.databaseListener = [[CBLListener alloc] initWithManager:_server port:port];
-        
-        NSDictionary *txtDict = [strongSelf.databaseListener.TXTRecordDictionary mutableCopy];
-        [txtDict setValue:@(port) forKey:@"port"];
-        
-        NSLog(@"Serving %@ at '%@:%@'", _path, _server.internalURL, @(port));
-        
-        strongSelf.databaseListener.TXTRecordDictionary = txtDict;
-        
         NSError *e = nil;
-        if (![strongSelf.databaseListener start:&e])
-        {
+        NSUInteger retries = 0;
+        do {
+            e = nil;
+            port += retries;
+            
+            strongSelf.databaseListener = [[CBLListener alloc] initWithManager:_server port:port];
+            
+            NSDictionary *txtDict = [strongSelf.databaseListener.TXTRecordDictionary mutableCopy];
+            [txtDict setValue:@(port) forKey:@"port"];
+            
+            NSLog(@"Serving %@ at '%@:%@'", _path, _server.internalURL, @(port));
+            
+            strongSelf.databaseListener.TXTRecordDictionary = txtDict;
+            
+            if (![strongSelf.databaseListener start:&e]) {
+                assert(e);
+                retries++;
+                continue;
+            }
+            else {
+                e = nil; // success -- let's set the previous error to nil
+            }
+            
+        } while (e && retries < MPDatabasePackageListenerMaxRetryCount);
+        
+        if (e) {
             [self.notificationCenter postErrorNotification:e];
             completionHandler(e);
+            return;
         }
-        
+
         dispatch_async(dispatch_get_main_queue(), ^{
             [strongSelf advertiseListener];
             [self didStartManuscriptsPackageListener];
