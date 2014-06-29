@@ -100,8 +100,8 @@
 - (instancetype)initWithEmbeddingObject:(id<MPEmbeddingObject>)embeddingObject
                            embeddingKey:(NSString *)embeddingKey
 {
-    if (self = [super init])
-    {
+    self = [super init];
+    if (self) {
         assert(embeddingObject);
         assert(embeddingKey);
         
@@ -423,6 +423,18 @@
     CBLDocument* doc = [[self databaseForModelProperty: property] existingDocumentWithID:rawValue];
     if (!doc)
     {
+        Class declaredInClass = nil;
+        const char *propertyType;
+        if (MYGetPropertyInfo(self.class, property, YES, &declaredInClass, &propertyType)) {
+            Class moClass = MYClassFromType(propertyType);
+            
+            MPManagedObjectsController *moc = [[[(id)self.embeddingObject controller] packageController] controllerForManagedObjectClass:moClass];
+            CBLModel *model = [moc objectWithIdentifier:rawValue];
+            
+            if (model)
+                return model;
+        }
+        
         MPLog(@"Unable to get document from property %@ of %@ (value='%@')",
              property, doc, rawValue);
         return nil;

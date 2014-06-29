@@ -400,14 +400,15 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (BOOL)deleteDocument
 {
-    NSError *outError = nil;
-    BOOL success = YES;
-    if (!(success = [self deleteDocument:&outError]))
-    {
-        [[self.database.packageController notificationCenter] postErrorNotification:outError];
-        return NO;
-    }
-    
+    __block BOOL success = YES;
+    mp_dispatch_async(self.database.manager.dispatchQueue, [self.controller.packageController serverQueueToken], ^{
+        NSError *outError = nil;
+        if (!(success = [self deleteDocument:&outError]))
+        {
+            [[self.database.packageController notificationCenter] postErrorNotification:outError];
+            success = NO;
+        }
+    });
     return success;
 }
 

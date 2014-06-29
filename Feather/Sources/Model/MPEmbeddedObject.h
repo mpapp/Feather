@@ -52,6 +52,10 @@
 
 - (instancetype)initWithEmbeddingObject:(id<MPEmbeddingObject>)embeddingObject embeddingKey:(NSString *)embeddingKey;
 
+- (instancetype)initWithDictionary:(NSDictionary *)propertiesDict
+                   embeddingObject:(id<MPEmbeddingObject>)embeddingObject
+                      embeddingKey:(NSString *)key;
+
 /** Returns JSON-encodable dictionary representation of this embedded object. */
 - (NSDictionary *)dictionaryRepresentation;
 

@@ -427,6 +427,13 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (id)objectWithIdentifier:(NSString *)identifier
 {
+    MPManagedObject *mo = _objectCache[identifier];
+    if (mo)
+    {
+        assert(mo.controller == self);
+        return mo;
+    }
+    
     assert(identifier);
     Class cls = [MPManagedObject managedObjectClassFromDocumentID:identifier];
     assert(cls);
