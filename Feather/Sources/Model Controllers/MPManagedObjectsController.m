@@ -893,14 +893,11 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     MPLog(@"Did change object %@", object);
     NSNotificationCenter *nc = [_packageController notificationCenter]; assert(nc);
 
-    /*
     NSString *recentChange = [NSNotificationCenter notificationNameForRecentChangeOfType:MPChangeTypeUpdate forManagedObjectClass:[object class]];
     NSString *pastChange = [NSNotificationCenter notificationNameForPastChangeOfType:MPChangeTypeUpdate forManagedObjectClass:[object class]];
 
     [nc postNotificationName:recentChange object:object];
-
     [nc postNotificationName:pastChange object:object];
-    */
 
     if ([[self.packageController delegate] conformsToProtocol:@protocol(MPDatabasePackageControllerDelegate)]
         && [[self.packageController delegate] respondsToSelector:@selector(updateChangeCount:)])

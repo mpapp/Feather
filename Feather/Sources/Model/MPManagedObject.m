@@ -401,7 +401,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (BOOL)deleteDocument
 {
     __block BOOL success = YES;
-    mp_dispatch_async(self.database.manager.dispatchQueue, [self.controller.packageController serverQueueToken], ^{
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [self.controller.packageController serverQueueToken], ^{
         NSError *outError = nil;
         if (!(success = [self deleteDocument:&outError]))
         {
