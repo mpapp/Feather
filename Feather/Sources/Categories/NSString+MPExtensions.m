@@ -99,6 +99,23 @@
     return result;
 }
 
+// Extracted from papers-shared NSString_Extensions
+- (NSString *)stringByRemovingCharactersFromSet:(NSCharacterSet *)set
+{
+    if ([self rangeOfCharacterFromSet:set options:NSLiteralSearch].length == 0)
+        return self;
+    
+    NSMutableString *temp = [self mutableCopy];
+    [temp removeCharactersInSet:set];
+    return [temp copy];
+}
+
+// Extracted from papers-shared NSString_Extensions
+- (NSString *)stringByRemovingWhitespace
+{
+    return [self stringByRemovingCharactersFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+}
+
 // inspired by NSString_Extensions
 - (NSString *)stringByTrimmingToLength:(NSUInteger)len truncate:(BOOL)truncate
 {
@@ -112,6 +129,38 @@
                stringByAppendingString:@"..."];
     
     return str;
+}
+
+@end
+
+// Extracted from papers-shared NSString_Extensions
+@implementation NSMutableString (Feather)
+
+- (void)removeCharactersInSet:(NSCharacterSet *)set
+{
+    NSRange	matchRange, searchRange, replaceRange;
+    NSUInteger length = [self length];
+    matchRange = [self rangeOfCharacterFromSet:set options:NSLiteralSearch range:NSMakeRange(0, length)];
+    
+    while(matchRange.length > 0)
+    {
+        replaceRange = matchRange;
+        searchRange.location = NSMaxRange(replaceRange);
+        searchRange.length = length - searchRange.location;
+        
+        for(;;){
+            matchRange = [self rangeOfCharacterFromSet:set options:NSLiteralSearch range:searchRange];
+            if((matchRange.length == 0) || (matchRange.location != searchRange.location))
+                break;
+            replaceRange.length += matchRange.length;
+            searchRange.length -= matchRange.length;
+            searchRange.location += matchRange.length;
+        }
+        
+        [self deleteCharactersInRange:replaceRange];
+        matchRange.location -= replaceRange.length;
+        length -= replaceRange.length;
+    }
 }
 
 @end

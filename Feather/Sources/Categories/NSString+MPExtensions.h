@@ -52,11 +52,16 @@ NS_INLINE  NSMutableString *MPMutableStringForString(NSString *s)
 @property (readonly, copy) NSString *pluralizedString;
 @property (readonly, copy) NSString *camelCasedString;
 
-/**
- * Escapes characters that aren't either alphanumeric Unicode or in the traditional ASCII printable character range 32..127.
- */
-- (NSString *) stringByEscapingNonPrintableAndInvisibleCharacters;
+/** Escapes characters that aren't either alphanumeric Unicode or in the traditional ASCII printable character range 32..127. */
+@property (copy,readonly) NSString *stringByEscapingNonPrintableAndInvisibleCharacters;
+
+/** Removes instances of characters in the whitespace character set from the string. */
+@property (copy,readonly) NSString *stringByRemovingWhitespace;
 
 - (NSString *)stringByTrimmingToLength:(NSUInteger)len truncate:(BOOL)truncate;
 
+@end
+
+@interface NSMutableString (Feather)
+- (void)removeCharactersInSet:(NSCharacterSet *)set;
 @end
