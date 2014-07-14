@@ -463,7 +463,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         conflictingRevs = [self.document getConflictingRevisions:&err];
     });
     
-    if (!conflictingRevs)
+    if (!conflictingRevs && err)
     {
         [[self.controller.packageController notificationCenter] postErrorNotification:err];
     }
