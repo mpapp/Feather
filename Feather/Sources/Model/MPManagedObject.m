@@ -1395,6 +1395,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)setObjectType:(NSString *)objectType
 {
+    assert(objectType);
     [self setValue:objectType ofProperty:@"objectType"];
 }
 
@@ -1410,6 +1411,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)setValue:(id)value ofProperty:(NSString *)property
 {
+    #ifdef DEBUG
+    if ([property isEqualToString:@"objectType"])
+        assert(value);
+    #endif
+    
     // should not be setting objectType to nil.
     if ([property isEqualTo:@"objectType"])
     {
