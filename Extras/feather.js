@@ -5,6 +5,7 @@ var path = require('path');
 var async = require('async');
 var EventEmitter = require('events').EventEmitter;
 var fs = require('fs');
+var assert = require('assert');
 
 program
   .version('0.0.1')
@@ -13,6 +14,7 @@ program
   .option('-k, --keys [keys]', 'Return only specified keys.')
   .option('-o, --type [type]', 'Return objects with the specified objectType field.')
   .option('-d, --deleted', "Return deleted values.")
+  .option('-v, --validate', "Validate objects")
   .parse(process.argv);
 
 if (program.args.length == 0)
@@ -43,7 +45,9 @@ cbl.on('summary', function(dbName) {
 			if (!jsonRows) return;
 
 			jsonRows.forEach(function(row) {
-				if (!program.deleted && row.deleted == '1') { return; }
+				if (!program.deleted && row.deleted == '1') {
+                    return;
+                }
 
 				if (row.json && row.json.length > 1) {
 					var json = JSON.parse(row.json.toString());
@@ -66,11 +70,23 @@ cbl.on('summary', function(dbName) {
 					console.log();
 				}
 				else {
-					if (program.type && !row.docid.match(new RegExp("^"+program.type))) { return; };
+					if (program.type && !row.docid.match(new RegExp("^"+program.type))) {
+                        return;
+                    }
 					console.log(row.docid + " : " + row.revid + " (current: " + row.current + ", deleted:" + row.deleted + ")");
-					console.log("<<< null >>>");
-					console.log();
+					console.log(row.json.toString());
+                	console.log();
 				}
+
+
+                if (program.validate) {
+                    assert(row.json.length > 1, "Object JSON string should not be empty");
+                    var json = JSON.parse(row.json.toString());
+
+                    assert(json.objectType, "Object is missing the required 'objectType' field: " + json);
+                    assert(row.docid.indexOf(':') > -1, "Object ID does not match expectation: " + json._id);
+                }
+
 	        });
 		});
 	});
