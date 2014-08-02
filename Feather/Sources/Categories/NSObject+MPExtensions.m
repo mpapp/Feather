@@ -37,7 +37,7 @@
         do
         {
             superClass = class_getSuperclass(superClass);
-        } while(superClass && superClass != parentClass);
+        } while (superClass && superClass != parentClass);
         
         if (superClass == nil)
         {
