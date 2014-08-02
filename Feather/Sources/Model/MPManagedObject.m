@@ -989,7 +989,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     
     if (!value)
     {
-        id rawValue = [self.document propertyForKey:property];
+        __block id rawValue = nil;
+        mp_dispatch_sync(self.database.manager.dispatchQueue, [self.controller.packageController serverQueueToken], ^{
+            rawValue = [self.document propertyForKey:property];
+        });
         
         if ([rawValue isKindOfClass:[NSString class]]
             || [rawValue isKindOfClass:[NSDictionary class]])
