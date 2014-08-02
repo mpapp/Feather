@@ -72,6 +72,17 @@
     return matchingObj;
 }
 
+- (NSDictionary *)dictionaryWithObjectsMatching:(BOOL(^)(id evaluatedKey, id evaluatedObject))patternBlock {
+    
+    NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:self.count];
+    [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        if (patternBlock(key, obj))
+            dict[key] = obj;
+    }];
+    
+    return [dict copy];
+}
+
 @end
 
 
