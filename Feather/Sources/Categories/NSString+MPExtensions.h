@@ -56,7 +56,7 @@ NS_INLINE  NSMutableString *MPMutableStringForString(NSString *s)
 @property (copy,readonly) NSString *stringByEscapingNonPrintableAndInvisibleCharacters;
 
 /** Removes instances of characters in the whitespace character set from the string. */
-@property (copy,readonly) NSString *stringByRemovingWhitespace;
+@property (copy,readonly) NSString *stringByTrimmingLeadingWhitespace;
 
 - (NSString *)stringByTrimmingToLength:(NSUInteger)len truncate:(BOOL)truncate;
 

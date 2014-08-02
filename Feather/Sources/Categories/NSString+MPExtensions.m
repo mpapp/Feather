@@ -99,6 +99,18 @@
     return result;
 }
 
+// http://stackoverflow.com/questions/3200521/cocoa-trim-all-leading-whitespace-from-nsstring
+- (NSString*)stringByTrimmingLeadingWhitespace
+{
+    NSInteger i = 0;
+    
+    while ((i < [self length])
+           && [[NSCharacterSet whitespaceCharacterSet] characterIsMember:[self characterAtIndex:i]]) {
+        i++;
+    }
+    return [self substringFromIndex:i];
+}
+
 // Extracted from papers-shared NSString_Extensions
 - (NSString *)stringByRemovingCharactersFromSet:(NSCharacterSet *)set
 {

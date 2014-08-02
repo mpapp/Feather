@@ -216,6 +216,7 @@
     //if ([val isEqualToValue:value]) return YES;
     if ([val isEqual:value]) return YES;
     
+    assert(property);
     assert(self.embeddingObject);
     assert(self.embeddingKey);
     
@@ -226,8 +227,13 @@
     MPManagedObject *o = ((MPManagedObject *)self.embeddingObject);
     
     assert(_properties);
-    _properties[property] = value;
-    _needsSave = true;
+    
+    if (value) {
+        _properties[property] = value;
+        _needsSave = true;
+    } else {
+        [_properties removeObjectForKey:property];
+    }
     
     [o cacheValue:value ofProperty:property changed:YES];
     [o markNeedsSave];
