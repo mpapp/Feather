@@ -593,6 +593,14 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     return _cachedLocalMetadata;
 }
 
+#pragma mark - Scriptability
+
+- (NSScriptObjectSpecifier *)objectSpecifier {
+    NSParameterAssert(self.packageController);
+    
+    return [[NSNameSpecifier alloc] initWithContainerSpecifier:[self.packageController objectSpecifier] key:@"databasesByName"];
+}
+
 @end
 
 

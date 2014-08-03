@@ -272,6 +272,20 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return [self _controllerForManagedObjectClass:class] != nil;
 }
 
++ (NSString *)controllerPropertyNameForManagedObjectClass:(Class)cls {
+    assert([cls isSubclassOfClass:[MPManagedObject class]]);
+    
+    NSString *className = NSStringFromClass(cls);
+    return [NSString stringWithFormat:@"%@Controller",
+            [[[className stringByReplacingOccurrencesOfRegex:
+               @"^MP" withString:@""] pluralizedString] camelCasedString]];
+}
+
++ (NSString *)controllerPropertyNameForManagedObjectControllerClass:(Class)cls {
+    assert([cls isSubclassOfClass:MPManagedObjectsController.class]);
+    return [[NSStringFromClass(cls) stringByReplacingOccurrencesOfRegex:@"^MP" withString:@""] camelCasedString];
+}
+
 - (MPManagedObjectsController *)controllerForManagedObjectClass:(Class)class
 {
     MPManagedObjectsController *c = [self _controllerForManagedObjectClass:class];
@@ -311,9 +325,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         
         // MPPublication => MPPublicationsController
         // MPCategory => MPCategoriesController
-        NSString *mocProperty = [NSString stringWithFormat:@"%@Controller",
-                                 [[[className stringByReplacingOccurrencesOfRegex:
-                                    @"^MP" withString:@""] pluralizedString] camelCasedString]];
+        NSString *mocProperty = [MPDatabasePackageController controllerPropertyNameForManagedObjectClass:class];
         
         if ([self respondsToSelector:NSSelectorFromString(mocProperty)])
         {
@@ -490,9 +502,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     NSMutableSet *set = [NSMutableSet setWithCapacity:_managedObjectsControllers.count];
     
     for (MPManagedObjectsController *moc in _managedObjectsControllers)
-    {
         [set addObject:moc.db];
-    }
     
     return [set copy];
 }
@@ -500,6 +510,14 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (NSSet *)databaseNames
 {
     return [self.databases valueForKey:@"name"];
+}
+
+- (NSDictionary *)databasesByName
+{
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:self.databases.count];
+    for (MPDatabase *db in self.databases)
+        dict[db.name] = db;
+    return [dict copy];
 }
 
 + (NSString *)primaryDatabaseName
@@ -1035,6 +1053,22 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
 }
 
 + (NSArray *)orderedRootSectionClassNames { return nil; }
+
+#pragma mark - 
+
+- (NSScriptObjectSpecifier *)objectSpecifier {
+    NSParameterAssert(self.delegate);
+    
+    NSScriptObjectSpecifier *parentSpec = [(id)self.delegate objectSpecifier];
+    return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:[parentSpec keyClassDescription]
+                                                       containerSpecifier:parentSpec key:@"packageController" uniqueID:self.identifier];
+}
+
+- (id)valueInManagedObjectsControllersWithName:(NSString *)name {
+    id v = [self valueForKey:name];
+    NSParameterAssert(v == nil || [v isKindOfClass:MPManagedObjectsController.class]);
+    return v;
+}
 
 @end
 

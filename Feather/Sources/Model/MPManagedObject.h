@@ -89,6 +89,9 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 /** Array of MPContributor objects who have edited this document. Kept in the order of last editor: if you're A and the list of editors before your edit was [A,B,C], the array is reodered to [B,C,A]. */
 @property (readonly, strong) NSArray *editors;
 
+/** The complete set of scriptable properties for the scriptable object. */
+@property (readwrite, copy) NSDictionary *scriptingProperties;
+
 #pragma mark - Sharing & Moderation
 
 /** The object has been marked shared by the user. Cannot guaranteed to be undone. */

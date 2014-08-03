@@ -232,7 +232,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID
 {
-    assert(documentID);
+    NSParameterAssert(documentID);
+    NSParameterAssert([documentID isKindOfClass:[NSString class]]);
+    NSAssert(documentID.length > NSStringFromClass(self).length + 2, @"documentID should be of at least the length of its class name + 2: %@", documentID);
     NSString *className = [documentID componentsSeparatedByString:@":"][0];
     Class moClass = NSClassFromString(className);
     assert(moClass);
@@ -1449,6 +1451,30 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     }
     
     [super setValue:value ofProperty:property];
+}
+
+#pragma mark - Scripting supportx
+
+- (NSScriptObjectSpecifier *)objectSpecifier
+{
+    NSScriptObjectSpecifier *containerRef = self.controller.objectSpecifier;
+    return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:containerRef.keyClassDescription containerSpecifier:containerRef key:@"managedObjects" uniqueID:self.documentID];
+}
+
+- (NSDictionary *)scriptingProperties
+{
+    NSArray *keys = [self.propertiesToSave allKeys];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:keys.count];
+    
+    for (id k in keys)
+        dict[k] = [self getValueOfProperty:k];
+    
+    return dict.copy;
+}
+
+- (void)setScriptingProperties:(NSDictionary *)scriptingProperties {
+    for (id k in scriptingProperties)
+        [self setValue:scriptingProperties[k] ofProperty:k];
 }
 
 @end

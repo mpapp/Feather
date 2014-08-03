@@ -73,9 +73,17 @@
     if (self = [super init])
     {
         assert([propertiesDict isKindOfClass:[NSDictionary class]]);
-        assert(propertiesDict[@"_id"]);
-        assert(propertiesDict[@"objectType"]);
-        assert([propertiesDict[@"objectType"] isEqualToString:NSStringFromClass(self.class)]);
+        
+        if (propertiesDict[@"_id"]) {
+            assert([propertiesDict[@"_id"] hasPrefix:NSStringFromClass(self.class)]);
+            assert(propertiesDict[@"objectType"]); // if one of _id or objectType is present, both should be.
+        }
+        
+        if (propertiesDict[@"objectType"]) {
+            assert([propertiesDict[@"objectType"] isEqualToString:NSStringFromClass(self.class)]);
+            assert(propertiesDict[@"_id"]); // if one of _id or objectType is present, both should be.
+        }
+        
         assert(key);
         assert(embeddingObject);
         
@@ -83,6 +91,9 @@
         _embeddingKey = key;
         
         _properties = [propertiesDict mutableCopy];
+        
+        if (!propertiesDict[@"_id"])
+            self.identifier = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(self.class), NSUUID.UUID.UUIDString];
 
         _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
 
