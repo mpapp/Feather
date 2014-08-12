@@ -30,6 +30,8 @@ typedef NS_ENUM(NSUInteger, MPFileTargetErrorCode)
                                                   withExtension:(NSString *)pathExtension
                                                           error:(NSError *__autoreleasing *)outError;
 
+- (NSURL *)sharedApplicationGroupCachesDirectoryURL;
+
 - (NSURL *)URLForApplicationSupportDirectoryNamed:(NSString *)subpath;
 
 

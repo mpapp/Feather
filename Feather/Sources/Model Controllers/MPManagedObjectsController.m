@@ -988,6 +988,17 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     [_objectCache removeObjectForKey:mo.document.documentID];
 }
 
+- (NSScriptObjectSpecifier *)objectSpecifier {
+    NSScriptObjectSpecifier *parentSpec = [self.packageController objectSpecifier];
+    return [[NSNameSpecifier alloc] initWithContainerClassDescription:[parentSpec keyClassDescription]
+                                                   containerSpecifier:[parentSpec objectSpecifier] key:@"managedObjectsControllers"
+                                                                 name:[MPDatabasePackageController controllerPropertyNameForManagedObjectControllerClass:self.class]];
+}
+
+- (id)valueInManagedObjectsWithUniqueID:(NSString *)uniqueID {
+    return [self objectWithIdentifier:uniqueID];
+}
+
 @end
 
 

@@ -47,6 +47,15 @@ NSString * const NSFileManagerFeatherExtensionsErrorDomain = @"NSFileManagerFeat
     return (__bridge_transfer NSString *)mimeType;
 }
 
+- (NSURL *)sharedApplicationGroupCachesDirectoryURL
+{
+    NSString *groupIdentifier = [[NSBundle appBundle] objectForInfoDictionaryKey:@"MPSharedApplicationSecurityGroupIdentifier"];
+    assert(groupIdentifier); // Shared security group identifier must be set in Info.plist
+    
+    NSURL *groupContainerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupIdentifier];
+    NSURL *cachesDirectoryURL = [groupContainerURL URLByAppendingPathComponent:@"Library/Caches"];
+    return cachesDirectoryURL;
+}
 
 - (NSURL *)temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:(NSString *)subdirectoryName error:(NSError *__autoreleasing *)outError
 {

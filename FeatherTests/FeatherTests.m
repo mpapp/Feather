@@ -57,10 +57,36 @@
         XCTAssertTrue(![MPShoeboxPackageController sharedShoeboxControllerInitialized],
                      @"There should be no shared package controller before its path has been created.");
         
-        XCTAssertTrue(
-                     [fm createDirectoryAtPath:sharedPackagePath withIntermediateDirectories:NO attributes:nil error:&err],
+        XCTAssertTrue([fm createDirectoryAtPath:sharedPackagePath withIntermediateDirectories:NO attributes:nil error:&err],
                      @"Failed to create shared package directory root: %@", err);
         
+        // you can optionally include a fixture with name 'shared' along with a folder 'shared attachments' to load the shared database used by the test. 
+        NSURL *sharedDBFixture = [[NSBundle appBundle] URLForResource:@"shared" withExtension:@"cblite"];
+        NSURL *sharedTargetURL = [[NSURL fileURLWithPath:sharedPackagePath] URLByAppendingPathComponent:@"shared.cblite"];
+        
+        if (sharedDBFixture) {
+            NSParameterAssert(sharedDBFixture);
+            
+            NSURL *sharedAttachmentsFixture = [[NSBundle appBundle] URLForResource:@"shared attachments" withExtension:@""];
+            NSURL *sharedAttachmentsDirectoryURL = [[NSURL fileURLWithPath:sharedPackagePath] URLByAppendingPathComponent:@"shared attachments"];
+            
+            if (sharedAttachmentsFixture) {
+                NSString *sharedAttachmentsPath = [sharedPackagePath stringByAppendingPathComponent:@"shared attachments"];
+                if ([fm fileExistsAtPath:sharedAttachmentsPath])
+                    [fm removeItemAtPath:sharedAttachmentsPath error:&err];
+
+                BOOL fixtureCopySuccess = [[NSFileManager defaultManager] copyItemAtURL:sharedDBFixture
+                                                                                  toURL:sharedTargetURL
+                                                                                  error:&err];
+                NSParameterAssert(fixtureCopySuccess);
+                
+                BOOL fixtureAttachmentCopySuccess = [[NSFileManager defaultManager] copyItemAtURL:sharedAttachmentsFixture
+                                                                                            toURL:sharedAttachmentsDirectoryURL
+                                                                                            error:&err];
+                NSParameterAssert(fixtureAttachmentCopySuccess);
+            }
+        }
+
         MPShoeboxPackageController *sharedPackage = [MPShoeboxPackageController sharedShoeboxController];
         XCTAssertTrue(sharedPackage != nil, @"A shared package controller initialized");
         

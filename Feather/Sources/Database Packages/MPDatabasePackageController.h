@@ -112,8 +112,14 @@ typedef enum MPDatabasePackageControllerErrorCode
   */
 + (Class)controllerClassForManagedObjectClass:(Class)class;
 
+/** Get the property name for a MPManagedObject subclass. */
++ (NSString *)controllerPropertyNameForManagedObjectClass:(Class)cls;
+
 /** @return YES if a controller exists in this package controller for a managed object class. */
 - (BOOL)controllerExistsForManagedObjectClass:(Class)class;
+
+/** Gets the property name for the controller for objects of the MPManagedObject subclass given as an argument. */
++ (NSString *)controllerPropertyNameForManagedObjectControllerClass:(Class)class;
 
 /** Return the controller for a CBLDocument object, based on its database and the document's objectType property.
  * @param document A CBLDocument containing a serialised MPManagedObject (including a key 'objectType' whose value matches the name of one of the MPManagedObject subclasses). */
@@ -179,6 +185,9 @@ typedef enum MPDatabasePackageControllerErrorCode
 
 /** A utility method which returns the names of the databases for this package. As database names are unique per database package, this will match. */
 @property (strong, readonly) NSSet *databaseNames;
+
+/** A utility property to ease KVC access to databases by their name (e.g. for scripting). */
+@property (copy, readonly) NSDictionary *databasesByName;
 
 /** */
 @property (strong, readonly) MPContributorsController *contributorsController;

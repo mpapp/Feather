@@ -232,7 +232,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID
 {
-    assert(documentID);
+    NSParameterAssert(documentID);
+    NSParameterAssert([documentID isKindOfClass:[NSString class]]);
+    NSAssert(documentID.length > NSStringFromClass(self).length + 2, @"documentID should be of at least the length of its class name + 2: %@", documentID);
     NSString *className = [documentID componentsSeparatedByString:@":"][0];
     Class moClass = NSClassFromString(className);
     assert(moClass);
@@ -987,11 +989,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 {
     id value = [self getUnsavedValueOfProperty:property];
     
-    assert(!value || [value isKindOfClass:[MPEmbeddedObject class]]);
-    
     if (!value)
     {
-        id rawValue = [self.document propertyForKey:property];
+        __block id rawValue = nil;
+        mp_dispatch_sync(self.database.manager.dispatchQueue, [self.controller.packageController serverQueueToken], ^{
+            rawValue = [self.document propertyForKey:property];
+        });
         
         if ([rawValue isKindOfClass:[NSString class]]
             || [rawValue isKindOfClass:[NSDictionary class]])
@@ -1395,6 +1398,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)setObjectType:(NSString *)objectType
 {
+    assert(objectType);
     [self setValue:objectType ofProperty:@"objectType"];
 }
 
@@ -1410,6 +1414,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)setValue:(id)value ofProperty:(NSString *)property
 {
+    #ifdef DEBUG
+    if ([property isEqualToString:@"objectType"])
+        assert(value);
+    #endif
+    
     // should not be setting objectType to nil.
     if ([property isEqualTo:@"objectType"])
     {
@@ -1442,6 +1451,30 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     }
     
     [super setValue:value ofProperty:property];
+}
+
+#pragma mark - Scripting supportx
+
+- (NSScriptObjectSpecifier *)objectSpecifier
+{
+    NSScriptObjectSpecifier *containerRef = self.controller.objectSpecifier;
+    return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:containerRef.keyClassDescription containerSpecifier:containerRef key:@"managedObjects" uniqueID:self.documentID];
+}
+
+- (NSDictionary *)scriptingProperties
+{
+    NSArray *keys = [self.propertiesToSave allKeys];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:keys.count];
+    
+    for (id k in keys)
+        dict[k] = [self getValueOfProperty:k];
+    
+    return dict.copy;
+}
+
+- (void)setScriptingProperties:(NSDictionary *)scriptingProperties {
+    for (id k in scriptingProperties)
+        [self setValue:scriptingProperties[k] ofProperty:k];
 }
 
 @end

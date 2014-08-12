@@ -73,9 +73,17 @@
     if (self = [super init])
     {
         assert([propertiesDict isKindOfClass:[NSDictionary class]]);
-        assert(propertiesDict[@"_id"]);
-        assert(propertiesDict[@"objectType"]);
-        assert([propertiesDict[@"objectType"] isEqualToString:NSStringFromClass(self.class)]);
+        
+        if (propertiesDict[@"_id"]) {
+            assert([propertiesDict[@"_id"] hasPrefix:NSStringFromClass(self.class)]);
+            assert(propertiesDict[@"objectType"]); // if one of _id or objectType is present, both should be.
+        }
+        
+        if (propertiesDict[@"objectType"]) {
+            assert([propertiesDict[@"objectType"] isEqualToString:NSStringFromClass(self.class)]);
+            assert(propertiesDict[@"_id"]); // if one of _id or objectType is present, both should be.
+        }
+        
         assert(key);
         assert(embeddingObject);
         
@@ -83,6 +91,9 @@
         _embeddingKey = key;
         
         _properties = [propertiesDict mutableCopy];
+        
+        if (!propertiesDict[@"_id"])
+            self.identifier = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(self.class), NSUUID.UUID.UUIDString];
 
         _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
 
@@ -216,6 +227,7 @@
     //if ([val isEqualToValue:value]) return YES;
     if ([val isEqual:value]) return YES;
     
+    assert(property);
     assert(self.embeddingObject);
     assert(self.embeddingKey);
     
@@ -226,8 +238,13 @@
     MPManagedObject *o = ((MPManagedObject *)self.embeddingObject);
     
     assert(_properties);
-    _properties[property] = value;
-    _needsSave = true;
+    
+    if (value) {
+        _properties[property] = value;
+        _needsSave = true;
+    } else {
+        [_properties removeObjectForKey:property];
+    }
     
     [o cacheValue:value ofProperty:property changed:YES];
     [o markNeedsSave];

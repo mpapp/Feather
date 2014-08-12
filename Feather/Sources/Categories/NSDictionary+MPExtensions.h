@@ -19,6 +19,8 @@
 
 - (id)anyObjectMatching:(BOOL(^)(id evaluatedKey, id evaluatedObject))patternBlock;
 
+- (NSDictionary *)dictionaryWithObjectsMatching:(BOOL(^)(id evaluatedKey, id evaluatedObject))patternBlock;
+
 @end
 
 
