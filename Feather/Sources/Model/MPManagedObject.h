@@ -59,6 +59,14 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 
 /**
  * An abstract base class for all objects contained in a MPDatabase (n per MPDatabase), except for MPMetadata (1 per MPDatabase).
+ * 
+ * An MPManagedObject has a JSON serialisation format, and as such it can contain persistent properties of basic types,
+ * as well as NSString, NSDate, NSNumber objects, MPManagedObject (encoded as a document ID) as well as NSArray and NSDictionary collections.
+ *
+ * An NSArray or NSDictionary typed property of a MPManagedObject
+ * can contain any of the types that can be contained directly as properties of MPManagedObject,
+ * including MPEmbeddedObject, in the special case where the property name is prefixed with 'embedded' 
+ * (the prefix is there to act as an annotation to denote the type of the contents in the collection).
  */
 @interface MPManagedObject : CBLModel
     <NSPasteboardWriting, NSPasteboardReading, MPCacheable, MPEmbeddingObject>
