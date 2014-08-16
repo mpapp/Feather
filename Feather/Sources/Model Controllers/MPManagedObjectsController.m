@@ -988,6 +988,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     [_objectCache removeObjectForKey:mo.document.documentID];
 }
 
+#pragma mark - Scripting support
+
 - (NSScriptObjectSpecifier *)objectSpecifier {
     NSScriptObjectSpecifier *parentSpec = [self.packageController objectSpecifier];
     return [[NSNameSpecifier alloc] initWithContainerClassDescription:[parentSpec keyClassDescription]
@@ -995,8 +997,19 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                                                                  name:[MPDatabasePackageController controllerPropertyNameForManagedObjectControllerClass:self.class]];
 }
 
+- (NSDictionary *)scriptingProperties {
+    return @{ @"allObjects":self.allObjects,
+              @"packageController":self.packageController
+            };
+}
+
 - (id)valueInManagedObjectsWithUniqueID:(NSString *)uniqueID {
     return [self objectWithIdentifier:uniqueID];
+}
+
+- (BOOL)isLocationRequiredToCreateForKey:(NSString *)toManyRelationshipKey {
+    assert([toManyRelationshipKey isEqualToString:@"section"]);
+    return NO;
 }
 
 @end
