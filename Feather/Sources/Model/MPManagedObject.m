@@ -248,8 +248,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return [[className componentsMatchedByRegex:@"MP(.*)" capture:1] firstObject];
 }
 
-- (NSString *)idForNewDocumentInDatabase:(CBLDatabase *)db
-{
+- (NSString *)idForNewDocumentInDatabase:(CBLDatabase *)db {
 #ifdef DEBUG
     assert([self class] != [MPManagedObject class]); // should not call directly on the subclass.
     if (_newDocumentID)
@@ -261,8 +260,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return _newDocumentID ? _newDocumentID : [[self class] idForNewDocumentInDatabase:db];
 }
 
-- (void)setControllerWithDocument:(CBLDocument *)document
-{
+- (void)setControllerWithDocument:(CBLDocument *)document {
     NSString *classStr = [document propertyForKey:@"objectType"];
     assert(classStr);
     Class class = NSClassFromString(classStr);
@@ -275,8 +273,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     self.controller = moc;
 }
 
-- (void)updateTimestamps
-{
+- (void)updateTimestamps {
     BOOL createdAtExists = [self createdAt] != nil;
     
     NSDate *now = [NSDate date];
@@ -292,8 +289,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     }
 }
 
-+ (BOOL)saveModels:(NSArray *)models error:(NSError *__autoreleasing *)outError
-{
++ (BOOL)saveModels:(NSArray *)models error:(NSError *__autoreleasing *)outError {
     MPManagedObjectsController *moc = [[models firstObject] controller];
     for (MPManagedObject *mo in models)
     {
@@ -314,8 +310,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return success;
 }
 
-- (BOOL)save
-{
+- (BOOL)save {
     NSError *err = nil;
     BOOL success;
     if (!(success = [self save:&err]))
@@ -328,8 +323,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return success;
 }
 
-+ (BOOL)saveModels:(NSArray *)models
-{
++ (BOOL)saveModels:(NSArray *)models {
     if (!models || models.count == 0)
         return YES;
     
@@ -350,8 +344,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return success;
 }
 
-- (BOOL)save:(NSError *__autoreleasing *)outError
-{
+- (BOOL)save:(NSError *__autoreleasing *)outError {
     assert(_controller);
     assert(self.document);
     [_controller willSaveObject:self];
@@ -368,10 +361,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         success = [super save:outError];
     });
     
-    if (success)
-    {
-        for (NSString *propertyKey in self.class.embeddedProperties)
-        {
+    if (success) {
+        for (NSString *propertyKey in self.class.embeddedProperties) {
             MPEmbeddedObject *embeddedObj = [self valueForKey:propertyKey];
             assert(!embeddedObj
                    || [embeddedObj isKindOfClass:MPEmbeddedObject.class]);
@@ -385,8 +376,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return success;
 }
 
-- (void)saveCompleted
-{
+- (void)saveCompleted {
     assert(_controller);
     
     if (self.isNewObject)
@@ -400,8 +390,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     }
 }
 
-- (BOOL)deleteDocument
-{
+- (BOOL)deleteDocument {
     __block BOOL success = YES;
     mp_dispatch_sync(self.database.manager.dispatchQueue, [self.controller.packageController serverQueueToken], ^{
         NSError *outError = nil;
@@ -414,8 +403,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return success;
 }
 
-- (BOOL)deleteDocument:(NSError *__autoreleasing *)outError
-{
+- (BOOL)deleteDocument:(NSError *__autoreleasing *)outError {
     assert(_controller);
     
     NSString *deletedDocumentID = self.document.documentID;
@@ -440,8 +428,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 - (void)CBLDocument:(CBLDocument *)doc
-          didChange:(CBLDatabaseChange *)change
-{
+          didChange:(CBLDatabaseChange *)change {
     [super CBLDocument:doc didChange:change];
     
     // TODO: confirm that responses to external changes are not broken by ignoring local changes here.
@@ -456,8 +443,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         : MPManagedObjectChangeSourceInternal];
 }
 
-- (void)didLoadFromDocument
-{
+- (void)didLoadFromDocument {
     //NSLog(@"Did load");
     __block NSError *err = nil;
     __block NSArray *conflictingRevs = nil;
@@ -484,14 +470,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     [_controller didLoadObjectFromDocument:self];
 }
 
-- (MPManagedObjectsController *)controller
-{
+- (MPManagedObjectsController *)controller {
     return _controller;
 }
 
 
-- (void)setDocument:(CBLDocument *)document
-{
+- (void)setDocument:(CBLDocument *)document {
     if (!_controller)
         [self setControllerWithDocument:document];
     
@@ -508,8 +492,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (void)createAttachmentWithName:(NSString *)name
                       withString:(NSString *)string
                             type:(NSString *)type
-                           error:(NSError **)err
-{
+                           error:(NSError **)err {
     if (!type)
     {
         if (err)
@@ -527,8 +510,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (void)createAttachmentWithName:(NSString*)name
                withContentsOfURL:(NSURL *)url
                             type:(NSString *)type
-                           error:(NSError **)err
-{
+                           error:(NSError **)err {
     if (!type && [url isFileURL])
     {
         if (![[NSFileManager defaultManager] mimeTypeForFileAtURL:url error:err])
