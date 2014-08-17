@@ -597,8 +597,12 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 - (NSScriptObjectSpecifier *)objectSpecifier {
     NSParameterAssert(self.packageController);
-    
     return [[NSNameSpecifier alloc] initWithContainerSpecifier:[self.packageController objectSpecifier] key:@"databasesByName"];
+}
+
+- (id)valueInMetadataWithUniqueID:(NSString *)uid {
+    assert([self.metadata.document.documentID isEqualToString:uid]);
+    return self.metadata;
 }
 
 @end
@@ -736,6 +740,38 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         value = [super getValueOfProperty:property];
     });
     return value;
+}
+
+#pragma mark - Scripting support
+
+- (NSDictionary *)scriptingProperties {
+    NSMutableDictionary *dict = [[self propertiesToSave] mutableCopy];
+    [dict removeObjectForKey:@"_id"];
+    [dict removeObjectForKey:@"_rev"];
+    return [dict copy];
+}
+
+- (void)setScriptingProperties:(NSDictionary *)scriptingProperties {
+    for (id k in scriptingProperties) {
+        [self setValue:scriptingProperties[k] ofProperty:k];
+    }
+}
+
+- (NSScriptObjectSpecifier *)objectSpecifier
+{
+    assert(self.document);
+    
+    id pkgc = [self.database packageController];
+    NSString *primaryDBName = [pkgc primaryDatabaseName];
+    assert(primaryDBName);
+    
+    MPDatabase *db = [pkgc databaseWithName:primaryDBName];
+    assert(db);
+    
+    NSScriptObjectSpecifier *containerRef = [db objectSpecifier];
+    return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:containerRef.keyClassDescription
+                                                       containerSpecifier:containerRef key:@"metadata"
+                                                                 uniqueID:self.document.documentID];
 }
 
 @end
