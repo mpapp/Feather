@@ -1007,9 +1007,22 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return [self objectWithIdentifier:uniqueID];
 }
 
-- (BOOL)isLocationRequiredToCreateForKey:(NSString *)toManyRelationshipKey {
-    assert([toManyRelationshipKey isEqualToString:@"section"]);
-    return NO;
+/*
+- (void)insertValue:(id)value atIndex:(NSUInteger)index inPropertyWithKey:(NSString *)key {
+    
+}
+
+- (void)insertValue:(id)value inPropertyWithKey:(NSString *)key {
+    
+}*/
+
+- (id)newScriptingObjectOfClass:(Class)objectClass forValueForKey:(NSString *)key withContentsValue:(id)contentsValue properties:(NSDictionary *)properties
+{
+    assert([objectClass isSubclassOfClass:self.managedObjectClass]);
+    MPManagedObject *obj = [[objectClass alloc] initWithNewDocumentForController:self properties:properties documentID:nil];
+    [obj save];
+    
+    return obj;
 }
 
 @end

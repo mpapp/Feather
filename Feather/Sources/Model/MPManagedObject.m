@@ -1477,11 +1477,6 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         [self setValue:scriptingProperties[k] ofProperty:k];
 }
 
-- (BOOL)isLocationRequiredToCreateForKey:(NSString *)toManyRelationshipKey {
-    assert([toManyRelationshipKey isEqualToString:@"section"]);
-    return NO;
-}
-
 @end
 
 
