@@ -1459,6 +1459,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         [self setValue:scriptingProperties[k] ofProperty:k];
 }
 
+- (id)saveWithCommand:(NSScriptCommand *)command {
+    return  @([self save]);
+}
+
 @end
 
 
