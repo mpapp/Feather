@@ -1448,8 +1448,22 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     NSArray *keys = [self.propertiesToSave allKeys];
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:keys.count];
     
-    for (id k in keys)
-        dict[k] = [self getValueOfProperty:k];
+    for (__strong id k in keys) {
+        if ([k hasPrefix:@"_"])
+            continue;
+        
+        if ([k hasSuffix:@"IDs"])
+            k = [k stringByReplacingOccurrencesOfRegex:@"IDs$" withString:@"s"];
+        
+        id v = [self valueForKey:k];
+        
+        if (![v objectSpecifier])
+            continue;
+        
+        dict[k] = v;
+    }
+    
+    dict[@"documentID"] = self.documentID;
     
     return dict.copy;
 }

@@ -238,5 +238,7 @@ typedef enum MPDatabasePackageControllerErrorCode
 - (void)startListenerWithCompletionHandler:(void(^)(NSError *err))completionHandler;
 - (void)stopListener;
 
+@property (readonly, copy) NSString *objectSpecifierKey;
+
 @end
 

@@ -769,6 +769,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     assert(db);
     
     NSScriptObjectSpecifier *containerRef = [db objectSpecifier];
+    assert(containerRef.keyClassDescription);
     return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:containerRef.keyClassDescription
                                                        containerSpecifier:containerRef key:@"metadata"
                                                                  uniqueID:self.document.documentID];
