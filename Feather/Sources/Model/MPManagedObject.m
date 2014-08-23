@@ -235,7 +235,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 {
     NSParameterAssert(documentID);
     NSParameterAssert([documentID isKindOfClass:[NSString class]]);
-    NSAssert(documentID.length > NSStringFromClass(self).length + 2, @"documentID should be of at least the length of its class name + 2: %@", documentID);
+    NSAssert(documentID.length >= 10, @"documentID should be of at least 10 characters long: %@", documentID);
     NSString *className = [documentID componentsSeparatedByString:@":"][0];
     Class moClass = NSClassFromString(className);
     assert(moClass);
@@ -404,7 +404,24 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return success;
 }
 
-- (BOOL)deleteDocument:(NSError *__autoreleasing *)outError {
+- (BOOL)deleteDocument:(NSError **)error {
+    __block BOOL success = NO;
+    
+    
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [self.database.packageController serverQueueToken], ^{
+        CBLSavedRevision* rev = self.document.currentRevision;
+        if (!rev) {
+            success = YES;
+            return;
+        }
+        
+        success = [self _deleteDocument:error];
+    });
+    
+    return success;
+}
+
+- (BOOL)_deleteDocument:(NSError *__autoreleasing *)outError {
     assert(_controller);
     
     NSString *deletedDocumentID = self.document.documentID;
