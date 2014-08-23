@@ -14,12 +14,12 @@
 - (id)objectSpecifier {
     assert(self.modelObject);
     NSScriptObjectSpecifier *containerRef = [(id)self.modelObject objectSpecifier];
-    assert(containerRef.keyClassDescription);
+    assert(containerRef);
     
-    return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:containerRef.keyClassDescription
+    NSScriptClassDescription *classDesc = [NSScriptClassDescription classDescriptionForClass:self.modelObject.class];
+    return [[NSPropertySpecifier alloc] initWithContainerClassDescription:classDesc
                                                        containerSpecifier:containerRef
-                                                                      key:@"document"
-                                                                 uniqueID:self.documentID];
+                                                                      key:@"document"];
 }
 
 @end

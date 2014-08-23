@@ -43,6 +43,8 @@ typedef enum MPDatabaseErrorCode
 /** A metadata document stored in the database. Each document has one metadata document (found by its pre-defined identifier). It is intended to store a small number of key--value pairs which do not change regularly. */
 @property (readonly, strong) MPMetadata *metadata;
 
+@property (readonly, copy) NSString *identifier;
+
 /** A local (non-replicated) metadata document stored in the database. */
 @property (readonly, strong) MPMetadata *localMetadata;
 

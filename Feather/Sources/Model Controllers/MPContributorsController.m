@@ -88,6 +88,7 @@ NSString * const MPContributorRoleTranslator = @"translator";
     if (!_cachedContributors)
     {
         [self refreshCachedContributors];
+        assert(_cachedContributors);
     }
     
     return _cachedContributors;

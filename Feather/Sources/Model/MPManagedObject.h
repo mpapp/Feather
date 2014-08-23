@@ -107,7 +107,6 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 
 - (void)shareWithError:(NSError **)err;
 
-
 /** The object's moderation state. By default has value MPManagedObjectModerationStateUnmoderated. Other values imply that the object is also marked shared. */
 @property (readonly, assign) MPManagedObjectModerationState moderationState;
 
@@ -244,6 +243,14 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 
 /** A method which is called after successful initialisation steps but before the object is returned. Can be overloaded by subclasses (oveloaded methods should call the superclass -didInitialize). This method should not be called directly. */
 - (void)didInitialize; // overload but don't call manually
+
+#pragma mark - Scripting
+
+/** Object specifier key for scripting support (the property key in the container) for the *class*. Default implementation: MPManagedObject -> 'allManagedObjects'. Need not be, but can be, overloaded. The container for objects of this type must implement a property with the corresponding name (for instance allManagedObjects).  */
++ (NSString *)objectSpecifierKey;
+
+/** Object specifier key for scripting support for the *instance*. Default implementation calls +objectSpecifierKey. Need not be, but can be, overloaded. */
+@property (readonly, copy) NSString *objectSpecifierKey;
 
 #pragma mark - 
 

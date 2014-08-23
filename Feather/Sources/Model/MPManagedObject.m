@@ -7,6 +7,7 @@
 //
 
 #import <Feather/MPManagedObject+Protected.h>
+#import <Feather/NSString+MPExtensions.h>
 
 #import "MPDatabase.h"
 #import "MPManagedObject.h"
@@ -1298,6 +1299,70 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return str;
 }
 
+
+
+#pragma mark - Scripting support
+
++ (NSString *)objectSpecifierKey {
+    NSString *specKey = [@"all" stringByAppendingString:
+                         [[NSStringFromClass(self.class) stringByReplacingOccurrencesOfRegex:@"^MP"
+                                                                                  withString:@""] pluralizedString]];
+    return specKey;
+}
+
+- (NSString *)objectSpecifierKey
+{
+    return self.class.objectSpecifierKey;
+}
+
+- (NSScriptObjectSpecifier *)objectSpecifier
+{
+    assert(self.documentID);
+    assert(self.controller);
+    NSScriptObjectSpecifier *containerRef = self.controller.objectSpecifier;
+    assert(containerRef);
+    assert(containerRef.keyClassDescription);
+    
+    return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:containerRef.keyClassDescription
+                                                       containerSpecifier:containerRef
+                                                                      key:self.objectSpecifierKey
+                                                                 uniqueID:self.documentID];
+}
+
+- (NSDictionary *)scriptingProperties
+{
+    NSArray *keys = [self.propertiesToSave allKeys];
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:keys.count];
+    
+    for (__strong id k in keys) {
+        if ([k hasPrefix:@"_"])
+            continue;
+        
+        if ([k hasSuffix:@"IDs"])
+            k = [k stringByReplacingOccurrencesOfRegex:@"IDs$" withString:@"s"];
+        
+        id v = [self valueForKey:k];
+        
+        if (![v objectSpecifier])
+            continue;
+        
+        dict[k] = v;
+    }
+    
+    dict[@"documentID"] = self.documentID;
+    
+    return dict.copy;
+}
+
+- (void)setScriptingProperties:(NSDictionary *)scriptingProperties {
+    for (id k in scriptingProperties)
+        [self setValue:scriptingProperties[k] ofProperty:k];
+}
+
+- (id)saveWithCommand:(NSScriptCommand *)command {
+    return  @([self save]);
+}
+
 @end
 
 @implementation MPManagedObject (Protected)
@@ -1438,53 +1503,6 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     }
     
     [super setValue:value ofProperty:property];
-}
-
-#pragma mark - Scripting supportx
-
-- (NSScriptObjectSpecifier *)objectSpecifier
-{
-    assert(self.controller);
-    
-    NSScriptObjectSpecifier *containerRef = self.controller.objectSpecifier;
-    
-    NSScriptClassDescription *classDesc = [NSScriptClassDescription classDescriptionForClass:self.controller.class];
-    
-    return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:classDesc containerSpecifier:containerRef key:@"objects" uniqueID:self.documentID];
-}
-
-- (NSDictionary *)scriptingProperties
-{
-    NSArray *keys = [self.propertiesToSave allKeys];
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:keys.count];
-    
-    for (__strong id k in keys) {
-        if ([k hasPrefix:@"_"])
-            continue;
-        
-        if ([k hasSuffix:@"IDs"])
-            k = [k stringByReplacingOccurrencesOfRegex:@"IDs$" withString:@"s"];
-        
-        id v = [self valueForKey:k];
-        
-        if (![v objectSpecifier])
-            continue;
-        
-        dict[k] = v;
-    }
-    
-    dict[@"documentID"] = self.documentID;
-    
-    return dict.copy;
-}
-
-- (void)setScriptingProperties:(NSDictionary *)scriptingProperties {
-    for (id k in scriptingProperties)
-        [self setValue:scriptingProperties[k] ofProperty:k];
-}
-
-- (id)saveWithCommand:(NSScriptCommand *)command {
-    return  @([self save]);
 }
 
 @end

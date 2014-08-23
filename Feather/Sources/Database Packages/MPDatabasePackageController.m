@@ -494,7 +494,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 #pragma mark - Databases
 
--(NSSet *)databases
+- (NSSet *)databases
 {
     assert(_managedObjectsControllers);
     assert(_managedObjectsControllers.count);
@@ -505,6 +505,13 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         [set addObject:moc.db];
     
     return [set copy];
+}
+
+- (NSArray *)orderedDatabases
+{
+    return [self.databases.allObjects sortedArrayUsingComparator:^NSComparisonResult(MPDatabase *a, MPDatabase *b) {
+        return [a.name compare:b.name];
+    }];
 }
 
 - (NSSet *)databaseNames
@@ -1054,7 +1061,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
 
 + (NSArray *)orderedRootSectionClassNames { return nil; }
 
-#pragma mark - 
+#pragma mark - Scripting
 
 - (NSSet *)managedObjectsControllers {
     return _managedObjectsControllers.copy;
@@ -1065,20 +1072,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
 }
 
 - (NSScriptObjectSpecifier *)objectSpecifier {
-    NSScriptObjectSpecifier *parentSpec = [(id)self.delegate objectSpecifier];
-    
-    NSScriptClassDescription *delegateClassDesc = [NSScriptClassDescription classDescriptionForClass:[self.delegate class]];
-    
-    return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:delegateClassDesc
-                                                       containerSpecifier:parentSpec
-                                                                      key:self.objectSpecifierKey
-                                                                 uniqueID:self.identifier];
-}
-
-- (id)valueInManagedObjectsControllersWithName:(NSString *)name {
-    id v = [self valueForKey:name];
-    NSParameterAssert(v == nil || [v isKindOfClass:MPManagedObjectsController.class]);
-    return v;
+    @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
 }
 
 @end

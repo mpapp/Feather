@@ -65,8 +65,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return nil;
 }
 
-- (instancetype)initWithPackageController:(MPDatabasePackageController *)packageController database:(MPDatabase *)db error:(NSError **)err
-{
+- (instancetype)initWithPackageController:(MPDatabasePackageController *)packageController
+                                 database:(MPDatabase *)db
+                                    error:(NSError **)err {
     // MPManagedObjectsController is abstract
     assert([self class] != [MPManagedObjectsController class]);
 
@@ -111,10 +112,47 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                 [_self hasRemovedManagedObject:notification.object];
             }];
         }
+        
+        [self implementDefaultScriptObjectAccessor];
     }
-    
 
     return self;
+}
+
+- (void)implementDefaultScriptObjectAccessor {
+    // implement default scripting object property
+    // matches the property key returned by -objectSpecifierKey of self.managedObjectClass
+    NSString *allObjectsSpecifierKey = [self.managedObjectClass objectSpecifierKey];
+    SEL allObjectsForObjectSpecifierKeySel = NSSelectorFromString(allObjectsSpecifierKey);
+
+    if (![self respondsToSelector:allObjectsForObjectSpecifierKeySel]) {
+        id (^allObjectsForObjectSpecifierKey)() = ^id() {
+            return [self allObjects];
+        };
+        
+        NSLog(@"Implementing '%@'", allObjectsSpecifierKey);
+        
+        BOOL success = class_addMethod(self.class,
+                                       allObjectsForObjectSpecifierKeySel,
+                                       imp_implementationWithBlock(allObjectsForObjectSpecifierKey), "v@");
+        
+        // add a property declaration as well.
+        objc_property_attribute_t type = { "T", "@\"NSArray\"" };
+        objc_property_attribute_t ownership = { "C", "" }; // C = copy
+        objc_property_attribute_t attribs[] = {type, ownership};
+        
+        class_addProperty(self.class, [allObjectsSpecifierKey UTF8String], attribs, 2);
+        assert(success);
+        assert([self respondsToSelector:allObjectsForObjectSpecifierKeySel]);
+
+#ifdef DEBUG_TEST_DEFAULT_SCRIPT_OBJECT_ACCESS
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        id o = [self performSelector:allObjectsForObjectSpecifierKeySel withObject:nil];
+#pragma clang diagnostic pop
+        NSLog(@"%@", o);
+#endif
+    }
 }
 
 - (void)didInitialize
@@ -421,8 +459,16 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 - (NSArray *)allObjects
 {
     CBLQuery *q = [self allObjectsQuery];
-    NSArray *objs = [self managedObjectsForQueryEnumerator:[q run]];
+    
+    __block NSArray *objs;
+    objs = [self managedObjectsForQueryEnumerator:[q run]];
+    
     return objs;
+}
+
+- (id)valueWithUniqueID:(id)uniqueID inPropertyWithKey:(NSString *)key {
+    assert([key hasPrefix:@"all"]); // assuming there are unique objects only for one kind of element.
+    return [self objectWithIdentifier:uniqueID];
 }
 
 - (id)objectWithIdentifier:(NSString *)identifier
@@ -1001,14 +1047,13 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     
     NSScriptClassDescription *desc = [NSScriptClassDescription classDescriptionForClass:[self.packageController class]];
     
-    return [[NSNameSpecifier alloc] initWithContainerClassDescription:desc
-                                                   containerSpecifier:[parentSpec objectSpecifier] key:@"managedObjectsControllers"
-                                                                 name:[MPDatabasePackageController controllerPropertyNameForManagedObjectControllerClass:self.class]];
+    return [[NSPropertySpecifier alloc] initWithContainerClassDescription:desc
+                                                       containerSpecifier:parentSpec key:self.objectSpecifierKey];
 }
 
 - (NSDictionary *)scriptingProperties {
     return @{
-             @"packageController":self.packageController
+                @"packageController":self.packageController
             };
 }
 

@@ -183,6 +183,8 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** The MPDatabase objects for this database package. Note that multiple MPManagedObjectsController objects can manage objects in a MPDatabase. */
 @property (strong, readonly) NSSet *databases;
 
+@property (copy, readonly) NSArray *orderedDatabases;
+
 /** A utility method which returns the names of the databases for this package. As database names are unique per database package, this will match. */
 @property (strong, readonly) NSSet *databaseNames;
 
