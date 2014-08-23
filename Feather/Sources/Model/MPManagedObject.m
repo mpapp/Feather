@@ -1338,12 +1338,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     assert(self.controller);
     NSScriptObjectSpecifier *containerRef = self.controller.objectSpecifier;
     assert(containerRef);
-    assert(containerRef.keyClassDescription);
+    //assert(containerRef.keyClassDescription);
     
-    return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:containerRef.keyClassDescription
-                                                       containerSpecifier:containerRef
-                                                                      key:self.objectSpecifierKey
-                                                                 uniqueID:self.documentID];
+    NSScriptClassDescription *classDesc = [NSScriptClassDescription classDescriptionForClass:self.controller.class];
+    return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:classDesc containerSpecifier:containerRef
+                                                                      key:self.objectSpecifierKey uniqueID:self.documentID];
 }
 
 - (NSDictionary *)scriptingProperties

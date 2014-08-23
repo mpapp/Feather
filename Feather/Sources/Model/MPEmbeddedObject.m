@@ -92,9 +92,11 @@
         
         _properties = [propertiesDict mutableCopy];
         
-        if (!propertiesDict[@"_id"])
+        if (!propertiesDict[@"_id"]) {
             self.identifier = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(self.class), NSUUID.UUID.UUIDString];
-
+            _properties[@"objectType"] = NSStringFromClass(self.class);
+        }
+        
         _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
 
         // TODO: make embedded objects thread-safely unique
@@ -771,6 +773,21 @@
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<%@ %@>", NSStringFromClass(self.class), self.properties];
+}
+
+#pragma mark - Scripting
+
+- (NSScriptObjectSpecifier *)objectSpecifier
+{
+    assert(self.embeddingObject);
+    
+    NSScriptObjectSpecifier *containerRef = [(id)self.embeddingObject objectSpecifier];
+    assert(containerRef);
+    assert(containerRef.keyClassDescription);
+    
+    //NSScriptClassDescription *classDesc = [NSScriptClassDescription classDescriptionForClass:self.embeddingObject.class];
+    return [[NSPropertySpecifier alloc] initWithContainerClassDescription:containerRef.keyClassDescription
+                                                       containerSpecifier:containerRef key:self.embeddingKey];
 }
 
 @end
