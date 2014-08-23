@@ -1056,12 +1056,23 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
 
 #pragma mark - 
 
+- (NSSet *)managedObjectsControllers {
+    return _managedObjectsControllers.copy;
+}
+
+- (NSString *)objectSpecifierKey {
+    return @"packageController";
+}
+
 - (NSScriptObjectSpecifier *)objectSpecifier {
-    NSParameterAssert(self.delegate);
-    
     NSScriptObjectSpecifier *parentSpec = [(id)self.delegate objectSpecifier];
-    return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:[parentSpec keyClassDescription]
-                                                       containerSpecifier:parentSpec key:@"packageController" uniqueID:self.identifier];
+    
+    NSScriptClassDescription *delegateClassDesc = [NSScriptClassDescription classDescriptionForClass:[self.delegate class]];
+    
+    return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:delegateClassDesc
+                                                       containerSpecifier:parentSpec
+                                                                      key:self.objectSpecifierKey
+                                                                 uniqueID:self.identifier];
 }
 
 - (id)valueInManagedObjectsControllersWithName:(NSString *)name {

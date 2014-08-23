@@ -990,17 +990,24 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 #pragma mark - Scripting support
 
+- (NSString *)objectSpecifierKey {
+    return [[NSStringFromClass(self.class) stringByReplacingOccurrencesOfRegex:@"^MP" withString:@""] camelCasedString];
+}
+
 - (NSScriptObjectSpecifier *)objectSpecifier {
+    assert(self.packageController);
     NSScriptObjectSpecifier *parentSpec = [self.packageController objectSpecifier];
+    assert(parentSpec);
     
-    return [[NSNameSpecifier alloc] initWithContainerClassDescription:[parentSpec keyClassDescription]
+    NSScriptClassDescription *desc = [NSScriptClassDescription classDescriptionForClass:[self.packageController class]];
+    
+    return [[NSNameSpecifier alloc] initWithContainerClassDescription:desc
                                                    containerSpecifier:[parentSpec objectSpecifier] key:@"managedObjectsControllers"
                                                                  name:[MPDatabasePackageController controllerPropertyNameForManagedObjectControllerClass:self.class]];
 }
 
 - (NSDictionary *)scriptingProperties {
     return @{
-             @"allObjects":self.allObjects,
              @"packageController":self.packageController
             };
 }
@@ -1020,8 +1027,10 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (id)newScriptingObjectOfClass:(Class)objectClass forValueForKey:(NSString *)key withContentsValue:(id)contentsValue properties:(NSDictionary *)properties
 {
-    assert([objectClass isSubclassOfClass:self.managedObjectClass]);
-    MPManagedObject *obj = [[objectClass alloc] initWithNewDocumentForController:self properties:properties documentID:nil];
+    // note that managed objects controllers
+    // with multiple concrete subclasses of objects to manage will need a specific element to be able to create them. For instance 'tell styles controller to make new managed object' would not work as styles controller has multiple managed object types it manages, same thing with elements controller. would instead want to do 'tell styles controller to make new paragraph style'
+    assert([self.managedObjectClass isSubclassOfClass:objectClass]);
+    MPManagedObject *obj = [[self.managedObjectClass alloc] initWithNewDocumentForController:self properties:properties documentID:nil];
     [obj save];
     
     return obj;

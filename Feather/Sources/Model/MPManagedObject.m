@@ -563,11 +563,16 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return desc;
 }
 
-- (void)setCreatedAt:(NSDate *)createdAt { assert(createdAt); [self setValue:@([createdAt timeIntervalSince1970]) ofProperty:@"createdAt"]; }
+- (void)setCreatedAt:(NSDate *)createdAt {
+    assert(createdAt); [self setValue:@([createdAt timeIntervalSince1970]) ofProperty:@"createdAt"];
+}
+
 - (NSDate *)createdAt
 {
     id createdAtVal = [self getValueOfProperty:@"createdAt"];
-    if (!createdAtVal) return nil;
+    if (!createdAtVal)
+        return nil;
+    
     NSTimeInterval createdAt = [createdAtVal doubleValue];
     return [NSDate dateWithTimeIntervalSince1970:createdAt];
 }
@@ -1439,8 +1444,13 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (NSScriptObjectSpecifier *)objectSpecifier
 {
+    assert(self.controller);
+    
     NSScriptObjectSpecifier *containerRef = self.controller.objectSpecifier;
-    return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:containerRef.keyClassDescription containerSpecifier:containerRef key:@"managedObjects" uniqueID:self.documentID];
+    
+    NSScriptClassDescription *classDesc = [NSScriptClassDescription classDescriptionForClass:self.controller.class];
+    
+    return [[NSUniqueIDSpecifier alloc] initWithContainerClassDescription:classDesc containerSpecifier:containerRef key:@"objects" uniqueID:self.documentID];
 }
 
 - (NSDictionary *)scriptingProperties
