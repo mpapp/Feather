@@ -20,7 +20,19 @@
 @property (readwrite, copy) NSString *prototypeID;
 
 - (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller
-                                      properties:(NSDictionary *)properties documentID:(NSString *)identifier;
+                                      properties:(NSDictionary *)properties
+                                      documentID:(NSString *)identifier;
+
+- (void)setEmbeddedObjectArray:(NSArray *)value ofProperty:(NSString *)property;
+- (NSArray *)getEmbeddedObjectArrayProperty:(NSString *)property;
+
+- (NSDictionary *)getEmbeddedObjectDictionaryProperty:(NSString *)property;
+- (void)setEmbeddedObjectDictionary:(NSDictionary *)value ofProperty:(NSString *)property;
+
+- (void)setEmbeddedObject:(MPEmbeddedObject *)embeddedObj ofProperty:(NSString *)property;
+- (MPEmbeddedObject *)getEmbeddedObjectProperty:(NSString *)property;
+
+- (MPEmbeddedObject *)decodeEmbeddedObject:(id)rawValue embeddingKey:(NSString *)key;
 
 @end
 
