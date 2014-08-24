@@ -17,9 +17,15 @@
     assert(containerRef);
     
     NSScriptClassDescription *classDesc = [NSScriptClassDescription classDescriptionForClass:self.modelObject.class];
-    return [[NSPropertySpecifier alloc] initWithContainerClassDescription:classDesc
-                                                       containerSpecifier:containerRef
-                                                                      key:@"document"];
+    return [[NSPropertySpecifier alloc] initWithContainerClassDescription:classDesc containerSpecifier:containerRef key:@"document"];
+}
+
+- (void)setScriptingProperties:(NSDictionary *)scriptingProperties {
+    [self.currentRevision.properties setValuesForKeysWithDictionary:scriptingProperties];
+}
+
+- (NSDictionary *)scriptingProperties {
+    return self.currentRevision.properties;
 }
 
 @end
