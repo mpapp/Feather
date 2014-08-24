@@ -1179,6 +1179,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         if ([k hasSuffix:@"IDs"])
             k = [k stringByReplacingOccurrencesOfRegex:@"IDs$" withString:@"s"];
         
+        if ([k hasSuffix:@"ID"])
+            k = [k stringByReplacingOccurrencesOfRegex:@"ID$" withString:@""];
+        
         id v = [self valueForKey:k];
         
         if (![v objectSpecifier])
