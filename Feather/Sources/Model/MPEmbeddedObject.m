@@ -783,11 +783,10 @@
     
     NSScriptObjectSpecifier *containerRef = [(id)self.embeddingObject objectSpecifier];
     assert(containerRef);
-    assert(containerRef.keyClassDescription);
+    //assert(containerRef.keyClassDescription);
     
-    //NSScriptClassDescription *classDesc = [NSScriptClassDescription classDescriptionForClass:self.embeddingObject.class];
-    return [[NSPropertySpecifier alloc] initWithContainerClassDescription:containerRef.keyClassDescription
-                                                       containerSpecifier:containerRef key:self.embeddingKey];
+    NSScriptClassDescription *classDesc = [NSScriptClassDescription classDescriptionForClass:self.embeddingObject.class];
+    return [[NSPropertySpecifier alloc] initWithContainerClassDescription:classDesc containerSpecifier:containerRef key:self.embeddingKey];
 }
 
 @end

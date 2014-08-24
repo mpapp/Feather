@@ -786,8 +786,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     NSScriptObjectSpecifier *containerRef = [db objectSpecifier];
     
     return [[NSPropertySpecifier alloc] initWithContainerClassDescription:[NSScriptClassDescription classDescriptionForClass:MPDatabase.class]
-                                                       containerSpecifier:containerRef
-                                                                      key:@"metadata"];
+                                                       containerSpecifier:containerRef key:@"metadata"];
 }
 
 @end
