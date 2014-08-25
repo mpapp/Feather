@@ -21,6 +21,10 @@
 
 - (NSDictionary *)dictionaryWithObjectsMatching:(BOOL(^)(id evaluatedKey, id evaluatedObject))patternBlock;
 
+
+/** A method to convert an NSAppleEventDescriptor into an NSDictionary. */
++ (id)scriptingRecordWithDescriptor:(NSAppleEventDescriptor *)inDesc;
+
 @end
 
 

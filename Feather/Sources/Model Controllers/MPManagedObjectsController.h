@@ -172,3 +172,6 @@ typedef enum MPManagedObjectsControllerErrorCode
 - (Class) managedObjectClass;
 - (NSURL *)URL;
 @end
+
+@interface MPSearchCommand : NSScriptCommand
+@end

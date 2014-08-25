@@ -1062,6 +1062,15 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return [self objectWithIdentifier:uniqueID];
 }
 
+- (id)scriptingValueForSpecifier:(NSScriptObjectSpecifier *)objectSpecifier {
+    if ([objectSpecifier isKindOfClass:NSWhoseSpecifier.class]) {
+        NSWhoseSpecifier *spec = (NSWhoseSpecifier *)objectSpecifier;
+        return [super scriptingValueForSpecifier:spec];
+    }
+    
+    return [super scriptingValueForSpecifier:objectSpecifier];
+}
+
 /*
 - (void)insertValue:(id)value atIndex:(NSUInteger)index inPropertyWithKey:(NSString *)key {
     
@@ -1101,6 +1110,14 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 {
     NSURL *URL = [self.database.internalURL URLByAppendingPathComponent:self.documentID];
     return URL;
+}
+
+@end
+
+@implementation MPSearchCommand
+
+- (id)performDefaultImplementation {
+    return nil;
 }
 
 @end

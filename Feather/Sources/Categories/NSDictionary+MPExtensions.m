@@ -83,6 +83,39 @@
     return [dict copy];
 }
 
+
++ (id)scriptingRecordWithDescriptor:(NSAppleEventDescriptor *)inDesc {
+    //NSLog(@"inDesc: %@", inDesc);
+    
+    NSMutableDictionary *d = [NSMutableDictionary dictionary];
+    
+    NSAppleEventDescriptor *withValuesParam = [inDesc descriptorForKeyword:'usrf']; // 'usrf' keyASUserRecordFields
+    //NSLog(@"withValuesParam: %@", withValuesParam);
+    
+    NSString *name = nil;
+    NSString *value = nil;
+    
+    // this is 1-indexed!
+    NSInteger i = 1;
+    NSInteger count = [withValuesParam numberOfItems];
+    for ( ; i <= count; i++) {
+        NSAppleEventDescriptor *desc = [withValuesParam descriptorAtIndex:i];
+        //NSLog(@"descriptorAtIndex: %@", desc);
+        
+        NSString *s = [desc stringValue];
+        if (name) {
+            value = s;
+            [d setObject:value forKey:name];
+            name = nil;
+            value = nil;
+        } else {
+            name = s;
+        }
+    }
+    
+    return [d copy];
+}
+
 @end
 
 
