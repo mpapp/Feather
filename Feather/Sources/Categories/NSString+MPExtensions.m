@@ -11,6 +11,7 @@
 
 #import "RegexKitLite.h"
 
+#import <CoreServices/CoreServices.h>
 
 @implementation NSString (Feather)
 
@@ -141,6 +142,24 @@
                stringByAppendingString:@"..."];
     
     return str;
+}
+
++ (NSString *)stringWithOSType:(OSType)type
+{
+    UInt32 _type = Endian32_Swap(type);
+    NSData *data = [NSData dataWithBytes:&_type length:sizeof(_type)];
+    return ([[NSString alloc] initWithData:data encoding:NSMacOSRomanStringEncoding]);
+}
+
+- (OSType)OSType
+{
+    NSData *stringData = [self dataUsingEncoding:NSMacOSRomanStringEncoding];
+    
+    UInt32 type, _type;
+    [stringData getBytes:&type];
+    
+    _type = Endian32_Swap(type);
+    return(_type);
 }
 
 @end
