@@ -1067,10 +1067,6 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
     return _managedObjectsControllers.copy;
 }
 
-- (NSString *)objectSpecifierKey {
-    return @"packageController";
-}
-
 - (NSScriptObjectSpecifier *)objectSpecifier {
     @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
 }

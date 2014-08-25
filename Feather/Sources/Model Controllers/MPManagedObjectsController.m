@@ -1049,8 +1049,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         = [NSScriptClassDescription classDescriptionForClass:[self.packageController class]];
     
     return [[NSPropertySpecifier alloc] initWithContainerClassDescription:desc
-                                                       containerSpecifier:parentSpec
-                                                                      key:self.objectSpecifierKey];
+                                                       containerSpecifier:parentSpec key:self.objectSpecifierKey];
 }
 
 - (NSDictionary *)scriptingProperties {
