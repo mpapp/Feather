@@ -129,6 +129,12 @@
     return [self stringByRemovingCharactersFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
+- (BOOL)isAllUpperCase {
+    NSRange lcr = [self rangeOfCharacterFromSet:[NSCharacterSet lowercaseLetterCharacterSet]];
+    NSRange ucr = [self rangeOfCharacterFromSet:[NSCharacterSet uppercaseLetterCharacterSet]];
+    return (lcr.location == NSNotFound && ucr.location != NSNotFound);
+}
+
 // inspired by NSString_Extensions
 - (NSString *)stringByTrimmingToLength:(NSUInteger)len truncate:(BOOL)truncate
 {

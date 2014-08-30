@@ -9,6 +9,7 @@
 #import "NSDictionary+MPExtensions.h"
 #import "NSArray+MPExtensions.h"
 #import "NSSet+MPExtensions.h"
+#import "NSString+MPExtensions.h"
 
 #import <Feather/MPScriptingDefinitionManager.h>
 
@@ -90,10 +91,10 @@
     for (NSUInteger i = 0; i < [inDesc numberOfItems]; i++) {
         AEKeyword childDescKey = [inDesc keywordForDescriptorAtIndex:i + 1];
         
-        NSString *key = [[[MPScriptingDefinitionManager sharedInstance] typesForCode:childDescKey] firstObject];
+        NSString *propertyName = [[MPScriptingDefinitionManager sharedInstance] cocoaPropertyNameForCode:childDescKey];
         
         NSAppleEventDescriptor *childDesc = [inDesc descriptorAtIndex:i + 1];
-        d[key] = childDesc.stringValue;
+        d[propertyName] = childDesc.stringValue;
     }
     
     return [d copy];

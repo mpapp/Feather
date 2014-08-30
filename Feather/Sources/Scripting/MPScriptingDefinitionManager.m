@@ -13,8 +13,11 @@
 #import <Feather/NSBundle+MPExtensions.h>
 
 @interface MPScriptingDefinitionManager ()
-@property (readonly) NSDictionary *typeMap;
 @property (readonly) NSDictionary *codeMap;
+@property (readonly) NSDictionary *propertyNameMap;
+@property (readonly) NSDictionary *cocoaPropertyNameMap;
+@property (readonly) NSDictionary *typeNameMap;
+@property (readonly) NSDictionary *propertyTypeMap;
 @end
 
 @implementation MPScriptingDefinitionManager
@@ -27,37 +30,141 @@
     self = [super init];
     
     if (self) {
-        NSMutableDictionary *tMap = [NSMutableDictionary dictionary];
-        NSMutableDictionary *cMap = [NSMutableDictionary dictionary];
+        NSMutableDictionary *cocoaPropertyMap = [NSMutableDictionary dictionary];
+        NSMutableDictionary *propertyMap = [NSMutableDictionary dictionary];
+        NSMutableDictionary *typeMap = [NSMutableDictionary dictionary];
+        NSMutableDictionary *codeMap = [NSMutableDictionary dictionary];
+        NSMutableDictionary *nameMap = [NSMutableDictionary dictionary];
+
         for (NSXMLElement *elem in [document nodesForXPath:@"//*[@code]" error:error]) {
-            NSString *code = [[elem attributeForName:@"code"] stringValue];
-            NSString *type = [[elem attributeForName:@"type"] stringValue];
             
-            if (!type) {
-                NSLog(@"No type for '%@'", code);
+            if ([[elem name] isEqualToString:@"suite"])
                 continue;
+            
+            NSString *code = [elem attributeForName:@"code"].stringValue;
+            NSString *type = [elem attributeForName:@"type"].stringValue;
+            NSString *name = [elem attributeForName:@"name"].stringValue;
+            
+            // property element should always have a 'type' field filled in or a 'type' child element.
+            if ([elem.name isEqualToString:@"property"]) {
+                
+                NSArray *typeNodes = [elem nodesForXPath:@"type" error:error];
+                
+                NSAssert(!propertyMap[code] || [propertyMap[code] isEqual:name], @"Ambiguous code <=> name mapping: %@", code, propertyMap[code]);
+                propertyMap[code] = name;
+                
+                if (!typeMap[code])
+                    typeMap[code] = [NSMutableSet set];
+                
+                if (typeNodes.count == 0) {
+                    NSAssert(type, @"Property element %@ lacks 'type' field", elem);
+                    
+                    [typeMap[code] addObject:type];
+                    
+                    // only specific code combinations are expected to be synonymous.
+                    if (codeMap[code])
+                        assert([self code:code isSynonymousToCode:codeMap[code]]);
+
+                    codeMap[type] = code;
+                } else {
+                    for (NSXMLElement *typeNode in typeNodes) {
+                        NSString *typeAttrib = [typeNode attributeForName:@"type"].stringValue;
+                        
+                        BOOL isList = [typeNode attributeForName:@"list"];
+                        NSString *t = isList ? typeAttrib : [@"list:%@" stringByAppendingString:typeAttrib];
+                        
+                        [typeMap[code] addObject:t];
+                        
+                        // only specific code combinations are expected to be synonymous.
+                        if (codeMap[code])
+                            assert([self code:code isSynonymousToCode:codeMap[code]]);
+
+                        codeMap[t] = code;
+                    }
+                }
+                
+                // 'pnam' and 'ID  ' have various synonyms.
+                if (![code isEqualToString:@"pnam"] && ![code isEqualToString:@"ID  "]) {
+                    NSString *cocoaKey = nil;
+                    NSXMLElement *cocoaElem = [[elem nodesForXPath:@"cocoa" error:error] firstObject];
+                    if (cocoaElem) {
+                        cocoaKey = [[cocoaElem attributeForName:@"key"] stringValue];
+                        NSAssert(cocoaKey, @"cocoa tag %@ is missing attribute 'key'", cocoaElem);
+                    } else {
+                        NSArray *words = [name componentsSeparatedByString:@" "];
+                        NSString *firstWord = [words firstObject];
+                        if (!firstWord.isAllUpperCase)
+                            cocoaKey = [name camelCasedString];
+                        else if (words.count == 1) {
+                            cocoaKey = [firstWord camelCasedString];
+                        }
+                        else {
+                            cocoaKey = [[firstWord camelCasedString] stringByAppendingString:[[words subarrayFromIndex:1] componentsJoinedByString:@""]];
+                        }
+                    }
+                    
+                    assert(!cocoaPropertyMap[code] || [cocoaPropertyMap[code] isEqualToString:cocoaKey]);
+                    cocoaPropertyMap[code] = cocoaKey;
+                }
+
             }
             
-            if (!tMap[code]) {
-                tMap[code] = [NSMutableSet set];
+            
+            if (name
+                && ([elem.name isEqualToString:@"class"]
+                    || [elem.name isEqualToString:@"enumeration"]
+                    || [elem.name isEqualToString:@"enumerator"]
+                    || [elem.name isEqualToString:@"command"]
+                    || [elem.name isEqualToString:@"value-type"])) {
+                    
+                NSAssert(!nameMap[code]
+                         || [nameMap[code] isEqualToString:name],
+                         @"Inconsistent type name detected for code: %@ != %@", code, nameMap[code]);
+                
+                nameMap[code] = name;
             }
-            [tMap[code] addObject:type];
             
-            
-            assert(!cMap[code]);
-            cMap[type] = code;
         }
+        
+        _propertyNameMap = [propertyMap copy];
+        _cocoaPropertyNameMap = [cocoaPropertyMap copy];
+        _propertyTypeMap = [typeMap copy];
+        _codeMap = [codeMap copy];
+        _typeNameMap = [nameMap copy];
     }
     
     return self;
 }
 
-- (NSArray *)typesForCode:(FourCharCode)code {
-    return self.typeMap[[NSString stringWithOSType:code]];
+- (BOOL)code:(NSString *)code isSynonymousToCode:(NSString *)anotherCode {
+    return [[self synonymousPairs] firstObjectMatching:^BOOL(NSSet *pair) {
+        assert(pair.count == 2);
+        return [pair containsObject:code] && [pair containsObject:anotherCode];
+    }] != nil;
 }
 
-- (FourCharCode)codeForType:(NSString *)type {
+- (NSArray *)synonymousPairs {
+    return @[[NSSet setWithObjects:@"kfil", @"file", nil]];
+}
+
+- (NSSet *)propertyTypesForCode:(FourCharCode)code {
+    return self.propertyTypeMap[[NSString stringWithOSType:code]];
+}
+
+- (NSString *)propertyNameForCode:(NSString *)code {
+    return self.propertyNameMap[[NSString stringWithOSType:code]];
+}
+
+- (NSString *)cocoaPropertyNameForCode:(FourCharCode)code {
+    return self.cocoaPropertyNameMap[[NSString stringWithOSType:code]];
+}
+
+- (FourCharCode)codeForPropertyType:(NSString *)type {
     return [self.codeMap[type] OSType];
+}
+
+- (NSString *)typeNameForCode:(FourCharCode)code {
+    return self.typeNameMap[[NSString stringWithOSType:code]];
 }
 
 #pragma mark -
@@ -80,7 +187,7 @@
         assert(!err);
     });
     
-    return nil;
+    return o;
 }
 
 @end

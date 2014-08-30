@@ -1071,6 +1071,52 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return [super scriptingValueForSpecifier:objectSpecifier];
 }
 
+- (NSString *)managedObjectPlural {
+    return [[[[self managedObjectClassName] stringByReplacingOccurrencesOfRegex:@"^MP" withString:@""] camelCasedString] pluralizedString];
+}
+
+- (id)handleSearchCommand:(NSScriptCommand *)command {
+    NSDictionary *props = command.evaluatedArguments[@"WithProperties"];
+    
+    NSString *plural = self.managedObjectPlural;
+    NSMutableSet *results = nil;
+    
+    for (NSString *key in props) {
+        
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        NSString *selStr = [NSString stringWithFormat:@"%@By%@:", plural, key];
+        NSArray *propResults = [self performSelector:NSSelectorFromString(selStr) withObject:props[key]];
+        
+        if (!results) {
+            
+            if (props.count == 1) {
+                return propResults; // let's return directly from here as the objects are in correct sort order.
+            } else {
+                results = [NSMutableSet setWithArray:propResults];
+            }
+        }
+        else
+            [results intersectSet:[NSSet setWithArray:propResults]];
+#pragma clang diagnostic pop
+    }
+    
+    BOOL allComparable = YES;
+    id anyObj = [results anyObject];
+    
+    for (id obj in results) {
+        if (![obj respondsToSelector:@selector(compare:)] || ![obj isKindOfClass:[anyObj class]]) {
+            allComparable = NO;
+            break;
+        }
+    }
+    
+    if (allComparable)
+        return [results.allObjects sortedArrayUsingSelector:@selector(compare:)];
+    else
+        return [results allObjects];
+}
+
 /*
 - (void)insertValue:(id)value atIndex:(NSUInteger)index inPropertyWithKey:(NSString *)key {
     
@@ -1110,14 +1156,6 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 {
     NSURL *URL = [self.database.internalURL URLByAppendingPathComponent:self.documentID];
     return URL;
-}
-
-@end
-
-@implementation MPSearchCommand
-
-- (id)performDefaultImplementation {
-    return nil;
 }
 
 @end

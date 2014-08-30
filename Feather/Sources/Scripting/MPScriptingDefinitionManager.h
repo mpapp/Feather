@@ -12,9 +12,15 @@
 @interface MPScriptingDefinitionManager : NSObject
 
 /** A type string formatted name for a code. */
-- (NSArray *)typesForCode:(FourCharCode)code;
+- (NSSet *)propertyTypesForCode:(FourCharCode)code;
 
-- (FourCharCode)codeForType:(NSString *)type;
+- (NSString *)propertyNameForCode:(NSString *)code;
+
+- (NSString *)cocoaPropertyNameForCode:(FourCharCode)code;
+
+- (FourCharCode)codeForPropertyType:(NSString *)type;
+
+- (NSString *)typeNameForCode:(FourCharCode)code;
 
 + (instancetype)sharedInstance;
 
