@@ -1188,10 +1188,12 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 {
     // note that managed objects controllers
     // with multiple concrete subclasses of objects to manage will need a specific element to be able to create them. For instance 'tell styles controller to make new managed object' would not work as styles controller has multiple managed object types it manages, same thing with elements controller. would instead want to do 'tell styles controller to make new paragraph style'
-    assert([self.managedObjectClass isSubclassOfClass:objectClass]);
-    MPManagedObject *obj = [[self.managedObjectClass alloc] initWithNewDocumentForController:self properties:@{} documentID:nil];
+    assert([objectClass isSubclassOfClass:self.managedObjectClass]);
+    MPManagedObject *obj = [[objectClass alloc] initWithNewDocumentForController:self properties:@{} documentID:nil];
     
     for (id key in properties) {
+        
+        // FIXME: handle object specifiers here for properties[key]
         [obj setValue:properties[key] forKey:key];
     }
     
