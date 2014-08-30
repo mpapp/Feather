@@ -1080,17 +1080,21 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 }
 
 + (NSArray *)singularSearchSelectorStringsForManagedObjectProperty:(NSString *)property {
-    return @[ [NSString stringWithFormat:@"%@For%@:", self.managedObjectSingular, property],
-              [NSString stringWithFormat:@"%@With%@:", self.managedObjectSingular, property],
-              [NSString stringWithFormat:@"%@By%@:", self.managedObjectSingular, property],
-              [NSString stringWithFormat:@"objectBy%@:", property] ];
+    return @[ [NSString stringWithFormat:@"%@For%@:", self.managedObjectSingular, property.sentenceCasedString],
+              [NSString stringWithFormat:@"%@With%@:", self.managedObjectSingular, property.sentenceCasedString],
+              [NSString stringWithFormat:@"%@By%@:", self.managedObjectSingular, property.sentenceCasedString],
+              [NSString stringWithFormat:@"objectBy%@:", property.sentenceCasedString],
+              [NSString stringWithFormat:@"objectWith%@:", property.sentenceCasedString],
+              [NSString stringWithFormat:@"objectFor%@:", property.sentenceCasedString]];
 }
 
 + (NSArray *)pluralSearchSelectorStringsForManagedObjectProperty:(NSString *)property {
-    return @[ [NSString stringWithFormat:@"%@For%@:", self.managedObjectPlural, property],
-              [NSString stringWithFormat:@"%@With%@:", self.managedObjectPlural, property],
-              [NSString stringWithFormat:@"%@By%@:", self.managedObjectPlural, property],
-              [NSString stringWithFormat:@"objectsBy%@:", property] ];
+    return @[ [NSString stringWithFormat:@"%@For%@:", self.managedObjectPlural, property.sentenceCasedString],
+              [NSString stringWithFormat:@"%@With%@:", self.managedObjectPlural, property.sentenceCasedString],
+              [NSString stringWithFormat:@"%@By%@:", self.managedObjectPlural, property.sentenceCasedString],
+              [NSString stringWithFormat:@"objectsBy%@:", property.sentenceCasedString],
+              [NSString stringWithFormat:@"objectsWith%@:", property.sentenceCasedString],
+              [NSString stringWithFormat:@"objectsFor%@:", property.sentenceCasedString]];
 }
 
 - (SEL)searchSelectorForManagedObjectProperty:(NSString *)property isPlural:(BOOL *)plural {
@@ -1172,21 +1176,25 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         return [results allObjects];
 }
 
-/*
 - (void)insertValue:(id)value atIndex:(NSUInteger)index inPropertyWithKey:(NSString *)key {
     
 }
 
 - (void)insertValue:(id)value inPropertyWithKey:(NSString *)key {
     
-}*/
+}
 
 - (id)newScriptingObjectOfClass:(Class)objectClass forValueForKey:(NSString *)key withContentsValue:(id)contentsValue properties:(NSDictionary *)properties
 {
     // note that managed objects controllers
     // with multiple concrete subclasses of objects to manage will need a specific element to be able to create them. For instance 'tell styles controller to make new managed object' would not work as styles controller has multiple managed object types it manages, same thing with elements controller. would instead want to do 'tell styles controller to make new paragraph style'
     assert([self.managedObjectClass isSubclassOfClass:objectClass]);
-    MPManagedObject *obj = [[self.managedObjectClass alloc] initWithNewDocumentForController:self properties:properties documentID:nil];
+    MPManagedObject *obj = [[self.managedObjectClass alloc] initWithNewDocumentForController:self properties:@{} documentID:nil];
+    
+    for (id key in properties) {
+        [obj setValue:properties[key] forKey:key];
+    }
+    
     [obj save];
     
     return obj;

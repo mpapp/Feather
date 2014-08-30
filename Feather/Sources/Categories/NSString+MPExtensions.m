@@ -66,6 +66,15 @@
     return [str copy];
 }
 
+// lifted from http://stackoverflow.com/questions/2432452/how-to-capitalize-the-first-word-of-the-sentence-in-objective-c
+- (NSString *)sentenceCasedString {
+    if (self.length == 0)
+        return @"";
+    
+    return [self stringByReplacingCharactersInRange:NSMakeRange(0,1)
+                                         withString:[self substringToIndex:1].capitalizedString];;
+}
+
 /*
  Lifted from: http://blog.hozbox.com/2012/01/03/escaping-all-control-characters-in-a-nsstring/
  */

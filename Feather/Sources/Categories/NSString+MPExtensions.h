@@ -54,6 +54,8 @@ NS_INLINE  NSMutableString *MPMutableStringForString(NSString *s)
 
 @property (readonly, copy) NSString *stringByRemovingWhitespace;
 
+@property (readonly, copy) NSString *sentenceCasedString;
+
 @property (readonly) BOOL isAllUpperCase;
 
 /** Escapes characters that aren't either alphanumeric Unicode or in the traditional ASCII printable character range 32..127. */

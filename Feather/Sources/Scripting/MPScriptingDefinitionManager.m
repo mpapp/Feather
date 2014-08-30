@@ -83,9 +83,9 @@
                     }
                 }
                 
-                // 'pnam' and 'ID  ' have various synonyms.
+                NSString *cocoaKey = nil;
+                // 'pnam' and 'ID  ' have various synonyms. we send them out below as just 'name' and 'identifier' which the receiver needs to be able to handle.
                 if (![code isEqualToString:@"pnam"] && ![code isEqualToString:@"ID  "]) {
-                    NSString *cocoaKey = nil;
                     NSXMLElement *cocoaElem = [[elem nodesForXPath:@"cocoa" error:error] firstObject];
                     if (cocoaElem) {
                         cocoaKey = [[cocoaElem attributeForName:@"key"] stringValue];
@@ -103,10 +103,16 @@
                         }
                     }
                     
-                    assert(!cocoaPropertyMap[code] || [cocoaPropertyMap[code] isEqualToString:cocoaKey]);
-                    cocoaPropertyMap[code] = cocoaKey;
+                } else if ([code isEqualToString:@"pnam"]) {
+                    cocoaKey = @"name";
+                } else if ([code isEqualToString:@"ID  "]) {
+                    cocoaKey = @"identifier";
                 }
-
+                
+                if (![code isEqualToString:@"pnam"] && ![code isEqualToString:@"ID  "])
+                    assert(!cocoaPropertyMap[code] || [cocoaPropertyMap[code] isEqualToString:cocoaKey]);
+                
+                cocoaPropertyMap[code] = cocoaKey;
             }
             
             
