@@ -1071,33 +1071,76 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return [super scriptingValueForSpecifier:objectSpecifier];
 }
 
-- (NSString *)managedObjectPlural {
-    return [[[[self managedObjectClassName] stringByReplacingOccurrencesOfRegex:@"^MP" withString:@""] camelCasedString] pluralizedString];
++ (NSString *)managedObjectSingular {
+    return [[[self managedObjectClassName] stringByReplacingOccurrencesOfRegex:@"^MP" withString:@""] camelCasedString];
+}
+
++ (NSString *)managedObjectPlural {
+    return [self.managedObjectSingular pluralizedString];
+}
+
++ (NSArray *)singularSearchSelectorStringsForManagedObjectProperty:(NSString *)property {
+    return @[ [NSString stringWithFormat:@"%@By%@:", self.managedObjectSingular, property],
+              [NSString stringWithFormat:@"objectBy%@:", property] ];
+}
+
++ (NSArray *)pluralSearchSelectorStringsForManagedObjectProperty:(NSString *)property {
+    return @[ [NSString stringWithFormat:@"%@By%@:", self.managedObjectPlural, property],
+              [NSString stringWithFormat:@"objectsBy%@:", property] ];
+}
+
+- (SEL)searchSelectorForManagedObjectProperty:(NSString *)property isPlural:(BOOL *)plural {
+    for (NSString *selStr in [self.class pluralSearchSelectorStringsForManagedObjectProperty:property]) {
+        SEL sel = NSSelectorFromString(selStr);
+        
+        if (plural)
+            *plural = YES;
+        
+        return sel;
+    }
+    
+    for (NSString *selStr in [self.class singularSearchSelectorStringsForManagedObjectProperty:property]) {
+        SEL sel = NSSelectorFromString(selStr);
+        
+        if (plural)
+            *plural = NO;
+        
+        return sel;
+    }
+    
+    return nil;
 }
 
 - (id)handleSearchCommand:(NSScriptCommand *)command {
     NSDictionary *props = command.evaluatedArguments[@"WithProperties"];
     
-    NSString *plural = self.managedObjectPlural;
     NSMutableSet *results = nil;
     
+    BOOL pluralsWereInvolved = NO;
     for (NSString *key in props) {
         
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        NSString *selStr = [NSString stringWithFormat:@"%@By%@:", plural, key];
-        NSArray *propResults = [self performSelector:NSSelectorFromString(selStr) withObject:props[key]];
+        
+        BOOL isPlural = NO;
+        SEL searchSel = [self searchSelectorForManagedObjectProperty:key isPlural:&isPlural];
+        
+        if (isPlural)
+            pluralsWereInvolved = YES;
+        
+        NSAssert(searchSel, @"No search selector for property %@", key);
+        
+        id propResults = [self performSelector:searchSel withObject:props[key]];
         
         if (!results) {
-            
             if (props.count == 1) {
-                return propResults; // let's return directly from here as the objects are in correct sort order.
+                return propResults; // let's return directly from here as the objects are in correct sort order and there was just a single criterion.
             } else {
-                results = [NSMutableSet setWithArray:propResults];
+                results = [NSMutableSet setWithArray:isPlural ? propResults : @[ propResults ]];
             }
         }
         else
-            [results intersectSet:[NSSet setWithArray:propResults]];
+            [results intersectSet:[NSSet setWithArray:isPlural ? propResults : @[ propResults ]]];
 #pragma clang diagnostic pop
     }
     
@@ -1111,7 +1154,10 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         }
     }
     
-    if (allComparable)
+    if (!pluralsWereInvolved) {
+        return [results anyObject];
+    }
+    else if (allComparable)
         return [results.allObjects sortedArrayUsingSelector:@selector(compare:)];
     else
         return [results allObjects];
