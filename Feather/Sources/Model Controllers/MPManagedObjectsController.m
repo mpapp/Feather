@@ -1080,12 +1080,16 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 }
 
 + (NSArray *)singularSearchSelectorStringsForManagedObjectProperty:(NSString *)property {
-    return @[ [NSString stringWithFormat:@"%@By%@:", self.managedObjectSingular, property],
+    return @[ [NSString stringWithFormat:@"%@For%@:", self.managedObjectSingular, property],
+              [NSString stringWithFormat:@"%@With%@:", self.managedObjectSingular, property],
+              [NSString stringWithFormat:@"%@By%@:", self.managedObjectSingular, property],
               [NSString stringWithFormat:@"objectBy%@:", property] ];
 }
 
 + (NSArray *)pluralSearchSelectorStringsForManagedObjectProperty:(NSString *)property {
-    return @[ [NSString stringWithFormat:@"%@By%@:", self.managedObjectPlural, property],
+    return @[ [NSString stringWithFormat:@"%@For%@:", self.managedObjectPlural, property],
+              [NSString stringWithFormat:@"%@With%@:", self.managedObjectPlural, property],
+              [NSString stringWithFormat:@"%@By%@:", self.managedObjectPlural, property],
               [NSString stringWithFormat:@"objectsBy%@:", property] ];
 }
 
@@ -1093,19 +1097,23 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     for (NSString *selStr in [self.class pluralSearchSelectorStringsForManagedObjectProperty:property]) {
         SEL sel = NSSelectorFromString(selStr);
         
-        if (plural)
-            *plural = YES;
-        
-        return sel;
+        if ([self respondsToSelector:sel]) {
+            if (plural)
+                *plural = YES;
+            
+            return sel;
+        }
     }
     
     for (NSString *selStr in [self.class singularSearchSelectorStringsForManagedObjectProperty:property]) {
         SEL sel = NSSelectorFromString(selStr);
         
-        if (plural)
-            *plural = NO;
-        
-        return sel;
+        if ([self respondsToSelector:sel]) {
+            if (plural)
+                *plural = NO;
+            
+            return sel;            
+        }
     }
     
     return nil;
@@ -1119,8 +1127,6 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     BOOL pluralsWereInvolved = NO;
     for (NSString *key in props) {
         
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         
         BOOL isPlural = NO;
         SEL searchSel = [self searchSelectorForManagedObjectProperty:key isPlural:&isPlural];
@@ -1130,7 +1136,10 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         
         NSAssert(searchSel, @"No search selector for property %@", key);
         
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
         id propResults = [self performSelector:searchSel withObject:props[key]];
+        #pragma clang diagnostic pop
         
         if (!results) {
             if (props.count == 1) {
@@ -1141,7 +1150,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         }
         else
             [results intersectSet:[NSSet setWithArray:isPlural ? propResults : @[ propResults ]]];
-#pragma clang diagnostic pop
+
     }
     
     BOOL allComparable = YES;
