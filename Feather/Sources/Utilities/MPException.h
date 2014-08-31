@@ -17,6 +17,9 @@
 + (id)exceptionWithSelector:(SEL)sel;
 @end
 
+@interface MPMethodIsPrivateException : MPUnexpectedSelectorException
+@end
+
 @interface MPInitIsPrivateException : MPUnexpectedSelectorException
 @end
 

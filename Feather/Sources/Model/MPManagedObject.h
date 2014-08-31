@@ -252,6 +252,12 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 /** Object specifier key for scripting support for the *instance*. Default implementation calls +objectSpecifierKey. Need not be, but can be, overloaded. */
 @property (readonly, copy) NSString *objectSpecifierKey;
 
+/** String representing the camel cased singular form of instances of this class, useful for property naming. */
++ (NSString *)singular;
+
+/** String representing the camel cased plural form of instances of this class, useful for property naming. */
++ (NSString *)plural;
+
 #pragma mark - 
 
 #if MP_DEBUG_ZOMBIE_MODELS

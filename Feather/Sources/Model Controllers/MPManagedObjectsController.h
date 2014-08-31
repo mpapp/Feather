@@ -75,6 +75,12 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** A utility method which returns the class name string for this controller's +managedObjectClass. */
 + (NSString *)managedObjectClassName;
 
+/** Camel cased singular form of the managed object type, used for property naming. */
++ (NSString *)managedObjectSingular;
+
+/** Camel cased plural form of the managed object type, used for property naming. */
++ (NSString *)managedObjectPlural;
+
 /** A utility instance method which returns the same value as +managedObjectClass. Not to be overloaded. */
 - (Class)managedObjectClass;
 

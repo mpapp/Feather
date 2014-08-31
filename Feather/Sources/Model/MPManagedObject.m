@@ -851,6 +851,16 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return nil;
 }
 
+#pragma mark - Singular and plural strings
+
++ (NSString *)singular {
+    return [[NSStringFromClass(self) stringByReplacingOccurrencesOfRegex:@"^MP" withString:@""] camelCasedString];
+}
+
++ (NSString *)plural {
+    return [[self singular] pluralizedString];
+}
+
 #pragma mark -
 
 + (NSArray *)indexablePropertyKeys { return nil; }
@@ -1202,6 +1212,35 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (id)saveWithCommand:(NSScriptCommand *)command {
     return  @([self save]);
+}
+
+- (id)addWithCommand:(NSScriptCommand *)command {
+    [command evaluatedArguments];
+    
+    id targetObj = [command evaluatedReceivers];
+    NSParameterAssert(targetObj == self);
+    
+    id addedObj = command.evaluatedArguments[@"Object"];
+                   
+    if ([addedObj isKindOfClass:NSArray.class]) {
+        NSString *key = [[[[addedObj firstObject] objectsByEvaluatingSpecifier] class] plural];
+        NSUInteger insertionPoint = [[targetObj valueForKey:key] count];
+        NSUInteger i = insertionPoint;
+        
+        for (id oSpec in addedObj) {
+            id o = [oSpec objectsByEvaluatingSpecifier];
+            NSString *key = [[o class] plural];
+            [targetObj insertValue:o atIndex:i++ inPropertyWithKey:key];
+        }
+    } else {
+        id addedO = [addedObj objectsByEvaluatingSpecifier];
+        NSString *key = [[addedO class] plural];
+        NSUInteger insertionPoint = [[targetObj valueForKey:key] count];
+        
+        [targetObj insertValue:addedO atIndex:insertionPoint inPropertyWithKey:key];
+    }
+    
+    return targetObj;
 }
 
 @end

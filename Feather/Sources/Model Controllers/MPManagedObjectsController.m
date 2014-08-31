@@ -890,6 +890,18 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return returnedObjects;
 }
 
+#pragma mark - 
+
+
+
++ (NSString *)managedObjectSingular {
+    return [[self managedObjectClass] singular];
+}
+
++ (NSString *)managedObjectPlural {
+    return [[self managedObjectClass] plural];
+}
+
 @end
 
 @implementation MPManagedObjectsController (Protected)
@@ -1069,14 +1081,6 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     }
     
     return [super scriptingValueForSpecifier:objectSpecifier];
-}
-
-+ (NSString *)managedObjectSingular {
-    return [[[self managedObjectClassName] stringByReplacingOccurrencesOfRegex:@"^MP" withString:@""] camelCasedString];
-}
-
-+ (NSString *)managedObjectPlural {
-    return [self.managedObjectSingular pluralizedString];
 }
 
 + (NSArray *)singularSearchSelectorStringsForManagedObjectProperty:(NSString *)property {
