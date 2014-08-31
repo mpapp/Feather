@@ -1177,11 +1177,11 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 }
 
 - (void)insertValue:(id)value atIndex:(NSUInteger)index inPropertyWithKey:(NSString *)key {
-    
+    // needed, otherwise scripting system will attempt to use KVC to modify the property with the key, which is in all cases nonsensical.
 }
 
 - (void)insertValue:(id)value inPropertyWithKey:(NSString *)key {
-    
+    // needed, otherwise scripting system will attempt to use KVC to modify the property with the key, which is in all cases nonsensical.
 }
 
 - (id)newScriptingObjectOfClass:(Class)objectClass forValueForKey:(NSString *)key withContentsValue:(id)contentsValue properties:(NSDictionary *)properties
@@ -1192,9 +1192,14 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     MPManagedObject *obj = [[objectClass alloc] initWithNewDocumentForController:self properties:@{} documentID:nil];
     
     for (id key in properties) {
-        
-        // FIXME: handle object specifiers here for properties[key]
-        [obj setValue:properties[key] forKey:key];
+        id v = properties[key];
+        if ([v isKindOfClass:NSScriptObjectSpecifier.class]) {
+            id evObjs = [v objectsByEvaluatingSpecifier];
+            [obj setValue:evObjs forKey:key];
+        }
+        else {
+            [obj setValue:properties[key] forKey:key];
+        }
     }
     
     [obj save];

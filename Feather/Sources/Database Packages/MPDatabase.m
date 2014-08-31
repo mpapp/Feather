@@ -789,6 +789,19 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
                                                        containerSpecifier:containerRef key:@"metadata"];
 }
 
+- (id)handleKeyedValueCommand:(NSScriptCommand *)command {
+    id key = command.evaluatedArguments[@"WithKey"];
+    return [self getValueOfProperty:key];
+}
+
+- (void)handleModifyKeyedValuesCommand:(NSScriptCommand *)command {
+    NSDictionary *dict = command.evaluatedArguments[@"WithProperties"];
+    NSParameterAssert([dict isKindOfClass:NSDictionary.class]);
+    for (id k in dict) {
+        [self setValue:dict[k] ofProperty:k];
+    }
+}
+
 @end
 
 @implementation MPLocalMetadata
