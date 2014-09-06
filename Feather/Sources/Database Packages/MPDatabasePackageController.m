@@ -180,11 +180,12 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         _pulls = [[NSMutableArray alloc] initWithCapacity:[[[self class] databaseNames] count]];
         _completedPulls = [[NSMutableArray alloc] initWithCapacity:[[[self class] databaseNames] count]];
         
-        if (![NSBundle isCommandLineTool]
-            && ![NSBundle isXPCService]
-            && [self synchronizesPeerlessly])
+        if (![NSBundle isCommandLineTool] && // FIXME: manuel will need to serve static resources to equation compilers somehow
+            ![NSBundle isXPCService] &&
+            [self synchronizesPeerlessly])
         {
-            [self startListenerWithCompletionHandler:^(NSError *err) {
+            [self startListenerWithCompletionHandler:^(NSError *err)
+            {
                 [self.notificationCenter postNotificationName:MPDatabasePackageListenerDidStartNotification object:self];
             }];
         }
@@ -748,7 +749,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
 
 - (void)startListenerWithCompletionHandler:(void(^)(NSError *err))completionHandler
 {
-    assert(![NSBundle isCommandLineTool]);
+    assert(![NSBundle isCommandLineTool]); // FIXME: this is not correct, as manuel will need to serve static resources to the equation compilers (and no main process is running)
     assert(![NSBundle isXPCService]);
     
     assert(!_databaseListener);
