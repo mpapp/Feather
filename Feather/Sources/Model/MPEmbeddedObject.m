@@ -93,7 +93,7 @@
         _properties = [propertiesDict mutableCopy];
         
         if (!propertiesDict[@"_id"]) {
-            self.identifier = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(self.class), NSUUID.UUID.UUIDString];
+            self.identifier = [NSString stringWithFormat:@"%@:%@", NSStringFromClass(self.class), [NSUUID.UUID UUIDString]];
             _properties[@"objectType"] = NSStringFromClass(self.class);
         }
         
