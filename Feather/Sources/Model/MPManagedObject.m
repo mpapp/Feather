@@ -79,7 +79,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 @end
 
 @implementation MPManagedObject
+@synthesize isNewObject = _isNewObject;
 @synthesize controller = _controller;
+@synthesize embeddedObjectCache = _embeddedObjectCache;
+@synthesize deletedDocumentID = _deletedDocumentID;
+@dynamic isModerated, isRejected, isAccepted, creator;
 
 + (void)initialize
 {
@@ -605,6 +609,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     id updatedAtVal = [self getValueOfProperty:@"updatedAt"];
     if (!updatedAtVal) return nil;
     return [NSDate dateWithTimeIntervalSince1970:[updatedAtVal doubleValue]];
+}
+
+- (void)setEditors:(NSArray *)editors {
+    return [self setObjectIdentifierArrayValueForManagedObjectArray:editors property:@"editorIDs"];
+}
+
+- (NSArray *)editors {
+    return [self getValueOfObjectIdentifierArrayProperty:@"editorIDs"];
 }
 
 - (void)setShared:(BOOL)shared {
