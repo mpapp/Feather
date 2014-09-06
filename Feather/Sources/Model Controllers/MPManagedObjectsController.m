@@ -137,7 +137,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         
         BOOL success = class_addMethod(self.class,
                                        allObjectsForObjectSpecifierKeySel,
-                                       imp_implementationWithBlock(allObjectsForObjectSpecifierKey), "v@");
+                                       imp_implementationWithBlock(allObjectsForObjectSpecifierKey), "@@:");
         
         // add a property declaration as well.
         objc_property_attribute_t type = { "T", "@\"NSArray\"" };
@@ -1203,17 +1203,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     assert([objectClass isSubclassOfClass:self.managedObjectClass]);
     MPManagedObject *obj = [[objectClass alloc] initWithNewDocumentForController:self properties:@{} documentID:nil];
     
-    for (id key in properties) {
-        id v = properties[key];
-        if ([v isKindOfClass:NSScriptObjectSpecifier.class]) {
-            id evObjs = [v objectsByEvaluatingSpecifier];
-            [obj setValue:evObjs forKey:key];
-        }
-        else {
-            [obj setValue:properties[key] forKey:key];
-        }
-    }
-    
+    [obj setScriptingDerivedProperties:properties];
     [obj save];
     
     return obj;

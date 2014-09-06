@@ -1226,6 +1226,26 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return  @([self save]);
 }
 
+- (NSString *)pluralizedElementKeyForObject:(id)o
+{
+    Class cls = nil;
+    NSString *key = nil;
+    SEL keySel = nil;
+    do {
+        cls = cls ? cls.superclass : [[[o firstObject] objectsByEvaluatingSpecifier] class];
+        if (cls == NSObject.class)
+            return nil;
+        
+        key = cls.plural;
+        keySel = NSSelectorFromString(key);
+        
+        NSLog(@"%@: %@ -> %@ (%hhd)", self, o, key, [self respondsToSelector:keySel]);
+    }
+    while (![self respondsToSelector:keySel]);
+    
+    return key;
+}
+
 - (id)addWithCommand:(NSScriptCommand *)command {
     [command evaluatedArguments];
     
@@ -1235,13 +1255,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     id addedObj = command.evaluatedArguments[@"Object"];
                    
     if ([addedObj isKindOfClass:NSArray.class]) {
-        NSString *key = [[[[addedObj firstObject] objectsByEvaluatingSpecifier] class] plural];
+        NSString *key = [targetObj pluralizedElementKeyForObject:addedObj];
+        NSAssert(key, @"No pluralized element name was found for inserting object %@ into %@", addedObj, self);
+        
         NSUInteger insertionPoint = [[targetObj valueForKey:key] count];
         NSUInteger i = insertionPoint;
         
         for (id oSpec in addedObj) {
             id o = [oSpec objectsByEvaluatingSpecifier];
-            NSString *key = [[o class] plural];
             [targetObj insertValue:o atIndex:i++ inPropertyWithKey:key];
         }
     } else {
@@ -1252,8 +1273,25 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         [targetObj insertValue:addedO atIndex:insertionPoint inPropertyWithKey:key];
     }
     
+    [targetObj save];
+    
     return targetObj;
 }
+
+- (void)setScriptingDerivedProperties:(NSDictionary *)properties
+{
+    for (id key in properties) {
+        id v = properties[key];
+        if ([v isKindOfClass:NSScriptObjectSpecifier.class]) {
+            id evObjs = [v objectsByEvaluatingSpecifier];
+            [self setValue:evObjs forKey:key];
+        }
+        else {
+            [self setValue:properties[key] forKey:key];
+        }
+    }
+}
+
 
 @end
 

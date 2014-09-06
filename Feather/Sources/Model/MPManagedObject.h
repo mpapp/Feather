@@ -94,6 +94,9 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 /** The complete set of scriptable properties for the scriptable object. */
 @property (readwrite, copy) NSDictionary *scriptingProperties;
 
+/** Sets properties using a dictionary deriving from the scripting system, meaning that the dictionary can have object specifiers as values as well as other objects. */
+- (void)setScriptingDerivedProperties:(NSDictionary *)scriptingDerivedProperties;
+
 #pragma mark - Sharing & Moderation
 
 /** The object has been marked shared by the user. Cannot guaranteed to be undone. */
