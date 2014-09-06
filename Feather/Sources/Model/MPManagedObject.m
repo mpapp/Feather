@@ -1377,8 +1377,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         [self cacheEmbeddedObjectByIdentifier:obj];
         return obj;
     }
-    
-    else return nil;
+    else
+    {
+        return nil;
+    }
 }
 
 - (MPEmbeddedObject *)getEmbeddedObjectProperty:(NSString *)property
