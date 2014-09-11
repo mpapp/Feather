@@ -410,7 +410,19 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
              emit([NSNull null], nil);
 
      } version:@"1.0"];
-
+    
+    [[self.db.database viewNamed:self.objectsByTitleViewName]
+     setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
+    {
+        if (![self managesDocumentWithDictionary:doc])
+            return;
+        
+        if (!doc[@"title"])
+            return;
+        
+        emit(doc[@"title"], nil);
+    } version:@"1.0"];
+    
     __weak id weakSelf = self;
     [self.db.database setFilterNamed:MPStringF(@"%@/managed-objects-filter", NSStringFromClass(self.class))
                              asBlock:
@@ -454,6 +466,20 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         return nil;
     }
     return objs;
+}
+
+- (NSString *)objectsByTitleViewName
+{
+    return [NSString stringWithFormat:@"%@-by-title", self.managedObjectClassName];
+}
+
+- (NSArray *)objectsWithTitle:(NSString *)title
+{
+    NSParameterAssert(title);
+    CBLQuery *q = [[self.db.database viewNamed:self.objectsByTitleViewName] createQuery];
+    q.keys = @[title];
+    
+    return [self managedObjectsForQueryEnumerator:q.run];
 }
 
 - (NSArray *)allObjects

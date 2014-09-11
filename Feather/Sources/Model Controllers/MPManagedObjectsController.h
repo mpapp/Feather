@@ -182,6 +182,9 @@ typedef enum MPManagedObjectsControllerErrorCode
 
 - (id)objectWithIdentifier:(NSString *)identifier;
 
+/** Objects with the given 'title' field value (meaningless for objects with no title field) */
+- (NSArray *)objectsWithTitle:(NSString *)title;
+
 /** Loads objects from the contents of an array JSON field. Each record in this array is validated to be a serialized MPManagedObject.
   * @param url The URL to load the objects from.
   * @param err An error pointer. */
