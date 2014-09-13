@@ -79,7 +79,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 @end
 
 @implementation MPManagedObject
+@synthesize isNewObject = _isNewObject;
 @synthesize controller = _controller;
+@synthesize embeddedObjectCache = _embeddedObjectCache;
+@synthesize deletedDocumentID = _deletedDocumentID;
+@dynamic isModerated, isRejected, isAccepted, creator;
 
 + (void)initialize
 {
@@ -607,6 +611,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return [NSDate dateWithTimeIntervalSince1970:[updatedAtVal doubleValue]];
 }
 
+- (void)setEditors:(NSArray *)editors {
+    return [self setObjectIdentifierArrayValueForManagedObjectArray:editors property:@"editorIDs"];
+}
+
+- (NSArray *)editors {
+    return [self getValueOfObjectIdentifierArrayProperty:@"editorIDs"];
+}
+
 - (void)setShared:(BOOL)shared {
     BOOL prevValue = [self isShared];
     if (prevValue == shared) return;
@@ -849,6 +861,16 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     
     assert(false);
     return nil;
+}
+
+#pragma mark - Singular and plural strings
+
++ (NSString *)singular {
+    return [[NSStringFromClass(self) stringByReplacingOccurrencesOfRegex:@"^MP" withString:@""] camelCasedString];
+}
+
++ (NSString *)plural {
+    return [[self singular] pluralizedString];
 }
 
 #pragma mark -
@@ -1203,6 +1225,73 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (id)saveWithCommand:(NSScriptCommand *)command {
     return  @([self save]);
 }
+
+- (NSString *)pluralizedElementKeyForObject:(id)o
+{
+    Class cls = nil;
+    NSString *key = nil;
+    SEL keySel = nil;
+    do {
+        cls = cls ? cls.superclass : [[[o firstObject] objectsByEvaluatingSpecifier] class];
+        if (cls == NSObject.class)
+            return nil;
+        
+        key = cls.plural;
+        keySel = NSSelectorFromString(key);
+        
+        NSLog(@"%@: %@ -> %@ (%hhd)", self, o, key, [self respondsToSelector:keySel]);
+    }
+    while (![self respondsToSelector:keySel]);
+    
+    return key;
+}
+
+- (id)addWithCommand:(NSScriptCommand *)command {
+    [command evaluatedArguments];
+    
+    id targetObj = [command evaluatedReceivers];
+    NSParameterAssert(targetObj == self);
+    
+    id addedObj = command.evaluatedArguments[@"Object"];
+                   
+    if ([addedObj isKindOfClass:NSArray.class]) {
+        NSString *key = [targetObj pluralizedElementKeyForObject:addedObj];
+        NSAssert(key, @"No pluralized element name was found for inserting object %@ into %@", addedObj, self);
+        
+        NSUInteger insertionPoint = [[targetObj valueForKey:key] count];
+        NSUInteger i = insertionPoint;
+        
+        for (id oSpec in addedObj) {
+            id o = [oSpec objectsByEvaluatingSpecifier];
+            [targetObj insertValue:o atIndex:i++ inPropertyWithKey:key];
+        }
+    } else {
+        id addedO = [addedObj objectsByEvaluatingSpecifier];
+        NSString *key = [[addedO class] plural];
+        NSUInteger insertionPoint = [[targetObj valueForKey:key] count];
+        
+        [targetObj insertValue:addedO atIndex:insertionPoint inPropertyWithKey:key];
+    }
+    
+    [targetObj save];
+    
+    return targetObj;
+}
+
+- (void)setScriptingDerivedProperties:(NSDictionary *)properties
+{
+    for (id key in properties) {
+        id v = properties[key];
+        if ([v isKindOfClass:NSScriptObjectSpecifier.class]) {
+            id evObjs = [v objectsByEvaluatingSpecifier];
+            [self setValue:evObjs forKey:key];
+        }
+        else {
+            [self setValue:properties[key] forKey:key];
+        }
+    }
+}
+
 
 @end
 

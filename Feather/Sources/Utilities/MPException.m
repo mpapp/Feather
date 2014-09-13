@@ -31,6 +31,9 @@
 
 @end
 
+@implementation MPMethodIsPrivateException
+@end
+
 @implementation MPInitIsPrivateException
 @end
 

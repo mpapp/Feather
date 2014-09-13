@@ -44,13 +44,19 @@ NS_INLINE  NSMutableString *MPMutableStringForString(NSString *s)
 
 @interface NSString (Feather)
 
-- (BOOL) containsSubstring:(NSString *)substring;
+- (BOOL)containsSubstring:(NSString *)substring;
 - (NSString *)stringByTranslatingPresentToPastTense;
 
 - (NSString *)stringByMakingSentenceCase;
 
 @property (readonly, copy) NSString *pluralizedString;
 @property (readonly, copy) NSString *camelCasedString;
+
+@property (readonly, copy) NSString *stringByRemovingWhitespace;
+
+@property (readonly, copy) NSString *sentenceCasedString;
+
+@property (readonly) BOOL isAllUpperCase;
 
 /** Escapes characters that aren't either alphanumeric Unicode or in the traditional ASCII printable character range 32..127. */
 @property (copy,readonly) NSString *stringByEscapingNonPrintableAndInvisibleCharacters;
@@ -59,6 +65,12 @@ NS_INLINE  NSMutableString *MPMutableStringForString(NSString *s)
 @property (copy,readonly) NSString *stringByTrimmingLeadingWhitespace;
 
 - (NSString *)stringByTrimmingToLength:(NSUInteger)len truncate:(BOOL)truncate;
+
+/** String representation of an OSType. Works also for FourLetterCode, DescType, ResType */
++ (NSString *)stringWithOSType:(OSType)type;
+
+/** OSType (FourLetterCode, DescType, ResType) representation of a string. */
+@property (readonly) OSType OSType;
 
 @end
 

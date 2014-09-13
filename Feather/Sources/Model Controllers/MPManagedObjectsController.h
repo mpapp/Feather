@@ -31,7 +31,29 @@ typedef enum MPManagedObjectsControllerErrorCode
 @class CBLQuery;
 @class CBLQueryEnumerator;
 
-/** An abstract base class for controllers of MPManagedObject instances. Caches managed objects strongly, allows querying and creating new Feather of a certain type, loading them from a JSON file, and resolving conflicting versions arising from replication. A MPManagedObjectsController subclass is parameterised by a managed object class (specified with the abstract method +managedObjectClass). Commonly it would also overload -configureViews: and -allObjectsQuery. */
+/** An abstract base class for controllers of MPManagedObject instances. 
+ * - Caches managed objects strongly.
+ * - allows querying and creating new managed objects of a certain type
+ * - deserialises managed objects from their JSON representation
+ * - resolves conflicting managed object revision arising from replication. 
+ *
+ * A MPManagedObjectsController subclass is parameterised by a managed object class 
+ * (specified with the abstract method +managedObjectClass). 
+ * Commonly it would also overload -configureViews: to introduce database views used by its database queries.
+ *
+ * The primary role of a managed objects controller is to act as a repository its managed objects.
+ * To allow for fetching from the repository by using a a scripting command 'search', please
+ * follow a convention of using the following method names for object fetching methods which return ordered collections of managed objects:
+ * - -objectsWith<property>:
+ * - <managed object plural>For<property>:
+ * - <managed object plural>With<property>:
+ * - <managed object plural>By<property>:
+ *
+ * Database fetches which return a single managed object object, please follow the method naming convention:
+ * -objectFor<Property>:
+ * -objectWith<Property>:
+ * -objectBy<Property>:
+ * */
 @interface MPManagedObjectsController : NSObject <MPCacheable, MPManagedObjectRecentChangeObserver>
 
 /** The MPDatabase whose objects this controller manages (not necessarily all of the objects in the database, just those with a matching class / objectType field).  */
@@ -52,6 +74,12 @@ typedef enum MPManagedObjectsControllerErrorCode
 
 /** A utility method which returns the class name string for this controller's +managedObjectClass. */
 + (NSString *)managedObjectClassName;
+
+/** Camel cased singular form of the managed object type, used for property naming. */
++ (NSString *)managedObjectSingular;
+
+/** Camel cased plural form of the managed object type, used for property naming. */
++ (NSString *)managedObjectPlural;
 
 /** A utility instance method which returns the same value as +managedObjectClass. Not to be overloaded. */
 - (Class)managedObjectClass;

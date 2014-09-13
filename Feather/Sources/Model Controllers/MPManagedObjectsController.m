@@ -41,12 +41,15 @@ NSString * const MPManagedObjectsControllerErrorDomain = @"MPManagedObjectsContr
 
 NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = @"MPManagedObjectsControllerLoadedBundledResourcesNotification";
 
-@interface MPManagedObjectsController ()
+@interface MPManagedObjectsController ()  <CBLReplicationDelegate>
 {
     NSSet *_managedObjectSubclasses;
     dispatch_queue_t _queryQueue;
 }
 @property (readonly, strong) NSMutableDictionary *objectCache;
+
+@property (readonly) BOOL loadingBundledData;
+
 @end
 
 @implementation MPManagedObjectsController
@@ -134,7 +137,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         
         BOOL success = class_addMethod(self.class,
                                        allObjectsForObjectSpecifierKeySel,
-                                       imp_implementationWithBlock(allObjectsForObjectSpecifierKey), "v@");
+                                       imp_implementationWithBlock(allObjectsForObjectSpecifierKey), "@@:");
         
         // add a property declaration as well.
         objc_property_attribute_t type = { "T", "@\"NSArray\"" };
@@ -685,13 +688,15 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (void)loadBundledResourcesWithCompletionHandler:(void(^)(NSError *err))completionHandler
 {
+    assert(!_loadingBundledData);
+    _loadingBundledData = YES;
+    
     assert([NSThread isMainThread]);
     
-    NSString *resourceDBName = self.bundledResourceDatabaseName;
-    NSString *checksumKey = [NSString stringWithFormat:@"bundled-%@-md5", resourceDBName];
+    NSString *checksumKey = [NSString stringWithFormat:@"bundled-%@-md5", self.bundledResourceDatabaseName];
 
     // nothing to do if there is no resource for this controller
-    if (!resourceDBName)
+    if (!self.bundledResourceDatabaseName)
     {
         dispatch_async(dispatch_get_main_queue(), ^{
             completionHandler(nil);
@@ -701,8 +706,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
     NSFileManager *fm = [NSFileManager defaultManager];
     
-    NSString *attachmentsDirectoryName = MPStringF(@"%@ attachments", resourceDBName);
-    NSString *bundledBundlesPath = [[NSBundle appBundle] pathForResource:resourceDBName ofType:@"cblite"];
+    NSString *attachmentsDirectoryName = MPStringF(@"%@ attachments", self.bundledResourceDatabaseName);
+    NSString *bundledBundlesPath = [[NSBundle appBundle] pathForResource:self.bundledResourceDatabaseName ofType:@"cblite"];
     NSString *bundledAttachmentsPath = [[NSBundle appBundle] pathForResource:attachmentsDirectoryName ofType:@""];
     
     NSError *err = nil;
@@ -753,8 +758,6 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     
     CBLReplication *replication = nil;
     
-    __block BOOL shouldRun = YES;
-        
     NSError *error = nil;
     if (![self.db pullFromDatabaseAtPath:tempBundledBundlesPath
                              replication:&replication error:&error])
@@ -764,6 +767,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         });
         return;
     }
+    replication.delegate = self;
     
     __weak NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
     __weak MPManagedObjectsController *weakSelf = self;
@@ -773,70 +777,74 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                     usingBlock:
         ^(NSNotification *note)
     {
-             MPManagedObjectsController *strongSelf = weakSelf;
-             CBLReplication *r = note.object;
-             assert(replication == r);
-             if (r.status == kCBLReplicationStopped && !r.lastError)
-             {
-                 [metadata setValue:md5 ofProperty:checksumKey];
-
-                 
-                 __block BOOL metadataSaveSuccess = NO;
-                 __block NSError *metadataSaveErr = nil;
-                 mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.packageController serverQueueToken], ^{
-                     metadataSaveSuccess = [metadata save:&metadataSaveErr];
-                 });
-                 
-                 if (!metadataSaveSuccess)
-                 {
-                     NSLog(@"ERROR! Could not load bundled data from '%@.touchdb': %@", resourceDBName, metadataSaveErr);
-
-                     [[strongSelf.packageController notificationCenter]
-                        postErrorNotification:metadataSaveErr];
-                 }
-                 else
-                 {
-                     NSLog(@"Loaded bundled resource %@", resourceDBName);
-
-                     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
-                     [nc postNotificationName:MPManagedObjectsControllerLoadedBundledResourcesNotification object:self];
-                 }
-
-                 [nc removeObserver:replicationObserver];
-                 
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     shouldRun = NO;
-                 });
-                 NSError *err = nil;
-                 if (![fm removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
-                 {
-                     NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
-                 }
-             }
-             else if (r.status == kCBLReplicationStopped)
-             {
-                 NSLog(@"ERROR! Failed to pull from bundled database.");
-                 [[self.packageController notificationCenter] postErrorNotification:r.lastError];
-
-                 [nc removeObserver:replicationObserver];
-                 dispatch_async(dispatch_get_main_queue(), ^{
-                     shouldRun = NO;
-                 });
-                 
-                 NSError *err = nil;
-                 if (![fm removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
-                 {
-                     NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
-                 }
-             }
-        }];
+        MPManagedObjectsController *strongSelf = weakSelf;
+        CBLReplication *r = note.object;
+        assert(replication == r);
+        
+        [strongSelf processUpdatedBundledDataLoadReplication:replication];
+    }];
     
-    while (shouldRun)
+    while (_loadingBundledData)
     {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
     }
     
+    [[NSNotificationCenter defaultCenter] removeObserver:replicationObserver];
+
+    [metadata setValue:md5 ofProperty:checksumKey];
+
+    if (![NSFileManager.defaultManager removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
+    {
+        NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
+    }
+    
     MPLog(@"Completed loading resources for %@", self);
+}
+
+- (void)processUpdatedBundledDataLoadReplication:(CBLReplication *)replication
+{
+    MPMetadata *metadata = self.db.metadata;
+    if (replication.status == kCBLReplicationStopped && !replication.lastError)
+    {
+        __block BOOL metadataSaveSuccess = NO;
+        __block NSError *metadataSaveErr = nil;
+        mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.packageController serverQueueToken], ^{
+            metadataSaveSuccess = [metadata save:&metadataSaveErr];
+        });
+        
+        if (!metadataSaveSuccess)
+        {
+            NSLog(@"ERROR! Could not load bundled data from '%@.touchdb': %@", self.bundledResourceDatabaseName, metadataSaveErr);
+            
+            [[self.packageController notificationCenter] postErrorNotification:metadataSaveErr];
+        }
+        else
+        {
+            NSLog(@"Loaded bundled resource %@", self.bundledResourceDatabaseName);
+            
+            NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
+            [nc postNotificationName:MPManagedObjectsControllerLoadedBundledResourcesNotification object:self];
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _loadingBundledData = NO;
+        });
+    }
+    else if (replication.status == kCBLReplicationStopped)
+    {
+        NSLog(@"ERROR! Failed to pull from bundled database.");
+        [[self.packageController notificationCenter] postErrorNotification:replication.lastError];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _loadingBundledData = NO;
+        });
+    }
+}
+
+- (void)replicationDidProgress:(CBLReplication *)replication
+{
+    MPLog(@"Replication progress: %u", replication.status);
+    [self processUpdatedBundledDataLoadReplication:replication];
 }
 
 #pragma mark - Loading bundled objects
@@ -888,6 +896,18 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
     assert(returnedObjects);
     return returnedObjects;
+}
+
+#pragma mark - 
+
+
+
++ (NSString *)managedObjectSingular {
+    return [[self managedObjectClass] singular];
+}
+
++ (NSString *)managedObjectPlural {
+    return [[self managedObjectClass] plural];
 }
 
 @end
@@ -1049,8 +1069,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         = [NSScriptClassDescription classDescriptionForClass:[self.packageController class]];
     
     return [[NSPropertySpecifier alloc] initWithContainerClassDescription:desc
-                                                       containerSpecifier:parentSpec
-                                                                      key:self.objectSpecifierKey];
+                                                       containerSpecifier:parentSpec key:self.objectSpecifierKey];
 }
 
 - (NSDictionary *)scriptingProperties {
@@ -1063,21 +1082,128 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return [self objectWithIdentifier:uniqueID];
 }
 
-/*
-- (void)insertValue:(id)value atIndex:(NSUInteger)index inPropertyWithKey:(NSString *)key {
+- (id)scriptingValueForSpecifier:(NSScriptObjectSpecifier *)objectSpecifier {
+    if ([objectSpecifier isKindOfClass:NSWhoseSpecifier.class]) {
+        NSWhoseSpecifier *spec = (NSWhoseSpecifier *)objectSpecifier;
+        return [super scriptingValueForSpecifier:spec];
+    }
     
+    return [super scriptingValueForSpecifier:objectSpecifier];
+}
+
++ (NSArray *)singularSearchSelectorStringsForManagedObjectProperty:(NSString *)property {
+    return @[ [NSString stringWithFormat:@"%@For%@:", self.managedObjectSingular, property.sentenceCasedString],
+              [NSString stringWithFormat:@"%@With%@:", self.managedObjectSingular, property.sentenceCasedString],
+              [NSString stringWithFormat:@"%@By%@:", self.managedObjectSingular, property.sentenceCasedString],
+              [NSString stringWithFormat:@"objectBy%@:", property.sentenceCasedString],
+              [NSString stringWithFormat:@"objectWith%@:", property.sentenceCasedString],
+              [NSString stringWithFormat:@"objectFor%@:", property.sentenceCasedString]];
+}
+
++ (NSArray *)pluralSearchSelectorStringsForManagedObjectProperty:(NSString *)property {
+    return @[ [NSString stringWithFormat:@"%@For%@:", self.managedObjectPlural, property.sentenceCasedString],
+              [NSString stringWithFormat:@"%@With%@:", self.managedObjectPlural, property.sentenceCasedString],
+              [NSString stringWithFormat:@"%@By%@:", self.managedObjectPlural, property.sentenceCasedString],
+              [NSString stringWithFormat:@"objectsBy%@:", property.sentenceCasedString],
+              [NSString stringWithFormat:@"objectsWith%@:", property.sentenceCasedString],
+              [NSString stringWithFormat:@"objectsFor%@:", property.sentenceCasedString]];
+}
+
+- (SEL)searchSelectorForManagedObjectProperty:(NSString *)property isPlural:(BOOL *)plural {
+    for (NSString *selStr in [self.class pluralSearchSelectorStringsForManagedObjectProperty:property]) {
+        SEL sel = NSSelectorFromString(selStr);
+        
+        if ([self respondsToSelector:sel]) {
+            if (plural)
+                *plural = YES;
+            
+            return sel;
+        }
+    }
+    
+    for (NSString *selStr in [self.class singularSearchSelectorStringsForManagedObjectProperty:property]) {
+        SEL sel = NSSelectorFromString(selStr);
+        
+        if ([self respondsToSelector:sel]) {
+            if (plural)
+                *plural = NO;
+            
+            return sel;            
+        }
+    }
+    
+    return nil;
+}
+
+- (id)handleSearchCommand:(NSScriptCommand *)command {
+    NSDictionary *props = command.evaluatedArguments[@"WithProperties"];
+    
+    NSMutableSet *results = nil;
+    
+    BOOL pluralsWereInvolved = NO;
+    for (NSString *key in props) {
+        
+        
+        BOOL isPlural = NO;
+        SEL searchSel = [self searchSelectorForManagedObjectProperty:key isPlural:&isPlural];
+        
+        if (isPlural)
+            pluralsWereInvolved = YES;
+        
+        NSAssert(searchSel, @"No search selector for property %@", key);
+        
+        #pragma clang diagnostic push
+        #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+        id propResults = [self performSelector:searchSel withObject:props[key]];
+        #pragma clang diagnostic pop
+        
+        if (!results) {
+            if (props.count == 1) {
+                return propResults; // let's return directly from here as the objects are in correct sort order and there was just a single criterion.
+            } else {
+                results = [NSMutableSet setWithArray:isPlural ? propResults : @[ propResults ]];
+            }
+        }
+        else
+            [results intersectSet:[NSSet setWithArray:isPlural ? propResults : @[ propResults ]]];
+
+    }
+    
+    BOOL allComparable = YES;
+    id anyObj = [results anyObject];
+    
+    for (id obj in results) {
+        if (![obj respondsToSelector:@selector(compare:)] || ![obj isKindOfClass:[anyObj class]]) {
+            allComparable = NO;
+            break;
+        }
+    }
+    
+    if (!pluralsWereInvolved) {
+        return [results anyObject];
+    }
+    else if (allComparable)
+        return [results.allObjects sortedArrayUsingSelector:@selector(compare:)];
+    else
+        return [results allObjects];
+}
+
+- (void)insertValue:(id)value atIndex:(NSUInteger)index inPropertyWithKey:(NSString *)key {
+    // needed, otherwise scripting system will attempt to use KVC to modify the property with the key, which is in all cases nonsensical.
 }
 
 - (void)insertValue:(id)value inPropertyWithKey:(NSString *)key {
-    
-}*/
+    // needed, otherwise scripting system will attempt to use KVC to modify the property with the key, which is in all cases nonsensical.
+}
 
 - (id)newScriptingObjectOfClass:(Class)objectClass forValueForKey:(NSString *)key withContentsValue:(id)contentsValue properties:(NSDictionary *)properties
 {
     // note that managed objects controllers
     // with multiple concrete subclasses of objects to manage will need a specific element to be able to create them. For instance 'tell styles controller to make new managed object' would not work as styles controller has multiple managed object types it manages, same thing with elements controller. would instead want to do 'tell styles controller to make new paragraph style'
-    assert([self.managedObjectClass isSubclassOfClass:objectClass]);
-    MPManagedObject *obj = [[self.managedObjectClass alloc] initWithNewDocumentForController:self properties:properties documentID:nil];
+    assert([objectClass isSubclassOfClass:self.managedObjectClass]);
+    MPManagedObject *obj = [[objectClass alloc] initWithNewDocumentForController:self properties:@{} documentID:nil];
+    
+    [obj setScriptingDerivedProperties:properties];
     [obj save];
     
     return obj;

@@ -23,14 +23,11 @@
 /** MPSnapshottedObject instances contain serialised data of other managed objects from the same database package as where it is stored. */
 @interface MPSnapshottedObject : MPManagedObject
 
-/** The identifier of the snapshot this MPSnapshottedObject belongs to.  */
-@property (readonly, copy) NSString *snapshotID;
-
 /** The snapshot which this MPSnapshottedObject is contained in. */
 @property (readonly, weak) MPSnapshot *snapshot;
 
 /** The document ID of the managed object snapshotted in this object. */
-@property (readonly, strong) NSString *snapshottedDocumentID;
+@property (readonly, strong) MPManagedObject *snapshottedObject;
 
 /** The revision ID of the managed object snapshotted in this object. */
 @property (readonly, strong) NSString *snapshottedRevisionID;
@@ -70,9 +67,6 @@
 
 /** A getter for the attachment data associated with this object. */
 @property (readonly, strong) CBLAttachment *attachment;
-
-/** The identifier of the snapshot this MPSnapshottedObject belongs to.  */
-@property (readonly, copy) NSString *snapshotID;
 
 /** The snapshot which this MPSnapshottedObject is contained in. */
 @property (readonly, weak) MPSnapshot *snapshot;

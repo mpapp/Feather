@@ -12,7 +12,7 @@
 #import <CouchbaseLite/CouchbaseLite.h>
 
 @implementation MPContributor
-@dynamic category, role;
+@dynamic category, role, isMe;
 @dynamic isCorresponding;
 
 // FIXME: Make abstract method in an abstract base class.

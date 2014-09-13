@@ -11,6 +11,7 @@
 
 #import "RegexKitLite.h"
 
+#import <CoreServices/CoreServices.h>
 
 @implementation NSString (Feather)
 
@@ -63,6 +64,15 @@
         return [capturedStrings[0] lowercaseString];
     }];
     return [str copy];
+}
+
+// lifted from http://stackoverflow.com/questions/2432452/how-to-capitalize-the-first-word-of-the-sentence-in-objective-c
+- (NSString *)sentenceCasedString {
+    if (self.length == 0)
+        return @"";
+    
+    return [self stringByReplacingCharactersInRange:NSMakeRange(0,1)
+                                         withString:[self substringToIndex:1].capitalizedString];;
 }
 
 /*
@@ -128,6 +138,12 @@
     return [self stringByRemovingCharactersFromSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
+- (BOOL)isAllUpperCase {
+    NSRange lcr = [self rangeOfCharacterFromSet:[NSCharacterSet lowercaseLetterCharacterSet]];
+    NSRange ucr = [self rangeOfCharacterFromSet:[NSCharacterSet uppercaseLetterCharacterSet]];
+    return (lcr.location == NSNotFound && ucr.location != NSNotFound);
+}
+
 // inspired by NSString_Extensions
 - (NSString *)stringByTrimmingToLength:(NSUInteger)len truncate:(BOOL)truncate
 {
@@ -141,6 +157,24 @@
                stringByAppendingString:@"..."];
     
     return str;
+}
+
++ (NSString *)stringWithOSType:(OSType)type
+{
+    UInt32 _type = Endian32_Swap(type);
+    NSData *data = [NSData dataWithBytes:&_type length:sizeof(_type)];
+    return ([[NSString alloc] initWithData:data encoding:NSMacOSRomanStringEncoding]);
+}
+
+- (OSType)OSType
+{
+    NSData *stringData = [self dataUsingEncoding:NSMacOSRomanStringEncoding];
+    
+    UInt32 type, _type;
+    [stringData getBytes:&type];
+    
+    _type = Endian32_Swap(type);
+    return(_type);
 }
 
 @end

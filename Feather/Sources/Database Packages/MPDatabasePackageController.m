@@ -1027,7 +1027,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
         MPManagedObjectsController *moc = [self controllerForManagedObjectClass:cls];
         assert(moc);
         
-        MPManagedObject *mo = [cls modelForDocument:[moc.db.database documentWithID:so.snapshottedDocumentID]];
+        MPManagedObject *mo = [cls modelForDocument:[moc.db.database documentWithID:so.snapshottedObject.documentID]];
         assert(mo); // error? ignore silently?
         
         if ([[mo.document currentRevisionID] isEqualToString:so.snapshottedRevisionID] && ![mo needsSave])
@@ -1066,10 +1066,6 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
 
 - (NSSet *)managedObjectsControllers {
     return _managedObjectsControllers.copy;
-}
-
-- (NSString *)objectSpecifierKey {
-    return @"packageController";
 }
 
 - (NSScriptObjectSpecifier *)objectSpecifier {

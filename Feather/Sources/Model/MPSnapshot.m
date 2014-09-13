@@ -20,6 +20,11 @@
 }
 @end
 
+@interface MPSnapshottedObject ()
+@property (readwrite, weak) MPSnapshot *snapshot;
+@property (readwrite, strong) MPManagedObject *snapshottedObject;
+@end
+
 @implementation MPSnapshot
 
 - (instancetype)init
@@ -77,6 +82,7 @@
 @end
 
 @implementation MPSnapshottedObject
+@dynamic snapshot, snapshottedAttachments, snapshottedAttachmentSHAs, snapshottedObject;
 
 - (instancetype)init
 {
@@ -88,17 +94,17 @@
                                    snapshot:(MPSnapshot *)snapshot
                           snapshottedObject:(MPManagedObject *)obj
 {
-    __snapshottedDocumentID = obj.document.documentID;
     __snapshottedRevisionID = obj.document.currentRevisionID;
+    __snapshottedDocumentID = obj.documentID;
     
     if (self = [super initWithNewDocumentForController:sc])
     {
         assert(snapshot);
         assert(snapshot.document.documentID);
-        self.snapshotID = snapshot.document.documentID;
+        self.snapshot = snapshot;
         
         self.snapshottedObjectClass = obj.class;
-        self.snapshottedDocumentID = obj.document.documentID;
+        self.snapshottedObject = obj;
         self.snapshottedRevisionID = obj.document.currentRevisionID;
         self.snapshottedProperties = obj.document.properties;
     
@@ -126,28 +132,6 @@
                                                    revisionID:__snapshottedRevisionID
                                                    inDatabase:db];
 }
-
-- (NSString *)snapshotID
-{ return [self getValueOfProperty:@"snapshotID"]; }
-- (void)setSnapshotID:(NSString *)snapshotID
-{ [self setValue:snapshotID ofProperty:@"snapshotID"]; }
-
-- (MPSnapshot *)snapshot
-{
-    NSString *snapshotID = self.snapshotID;
-    assert(snapshotID);
-    
-    MPSnapshot *snapshot = [MPSnapshot modelForDocument:[self.database documentWithID:snapshotID]];
-    assert(snapshot);
-    
-    return snapshot;
-}
-
-- (NSString *)snapshottedDocumentID
-{ return [self getValueOfProperty:@"snapshottedDocumentID"]; }
-
-- (void)setSnapshottedDocumentID:(NSString *)snapshottedDocumentID
-{ [self setValue:snapshottedDocumentID ofProperty:@"snapshottedDocumentID"]; }
 
 - (NSString *)snapshottedRevisionID
 { return [self getValueOfProperty:@"snapshottedRevisionID"]; }
@@ -185,6 +169,7 @@
 @end
 
 @implementation MPSnapshottedAttachment
+@dynamic attachment, snapshot;
 
 - (instancetype)init
 {
