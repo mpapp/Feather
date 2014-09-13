@@ -85,20 +85,17 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 /** The last update date: the moment -save or -saveModels was issued the last time. It is later than the last a property change was made, and earlier than the exact moment at which the update was registered in the database. */
 @property (readonly, assign) NSDate *updatedAt;
 
-/** The _id of the MPContributor who created the object. */
-@property (readonly, strong) NSString *creatorID;
-
 /** The MPContributor who created the object. */
 @property (readonly, strong) MPContributor *creator;
-
-/** Array of _id's to the MPContributor objects who have edited this document. Kept in the order of last editor. Kept in the order of last editor: if you're A and the list of editors before your edit was [A,B,C], the array is reodered to [B,C,A]. */
-@property (readonly, strong) NSArray *editorIDs;
 
 /** Array of MPContributor objects who have edited this document. Kept in the order of last editor: if you're A and the list of editors before your edit was [A,B,C], the array is reodered to [B,C,A]. */
 @property (readonly, strong) NSArray *editors;
 
 /** The complete set of scriptable properties for the scriptable object. */
 @property (readwrite, copy) NSDictionary *scriptingProperties;
+
+/** Sets properties using a dictionary deriving from the scripting system, meaning that the dictionary can have object specifiers as values as well as other objects. */
+- (void)setScriptingDerivedProperties:(NSDictionary *)scriptingDerivedProperties;
 
 #pragma mark - Sharing & Moderation
 

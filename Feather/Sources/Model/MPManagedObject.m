@@ -79,7 +79,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 @end
 
 @implementation MPManagedObject
+@synthesize isNewObject = _isNewObject;
 @synthesize controller = _controller;
+@synthesize embeddedObjectCache = _embeddedObjectCache;
+@synthesize deletedDocumentID = _deletedDocumentID;
+@dynamic isModerated, isRejected, isAccepted, creator;
 
 + (void)initialize
 {
@@ -605,6 +609,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     id updatedAtVal = [self getValueOfProperty:@"updatedAt"];
     if (!updatedAtVal) return nil;
     return [NSDate dateWithTimeIntervalSince1970:[updatedAtVal doubleValue]];
+}
+
+- (void)setEditors:(NSArray *)editors {
+    return [self setObjectIdentifierArrayValueForManagedObjectArray:editors property:@"editorIDs"];
+}
+
+- (NSArray *)editors {
+    return [self getValueOfObjectIdentifierArrayProperty:@"editorIDs"];
 }
 
 - (void)setShared:(BOOL)shared {
@@ -1214,6 +1226,26 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return  @([self save]);
 }
 
+- (NSString *)pluralizedElementKeyForObject:(id)o
+{
+    Class cls = nil;
+    NSString *key = nil;
+    SEL keySel = nil;
+    do {
+        cls = cls ? cls.superclass : [[[o firstObject] objectsByEvaluatingSpecifier] class];
+        if (cls == NSObject.class)
+            return nil;
+        
+        key = cls.plural;
+        keySel = NSSelectorFromString(key);
+        
+        NSLog(@"%@: %@ -> %@ (%hhd)", self, o, key, [self respondsToSelector:keySel]);
+    }
+    while (![self respondsToSelector:keySel]);
+    
+    return key;
+}
+
 - (id)addWithCommand:(NSScriptCommand *)command {
     [command evaluatedArguments];
     
@@ -1223,13 +1255,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     id addedObj = command.evaluatedArguments[@"Object"];
                    
     if ([addedObj isKindOfClass:NSArray.class]) {
-        NSString *key = [[[[addedObj firstObject] objectsByEvaluatingSpecifier] class] plural];
+        NSString *key = [targetObj pluralizedElementKeyForObject:addedObj];
+        NSAssert(key, @"No pluralized element name was found for inserting object %@ into %@", addedObj, self);
+        
         NSUInteger insertionPoint = [[targetObj valueForKey:key] count];
         NSUInteger i = insertionPoint;
         
         for (id oSpec in addedObj) {
             id o = [oSpec objectsByEvaluatingSpecifier];
-            NSString *key = [[o class] plural];
             [targetObj insertValue:o atIndex:i++ inPropertyWithKey:key];
         }
     } else {
@@ -1240,8 +1273,25 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         [targetObj insertValue:addedO atIndex:insertionPoint inPropertyWithKey:key];
     }
     
+    [targetObj save];
+    
     return targetObj;
 }
+
+- (void)setScriptingDerivedProperties:(NSDictionary *)properties
+{
+    for (id key in properties) {
+        id v = properties[key];
+        if ([v isKindOfClass:NSScriptObjectSpecifier.class]) {
+            id evObjs = [v objectsByEvaluatingSpecifier];
+            [self setValue:evObjs forKey:key];
+        }
+        else {
+            [self setValue:properties[key] forKey:key];
+        }
+    }
+}
+
 
 @end
 
@@ -1416,8 +1466,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         [self cacheEmbeddedObjectByIdentifier:obj];
         return obj;
     }
-    
-    else return nil;
+    else
+    {
+        return nil;
+    }
 }
 
 - (MPEmbeddedObject *)getEmbeddedObjectProperty:(NSString *)property
