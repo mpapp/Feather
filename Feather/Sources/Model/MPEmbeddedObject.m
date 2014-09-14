@@ -374,7 +374,7 @@
 
 - (id)externalize
 {
-    return [self.dictionaryRepresentation JSONString];
+    return self.dictionaryRepresentation;
 }
 
 - (BOOL)save:(NSError **)err
