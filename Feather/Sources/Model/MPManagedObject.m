@@ -1149,10 +1149,13 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (NSString *)JSONStringRepresentation:(NSError **)err
 {
     NSDictionary *props = self.propertiesToSave;
+    props = [props dictionaryWithObjectsMatching:^BOOL(id evaluatedKey, id evaluatedObject) {
+        return ![evaluatedKey isEqualToString:@"_attachments"];
+    }];
     assert(props);
     
-    NSData *data = [NSJSONSerialization dataWithJSONObject:props options:NSJSONWritingPrettyPrinted error:err];
-    
+    NSData *data = [CBLJSON dataWithJSONObject:props options:NSJSONWritingPrettyPrinted error:err];
+
     if (!data)
         return nil;
     
