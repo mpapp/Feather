@@ -1337,6 +1337,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     _newDocumentID = identifier;
     
     self = [super initWithNewDocumentInDatabase:controller.db.database];
+    NSParameterAssert(self.document);
+    
     if (self)
     {
         assert(_controller);
