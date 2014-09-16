@@ -926,7 +926,16 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 #pragma mark - 
 
-
+- (NSArray *)objectsMatchingQueriedView:(NSString *)view keys:(NSArray *)keys
+{
+    NSParameterAssert(view);
+    
+    CBLQuery *q = [self.db.database viewNamed:view].createQuery;
+    q.keys = keys;
+    q.prefetch = YES;
+        
+    return [self managedObjectsForQueryEnumerator:q.run];
+}
 
 + (NSString *)managedObjectSingular {
     return [[self managedObjectClass] singular];

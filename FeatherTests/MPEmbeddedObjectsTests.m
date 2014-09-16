@@ -63,8 +63,8 @@
         XCTAssertTrue(!obj.embeddedTestObject.embeddingObject.needsSave,
                       @"Embedded object's embedding object doesn't need saving after saving.");
         
-        XCTAssertTrue([obj.document.properties[@"embeddedTestObject"] isKindOfClass:NSString.class],
-                      @"The interal, persisted property value is a string.");
+        XCTAssertTrue([obj.document.properties[@"embeddedTestObject"] isKindOfClass:NSDictionary.class],
+                      @"The internal, persisted property value is a dictionary.");
         
         XCTAssertTrue([[obj getValueOfProperty:@"embeddedTestObject"] isKindOfClass:MPEmbeddedTestObject.class],
                       @"The property value fetched for property 'embeddedTestObject' is a MPEmbeddedTestObject instance.");
