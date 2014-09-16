@@ -194,6 +194,9 @@ typedef enum MPManagedObjectsControllerErrorCode
                     dataChecksumMetadataKey:(NSString *)dataChecksumKey
                                       error:(NSError **)err;
 
+/** Query the given view with the given keys, with object prefetching enabled, and return managed object representations. */
+- (NSArray *)objectsMatchingQueriedView:(NSString *)view keys:(NSArray *)keys;
+
 @end
 
 @interface CBLDocument (MPManagedObjectExtensions)
