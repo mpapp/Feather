@@ -930,7 +930,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 {
     NSParameterAssert(view);
     
-    CBLQuery *q = [self.db.database viewNamed:view].createQuery;
+    CBLQuery *q = [self.db.database existingViewNamed:view].createQuery;
     q.keys = keys;
     q.prefetch = YES;
         

@@ -16,6 +16,8 @@
 @property (readonly, strong) NSArray *siblings;
 @property (readonly) NSUInteger childCount;
 @property (readonly) BOOL hasChildren;
+
+/** The properties such as title are intended to be mutable by the user. */
 @property (readonly) BOOL isEditable;
 
 @property (readonly) NSInteger priority;
