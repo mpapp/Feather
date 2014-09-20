@@ -834,20 +834,39 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (CBLModel *)getModelProperty:(NSString *)property
 {
     NSString *objectID = [self getValueOfProperty:property];
-    if (!objectID) return nil;
+    if (!objectID)
+        return nil;
     
     Class cls = [[self class] classOfProperty:property];
     assert([cls isSubclassOfClass:[MPManagedObject class]]);
     
-    CBLDatabase *db = [self databaseForModelProperty:property];
-    MPDatabasePackageController *pkgc = [db packageController];
-    MPManagedObjectsController *moc = [pkgc controllerForManagedObjectClass:cls];
+    MPManagedObjectsController *moc = nil;
+    
+    if ([cls isConcrete])
+    {
+        CBLDatabase *db = [self databaseForModelProperty:property];
+        MPDatabasePackageController *pkgc = [db packageController];
+        moc = [pkgc controllerForManagedObjectClass:cls];
+        assert(moc);
+    }
+    else
+    {
+        NSArray *components = [objectID componentsSeparatedByString:@":"];
+        assert(components.count == 2);
+        Class concreteClass = NSClassFromString(components[0]);
+        assert(concreteClass);
+        assert([concreteClass isSubclassOfClass:cls]);
+        moc = [self.controller.packageController controllerForManagedObjectClass:concreteClass];
+        assert(moc);
+        cls = concreteClass;
+    }
     
     if ([cls conformsToProtocol:@protocol(MPReferencableObject)])
     {
         
         MPManagedObject *mo = [moc objectWithIdentifier:objectID];
-        if (mo) return mo;
+        if (mo)
+            return mo;
         
         MPShoeboxPackageController *shoebox = [MPShoeboxPackageController sharedShoeboxController];
         MPManagedObjectsController *sharedMOC = [shoebox controllerForManagedObjectClass:cls];
