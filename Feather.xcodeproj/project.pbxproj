@@ -156,6 +156,7 @@
 		D932296617268E37006880C2 /* NSTask+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D932296317268E37006880C2 /* NSTask+MPExtensions.m */; };
 		D990D32617704A7100735807 /* NSTextField+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = D990D32417704A7100735807 /* NSTextField+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D990D32717704A7100735807 /* NSTextField+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D990D32517704A7100735807 /* NSTextField+MPExtensions.m */; };
+		D9FE2FFD19D6F0A000CD224D /* MPAssert.h in Headers */ = {isa = PBXBuildFile; fileRef = D9FE2FFC19D6F0A000CD224D /* MPAssert.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -442,6 +443,7 @@
 		D932296317268E37006880C2 /* NSTask+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTask+MPExtensions.m"; path = "Sources/Categories/NSTask+MPExtensions.m"; sourceTree = "<group>"; };
 		D990D32417704A7100735807 /* NSTextField+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSTextField+MPExtensions.h"; path = "Sources/Categories/NSTextField+MPExtensions.h"; sourceTree = "<group>"; };
 		D990D32517704A7100735807 /* NSTextField+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSTextField+MPExtensions.m"; path = "Sources/Categories/NSTextField+MPExtensions.m"; sourceTree = "<group>"; };
+		D9FE2FFC19D6F0A000CD224D /* MPAssert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPAssert.h; path = Sources/Utilities/MPAssert.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -817,6 +819,7 @@
 		5FDB3A8417079BAC0049EBB5 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				D9FE2FFC19D6F0A000CD224D /* MPAssert.h */,
 				5FDB3A8517079C020049EBB5 /* MPException.h */,
 				5FDB3A8617079C020049EBB5 /* MPException.m */,
 			);
@@ -890,6 +893,7 @@
 				5FDB34541705DB570049EBB5 /* JSONKit.h in Headers */,
 				5FDB3A05170793550049EBB5 /* NSData+Base64.h in Headers */,
 				5FDB3AA81707A36D0049EBB5 /* Feather.h in Headers */,
+				D9FE2FFD19D6F0A000CD224D /* MPAssert.h in Headers */,
 				5FDB3AA91707ABBE0049EBB5 /* MPTreeItem.h in Headers */,
 				5FADC6F118FADB33006F4119 /* DiffMatchPatchCFUtilities.h in Headers */,
 				5FCC021F170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h in Headers */,
@@ -969,7 +973,7 @@
 			name = FeatherTests;
 			productName = FeatherTests;
 			productReference = 5FDB331B1705CB950049EBB5 /* FeatherTests.xctest */;
-			productType = "com.apple.product-type.bundle";
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 

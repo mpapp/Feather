@@ -28,3 +28,4 @@
 #import <Feather/NSNotificationCenter+ErrorNotification.h>
 
 #import "MPException.h"
+#import "MPAssert.h"
