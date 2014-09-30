@@ -749,6 +749,20 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         });
     }
     
+    NSString *md5 = [fm md5DigestStringAtPath:bundledBundlesPath];
+    // TODO: check md5 for attachments also
+    
+    MPMetadata *metadata = [self.db metadata];
+
+    // this version already loaded
+    if ([[metadata getValueOfProperty:checksumKey] isEqualToString:md5])
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            completionHandler(nil);
+        });
+        return;
+    }
+    
     if (![fm copyItemAtPath:bundledBundlesPath toPath:tempBundledBundlesPath error:&err])
     {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -765,32 +779,22 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
             });
         }
     }
-    
-    NSString *md5 = [fm md5DigestStringAtPath:bundledBundlesPath];
-    // TODO: check md5 for attachments also
-    
-    MPMetadata *metadata = [self.db metadata];
-
-    // this version already loaded
-    if ([[metadata getValueOfProperty:checksumKey] isEqualToString:md5])
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(nil);
-        });
-        return;
-    }
 
     //__block BOOL shouldRun = YES;
     
     CBLReplication *replication = nil;
     
     NSError *error = nil;
+    
     if (![self.db pullFromDatabaseAtPath:tempBundledBundlesPath
-                             replication:&replication error:&error])
-    {
+                             replication:&replication error:&error]) { // if failed to START replication
         dispatch_async(dispatch_get_main_queue(), ^{
             completionHandler(error);
         });
+        
+        if (![NSFileManager.defaultManager removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
+            NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
+        
         return;
     }
     replication.delegate = self;
@@ -805,7 +809,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     {
         MPManagedObjectsController *strongSelf = weakSelf;
         CBLReplication *r = note.object;
-        assert(replication == r);
+        NSParameterAssert(replication == r);
         
         [strongSelf processUpdatedBundledDataLoadReplication:replication];
     }];
@@ -820,9 +824,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     [metadata setValue:md5 ofProperty:checksumKey];
 
     if (![NSFileManager.defaultManager removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
-    {
         NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
-    }
     
     MPLog(@"Completed loading resources for %@", self);
 }
