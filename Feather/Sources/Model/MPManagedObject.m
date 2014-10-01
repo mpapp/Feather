@@ -1165,12 +1165,17 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 #pragma mark -
 
-- (NSString *)JSONStringRepresentation:(NSError **)err
+- (NSDictionary *)JSONEncodableDictionaryRepresentation
 {
     NSDictionary *props = self.propertiesToSave;
-    props = [props dictionaryWithObjectsMatching:^BOOL(id evaluatedKey, id evaluatedObject) {
+    return [props dictionaryWithObjectsMatching:^BOOL(id evaluatedKey, id evaluatedObject) {
         return ![evaluatedKey isEqualToString:@"_attachments"];
     }];
+}
+
+- (NSString *)JSONStringRepresentation:(NSError **)err
+{
+    NSDictionary *props = self.JSONEncodableDictionaryRepresentation;
     assert(props);
     
     NSData *data = [CBLJSON dataWithJSONObject:props options:NSJSONWritingPrettyPrinted error:err];
