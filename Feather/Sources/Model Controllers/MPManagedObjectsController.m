@@ -44,7 +44,6 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 @interface MPManagedObjectsController ()  <CBLReplicationDelegate>
 {
     NSSet *_managedObjectSubclasses;
-    dispatch_queue_t _queryQueue;
 }
 @property (readonly, strong) NSMutableDictionary *objectCache;
 
@@ -77,10 +76,6 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     if (self = [super init])
     {
         assert(db);
-
-        _queryQueue = dispatch_queue_create([[NSString stringWithFormat:@"%@.queue",
-                                              NSStringFromClass([self class])] UTF8String],
-                                            DISPATCH_QUEUE_SERIAL);
 
         _packageController = packageController;
         _db = db;
@@ -626,18 +621,15 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 - (NSDictionary *)managedObjectByKeyMapForQueryEnumerator:(CBLQueryEnumerator *)rows
 {
     NSMutableDictionary *entries = [NSMutableDictionary dictionaryWithCapacity:rows.count];
-    for (CBLQueryRow *row in rows)
-    {
-        dispatch_sync(_queryQueue, ^{
+    for (CBLQueryRow *row in rows) {
+        mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.packageController serverQueueToken], ^{
             MPManagedObject *modelObj = (id)[row.document modelObject];
 
-            if (!modelObj)
-            {
+            if (!modelObj) {
                 modelObj = _objectCache[row.document.documentID];
                 modelObj.document = row.document;
 
-                if (!modelObj)
-                {
+                if (!modelObj) {
                     modelObj = [[row.document managedObjectClass] modelForDocument:row.document];
                 }
             }
@@ -661,21 +653,18 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     NSMutableArray* entries = [NSMutableArray arrayWithCapacity:rows.count];
     for (CBLQueryRow* row in rows)
     {
-        dispatch_sync(_queryQueue, ^{
+        mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.packageController serverQueueToken], ^{
             MPManagedObject *modelObj = (MPManagedObject *)[row.document modelObject];
 
-            if (!modelObj)
-            {
+            if (!modelObj) {
                 modelObj = _objectCache[row.document.documentID];
                 modelObj.document = row.document;
 
-                if (!modelObj)
-                {
+                if (!modelObj) {
                     modelObj = [[row.document managedObjectClass] modelForDocument:row.document];
                 }
             }
-            else
-            {
+            else {
                 assert(modelObj.document == row.document);
             }
 
@@ -950,8 +939,6 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 @end
 
 @implementation MPManagedObjectsController (Protected)
-
-- (dispatch_queue_t)queryQueue { return _queryQueue; }
 
 - (void)willSaveObject:(MPManagedObject *)object
 {

@@ -38,7 +38,6 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 {
 }
 
-@property (readonly, strong) dispatch_queue_t queryQueue;
 @property (readwrite, strong) MPMetadata *cachedMetadata;
 @property (readwrite, strong) MPLocalMetadata *cachedLocalMetadata;
 
@@ -96,12 +95,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         
         _currentPulls = [NSMutableSet setWithCapacity:5];
         _currentPushes = [NSMutableSet setWithCapacity:5];
-        
-        _queryQueue =
-            dispatch_queue_create(
-                [[NSString stringWithFormat:@"com.piipari.db[%@][%@]", server.internalURL.path, name] UTF8String],
-                                  DISPATCH_QUEUE_SERIAL);
-                
+                        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(databaseDidChange:)
                                                      name:kCBLDatabaseChangeNotification
@@ -629,7 +623,29 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 @end
 
+typedef void (^CBLDatabaseDoAsyncHandler)();
+
 @implementation CBLDatabase (Feather)
+
++ (void)load
+{
+    /*
+    [CBLDatabase replaceInstanceMethodWithSelector:@selector(doAsync:) implementationBlockProvider:^id(IMP originalImplementation) {
+        return ^(CBLDatabase *receiver, CBLDatabaseDoAsyncHandler block) {
+            if (receiver.packageController) {
+                mp_dispatch_async(receiver.manager.dispatchQueue,
+                                 [receiver.packageController serverQueueToken],
+                                  ^{
+                                      block();
+                                 });
+            }
+            else {
+                originalImplementation(receiver, @selector(doAsync:), block);
+            }
+        };
+    }];
+     */
+}
 
 - (id)managedObjectDatabaseBackpointer
 {
@@ -639,10 +655,12 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 - (id)packageController
 {
     MPDatabase *dbp = [self managedObjectDatabaseBackpointer];
-    assert(dbp);
-    assert([dbp packageController]);
-    assert([[dbp packageController] isKindOfClass:[MPDatabasePackageController class]]);
-    return [dbp packageController];
+    if (!dbp)
+        return nil; // some databases don't have the backpointer set, for instance ones created through replication.
+    
+    assert(dbp.packageController);
+    assert([dbp.packageController isKindOfClass:MPDatabasePackageController.class]);
+    return dbp.packageController;
 }
 
 - (NSArray *)getManagedObjectsWithIDs:(NSArray *)ids
