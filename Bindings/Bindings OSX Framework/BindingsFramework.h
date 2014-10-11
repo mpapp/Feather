@@ -19,3 +19,5 @@ FOUNDATION_EXPORT const unsigned char Bindings_OSX_FrameworkVersionString[];
 
 #import "MPObjectiveCAnalyzer.h"
 #import "MPObjectiveCTokens.h"
+#import "MPObjectiveCToOSAScriptingDictionaryTranslator.h"
+#import "MPObjectiveCToCSharpTranslator.h"

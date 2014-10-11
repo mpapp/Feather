@@ -10,6 +10,8 @@
 #import <XCTest/XCTest.h>
 #import <Bindings/BindingsFramework.h>
 
+#import <Feather/NSArray+MPExtensions.h>
+
 @interface Bindings_OSX_FrameworkTests : XCTestCase
 
 @end
@@ -26,16 +28,41 @@
     [super tearDown];
 }
 
-- (void)testEnumParsing {
+- (MPObjectiveCAnalyzer *)newAnalyzer {
     NSError *err = nil;
     MPObjectiveCAnalyzer *analyzer = [[MPObjectiveCAnalyzer alloc] initWithBundleAtURL:
-     [NSURL fileURLWithPath:@"/Users/mz2/Applications/Manuscripts.app/Contents/Frameworks/BTParse.framework"]
-                                  includedHeaderPaths:@[] error:&err];
+                                      [NSURL fileURLWithPath:@"/Users/mz2/Applications/Manuscripts.app/Contents/Frameworks/BTParse.framework"]
+                                                                 additionalHeaderPaths:@[] error:&err];
     XCTAssert(analyzer && !err, @"No error should occur when initializing the analyzer.");
     
-    for (NSString *includedHeaderPath in analyzer.includedHeaderPaths) {
-        [analyzer enumDeclarationsForHeaderAtPath:includedHeaderPath];
-    }
+    return analyzer;
+}
+
+- (void)testEnumParsing {
+    MPObjectiveCAnalyzer *analyzer = [self newAnalyzer];
+    
+    NSArray *enums = [analyzer.includedHeaderPaths mapObjectsUsingBlock:^id(NSString *headerPath, NSUInteger idx) {
+        return [analyzer enumDeclarationsForHeaderAtPath:headerPath];
+    }];
+    
+    XCTAssertTrue(enums.count == 2, @"Two classes should have been analyzed (%lu)", enums.count);
+    XCTAssertTrue([[[[enums firstObject] firstObject] enumConstants] count] == 2, @"There should be two values");
+    XCTAssertTrue([[[enums firstObject] firstObject] isKindOfClass:MPObjectiveCEnumDeclaration.class], @"Object should be an MPObjectiveCEnumDeclaration");
+    XCTAssertTrue([[[[enums lastObject] firstObject] enumConstants] count] == 0, @"There should be two values");
+}
+
+- (void)testObjCToCSharpTransformation {
+    MPObjectiveCAnalyzer *analyzer = [self newAnalyzer];
+    MPObjectiveCTranslator *translator = [MPObjectiveCToCSharpTranslator new];
+    
+    [analyzer enumerateTranslationUnits:^(NSString *path, CKTranslationUnit *unit) {
+        MPObjectiveCTranslationUnit *tUnit = [analyzer analyzedTranslationUnitForClangKitTranslationUnit:unit atPath:path];
+        NSString *log = [translator translatedEnumDeclarationsForTranslationUnit:tUnit];
+        
+        NSLog(@"%@", log);
+    }];
+    
+    NSLog(@"");
 }
 
 @end

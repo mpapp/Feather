@@ -8,7 +8,20 @@
 
 #import <Foundation/Foundation.h>
 
-@class MPObjectiveCEnumConstant;
+@class MPObjectiveCEnumDeclaration, MPObjectiveCEnumConstant;
+
+@interface MPObjectiveCTranslationUnit : NSObject
+@property (readonly, copy) NSString *path;
+
+@property (readonly) NSArray *enumDeclarations;
+
+@property (readonly) NSArray *constantDeclarations;
+
+- (instancetype)initWithPath:(NSString *)path;
+
+- (void)addEnumDeclaration:(MPObjectiveCEnumDeclaration *)declaration;
+
+@end
 
 @interface MPObjectiveCEnumDeclaration : NSObject
 @property (readonly) NSString *name;
@@ -21,6 +34,13 @@
 - (void)addEnumConstant:(MPObjectiveCEnumConstant *)enumConstant;
 
 @end
+
+
+@interface MPObjectiveCConstantDeclaration : NSObject
+@property (readonly) NSString *name;
+@property (readwrite) NSString *value;
+@end
+
 
 @interface MPObjectiveCEnumConstant : NSObject
 

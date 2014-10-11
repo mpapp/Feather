@@ -11,6 +11,37 @@
 @interface MPObjectiveCEnumDeclaration () {
     NSMutableArray *_enumConstants;
 }
+@end
+
+@interface MPObjectiveCTranslationUnit () {
+    NSMutableArray *_enumDeclarations;
+}
+@end
+
+@implementation MPObjectiveCTranslationUnit
+
+- (instancetype)init {
+    return [self initWithPath:nil];
+}
+
+- (instancetype)initWithPath:(NSString *)path {
+    self = [super init];
+    
+    if (self) {
+        _path = path;
+        _enumDeclarations = [NSMutableArray new];
+    }
+    
+    return self;
+}
+
+- (NSArray *)enumDeclarations {
+    return _enumDeclarations.copy;
+}
+
+- (void)addEnumDeclaration:(MPObjectiveCEnumDeclaration *)declaration {
+    [_enumDeclarations addObject:declaration];
+}
 
 @end
 
@@ -46,13 +77,30 @@
 }
 
 - (NSString *)description {
-    return [NSString stringWithFormat:@"[name:%@ backingType:%@ enumConstants:%@]", self.name, self.backingType, self.description];
+    return [NSString stringWithFormat:
+                @"[name:%@ backingType:%@ enumConstants:%@]",
+            self.name, self.backingType, [self.enumConstants valueForKey:@"description"]];
 }
 
 - (NSString *)debugDescription {
     return self.description;
 }
 
+@end
+
+#pragma mark - 
+
+@implementation MPObjectiveCConstantDeclaration
+
+- (instancetype)initWithName:(NSString *)name {
+    self = [super init];
+    
+    if (self) {
+        _name = name;
+    }
+    
+    return self;
+}
 
 @end
 

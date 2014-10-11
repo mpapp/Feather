@@ -21,6 +21,14 @@
 		5F15615219E9A8B700A6C581 /* CouchbaseLiteListener.framework in Copy Frameworks & Libraries */ = {isa = PBXBuildFile; fileRef = 5FA859EB19E8A9DF00161A21 /* CouchbaseLiteListener.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5F15615419E9A8C200A6C581 /* Feather.framework in Copy Frameworks & Libraries */ = {isa = PBXBuildFile; fileRef = 5FA859C619E8A8AA00161A21 /* Feather.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5F15615519E9A8CD00A6C581 /* ClangKit.framework in Copy Frameworks & Libraries */ = {isa = PBXBuildFile; fileRef = 5FA8590D19E8291700161A21 /* ClangKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5F15615C19E9B69C00A6C581 /* MPObjectiveCTranslator.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F15615A19E9B69C00A6C581 /* MPObjectiveCTranslator.h */; };
+		5F15615D19E9B69C00A6C581 /* MPObjectiveCTranslator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F15615B19E9B69C00A6C581 /* MPObjectiveCTranslator.m */; };
+		5F15616119E9B7A200A6C581 /* MPObjectiveCToOSAScriptingDictionaryTranslator.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F15615F19E9B7A200A6C581 /* MPObjectiveCToOSAScriptingDictionaryTranslator.h */; };
+		5F15616219E9B7A200A6C581 /* MPObjectiveCToOSAScriptingDictionaryTranslator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F15616019E9B7A200A6C581 /* MPObjectiveCToOSAScriptingDictionaryTranslator.m */; };
+		5F15616519E9B7BA00A6C581 /* MPObjectiveCToCSharpTranslator.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F15616319E9B7BA00A6C581 /* MPObjectiveCToCSharpTranslator.h */; };
+		5F15616619E9B7BA00A6C581 /* MPObjectiveCToCSharpTranslator.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F15616419E9B7BA00A6C581 /* MPObjectiveCToCSharpTranslator.m */; };
+		5F15617719E9CCBF00A6C581 /* MPIndentedMutableString.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F15617519E9CCBF00A6C581 /* MPIndentedMutableString.h */; };
+		5F15617819E9CCBF00A6C581 /* MPIndentedMutableString.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F15617619E9CCBF00A6C581 /* MPIndentedMutableString.m */; };
 		5F3A435719E8AF3100105889 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3A435619E8AF3100105889 /* main.m */; };
 		5F3A436D19E8AF3E00105889 /* Bindings-CLI in Copy Executables */ = {isa = PBXBuildFile; fileRef = 5F3A435419E8AF3100105889 /* Bindings-CLI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		5F82EFB819E8B1B30055A4FD /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F82EFB719E8B1B30055A4FD /* main.m */; };
@@ -330,6 +338,14 @@
 /* Begin PBXFileReference section */
 		5F15612019E9A13E00A6C581 /* MPObjectiveCTokens.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPObjectiveCTokens.h; sourceTree = "<group>"; };
 		5F15612119E9A13E00A6C581 /* MPObjectiveCTokens.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPObjectiveCTokens.m; sourceTree = "<group>"; };
+		5F15615A19E9B69C00A6C581 /* MPObjectiveCTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPObjectiveCTranslator.h; sourceTree = "<group>"; };
+		5F15615B19E9B69C00A6C581 /* MPObjectiveCTranslator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPObjectiveCTranslator.m; sourceTree = "<group>"; };
+		5F15615F19E9B7A200A6C581 /* MPObjectiveCToOSAScriptingDictionaryTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPObjectiveCToOSAScriptingDictionaryTranslator.h; sourceTree = "<group>"; };
+		5F15616019E9B7A200A6C581 /* MPObjectiveCToOSAScriptingDictionaryTranslator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPObjectiveCToOSAScriptingDictionaryTranslator.m; sourceTree = "<group>"; };
+		5F15616319E9B7BA00A6C581 /* MPObjectiveCToCSharpTranslator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPObjectiveCToCSharpTranslator.h; sourceTree = "<group>"; };
+		5F15616419E9B7BA00A6C581 /* MPObjectiveCToCSharpTranslator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPObjectiveCToCSharpTranslator.m; sourceTree = "<group>"; };
+		5F15617519E9CCBF00A6C581 /* MPIndentedMutableString.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPIndentedMutableString.h; sourceTree = "<group>"; };
+		5F15617619E9CCBF00A6C581 /* MPIndentedMutableString.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPIndentedMutableString.m; sourceTree = "<group>"; };
 		5F3A435419E8AF3100105889 /* Bindings-CLI */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Bindings-CLI"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F3A435619E8AF3100105889 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		5F82EFB719E8B1B30055A4FD /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -417,23 +433,49 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		5F3A435519E8AF3100105889 /* Bindings-CLI */ = {
+		5F15615919E9B65D00A6C581 /* Analysis */ = {
+			isa = PBXGroup;
+			children = (
+				5FA858F719E825D600161A21 /* MPObjectiveCAnalyzer.h */,
+				5FA858F819E825D600161A21 /* MPObjectiveCAnalyzer.m */,
+				5F15612019E9A13E00A6C581 /* MPObjectiveCTokens.h */,
+				5F15612119E9A13E00A6C581 /* MPObjectiveCTokens.m */,
+			);
+			name = Analysis;
+			sourceTree = "<group>";
+		};
+		5F15615E19E9B6A100A6C581 /* Translation */ = {
+			isa = PBXGroup;
+			children = (
+				5F15615A19E9B69C00A6C581 /* MPObjectiveCTranslator.h */,
+				5F15615B19E9B69C00A6C581 /* MPObjectiveCTranslator.m */,
+				5F15616319E9B7BA00A6C581 /* MPObjectiveCToCSharpTranslator.h */,
+				5F15616419E9B7BA00A6C581 /* MPObjectiveCToCSharpTranslator.m */,
+				5F15615F19E9B7A200A6C581 /* MPObjectiveCToOSAScriptingDictionaryTranslator.h */,
+				5F15616019E9B7A200A6C581 /* MPObjectiveCToOSAScriptingDictionaryTranslator.m */,
+				5F15617519E9CCBF00A6C581 /* MPIndentedMutableString.h */,
+				5F15617619E9CCBF00A6C581 /* MPIndentedMutableString.m */,
+			);
+			name = Translation;
+			sourceTree = "<group>";
+		};
+		5F3A435519E8AF3100105889 /* Bindings Command Line */ = {
 			isa = PBXGroup;
 			children = (
 				5F3A435619E8AF3100105889 /* main.m */,
 			);
+			name = "Bindings Command Line";
 			path = "Bindings-CLI";
 			sourceTree = "<group>";
 		};
 		5FA858D619E8242700161A21 = {
 			isa = PBXGroup;
 			children = (
-				5FA8597819E8A57400161A21 /* Bindings */,
-				5FA8591919E894FE00161A21 /* Bindings OSX Framework */,
+				5FA8597819E8A57400161A21 /* Bindings App */,
+				5F3A435519E8AF3100105889 /* Bindings Command Line */,
+				5FA8591919E894FE00161A21 /* Bindings Framework */,
 				5FA8592319E894FF00161A21 /* Bindings OSX FrameworkTests */,
-				5F3A435519E8AF3100105889 /* Bindings-CLI */,
 				5FA8598C19E8A57400161A21 /* BindingsTests */,
-				5FA858FA19E826CA00161A21 /* External */,
 				5FA8599719E8A58400161A21 /* Linked Frameworks & Libraries */,
 				5FA858E019E8242700161A21 /* Products */,
 			);
@@ -451,13 +493,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5FA858FA19E826CA00161A21 /* External */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = External;
-			sourceTree = "<group>";
-		};
 		5FA8590819E8291600161A21 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -467,16 +502,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5FA8591919E894FE00161A21 /* Bindings OSX Framework */ = {
+		5FA8591919E894FE00161A21 /* Bindings Framework */ = {
 			isa = PBXGroup;
 			children = (
 				5FA8591C19E894FE00161A21 /* BindingsFramework.h */,
-				5FA858F719E825D600161A21 /* MPObjectiveCAnalyzer.h */,
-				5FA858F819E825D600161A21 /* MPObjectiveCAnalyzer.m */,
-				5F15612019E9A13E00A6C581 /* MPObjectiveCTokens.h */,
-				5F15612119E9A13E00A6C581 /* MPObjectiveCTokens.m */,
+				5F15615919E9B65D00A6C581 /* Analysis */,
+				5F15615E19E9B6A100A6C581 /* Translation */,
 				5FA8591A19E894FE00161A21 /* Supporting Files */,
 			);
+			name = "Bindings Framework";
 			path = "Bindings OSX Framework";
 			sourceTree = "<group>";
 		};
@@ -505,7 +539,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		5FA8597819E8A57400161A21 /* Bindings */ = {
+		5FA8597819E8A57400161A21 /* Bindings App */ = {
 			isa = PBXGroup;
 			children = (
 				5FA8597D19E8A57400161A21 /* AppDelegate.h */,
@@ -515,6 +549,7 @@
 				5FA8597919E8A57400161A21 /* Supporting Files */,
 				5F82EFB719E8B1B30055A4FD /* main.m */,
 			);
+			name = "Bindings App";
 			path = Bindings;
 			sourceTree = "<group>";
 		};
@@ -604,7 +639,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FA8591D19E894FE00161A21 /* BindingsFramework.h in Headers */,
+				5F15615C19E9B69C00A6C581 /* MPObjectiveCTranslator.h in Headers */,
 				5F15612219E9A13E00A6C581 /* MPObjectiveCTokens.h in Headers */,
+				5F15617719E9CCBF00A6C581 /* MPIndentedMutableString.h in Headers */,
+				5F15616119E9B7A200A6C581 /* MPObjectiveCToOSAScriptingDictionaryTranslator.h in Headers */,
+				5F15616519E9B7BA00A6C581 /* MPObjectiveCToCSharpTranslator.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -955,8 +994,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F15616219E9B7A200A6C581 /* MPObjectiveCToOSAScriptingDictionaryTranslator.m in Sources */,
 				5F15612319E9A13E00A6C581 /* MPObjectiveCTokens.m in Sources */,
 				5FA8599819E8A5CD00161A21 /* MPObjectiveCAnalyzer.m in Sources */,
+				5F15615D19E9B69C00A6C581 /* MPObjectiveCTranslator.m in Sources */,
+				5F15617819E9CCBF00A6C581 /* MPIndentedMutableString.m in Sources */,
+				5F15616619E9B7BA00A6C581 /* MPObjectiveCToCSharpTranslator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1271,7 +1314,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = "$(HOME)";
@@ -1298,7 +1341,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEPLOYMENT_LOCATION = YES;
 				DSTROOT = "$(HOME)";
