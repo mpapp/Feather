@@ -525,6 +525,20 @@
 			name = "Full Text Search";
 			sourceTree = "<group>";
 		};
+		5FA858A219E784DA00161A21 /* Bindings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Bindings;
+			sourceTree = "<group>";
+		};
+		5FA858CF19E8231C00161A21 /* Bindings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Bindings;
+			sourceTree = "<group>";
+		};
 		5FADC6D218FADB11006F4119 /* google-diff-match-patch */ = {
 			isa = PBXGroup;
 			children = (
@@ -560,6 +574,8 @@
 				5F6414AB19A2A859007E5245 /* Scripting */,
 				5FDB330C1705CB950049EBB5 /* Feather */,
 				5FDB33221705CB950049EBB5 /* FeatherTests */,
+				5FA858A219E784DA00161A21 /* Bindings */,
+				5FA858CF19E8231C00161A21 /* Bindings */,
 				5FDB33051705CB950049EBB5 /* Frameworks */,
 				5FDB33041705CB950049EBB5 /* Products */,
 				5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */,

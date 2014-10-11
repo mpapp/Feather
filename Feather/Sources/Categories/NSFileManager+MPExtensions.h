@@ -34,5 +34,6 @@ typedef NS_ENUM(NSUInteger, MPFileTargetErrorCode)
 
 - (NSURL *)URLForApplicationSupportDirectoryNamed:(NSString *)subpath;
 
+- (NSArray *)recursivePathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)directoryPath;
 
 @end

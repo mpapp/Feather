@@ -168,4 +168,26 @@ NSString * const NSFileManagerFeatherExtensionsErrorDomain = @"NSFileManagerFeat
     return URL;
 }
 
+// taken from http://stackoverflow.com/questions/5836587/how-do-i-get-all-resource-paths-in-my-bundle-recursively-in-ios
+- (NSArray *)recursivePathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)directoryPath{
+    
+    NSMutableArray *filePaths = [NSMutableArray new];
+    
+    // Enumerators are recursive
+    NSDirectoryEnumerator *enumerator = [self enumeratorAtPath:directoryPath];
+    
+    NSString *filePath;
+    
+    while ((filePath = [enumerator nextObject]) != nil){
+        
+        // If we have the right type of file, add it to the list
+        // Make sure to prepend the directory path
+        if([[filePath pathExtension] isEqualToString:type]){
+            [filePaths addObject:[directoryPath stringByAppendingPathComponent:filePath]];
+        }
+    }
+    
+    return filePaths;
+}
+
 @end
