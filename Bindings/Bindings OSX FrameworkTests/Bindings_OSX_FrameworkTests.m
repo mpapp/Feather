@@ -32,6 +32,10 @@
      [NSURL fileURLWithPath:@"/Users/mz2/Applications/Manuscripts.app/Contents/Frameworks/BTParse.framework"]
                                   includedHeaderPaths:@[] error:&err];
     XCTAssert(analyzer && !err, @"No error should occur when initializing the analyzer.");
+    
+    for (NSString *includedHeaderPath in analyzer.includedHeaderPaths) {
+        [analyzer enumDeclarationsForHeaderAtPath:includedHeaderPath];
+    }
 }
 
 @end

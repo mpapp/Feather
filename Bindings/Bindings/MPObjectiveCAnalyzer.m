@@ -99,14 +99,33 @@
     __block MPObjectiveCEnumDeclaration *currentEnum = nil;
     __block MPObjectiveCEnumConstant *currentEnumConstant = nil;
     
+    NSMutableArray *currentMacroExpansions = [NSMutableArray new];
+    
     [self enumerateTokensForCompilationUnitAtPath:includedHeaderPath
                                      forEachToken:
      ^(CKTranslationUnit *unit, CKToken *token) {
          
          [self logToken:token headerPath:includedHeaderPath];
          
-         if (token.cursor.kind == CKCursorKindEnumDecl) {
-             currentEnum = [[MPObjectiveCEnumDeclaration alloc] initWithName:token.cursor.displayName];
+         if (token.cursor.kind == CKCursorKindMacroExpansion) {
+             
+             // append to currentMacroExpansions only if the identifier is NS_ENUM
+             // or if there is already a macro expansion being expanded.
+             if (([token.cursor.displayName isEqualToString:@"NS_ENUM"]
+                 || currentMacroExpansions.count > 0)
+                 && ![currentMacroExpansions containsObject:@"NS_ENUM"]) {
+                 [currentMacroExpansions addObject:token.cursor.displayName];
+             }
+         }
+         else if (token.cursor.kind == CKCursorKindEnumDecl) {
+             
+             MPObjectiveCEnumDeclaration *cursorEnum = [[MPObjectiveCEnumDeclaration alloc] initWithName:token.cursor.displayName];
+             
+             if ([cursorEnum isEqual:currentEnum])
+                 return;
+             
+             currentEnum = cursorEnum;
+             [currentMacroExpansions removeAllObjects];
              
              NSAssert(![enums containsObject:currentEnum],
                       @"Same enum name should be declared just once in a compilation unit.");
@@ -131,9 +150,11 @@
              
              NSNumberFormatter *f = [NSNumberFormatter new];
              f.numberStyle = NSNumberFormatterDecimalStyle;
-             NSParameterAssert(token.cursor.displayName.length > 0);
+             //NSParameterAssert();
              
-             constant.value = [f numberFromString:token.cursor.displayName];
+             if (token.cursor.displayName.length > 0) {
+                 constant.value = [f numberFromString:token.cursor.displayName];
+             }
         }
          else {
              NSAssert(false, @"This should be unreachable");
@@ -142,15 +163,20 @@
          prevToken = token;
     } matchingPattern:
      ^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token) {
-         BOOL isEnum
-            = token.kind == CKTokenKindIdentifier
-                                && (token.cursor.kind == CKCursorKindEnumConstantDecl
-                                    || token.cursor.kind == CKCursorKindEnumDecl);
+         [self logToken:token headerPath:path];
+         
+         BOOL isEnumDeclaration = (token.kind == CKTokenKindPunctuation && token.cursor.kind == CKCursorKindEnumDecl);
+         BOOL isEnumConstDeclaration = (token.kind == CKTokenKindIdentifier && token.cursor.kind == CKCursorKindEnumConstantDecl);
          
          BOOL isIntegralLiteral
-            = token.kind == CKTokenKindLiteral && token.cursor.kind == CKCursorKindIntegerLiteral;
+            = token.kind == CKTokenKindLiteral
+            && token.cursor.kind == CKCursorKindIntegerLiteral;
          
-         return (isEnum || isIntegralLiteral);
+         BOOL isIdentifierMacroExpansion
+             = token.kind == CKTokenKindIdentifier
+            && token.cursor.kind == CKCursorKindMacroExpansion;
+         
+         return (isEnumDeclaration || isEnumConstDeclaration || isIntegralLiteral || isIdentifierMacroExpansion);
      }];
     
     return enums.copy;
@@ -158,9 +184,10 @@
 
 - (void)logToken:(CKToken *)token headerPath:(NSString *)headerPath {
     fprintf(stdout, "%s\n",
-            [NSString stringWithFormat:@"%@, %lu: %@ (token kind: %lu, cursor kind: %lu, %@)",
+            [NSString stringWithFormat:@"%@, %lu: %@, %@ (token kind: %lu, cursor kind: %lu, %@)",
              headerPath.lastPathComponent,
              token.line,
+             token.spelling,
              token.cursor.displayName,
              token.kind,
              token.cursor.kind,

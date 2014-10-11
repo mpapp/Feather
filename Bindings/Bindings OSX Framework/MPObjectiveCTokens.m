@@ -45,6 +45,15 @@
     return _enumConstants.copy;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"[name:%@ backingType:%@ enumConstants:%@]", self.name, self.backingType, self.description];
+}
+
+- (NSString *)debugDescription {
+    return self.description;
+}
+
+
 @end
 
 #pragma mark -
@@ -71,6 +80,14 @@
 - (BOOL)isEqual:(id)object {
     return [object isKindOfClass:self.class]
         && [[object name] isEqualToString:self.name];
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"[name:%@ value:%@]", self.name, self.value];
+}
+
+- (NSString *)debugDescription {
+    return self.description;
 }
 
 @end
