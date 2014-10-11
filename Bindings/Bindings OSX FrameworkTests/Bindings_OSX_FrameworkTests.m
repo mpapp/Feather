@@ -55,14 +55,16 @@
     MPObjectiveCAnalyzer *analyzer = [self newAnalyzer];
     MPObjectiveCTranslator *translator = [MPObjectiveCToCSharpTranslator new];
     
+    NSMutableArray *enumDeclarations = [NSMutableArray new];
     [analyzer enumerateTranslationUnits:^(NSString *path, CKTranslationUnit *unit) {
         MPObjectiveCTranslationUnit *tUnit = [analyzer analyzedTranslationUnitForClangKitTranslationUnit:unit atPath:path];
-        NSString *log = [translator translatedEnumDeclarationsForTranslationUnit:tUnit];
         
-        NSLog(@"%@", log);
+        [enumDeclarations addObject:[translator translatedEnumDeclarationsForTranslationUnit:tUnit]];
     }];
     
-    NSLog(@"");
+    BOOL enumDeclarationsMatchExpectation = [enumDeclarations.firstObject isEqualToString:@"public enum MPSalmon\n{\n        MPFoobarUnknown = 0,\n        MPFoobarSomethingElse = 20\n}\n"];
+    
+    XCTAssertTrue(enumDeclarationsMatchExpectation, @"Unepected enum declarations: %@", enumDeclarations.firstObject);
 }
 
 @end
