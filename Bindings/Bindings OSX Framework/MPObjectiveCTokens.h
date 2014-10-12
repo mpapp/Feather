@@ -93,6 +93,8 @@
 @interface MPObjectiveCProtocolDeclaration : NSObject
 
 @property (readonly, copy) NSString *name;
+@property (copy) NSString *type;
+
 @property (readonly, copy) NSArray *conformedProtocols;
 
 @property (readonly) NSArray *methodDeclarations;
@@ -108,7 +110,13 @@
 
 @interface MPObjectiveCPropertyDeclaration : NSObject
 @property (readonly, copy) NSString *name;
-@property (readonly, copy) NSString *type;
+@property (copy) NSString *type;
+
+@property NSString *ownershipAttribute;
+@property BOOL isReadWrite;
+@property BOOL isObjectType;
+@property NSString *getterName;
+@property NSString *setterName;
 
 - (instancetype)initWithName:(NSString *)name type:(NSString *)type;
 

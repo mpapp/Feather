@@ -79,7 +79,7 @@
 - (void)testClassDeclarationParsing {
     NSError *err = nil;
     MPObjectiveCAnalyzer *analyzer
-        = [[MPObjectiveCAnalyzer alloc] initWithObjectiveCHeaderText:@"@interface MPFoo : NSObject <X,Y,Z>\n@end\n" additionalHeaderPaths:@[] error:&err];
+        = [[MPObjectiveCAnalyzer alloc] initWithObjectiveCHeaderText:@"@interface MPFoo : NSObject <X,Y,Z>\n@property (readwrite, copy) NSArray *schoolOfSalmon;\n @end\n" additionalHeaderPaths:@[] error:&err];
     XCTAssert(analyzer && !err, @"No error should occur when initializing the analyzer.");
     XCTAssert(analyzer.includedHeaderPaths.count == 1, @"There should be a single included header (%lu)", analyzer.includedHeaderPaths.count);
     
@@ -91,8 +91,16 @@
     XCTAssertTrue([classDec.superClassName isEqualToString:@"NSObject"], @"Superclass name should match expectation (%@)", classDec.superClassName);
     XCTAssertTrue(classDec.conformedProtocols.count == 3, @"The class should conform to three classes.");
     
-    BOOL protocolNamesMatchExpectation = [[classDec.conformedProtocols valueForKey:@"name"] isEqualToArray:@[@"X",@"Y",@"Z"]];
-    XCTAssertTrue(protocolNamesMatchExpectation, @"Protocol names should match expectation (%@)", [classDec.conformedProtocols valueForKey:@"name"]);
+    BOOL protocolNamesMatchExpectation = [classDec.conformedProtocols isEqualToArray:@[@"X",@"Y",@"Z"]];
+    XCTAssertTrue(protocolNamesMatchExpectation, @"Protocol names should match expectation (%@)", classDec.conformedProtocols);
+    
+    XCTAssertTrue(classDec.propertyDeclarations.count == 1, @"Class should have one property declaration (%lu).", classDec.propertyDeclarations.count);
+    MPObjectiveCPropertyDeclaration *propDec = [classDec.propertyDeclarations firstObject];
+    XCTAssertTrue([propDec.name isEqualToString:@"schoolOfSalmon"], @"Property name should match expectation (%@)", propDec.name);
+    XCTAssertTrue([propDec.type isEqualToString:@"NSArray"] , @"Property type should match expectation (%@)", propDec.type);
+    XCTAssertTrue(propDec.isObjectType, @"Property should be object-typed");
+    XCTAssertTrue([propDec.ownershipAttribute isEqualToString:@"copy"], @"Property ownership attribute should match expectation (%@)", propDec.ownershipAttribute);
+    
 }
 
 - (void)testObjCToCSharpTransformation {

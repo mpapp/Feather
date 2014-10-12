@@ -414,44 +414,122 @@
     
     __block NSString *currentClassName = nil;
     __block MPObjectiveCClassDeclaration *currentClass = nil;
-    __block NSMutableArray *currentPunctuation = [NSMutableArray new];
+    __block NSMutableArray *currentClassPunctuation = [NSMutableArray new];
+    
+    __block NSString *currentPropertyName = nil;
+    __block BOOL currentPropertyIsReadwrite = YES;
+    __block BOOL currentPropertyIsObjectType = NO;
+    __block NSString *currentPropertyType = nil;
+    __block NSString *currentPropertyOwnership = nil;
+    __block NSString *currentPropertyGetterName = nil;
+    __block NSString *currentPropertySetterName = nil;
+    
+    __block MPObjectiveCPropertyDeclaration *currentPropDef = nil;
+    __block NSMutableArray *currentPropertyPunctuation = [NSMutableArray new];
+    __block NSMutableArray *currentPropertyIdentifiers = [NSMutableArray new];
     
     [self enumerateTokensForCompilationUnitAtPath:includedHeaderPath
                                      forEachToken:^(CKTranslationUnit *unit, CKToken *token)
     {
-        // we're at the '@' -- reset the current state
-        if ([token.spelling isEqualToString:@"@"]) {
-            currentClassName = nil;
-            currentClass = nil;
-            [currentPunctuation removeAllObjects];
+        if (token.cursor.kind == CKCursorKindObjCInterfaceDecl) {
+            // we're at the '@' -- reset the current state
+            if ([token.spelling isEqualToString:@"@"]) {
+                currentClassName = nil;
+                currentClass = nil;
+                [currentClassPunctuation removeAllObjects];
+                
+                [currentClassPunctuation addObject:token.spelling];
+                return;
+            }
             
-            [currentPunctuation addObject:token.spelling];
-            return;
+            if (token.kind == CKTokenKindPunctuation)
+                [currentClassPunctuation addObject:token.spelling];
+            
+            if (![currentClassPunctuation containsObject:@":"]) {
+                if (token.kind == CKTokenKindIdentifier)  // class name
+                    currentClassName = token.spelling;
+                
+            } else if (![currentClassPunctuation containsObject:@"<"]) { // beyond class name, not yet in protocol conformance declarations
+                
+                if (token.kind == CKTokenKindIdentifier) {
+                    currentClass = [[MPObjectiveCClassDeclaration alloc] initWithName:currentClassName
+                                                                       superClassName:token.spelling];
+                    
+                    [classes addObject:currentClass];
+                }
+                
+            } else { // we're in the protocol declarations
+                
+                if (token.kind == CKTokenKindIdentifier) {
+                    NSParameterAssert(currentClass);
+                    [currentClass addConformedProtocol:token.spelling];
+                }
+            }
         }
         
-        if (token.kind == CKTokenKindPunctuation)
-            [currentPunctuation addObject:token.spelling];
-
-        if (![currentPunctuation containsObject:@":"]) {
-            if (token.kind == CKTokenKindIdentifier)  // class name
-                currentClassName = token.spelling;
+        if (token.cursor.kind == CKCursorKindObjCPropertyDecl) {
             
-        } else if (![currentPunctuation containsObject:@"<"]) { // beyond class name, not yet in protocol conformance declarations
-            
-            if (token.kind == CKTokenKindIdentifier) {
-                currentClass = [[MPObjectiveCClassDeclaration alloc] initWithName:currentClassName
-                                                                   superClassName:token.spelling];
+            // beginning of the line has the token '%@' - use it to reset state.
+            if ([token.spelling isEqualToString:@"@"]) {
+                currentPropDef = nil;
                 
-                [classes addObject:currentClass];
+                currentPropertyName = nil;
+                currentPropertyIsReadwrite = YES;
+                currentPropertyIsObjectType = NO;
+                
+                currentPropertyType = nil;
+                currentPropertyOwnership = nil;
+                currentPropertyGetterName = nil;
+                currentPropertySetterName = nil;
+                
+                [currentPropertyPunctuation removeAllObjects];
+                [currentPropertyIdentifiers removeAllObjects];
+                
+                [currentPropertyPunctuation addObject:token.spelling];
+                return;
             }
             
-        } else { // we're in the protocol declarations
-            
-            if (token.kind == CKTokenKindIdentifier) {
-                NSParameterAssert(currentClass);
-                [currentClass addConformedProtocol:token.spelling];
+            if (token.kind == CKTokenKindPunctuation) {
+                if ([token.spelling isEqualToString:@"*"]) {
+                    currentPropertyIsObjectType = YES;
+                }
+                
+                [currentPropertyPunctuation addObject:token.spelling];
             }
             
+            BOOL attributesClosed = ([currentPropertyPunctuation containsObject:@"("]
+                                  && [currentPropertyPunctuation containsObject:@")"]);
+            BOOL hasNoAttributes = (![currentPropertyPunctuation containsObject:@"("]
+                                    && ![currentPropertyPunctuation containsObject:@")"]);
+            
+            if (attributesClosed || hasNoAttributes) {
+                
+                if (token.kind == CKTokenKindIdentifier) {
+                    [currentPropertyIdentifiers addObject:token.spelling];
+                    
+                    if (currentPropertyIdentifiers.count == 2) {
+                        currentPropDef = [[MPObjectiveCPropertyDeclaration alloc] initWithName:currentPropertyIdentifiers[1]
+                                                                                          type:currentPropertyIdentifiers[0]];
+                        currentPropDef.isReadWrite = currentPropertyIsReadwrite;
+                        currentPropDef.isObjectType = currentPropertyIsObjectType;
+                        currentPropDef.ownershipAttribute = currentPropertyOwnership;
+                        currentPropDef.getterName = currentPropertyGetterName;
+                        currentPropDef.setterName = currentPropertySetterName;
+                        [currentClass addPropertyDeclaration:currentPropDef];
+                    }
+                }
+            }
+            else if ([currentPropertyPunctuation containsObject:@"("]) {
+                
+                if (token.kind == CKTokenKindIdentifier) {
+                    if ([token.spelling isEqualToString:@"readwrite"])
+                        currentPropertyIsReadwrite = YES;
+                    if ([token.spelling isEqualToString:@"readonly"])
+                        currentPropertyIsReadwrite = NO;
+                    if ([@[@"copy", @"assign", @"weak", @"strong", @"retain"] containsObject:token.spelling])
+                        currentPropertyOwnership = token.spelling;
+                }
+            }
         }
         
     } matchingPattern:^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token)
@@ -464,7 +542,15 @@
         BOOL isInterfacePunctuation = token.kind == CKTokenKindPunctuation
             && token.cursor.kind == CKCursorKindObjCInterfaceDecl;
         
-        return isInterfaceIdentifierToken || isInterfacePunctuation;
+        BOOL isPropertyIdentifierToken = token.kind == CKTokenKindIdentifier && token.cursor.kind == CKCursorKindObjCPropertyDecl;
+        BOOL isPropertyPunctuation = token.kind == CKTokenKindPunctuation && token.cursor.kind == CKCursorKindObjCPropertyDecl;
+        BOOL isPropertyKeyword = token.kind == CKTokenKindKeyword && token.cursor.kind == CKCursorKindObjCPropertyDecl;
+        
+        return isInterfaceIdentifierToken
+            || isInterfacePunctuation
+            || isPropertyIdentifierToken
+            || isPropertyPunctuation
+            || isPropertyKeyword;
     }];
     
     return classes.copy;
