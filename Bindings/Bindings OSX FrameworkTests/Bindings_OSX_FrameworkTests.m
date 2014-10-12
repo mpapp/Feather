@@ -83,6 +83,7 @@
 @property (readwrite, copy, getter=tehSalmon, setter=setSalmonsToSlap) NSArray *schoolOfSalmon;\n\
 - (instancetype)initWithBundleAtURL:(NSURL *)url additionalHeaderPaths:(NSArray *)includedHeaders error:(NSError **)error;\n\
 + (MPObjectiveCClassDeclaration *)classWithName:(NSString *)name;\n\
+- (id)justSomeObject;\n\
 \n@end\n" additionalHeaderPaths:@[] error:&err];
     XCTAssert(analyzer && !err, @"No error should occur when initializing the analyzer.");
     XCTAssert(analyzer.includedHeaderPaths.count == 1, @"There should be a single included header (%lu)", analyzer.includedHeaderPaths.count);
@@ -114,10 +115,24 @@
     XCTAssertTrue([propDec.getterName isEqualToString:@"tehSalmon"],
                   @"Custom getter was correctly detected (%@).", propDec.getterName);
     
-    XCTAssertTrue(classDec.instanceMethodDeclarations.count == 1,
+    XCTAssertTrue(classDec.instanceMethodDeclarations.count == 2,
                   @"There should be a single instance method (%lu)", classDec.instanceMethodDeclarations.count);
+    
+    MPObjectiveCInstanceMethodDeclaration *im1 = classDec.instanceMethodDeclarations[0];
+    XCTAssertTrue([im1.selector isEqualToString:@"initWithBundleAtURL:additionalHeaderPaths:error:"],
+                  @"Unexpected selector: %@", im1.selector);
+    XCTAssertTrue([im1.returnType isEqualToString:@"instancetype"], @"Unexpected return type: %@", im1.returnType);
+    
+    MPObjectiveCInstanceMethodDeclaration *im2 = classDec.instanceMethodDeclarations[1];
+    XCTAssertTrue([im2.selector isEqualToString:@"justSomeObject"]);
+    XCTAssertTrue([im2.returnType isEqualToString:@"id"], @"Unexpected return type: %@", im2.returnType);
+    
     XCTAssertTrue(classDec.classMethodDeclarations.count == 1,
                   @"There should be a single class method (%lu)", classDec.classMethodDeclarations.count);
+    
+    MPObjectiveCClassMethodDeclaration *cm1 = [[classDec classMethodDeclarations] firstObject];
+    XCTAssertTrue([cm1.returnType isEqualToString:@"MPObjectiveCClassDeclaration"]);
+    XCTAssertTrue([cm1.selector isEqualToString:@"classWithName:"]);
 }
 
 - (void)testObjCToCSharpTransformation {

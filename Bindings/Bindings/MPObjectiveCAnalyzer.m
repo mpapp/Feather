@@ -577,7 +577,7 @@
                 currentMethodSelectorComponents = [NSMutableArray new];
                 
                 currentMethodIsClassMethod = [token.spelling isEqualToString:@"+"];
-                currentMethodSelector = [NSString stringWithFormat:@"%@%@", token.spelling, token.cursor.displayName];
+                currentMethodSelector = token.cursor.displayName.copy;
                 
                 [currentMethodPunctuation addObject:token.spelling];
                 return;
@@ -702,7 +702,8 @@
 
 - (void)logToken:(CKToken *)token headerPath:(NSString *)headerPath {
     fprintf(stdout, "%s\n",
-            [NSString stringWithFormat:@"%@, %lu: %@, %@ (token kind: %lu, cursor kind: %lu, %@; semantic parent:%lu, %@; lexical parent:%lu, %@)",
+            [NSString stringWithFormat:
+             @"%@, %lu: %@, %@ (token kind: %lu, cursor kind: %lu, %@; semantic parent:%lu, %@; lexical parent:%lu, %@)",
              headerPath.lastPathComponent,
              token.line,
              token.spelling,
@@ -713,8 +714,7 @@
              token.cursor.semanticParent.kind,
              token.cursor.semanticParent.kindSpelling,
              token.cursor.lexicalParent.kind,
-             token.cursor.lexicalParent.kindSpelling].UTF8String
-            );
+             token.cursor.lexicalParent.kindSpelling].UTF8String);
 }
 
 @end

@@ -147,6 +147,7 @@
 @property (readonly, copy) NSString *selector;
 @property (readonly, copy) NSString *returnType;
 @property (readonly, copy) NSArray *parameters;
+@property BOOL returnsObjectType;
 
 - (instancetype)initWithSelector:(NSString *)selector returnType:(NSString *)returnType;
 
