@@ -424,9 +424,11 @@
     __block NSString *currentPropertyGetterName = nil;
     __block NSString *currentPropertySetterName = nil;
     
+    
     __block MPObjectiveCPropertyDeclaration *currentPropDef = nil;
     __block NSMutableArray *currentPropertyPunctuation = [NSMutableArray new];
     __block NSMutableArray *currentPropertyIdentifiers = [NSMutableArray new];
+    __block NSMutableArray *currentPropertyAttributeIdentifiers = [NSMutableArray new];
     
     [self enumerateTokensForCompilationUnitAtPath:includedHeaderPath
                                      forEachToken:^(CKTranslationUnit *unit, CKToken *token)
@@ -437,6 +439,8 @@
                 currentClassName = nil;
                 currentClass = nil;
                 [currentClassPunctuation removeAllObjects];
+                [currentPropertyIdentifiers removeAllObjects];
+                [currentPropertyAttributeIdentifiers removeAllObjects];
                 
                 [currentClassPunctuation addObject:token.spelling];
                 return;
@@ -522,13 +526,31 @@
             else if ([currentPropertyPunctuation containsObject:@"("]) {
                 
                 if (token.kind == CKTokenKindIdentifier) {
+                    [currentPropertyAttributeIdentifiers addObject:token.spelling];
+
                     if ([token.spelling isEqualToString:@"readwrite"])
                         currentPropertyIsReadwrite = YES;
-                    if ([token.spelling isEqualToString:@"readonly"])
+                    else if ([token.spelling isEqualToString:@"readonly"])
                         currentPropertyIsReadwrite = NO;
-                    if ([@[@"copy", @"assign", @"weak", @"strong", @"retain"] containsObject:token.spelling])
+                    else if ([@[@"copy", @"assign", @"weak", @"strong", @"retain"] containsObject:token.spelling])
                         currentPropertyOwnership = token.spelling;
+                    
+                    // detect case of 'setter = x' where x is the current token
+                    else if ([[currentPropertyPunctuation lastObject] isEqualToString:@"="]
+                             && (currentPropertyAttributeIdentifiers.count > 1
+                                 && [currentPropertyAttributeIdentifiers[currentPropertyAttributeIdentifiers.count - 2] isEqualToString:@"setter"]))
+                    {
+                        currentPropertySetterName = token.spelling;
+                    }
+                    // detect case of 'getter = x' where x is the current token
+                    else if ([[currentPropertyPunctuation lastObject] isEqualToString:@"="]
+                             && (currentPropertyAttributeIdentifiers.count > 1
+                                 && [currentPropertyAttributeIdentifiers[currentPropertyAttributeIdentifiers.count - 2] isEqualToString:@"getter"]))
+                    {
+                        currentPropertyGetterName = token.spelling;
+                    }
                 }
+                
             }
         }
         

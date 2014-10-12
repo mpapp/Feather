@@ -79,7 +79,7 @@
 - (void)testClassDeclarationParsing {
     NSError *err = nil;
     MPObjectiveCAnalyzer *analyzer
-        = [[MPObjectiveCAnalyzer alloc] initWithObjectiveCHeaderText:@"@interface MPFoo : NSObject <X,Y,Z>\n@property (readwrite, copy) NSArray *schoolOfSalmon;\n @end\n" additionalHeaderPaths:@[] error:&err];
+        = [[MPObjectiveCAnalyzer alloc] initWithObjectiveCHeaderText:@"@interface MPFoo : NSObject <X,Y,Z>\n@property (readwrite, copy, getter=tehSalmon, setter=setSalmonsToSlap) NSArray *schoolOfSalmon;\n @end\n" additionalHeaderPaths:@[] error:&err];
     XCTAssert(analyzer && !err, @"No error should occur when initializing the analyzer.");
     XCTAssert(analyzer.includedHeaderPaths.count == 1, @"There should be a single included header (%lu)", analyzer.includedHeaderPaths.count);
     
@@ -100,6 +100,9 @@
     XCTAssertTrue([propDec.type isEqualToString:@"NSArray"] , @"Property type should match expectation (%@)", propDec.type);
     XCTAssertTrue(propDec.isObjectType, @"Property should be object-typed");
     XCTAssertTrue([propDec.ownershipAttribute isEqualToString:@"copy"], @"Property ownership attribute should match expectation (%@)", propDec.ownershipAttribute);
+    XCTAssertTrue([propDec.setterName isEqualToString:@"setSalmonsToSlap"], @"Custom setter was correctly detected (%@).", propDec.setterName);
+    XCTAssertTrue([propDec.getterName isEqualToString:@"tehSalmon"], @"Custom getter was correctly detected (%@).", propDec.getterName);
+    
     
 }
 
