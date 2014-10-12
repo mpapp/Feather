@@ -550,8 +550,12 @@
                         currentPropertyGetterName = token.spelling;
                     }
                 }
-                
             }
+        }
+        
+        else if (token.cursor.kind == CKCursorKindObjCInstanceMethodDecl
+                 || token.cursor.kind == CKCursorKindObjCClassMethodDecl) {
+            
         }
         
     } matchingPattern:^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token)

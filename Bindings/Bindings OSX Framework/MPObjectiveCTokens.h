@@ -9,7 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @class MPObjectiveCEnumDeclaration, MPObjectiveCEnumConstant;
-@class MPObjectiveCMethodDeclaration, MPObjectiveCPropertyDeclaration, MPObjectiveCInstanceVariableDeclaration;
+@class MPObjectiveCMethodDeclaration, MPObjectiveCInstanceMethodDeclaration, MPObjectiveCClassMethodDeclaration;
+@class MPObjectiveCPropertyDeclaration, MPObjectiveCInstanceVariableDeclaration;
 
 @interface MPObjectiveCTranslationUnit : NSObject
 @property (readonly, copy) NSString *path;
@@ -74,7 +75,8 @@
 @property (readonly) NSArray *conformedProtocols;
 
 @property (readonly) NSArray *propertyDeclarations;
-@property (readonly) NSArray *methodDeclarations;
+@property (readonly) NSArray *instanceMethodDeclarations;
+@property (readonly) NSArray *classMethodDeclarations;
 @property (readonly) NSArray *instanceVariableDeclarations;
 
 + (MPObjectiveCClassDeclaration *)classWithName:(NSString *)name;
@@ -83,10 +85,11 @@
 
 - (void)addConformedProtocol:(NSString *)conformedProtocol;
 
-- (void)addMethodDeclaration:(MPObjectiveCMethodDeclaration *)method;
+- (void)addInstanceMethodDeclaration:(MPObjectiveCInstanceMethodDeclaration *)method;
+- (void)addClassMethodDeclaration:(MPObjectiveCClassMethodDeclaration *)method;
+
 - (void)addPropertyDeclaration:(MPObjectiveCPropertyDeclaration *)property;
 - (void)addInstanceVariableDeclaration:(MPObjectiveCInstanceVariableDeclaration *)ivar;
-
 
 @end
 
@@ -135,4 +138,10 @@
 @property (readonly, copy) NSString *returnType;
 @property (readonly, copy) NSArray *argumentTypes;
 @property (readonly, copy) NSArray *argumentNames;
+@end
+
+@interface MPObjectiveCInstanceMethodDeclaration : MPObjectiveCMethodDeclaration
+@end
+
+@interface MPObjectiveCClassMethodDeclaration : MPObjectiveCMethodDeclaration
 @end
