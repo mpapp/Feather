@@ -35,10 +35,21 @@
 
 @end
 
-
 @interface MPObjectiveCConstantDeclaration : NSObject
 @property (readonly) NSString *name;
-@property (readwrite) NSString *value;
+@property (readwrite) id value;
+@property (readwrite) NSString *type;
+
+@property (readwrite) BOOL isConst;
+@property (readwrite) BOOL isStatic;
+@property (readwrite) BOOL isExtern;
+
+- (instancetype)initWithName:(NSString *)name value:(id)value type:(NSString *)type;
+
+@end
+
+@interface MPObjectiveCTyped
+
 @end
 
 

@@ -40,15 +40,32 @@
 
 - (void)testEnumParsing {
     MPObjectiveCAnalyzer *analyzer = [self newAnalyzer];
-    
     NSArray *enums = [analyzer.includedHeaderPaths mapObjectsUsingBlock:^id(NSString *headerPath, NSUInteger idx) {
         return [analyzer enumDeclarationsForHeaderAtPath:headerPath];
     }];
     
     XCTAssertTrue(enums.count == 2, @"Two classes should have been analyzed (%lu)", enums.count);
-    XCTAssertTrue([[[[enums firstObject] firstObject] enumConstants] count] == 2, @"There should be two values");
-    XCTAssertTrue([[[enums firstObject] firstObject] isKindOfClass:MPObjectiveCEnumDeclaration.class], @"Object should be an MPObjectiveCEnumDeclaration");
+    XCTAssertTrue([[[enums.firstObject firstObject] enumConstants] count] == 2, @"There should be two values");
+    XCTAssertTrue([[enums.firstObject firstObject] isKindOfClass:MPObjectiveCEnumDeclaration.class], @"Object should be an MPObjectiveCEnumDeclaration");
     XCTAssertTrue([[[[enums lastObject] firstObject] enumConstants] count] == 0, @"There should be two values");
+}
+
+- (void)testConstantParsing {
+    MPObjectiveCAnalyzer *analyzer = [self newAnalyzer];
+    NSArray *consts = [analyzer.includedHeaderPaths mapObjectsUsingBlock:^id(NSString *headerPath, NSUInteger idx) {
+        NSLog(@"%@", headerPath);
+        return [analyzer constantDeclarationsForHeaderAtPath:headerPath];
+    }];
+    
+    NSArray *flattenedConsts = [consts valueForKeyPath:@"@unionOfArrays.self"];
+    XCTAssertTrue(flattenedConsts.count == 1, @"A single constant should be parsed (%lu).", consts.count);
+    
+    MPObjectiveCConstantDeclaration *constDec = [flattenedConsts firstObject];
+    XCTAssertTrue([constDec.name isEqualToString:@"MPSlappedSalmon"], @"Name should match expectation (%@)", constDec.name);
+    XCTAssertTrue([constDec.value isEqualToNumber:@(42)], @"Value should match expectation (%@)", constDec.value);
+    XCTAssertTrue(constDec.isStatic, @"Constant should be static");
+    XCTAssertTrue(constDec.isConst, @"Constant should be const");
+    XCTAssertTrue(constDec.isExtern, @"Constant should not be extern");
 }
 
 - (void)testObjCToCSharpTransformation {

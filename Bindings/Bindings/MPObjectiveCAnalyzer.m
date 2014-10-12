@@ -251,6 +251,87 @@
     return enums.copy;
 }
 
+- (NSArray *)constantDeclarationsForHeaderAtPath:(NSString *)includedHeaderPath {
+    NSMutableArray *constants = [NSMutableArray new];
+    
+    __block NSString *currentType = nil;
+    __block MPObjectiveCConstantDeclaration *currentConst = nil;
+    NSMutableArray *currentVarDeclarationKeywords = [NSMutableArray new];
+    
+    [self enumerateTokensForCompilationUnitAtPath:includedHeaderPath
+                                     forEachToken:^(CKTranslationUnit *unit, CKToken *token)
+    {
+        if (token.kind == CKTokenKindKeyword
+            && token.cursor.kind == CKCursorKindVarDecl) {
+            
+            // FIME: reset the keyword stack on new source locations / lines.
+            [currentVarDeclarationKeywords addObject:token.spelling];
+        }
+        else if (token.kind == CKTokenKindIdentifier
+                 && token.cursor.kind == CKCursorKindTypeRef) {
+            currentType = token.spelling;
+        }
+        else if (token.kind == CKTokenKindIdentifier && token.cursor.kind == CKCursorKindVarDecl) {
+            
+            if (currentVarDeclarationKeywords.count > 0 && currentType) {
+                currentConst = [[MPObjectiveCConstantDeclaration alloc] initWithName:token.spelling
+                                                                               value:nil
+                                                                                type:currentType];
+                
+                [constants addObject:currentConst];
+                
+                if ([currentVarDeclarationKeywords containsObject:@"static"])
+                    currentConst.isStatic = YES;
+                
+                if ([currentVarDeclarationKeywords containsObject:@"const"])
+                    currentConst.isConst = YES;
+                
+                if ([currentVarDeclarationKeywords containsObject:@"extern"])
+                    currentConst.isExtern = YES;
+                
+                [currentVarDeclarationKeywords removeAllObjects];
+                currentType = nil;
+            }
+        }
+        else if (token.kind == CKTokenKindLiteral && token.cursor.kind == CKCursorKindIntegerLiteral) {
+            NSNumberFormatter *f = [NSNumberFormatter new];
+            f.numberStyle = NSNumberFormatterDecimalStyle;
+            currentConst.value = [f numberFromString:token.spelling];
+            
+            currentConst = nil;
+        }
+        else if (token.kind == CKTokenKindLiteral && token.cursor.kind == CKCursorKindFloatingLiteral) {
+            currentConst.value = @([token.spelling floatValue]); // FIXME: this is ridiculously simplistic.
+        }
+        else if (token.kind == CKTokenKindLiteral && token.cursor.kind == CKCursorKindStringLiteral) {
+            currentConst.value = token.spelling;
+        }
+        // FIXME: handle constants that refer to other constants.
+        // FIXME: handle character constants.
+        
+    } matchingPattern:^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token) {
+        //[self logToken:token headerPath:path];
+
+        // BDSKErrorObject.h, 43: const, MPSlappedSalmon (token kind: 1, cursor kind: 9, VarDecl)
+        // BDSKErrorObject.h, 43: static, MPSlappedSalmon (token kind: 1, cursor kind: 9, VarDecl)
+        BOOL isVariableDeclaration = (token.kind == CKTokenKindKeyword && token.cursor.kind == CKCursorKindVarDecl);
+        
+        // BDSKErrorObject.h, 43: NSUInteger, NSUInteger (token kind: 2, cursor kind: 43, TypeRef)
+        BOOL isTypeReference = token.kind == CKTokenKindIdentifier && token.cursor.kind == CKCursorKindTypeRef;
+        
+        // BDSKErrorObject.h, 43: MPSlappedSalmon, MPSlappedSalmon (token kind: 2, cursor kind: 9, VarDecl)
+        // BDSKErrorObject.h, 43: =, MPSlappedSalmon (token kind: 0, cursor kind: 9, VarDecl)
+        BOOL isVarIdentifier = token.kind == CKTokenKindIdentifier && token.cursor.kind == CKCursorKindVarDecl;
+        
+        // BDSKErrorObject.h, 43: 42,  (token kind: 3, cursor kind: 106, IntegerLiteral)
+        BOOL isIntegralLiteralValue = token.kind == CKTokenKindLiteral && token.cursor.kind == CKCursorKindIntegerLiteral;
+        
+        return isVariableDeclaration || isTypeReference || isVarIdentifier || isIntegralLiteralValue;
+    }];
+    
+    return constants.copy;
+}
+
 - (void)logToken:(CKToken *)token headerPath:(NSString *)headerPath {
     fprintf(stdout, "%s\n",
             [NSString stringWithFormat:@"%@, %lu: %@, %@ (token kind: %lu, cursor kind: %lu, %@)",

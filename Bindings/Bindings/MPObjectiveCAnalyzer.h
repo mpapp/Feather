@@ -37,8 +37,10 @@
                                                           CKTranslationUnit *unit,
                                                           CKToken *token))patternBlock;
 
-#pragma mark - 
+#pragma mark -
 
 - (NSArray *)enumDeclarationsForHeaderAtPath:(NSString *)includedHeaderPath;
+
+- (NSArray *)constantDeclarationsForHeaderAtPath:(NSString *)includedHeaderPath;
 
 @end

@@ -92,11 +92,13 @@
 
 @implementation MPObjectiveCConstantDeclaration
 
-- (instancetype)initWithName:(NSString *)name {
+- (instancetype)initWithName:(NSString *)name value:(id)value type:(NSString *)type {
     self = [super init];
     
     if (self) {
         _name = name;
+        _value = value;
+        _type =type;
     }
     
     return self;
