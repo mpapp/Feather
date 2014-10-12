@@ -58,14 +58,22 @@
     }];
     
     NSArray *flattenedConsts = [consts valueForKeyPath:@"@unionOfArrays.self"];
-    XCTAssertTrue(flattenedConsts.count == 1, @"A single constant should be parsed (%lu).", consts.count);
+    XCTAssertTrue(flattenedConsts.count == 2, @"Two constants should have been parsed (%lu).", flattenedConsts.count);
     
-    MPObjectiveCConstantDeclaration *constDec = [flattenedConsts firstObject];
-    XCTAssertTrue([constDec.name isEqualToString:@"MPSlappedSalmon"], @"Name should match expectation (%@)", constDec.name);
-    XCTAssertTrue([constDec.value isEqualToNumber:@(42)], @"Value should match expectation (%@)", constDec.value);
-    XCTAssertTrue(constDec.isStatic, @"Constant should be static");
-    XCTAssertTrue(constDec.isConst, @"Constant should be const");
-    XCTAssertTrue(constDec.isExtern, @"Constant should not be extern");
+    MPObjectiveCConstantDeclaration *constStrDec = [flattenedConsts firstObject];
+    XCTAssertTrue([constStrDec.name isEqualToString:@"BDSKParserErrorNotification"],
+                  @"Name should match expectation (%@)", constStrDec.name);
+    XCTAssertTrue(!constStrDec.value, @"No value is known (extern: %hhd)", constStrDec.isExtern);
+    XCTAssertTrue(!constStrDec.isStatic, @"Constant should not be static");
+    XCTAssertTrue(!constStrDec.isConst, @"Constant should not be const");
+    XCTAssertTrue(constStrDec.isExtern, @"Constant should be extern");
+    
+    MPObjectiveCConstantDeclaration *constNumberDec = [flattenedConsts lastObject];
+    XCTAssertTrue([constNumberDec.name isEqualToString:@"MPSlappedSalmon"], @"Name should match expectation (%@)", constNumberDec.name);
+    XCTAssertTrue([constNumberDec.value isEqualToNumber:@(42)], @"Value should match expectation (%@)", constNumberDec.value);
+    XCTAssertTrue(constNumberDec.isStatic, @"Constant should be static");
+    XCTAssertTrue(constNumberDec.isConst, @"Constant should be const");
+    XCTAssertTrue(!constNumberDec.isExtern, @"Constant should not be extern");
 }
 
 - (void)testObjCToCSharpTransformation {

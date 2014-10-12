@@ -98,4 +98,8 @@
     return str.copy;
 }
 
+// for string constants:
+// http://stackoverflow.com/questions/10055053/exposing-an-obj-c-const-nsstring-via-a-monotouch-binding
+
+
 @end

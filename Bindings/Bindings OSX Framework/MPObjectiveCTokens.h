@@ -43,6 +43,7 @@
 @property (readwrite) BOOL isConst;
 @property (readwrite) BOOL isStatic;
 @property (readwrite) BOOL isExtern;
+@property (readwrite) BOOL isObjectReference;
 
 - (instancetype)initWithName:(NSString *)name value:(id)value type:(NSString *)type;
 

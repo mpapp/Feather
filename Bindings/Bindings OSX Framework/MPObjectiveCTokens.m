@@ -98,10 +98,16 @@
     if (self) {
         _name = name;
         _value = value;
-        _type =type;
+        _type = type;
     }
     
     return self;
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:
+                @"[name:%@ value:%@ type:%@ isStatic:%hhd isConst:%hhd isExtern:%hhd]",
+                self.name, self.value, self.type, self.isStatic, self.isConst, self.isExtern];
 }
 
 @end
