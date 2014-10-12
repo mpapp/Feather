@@ -19,6 +19,10 @@
                          includedHeaderPaths:(NSArray *)includedHeaders
                                        error:(NSError **)error;
 
+- (instancetype)initWithObjectiveCHeaderText:(NSString *)header
+                       additionalHeaderPaths:(NSArray *)includedHeaders
+                                       error:(NSError **)error;
+
 - (instancetype)initWithBundleAtURL:(NSURL *)url
               additionalHeaderPaths:(NSArray *)includedHeaders
                               error:(NSError **)error;
@@ -31,16 +35,18 @@
 - (void)enumerateTranslationUnits:(void (^)(NSString *path, CKTranslationUnit *unit))unitBlock;
 
 - (void)enumerateTokensForCompilationUnitAtPath:(NSString *)path
-                                   forEachToken:(void (^)(CKTranslationUnit *unit,
-                                                          CKToken *token))tokenBlock
+                                   forEachToken:(void (^)(CKTranslationUnit *unit, CKToken *token))tokenBlock
                                 matchingPattern:(BOOL (^)(NSString *path,
-                                                          CKTranslationUnit *unit,
-                                                          CKToken *token))patternBlock;
+                                                          CKTranslationUnit *unit, CKToken *token))patternBlock;
 
 #pragma mark -
 
 - (NSArray *)enumDeclarationsForHeaderAtPath:(NSString *)includedHeaderPath;
 
 - (NSArray *)constantDeclarationsForHeaderAtPath:(NSString *)includedHeaderPath;
+
+- (NSArray *)classDeclarationsForHeaderAtPath:(NSString *)includedHeaderPath;
+
+- (NSArray *)protocolDeclarationsForHeaderAtPath:(NSString *)includedHeaderPath;
 
 @end

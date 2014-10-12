@@ -148,3 +148,172 @@
 
 @end
 
+#pragma mark -
+
+@interface MPObjectiveCClassDeclaration () {
+    NSMutableArray *_conformedProtocols;
+    NSMutableArray *_propertyDeclarations;
+    NSMutableArray *_methodDeclarations;
+    NSMutableArray *_instanceVariableDeclarations;
+}
+@end
+
+@implementation MPObjectiveCClassDeclaration
+
+- (instancetype)init {
+    NSAssert(false, @"Use -initWithName:superClassName: instead.");
+    return nil;
+}
+
+static NSMutableDictionary *_MPObjCClasses = nil;
+
++ (void)registerClassDeclaration:(MPObjectiveCClassDeclaration *)objcClassDec {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _MPObjCClasses = [NSMutableDictionary new];
+    });
+    
+    NSAssert(!_MPObjCClasses[objcClassDec.name], @"Class '%@' already exists.", objcClassDec.name);
+}
+
++ (MPObjectiveCClassDeclaration *)classWithName:(NSString *)name {
+    return _MPObjCClasses[name];
+}
+
+- (instancetype)initWithName:(NSString *)name superClassName:(NSString *)superClassName {
+    self = [super init];
+    
+    if (self) {
+        _name = name;
+        _superClassName = superClassName;
+        
+        _propertyDeclarations = [NSMutableArray new];
+        _methodDeclarations = [NSMutableArray new];
+        _instanceVariableDeclarations = [NSMutableArray new];
+        
+    }
+    
+    return self;
+}
+
+- (NSArray *)methodDeclarations {
+    return _methodDeclarations.copy;
+}
+
+- (NSArray *)propertyDeclarations {
+    return _propertyDeclarations.copy;
+}
+
+- (NSArray *)instanceVariableDeclarations {
+    return _instanceVariableDeclarations.copy;
+}
+
+- (void)addMethodDeclaration:(MPObjectiveCMethodDeclaration *)method {
+    [_methodDeclarations addObject:method];
+}
+
+- (void)addPropertyDeclaration:(MPObjectiveCPropertyDeclaration *)property {
+    [_propertyDeclarations addObject:property];
+}
+
+- (void)addInstanceVariableDeclaration:(MPObjectiveCInstanceVariableDeclaration *)ivar {
+    [_instanceVariableDeclarations addObject:ivar];
+}
+
+@end
+
+
+@interface MPObjectiveCProtocolDeclaration () {
+    NSMutableArray *_conformedProtocols;
+    NSMutableArray *_methodDeclarations;
+    NSMutableArray *_propertyDeclarations;
+}
+@end
+
+@implementation MPObjectiveCProtocolDeclaration
+
+- (instancetype)init {
+    NSAssert(false, @"Use -initWithName: instead.");
+    return nil;
+}
+
+- (instancetype)initWithName:(NSString *)name {
+    self = [super init];
+    
+    if (self) {
+        _name = name;
+        _conformedProtocols = [NSMutableArray new];
+        _methodDeclarations = [NSMutableArray new];
+        _propertyDeclarations = [NSMutableArray new];
+    }
+    
+    return self;
+}
+
+- (void)addConformedProtocol:(NSString *)superProtocol {
+    [_conformedProtocols addObject:superProtocol];
+}
+
+- (void)addMethodDeclaration:(MPObjectiveCMethodDeclaration *)methodDec {
+    [_methodDeclarations addObject:methodDec];
+}
+
+- (void)addPropertyDeclaration:(MPObjectiveCPropertyDeclaration *)propDec {
+    [_propertyDeclarations addObject:propDec];
+}
+
+- (NSArray *)conformedProtocols {
+    return _conformedProtocols.copy;
+}
+
+- (NSArray *)methodDeclarations {
+    return _methodDeclarations.copy;
+}
+
+- (NSArray *)propertyDeclarations {
+    return _propertyDeclarations.copy;
+}
+
+@end
+
+
+@implementation MPObjectiveCPropertyDeclaration
+
+- (instancetype)init {
+    NSAssert(false, @"Use -initWithName:type: instead.");
+    return nil;
+}
+
+- (instancetype)initWithName:(NSString *)name type:(NSString *)type {
+    self = [super init];
+    
+    if (self) {
+        _name = name;
+        _type = type;
+    }
+    
+    return self;
+}
+
+@end
+
+
+@implementation MPObjectiveCInstanceVariableDeclaration
+
+- (instancetype)init {
+    NSAssert(false, @"Use -initWithName:type: instead.");
+    return nil;
+}
+
+- (instancetype)initWithName:(NSString *)name type:(NSString *)type {
+    self = [super init];
+    
+    if (self) {
+        _name = name;
+        _type = type;
+    }
+    
+    return self;
+}
+
+@end

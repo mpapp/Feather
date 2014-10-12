@@ -22,6 +22,7 @@
 @interface MPObjectiveCAnalyzer ()
 @property (readwrite) NSBundle *bundle;
 @property (readwrite) void *libraryHandle;
+@property (readwrite) NSString *tempFilePath;
 
 @property (readwrite) NSArray *includedHeaderPaths;
 
@@ -38,6 +39,32 @@
     if (self) {
         _libraryHandle = dlopen(path.UTF8String, RTLD_LAZY);
         _includedHeaderPaths = includedHeaders;
+    }
+    
+    return self;
+}
+
+- (instancetype)initWithObjectiveCHeaderText:(NSString *)header
+                       additionalHeaderPaths:(NSArray *)includedHeaders
+                                       error:(NSError **)error {
+    
+    _tempFilePath = [[[NSFileManager defaultManager] temporaryFileURLInApplicationCachesSubdirectoryNamed:@"bindings-headers"
+                                                                                            withExtension:@"h"
+                                                                                                    error:error] path];
+    
+    if (!_tempFilePath)
+        return nil;
+    
+    if (![header writeToFile:_tempFilePath
+                  atomically:YES
+                    encoding:NSUTF8StringEncoding
+                       error:error])
+        return nil;
+
+    self = [super init];
+    
+    if (self) {
+        _includedHeaderPaths = [@[_tempFilePath] arrayByAddingObjectsFromArray:includedHeaders];
     }
     
     return self;
@@ -63,6 +90,15 @@
     }
     
     return self;
+}
+
+- (void)dealloc {
+    NSError *err = nil;
+    if (_tempFilePath) {
+        if (![[NSFileManager defaultManager] removeItemAtPath:_tempFilePath error:&err]) {
+            NSLog(@"WARNING! Failed to delete temporary file at path '%@'.", _tempFilePath);
+        }
+    }
 }
 
 // for each translation unit
@@ -371,6 +407,62 @@
     }];
     
     return constants.copy;
+}
+
+- (NSArray *)classDeclarationsForHeaderAtPath:(NSString *)includedHeaderPath {
+    NSMutableArray *classes = [NSMutableArray new];
+    
+    __block NSString *currentClassName = nil;
+    __block MPObjectiveCClassDeclaration *currentClass = nil;
+    __block NSMutableArray *currentPunctuation = nil;
+    
+    [self enumerateTokensForCompilationUnitAtPath:includedHeaderPath
+                                     forEachToken:^(CKTranslationUnit *unit, CKToken *token)
+    {
+        // we're at the '@' -- reset the current state
+        if ([token.spelling isEqualToString:@"@"]) {
+            currentClassName = nil;
+            currentClass = nil;
+            [currentPunctuation removeAllObjects];
+            
+            [currentPunctuation addObject:token.spelling];
+            return;
+        }
+        
+        if (token.kind == CKTokenKindPunctuation)
+            [currentPunctuation addObject:token.spelling];
+
+        if (![currentPunctuation containsObject:@":"]) { // class name
+            
+            if (token.kind == CKTokenKindIdentifier)
+                currentClassName = token.spelling;
+            
+        } else if ([currentPunctuation containsObject:@"<"]) { // we're beyond class name, not yet in interface declarations
+            
+            if (token.kind == CKTokenKindIdentifier) {
+                currentClass = [[MPObjectiveCClassDeclaration alloc] initWithName:currentClassName
+                                                                   superClassName:token.spelling];
+            }
+            
+        } else { // we're in the interface declarations
+            
+            
+        }
+        
+    } matchingPattern:^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token)
+    {
+        [self logToken:token headerPath:path];
+        
+        BOOL isInterfaceIdentifierToken = token.kind == CKTokenKindIdentifier
+            && token.cursor.kind == CKCursorKindObjCInterfaceDecl;
+        
+        BOOL isInterfacePunctuation = token.kind == CKTokenKindPunctuation
+            && token.cursor.kind == CKCursorKindObjCInterfaceDecl;
+        
+        return isInterfaceIdentifierToken || isInterfacePunctuation;
+    }];
+    
+    return classes;
 }
 
 - (void)logToken:(CKToken *)token headerPath:(NSString *)headerPath {

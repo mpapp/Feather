@@ -76,6 +76,17 @@
     XCTAssertTrue(!constNumberDec.isExtern, @"Constant should not be extern");
 }
 
+- (void)testClassDeclarationParsing {
+    NSError *err = nil;
+    MPObjectiveCAnalyzer *analyzer
+        = [[MPObjectiveCAnalyzer alloc] initWithObjectiveCHeaderText:@"@interface MPFoo : NSObject\n@end\n" additionalHeaderPaths:@[] error:&err];
+    XCTAssert(analyzer && !err, @"No error should occur when initializing the analyzer.");
+    XCTAssert(analyzer.includedHeaderPaths.count == 1, @"There should be a single included header (%lu)", analyzer.includedHeaderPaths.count);
+    
+    NSArray *classes = [analyzer classDeclarationsForHeaderAtPath:analyzer.includedHeaderPaths.firstObject];
+    XCTAssertTrue(classes.count == 1, @"A single class was parsed.");
+}
+
 - (void)testObjCToCSharpTransformation {
     MPObjectiveCAnalyzer *analyzer = [self newAnalyzer];
     MPObjectiveCTranslator *translator = [MPObjectiveCToCSharpTranslator new];

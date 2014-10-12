@@ -249,6 +249,13 @@
 			remoteGlobalIDString = DCB3185014EB418E001CFBEE;
 			remoteInfo = Lumberjack;
 		};
+		5FB5E67D19EAD1A3002032E1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FA858D719E8242700161A21 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5FA8597619E8A57400161A21;
+			remoteInfo = Bindings;
+		};
 		5FCB1BD219E97E4F00A06EC9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5FA859C019E8A8AA00161A21 /* Feather.xcodeproj */;
@@ -700,6 +707,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5FB5E67E19EAD1A3002032E1 /* PBXTargetDependency */,
 				5F15614A19E9A83D00A6C581 /* PBXTargetDependency */,
 				5F15614819E9A83100A6C581 /* PBXTargetDependency */,
 				5F15613A19E9A73500A6C581 /* PBXTargetDependency */,
@@ -1076,6 +1084,11 @@
 			name = Lumberjack;
 			targetProxy = 5FA85A0E19E8AAA700161A21 /* PBXContainerItemProxy */;
 		};
+		5FB5E67E19EAD1A3002032E1 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5FA8597619E8A57400161A21 /* Bindings */;
+			targetProxy = 5FB5E67D19EAD1A3002032E1 /* PBXContainerItemProxy */;
+		};
 		5FCB1BD319E97E4F00A06EC9 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = Feather;
@@ -1271,6 +1284,7 @@
 		5FA8592C19E894FF00161A21 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Bindings.app/Contents/MacOS/Bindings";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1288,12 +1302,14 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Debug;
 		};
 		5FA8592D19E894FF00161A21 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Bindings.app/Contents/MacOS/Bindings";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -1307,6 +1323,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
 			};
 			name = Release;
 		};

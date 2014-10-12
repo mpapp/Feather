@@ -87,7 +87,8 @@ NSString * const NSFileManagerFeatherExtensionsErrorDomain = @"NSFileManagerFeat
         return nil;
     }
     
-    NSURL *applicationCachesDirectoryURL = [cachesRootDirectoryURL URLByAppendingPathComponent:[[NSBundle appBundle] bundleIdentifier]];
+    NSURL *applicationCachesDirectoryURL
+        = [cachesRootDirectoryURL URLByAppendingPathComponent:NSBundle.appBundle.bundleIdentifier];
     BOOL createIntermediates = (subdirectoryName.length > 0);
     NSURL *URL = createIntermediates ? [applicationCachesDirectoryURL URLByAppendingPathComponent:subdirectoryName] : applicationCachesDirectoryURL;
     
