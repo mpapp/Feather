@@ -265,6 +265,7 @@
          prevToken = token;
     } matchingPattern:
      ^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token) {
+         [self logToken:token headerPath:path];
          
          BOOL isEnumDeclaration = (token.kind == CKTokenKindPunctuation && token.cursor.kind == CKCursorKindEnumDecl);
          BOOL isEnumConstDeclaration = (token.kind == CKTokenKindIdentifier && token.cursor.kind == CKCursorKindEnumConstantDecl);
@@ -331,8 +332,7 @@
             if (currentVarDeclarationKeywords.count == 0 || !currentType)
                 return;
             
-            currentConst = [[MPObjectiveCConstantDeclaration alloc] initWithName:token.spelling
-                                                                           value:nil
+            currentConst = [[MPObjectiveCConstantDeclaration alloc] initWithName:token.spelling value:nil
                                                                             type:currentType];
             
             [constants addObject:currentConst];

@@ -30,9 +30,14 @@
 
 - (MPObjectiveCAnalyzer *)newAnalyzer {
     NSError *err = nil;
-    MPObjectiveCAnalyzer *analyzer = [[MPObjectiveCAnalyzer alloc] initWithBundleAtURL:
-                                      [NSURL fileURLWithPath:@"/Users/mz2/Applications/Manuscripts.app/Contents/Frameworks/BTParse.framework"]
-                                                                 additionalHeaderPaths:@[] error:&err];
+    MPObjectiveCAnalyzer *analyzer = [[MPObjectiveCAnalyzer alloc] initWithObjectiveCHeaderText:
+@"#import <Foundation/Foundation.h>\n\n\
+extern NSString *BDSKParserErrorNotification;\n\
+const static NSUInteger MPSalmonSlapCount = 42;\n\
+typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
+    MPFoobarUnknown = 0,\n\
+    MPFoobarSomethingElse = 20\n\
+};\n" additionalHeaderPaths:@[] error:&err];
     XCTAssert(analyzer && !err, @"No error should occur when initializing the analyzer.");
     
     return analyzer;
@@ -44,10 +49,9 @@
         return [analyzer enumDeclarationsForHeaderAtPath:headerPath];
     }];
     
-    XCTAssertTrue(enums.count == 2, @"Two classes should have been analyzed (%lu)", enums.count);
-    XCTAssertTrue([[[enums.firstObject firstObject] enumConstants] count] == 2, @"There should be two values");
+    XCTAssertTrue(enums.count == 1, @"One translation unit should have been analyzed (%lu)", enums.count);
+    XCTAssertTrue([[[enums.firstObject firstObject] enumConstants] count] == 2, @"There should be two values (%lu)", [[[enums.firstObject firstObject] enumConstants] count]);
     XCTAssertTrue([[enums.firstObject firstObject] isKindOfClass:MPObjectiveCEnumDeclaration.class], @"Object should be an MPObjectiveCEnumDeclaration");
-    XCTAssertTrue([[[[enums lastObject] firstObject] enumConstants] count] == 0, @"There should be two values");
 }
 
 - (void)testConstantParsing {
@@ -69,7 +73,7 @@
     XCTAssertTrue(constStrDec.isExtern, @"Constant should be extern");
     
     MPObjectiveCConstantDeclaration *constNumberDec = [flattenedConsts lastObject];
-    XCTAssertTrue([constNumberDec.name isEqualToString:@"MPSlappedSalmon"], @"Name should match expectation (%@)", constNumberDec.name);
+    XCTAssertTrue([constNumberDec.name isEqualToString:@"MPSalmonSlapCount"], @"Name should match expectation (%@)", constNumberDec.name);
     XCTAssertTrue([constNumberDec.value isEqualToNumber:@(42)], @"Value should match expectation (%@)", constNumberDec.value);
     XCTAssertTrue(constNumberDec.isStatic, @"Constant should be static");
     XCTAssertTrue(constNumberDec.isConst, @"Constant should be const");
