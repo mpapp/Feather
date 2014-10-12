@@ -13,6 +13,7 @@
 #import <Bindings/BindingsFramework.h>
 
 #import <Feather/Feather.h>
+#import <Feather/NSString+MPExtensions.h>
 #import <Feather/NSFileManager+MPExtensions.h>
 
 #import <ClangKit/ClangKit.h>
@@ -425,10 +426,20 @@
     __block NSString *currentPropertySetterName = nil;
     
     
-    __block MPObjectiveCPropertyDeclaration *currentPropDef = nil;
+    __block MPObjectiveCPropertyDeclaration *currentPropertyDec = nil;
     __block NSMutableArray *currentPropertyPunctuation = [NSMutableArray new];
     __block NSMutableArray *currentPropertyIdentifiers = [NSMutableArray new];
     __block NSMutableArray *currentPropertyAttributeIdentifiers = [NSMutableArray new];
+    
+    
+    __block MPObjectiveCMethodDeclaration *currentMethodDec = nil;
+    __block BOOL currentMethodIsClassMethod = NO;
+    __block NSMutableArray *currentMethodPunctuation = [NSMutableArray new];
+    __block NSMutableArray *currentMethodIdentifiers = [NSMutableArray new];
+    __block NSMutableArray *currentMethodSelectorComponents = [NSMutableArray new];
+    __block NSMutableArray *currentMethodParamTypes = [NSMutableArray new];
+    __block NSMutableArray *currentMethodParamNames = [NSMutableArray new];
+    __block NSString *currentMethodSelector = nil;
     
     [self enumerateTokensForCompilationUnitAtPath:includedHeaderPath
                                      forEachToken:^(CKTranslationUnit *unit, CKToken *token)
@@ -475,7 +486,7 @@
             
             // beginning of the line has the token '%@' - use it to reset state.
             if ([token.spelling isEqualToString:@"@"]) {
-                currentPropDef = nil;
+                currentPropertyDec = nil;
                 
                 currentPropertyName = nil;
                 currentPropertyIsReadwrite = YES;
@@ -512,14 +523,14 @@
                     [currentPropertyIdentifiers addObject:token.spelling];
                     
                     if (currentPropertyIdentifiers.count == 2) {
-                        currentPropDef = [[MPObjectiveCPropertyDeclaration alloc] initWithName:currentPropertyIdentifiers[1]
+                        currentPropertyDec = [[MPObjectiveCPropertyDeclaration alloc] initWithName:currentPropertyIdentifiers[1]
                                                                                           type:currentPropertyIdentifiers[0]];
-                        currentPropDef.isReadWrite = currentPropertyIsReadwrite;
-                        currentPropDef.isObjectType = currentPropertyIsObjectType;
-                        currentPropDef.ownershipAttribute = currentPropertyOwnership;
-                        currentPropDef.getterName = currentPropertyGetterName;
-                        currentPropDef.setterName = currentPropertySetterName;
-                        [currentClass addPropertyDeclaration:currentPropDef];
+                        currentPropertyDec.isReadWrite = currentPropertyIsReadwrite;
+                        currentPropertyDec.isObjectType = currentPropertyIsObjectType;
+                        currentPropertyDec.ownershipAttribute = currentPropertyOwnership;
+                        currentPropertyDec.getterName = currentPropertyGetterName;
+                        currentPropertyDec.setterName = currentPropertySetterName;
+                        [currentClass addPropertyDeclaration:currentPropertyDec];
                     }
                 }
             }
@@ -556,10 +567,106 @@
         else if (token.cursor.kind == CKCursorKindObjCInstanceMethodDecl
                  || token.cursor.kind == CKCursorKindObjCClassMethodDecl) {
             
+            if (token.kind == CKTokenKindPunctuation &&
+                ([token.spelling isEqualToString:@"-"] || [token.spelling isEqualToString:@"+"])) {
+                currentMethodDec = nil;
+                currentMethodPunctuation = [NSMutableArray new];
+                currentMethodIdentifiers = [NSMutableArray new];
+                currentMethodParamNames = [NSMutableArray new];
+                currentMethodParamTypes = [NSMutableArray new];
+                currentMethodSelectorComponents = [NSMutableArray new];
+                
+                currentMethodIsClassMethod = [token.spelling isEqualToString:@"+"];
+                currentMethodSelector = [NSString stringWithFormat:@"%@%@", token.spelling, token.cursor.displayName];
+                
+                [currentMethodPunctuation addObject:token.spelling];
+                return;
+            }
+            
+            if (token.kind == CKTokenKindPunctuation)
+                [currentMethodPunctuation addObject:token.spelling];
+            
+            // capture the "- (X" case where X is current token and represents the return type.
+            // made specific to the first one as only a single method declaration is made.
+            if (!currentMethodDec
+                && token.kind == CKTokenKindIdentifier
+                && [currentMethodPunctuation containsObject:@"("]
+                && ![currentMethodPunctuation containsObject:@")"]) {
+                
+                currentMethodDec = [[(currentMethodIsClassMethod
+                                      ? MPObjectiveCClassMethodDeclaration.class
+                                      : MPObjectiveCInstanceMethodDeclaration.class) alloc]
+                                    initWithSelector:currentMethodSelector returnType:token.spelling];
+                
+                if (currentMethodIsClassMethod) {
+                    [currentClass addClassMethodDeclaration:(id)currentMethodDec];
+                }
+                else {
+                    [currentClass addInstanceMethodDeclaration:(id)currentMethodDec];
+                }
+            }
+            else {
+                if (token.kind == CKTokenKindIdentifier)
+                    [currentMethodIdentifiers addObject:token.spelling];
+            }
         }
         
-    } matchingPattern:^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token)
-    {
+        //&& (token.cursor.semanticParent.semanticParent.kind == CKCursorKindObjCClassMethodDecl
+        //    || token.cursor.semanticParent.semanticParent.kind == CKCursorKindObjCInstanceMethodDecl)
+        else if (currentMethodSelector && token.cursor.kind == CKCursorKindParmDecl) {
+            
+            NSUInteger openingBraceCount = 0;
+            NSUInteger closingBraceCount = 0;
+            
+            for (NSUInteger i = 0, count = currentMethodPunctuation.count; i < count; i++) {
+                NSString *punk = currentMethodPunctuation[i];
+                
+                if ([punk isEqualToString:@"("])
+                    openingBraceCount++;
+                if ([punk isEqualToString:@")"])
+                    closingBraceCount++;
+            }
+            
+            // brace count would be 1 for opening & closing after the return type braces.
+            BOOL paramBracesOpened = (openingBraceCount > 1) && (closingBraceCount > 1);
+            
+            // this is to ensure we're not presently inside a param definition
+            BOOL paramBracesBalanced = (openingBraceCount % 2 == 0) && (closingBraceCount % 2 == 0);
+            
+            if (currentMethodDec && paramBracesOpened && paramBracesBalanced) {
+                
+                // assuming second last identifier is a selector component preceding the parameter. this may be too simplistic.
+                NSString *selectorComponent = currentMethodIdentifiers[currentMethodIdentifiers.count - 2];
+
+                NSAssert([currentMethodSelector containsSubstring:selectorComponent],
+                         @"Selector '%@' should contain component '%@'", currentMethodSelector, selectorComponent);
+                
+                // assuming last identifier is the type identifier. this may be too simplistic.
+                NSString *paramType = currentMethodIdentifiers.lastObject;
+                
+                [currentMethodParamNames addObject:token.spelling];
+                
+                [currentMethodDec addParameter:[[MPObjectiveCMethodParameter alloc]
+                                                initWithName:token.spelling
+                                                type:paramType
+                                                selectorComponent:selectorComponent]];
+            }
+        }
+        else if (currentMethodSelector && token.cursor.kind == CKCursorKindTypeRef)
+        {
+            currentMethodDec = [[(currentMethodIsClassMethod
+                                  ? MPObjectiveCClassMethodDeclaration.class
+                                  : MPObjectiveCInstanceMethodDeclaration.class) alloc]
+                                initWithSelector:currentMethodSelector returnType:token.spelling];
+            
+            if (currentMethodIsClassMethod) {
+                [currentClass addClassMethodDeclaration:(id)currentMethodDec];
+            }
+            else {
+                [currentClass addInstanceMethodDeclaration:(id)currentMethodDec];
+            }
+        }
+    } matchingPattern:^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token) {
         [self logToken:token headerPath:path];
         
         BOOL isInterfaceIdentifierToken = token.kind == CKTokenKindIdentifier
@@ -572,11 +679,22 @@
         BOOL isPropertyPunctuation = token.kind == CKTokenKindPunctuation && token.cursor.kind == CKCursorKindObjCPropertyDecl;
         BOOL isPropertyKeyword = token.kind == CKTokenKindKeyword && token.cursor.kind == CKCursorKindObjCPropertyDecl;
         
+        BOOL isMethodIdentifierToken = token.kind == CKTokenKindIdentifier
+            && (token.cursor.kind == CKCursorKindObjCInstanceMethodDecl || token.cursor.kind == CKCursorKindObjCClassMethodDecl);
+        BOOL isMethodPunctuation = token.kind == CKTokenKindPunctuation
+            && (token.cursor.kind == CKCursorKindObjCInstanceMethodDecl || token.cursor.kind == CKCursorKindObjCClassMethodDecl);
+        BOOL isParameterToken = token.kind == CKTokenKindIdentifier && token.cursor.kind == CKCursorKindParmDecl;
+        BOOL isTypeRefToken = token.kind == CKTokenKindIdentifier && token.cursor.kind == CKCursorKindTypeRef;
+        
         return isInterfaceIdentifierToken
             || isInterfacePunctuation
             || isPropertyIdentifierToken
             || isPropertyPunctuation
-            || isPropertyKeyword;
+            || isPropertyKeyword
+            || isMethodIdentifierToken
+            || isMethodPunctuation
+            || isParameterToken
+            || isTypeRefToken;
     }];
     
     return classes.copy;
@@ -584,14 +702,19 @@
 
 - (void)logToken:(CKToken *)token headerPath:(NSString *)headerPath {
     fprintf(stdout, "%s\n",
-            [NSString stringWithFormat:@"%@, %lu: %@, %@ (token kind: %lu, cursor kind: %lu, %@)",
+            [NSString stringWithFormat:@"%@, %lu: %@, %@ (token kind: %lu, cursor kind: %lu, %@; semantic parent:%lu, %@; lexical parent:%lu, %@)",
              headerPath.lastPathComponent,
              token.line,
              token.spelling,
              token.cursor.displayName,
              token.kind,
              token.cursor.kind,
-             token.cursor.kindSpelling].UTF8String);
+             token.cursor.kindSpelling,
+             token.cursor.semanticParent.kind,
+             token.cursor.semanticParent.kindSpelling,
+             token.cursor.lexicalParent.kind,
+             token.cursor.lexicalParent.kindSpelling].UTF8String
+            );
 }
 
 @end

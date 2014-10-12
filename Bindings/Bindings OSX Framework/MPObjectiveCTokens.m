@@ -153,7 +153,8 @@
 @interface MPObjectiveCClassDeclaration () {
     NSMutableArray *_conformedProtocols;
     NSMutableArray *_propertyDeclarations;
-    NSMutableArray *_methodDeclarations;
+    NSMutableArray *_instanceMethodDeclarations;
+    NSMutableArray *_classMethodDeclarations;
     NSMutableArray *_instanceVariableDeclarations;
 }
 @end
@@ -190,7 +191,8 @@ static NSMutableDictionary *_MPObjCClasses = nil;
         _conformedProtocols = [NSMutableArray new];
         
         _propertyDeclarations = [NSMutableArray new];
-        _methodDeclarations = [NSMutableArray new];
+        _instanceMethodDeclarations = [NSMutableArray new];
+        _classMethodDeclarations = [NSMutableArray new];
         _instanceVariableDeclarations = [NSMutableArray new];
         
     }
@@ -202,8 +204,12 @@ static NSMutableDictionary *_MPObjCClasses = nil;
     return _conformedProtocols.copy;
 }
 
-- (NSArray *)methodDeclarations {
-    return _methodDeclarations.copy;
+- (NSArray *)instanceMethodDeclarations {
+    return _instanceMethodDeclarations.copy;
+}
+
+- (NSArray *)classMethodDeclarations {
+    return _classMethodDeclarations.copy;
 }
 
 - (NSArray *)propertyDeclarations {
@@ -218,8 +224,12 @@ static NSMutableDictionary *_MPObjCClasses = nil;
     [_conformedProtocols addObject:conformedProtocol];
 }
 
-- (void)addMethodDeclaration:(MPObjectiveCMethodDeclaration *)method {
-    [_methodDeclarations addObject:method];
+- (void)addInstanceMethodDeclaration:(MPObjectiveCMethodDeclaration *)method {
+    [_instanceMethodDeclarations addObject:method];
+}
+
+- (void)addClassMethodDeclaration:(MPObjectiveCClassMethodDeclaration *)method {
+    [_classMethodDeclarations addObject:method];
 }
 
 - (void)addPropertyDeclaration:(MPObjectiveCPropertyDeclaration *)property {
@@ -228,6 +238,17 @@ static NSMutableDictionary *_MPObjCClasses = nil;
 
 - (void)addInstanceVariableDeclaration:(MPObjectiveCInstanceVariableDeclaration *)ivar {
     [_instanceVariableDeclarations addObject:ivar];
+}
+
+- (NSString *) description {
+    return [NSString stringWithFormat:@"[name:%@ superclass:%@ protocols:%@ properties:%@ imethods:%@ cmethods:%@ ivars:%@]",
+            self.name,
+            self.superClassName,
+            self.conformedProtocols,
+            self.propertyDeclarations,
+            self.instanceMethodDeclarations,
+            self.classMethodDeclarations,
+            self.instanceVariableDeclarations];
 }
 
 @end
@@ -305,6 +326,10 @@ static NSMutableDictionary *_MPObjCClasses = nil;
     return self;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"[name:%@ type:%@]", self.name, self.type];
+}
+
 @end
 
 
@@ -324,6 +349,79 @@ static NSMutableDictionary *_MPObjCClasses = nil;
     }
     
     return self;
+}
+
+@end
+
+@interface MPObjectiveCMethodDeclaration () {
+    NSMutableArray *_parameters;
+}
+@end
+
+@implementation MPObjectiveCMethodDeclaration
+
+- (instancetype)init {
+    NSAssert(false, @"Use -initWithSelector:returnType: instead");
+    return nil;
+}
+
+- (instancetype)initWithSelector:(NSString *)selector returnType:(NSString *)returnType {
+    self = [super init];
+    
+    if (self) {
+        _selector = selector;
+        _returnType = returnType;
+        
+        _parameters = [NSMutableArray new];
+    }
+    
+    return self;
+}
+
+- (void)addParameter:(MPObjectiveCMethodParameter *)param {
+    [_parameters addObject:param];
+}
+
+- (NSArray *)parameters {
+    return _parameters;
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"[selector:%@ returnType:%@ parameters:%@]",
+            self.selector, self.returnType, self.parameters];
+}
+
+@end
+
+@implementation MPObjectiveCInstanceMethodDeclaration
+@end
+
+@implementation MPObjectiveCClassMethodDeclaration
+@end
+
+
+@implementation MPObjectiveCMethodParameter
+
+- (instancetype)init {
+    NSAssert(false, @"Use -initWithName:type:selectorComponent: instead");
+    return nil;
+}
+
+- (instancetype)initWithName:(NSString *)name type:(NSString *)type selectorComponent:(NSString *)selectorComponent {
+    self = [super init];
+    
+    if (self) {
+        _name = name;
+        _type = type;
+        _selectorComponent = selectorComponent;
+    }
+    
+    return self;
+}
+
+- (NSString *)description {
+    return [NSString stringWithFormat:@"[name:%@ type:%@ selectorComponent:%@]",
+            self.name, self.type, self.selectorComponent];
 }
 
 @end

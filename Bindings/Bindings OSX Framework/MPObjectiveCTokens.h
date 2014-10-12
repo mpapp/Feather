@@ -133,11 +133,25 @@
 
 @end
 
+@interface MPObjectiveCMethodParameter : NSObject
+@property (readonly) NSString *name;
+@property (readonly) NSString *type;
+@property BOOL isObjectType;
+@property (readonly) NSString *selectorComponent;
+
+- (instancetype)initWithName:(NSString *)name type:(NSString *)type selectorComponent:(NSString *)selectorComponent;
+
+@end
+
 @interface MPObjectiveCMethodDeclaration : NSObject
 @property (readonly, copy) NSString *selector;
 @property (readonly, copy) NSString *returnType;
-@property (readonly, copy) NSArray *argumentTypes;
-@property (readonly, copy) NSArray *argumentNames;
+@property (readonly, copy) NSArray *parameters;
+
+- (instancetype)initWithSelector:(NSString *)selector returnType:(NSString *)returnType;
+
+- (void)addParameter:(MPObjectiveCMethodParameter *)param;
+
 @end
 
 @interface MPObjectiveCInstanceMethodDeclaration : MPObjectiveCMethodDeclaration

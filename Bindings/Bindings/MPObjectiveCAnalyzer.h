@@ -23,9 +23,7 @@
                        additionalHeaderPaths:(NSArray *)includedHeaders
                                        error:(NSError **)error;
 
-- (instancetype)initWithBundleAtURL:(NSURL *)url
-              additionalHeaderPaths:(NSArray *)includedHeaders
-                              error:(NSError **)error;
+- (instancetype)initWithBundleAtURL:(NSURL *)url additionalHeaderPaths:(NSArray *)includedHeaders error:(NSError **)error;
 
 - (MPObjectiveCTranslationUnit *)analyzedTranslationUnitForClangKitTranslationUnit:(CKTranslationUnit *)unit
                                                                             atPath:(NSString *)path;
