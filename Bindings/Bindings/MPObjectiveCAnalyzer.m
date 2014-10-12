@@ -414,7 +414,7 @@
     
     __block NSString *currentClassName = nil;
     __block MPObjectiveCClassDeclaration *currentClass = nil;
-    __block NSMutableArray *currentPunctuation = nil;
+    __block NSMutableArray *currentPunctuation = [NSMutableArray new];
     
     [self enumerateTokensForCompilationUnitAtPath:includedHeaderPath
                                      forEachToken:^(CKTranslationUnit *unit, CKToken *token)
@@ -432,20 +432,25 @@
         if (token.kind == CKTokenKindPunctuation)
             [currentPunctuation addObject:token.spelling];
 
-        if (![currentPunctuation containsObject:@":"]) { // class name
-            
-            if (token.kind == CKTokenKindIdentifier)
+        if (![currentPunctuation containsObject:@":"]) {
+            if (token.kind == CKTokenKindIdentifier)  // class name
                 currentClassName = token.spelling;
             
-        } else if ([currentPunctuation containsObject:@"<"]) { // we're beyond class name, not yet in interface declarations
+        } else if (![currentPunctuation containsObject:@"<"]) { // beyond class name, not yet in protocol conformance declarations
             
             if (token.kind == CKTokenKindIdentifier) {
                 currentClass = [[MPObjectiveCClassDeclaration alloc] initWithName:currentClassName
                                                                    superClassName:token.spelling];
+                
+                [classes addObject:currentClass];
             }
             
-        } else { // we're in the interface declarations
+        } else { // we're in the protocol declarations
             
+            if (token.kind == CKTokenKindIdentifier) {
+                NSParameterAssert(currentClass);
+                [currentClass addConformedProtocol:token.spelling];
+            }
             
         }
         
@@ -462,7 +467,7 @@
         return isInterfaceIdentifierToken || isInterfacePunctuation;
     }];
     
-    return classes;
+    return classes.copy;
 }
 
 - (void)logToken:(CKToken *)token headerPath:(NSString *)headerPath {

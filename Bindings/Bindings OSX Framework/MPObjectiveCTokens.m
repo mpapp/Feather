@@ -187,6 +187,8 @@ static NSMutableDictionary *_MPObjCClasses = nil;
         _name = name;
         _superClassName = superClassName;
         
+        _conformedProtocols = [NSMutableArray new];
+        
         _propertyDeclarations = [NSMutableArray new];
         _methodDeclarations = [NSMutableArray new];
         _instanceVariableDeclarations = [NSMutableArray new];
@@ -194,6 +196,10 @@ static NSMutableDictionary *_MPObjCClasses = nil;
     }
     
     return self;
+}
+
+- (NSArray *)conformedProtocols {
+    return _conformedProtocols.copy;
 }
 
 - (NSArray *)methodDeclarations {
@@ -206,6 +212,10 @@ static NSMutableDictionary *_MPObjCClasses = nil;
 
 - (NSArray *)instanceVariableDeclarations {
     return _instanceVariableDeclarations.copy;
+}
+
+- (void)addConformedProtocol:(NSString *)conformedProtocol {
+    [_conformedProtocols addObject:conformedProtocol];
 }
 
 - (void)addMethodDeclaration:(MPObjectiveCMethodDeclaration *)method {

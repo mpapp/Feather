@@ -71,6 +71,8 @@
 @property (readonly, copy) NSString *name;
 @property (readonly, copy) NSString *superClassName;
 
+@property (readonly) NSArray *conformedProtocols;
+
 @property (readonly) NSArray *propertyDeclarations;
 @property (readonly) NSArray *methodDeclarations;
 @property (readonly) NSArray *instanceVariableDeclarations;
@@ -79,9 +81,12 @@
 
 - (instancetype)initWithName:(NSString *)name superClassName:(NSString *)superClassName;
 
+- (void)addConformedProtocol:(NSString *)conformedProtocol;
+
 - (void)addMethodDeclaration:(MPObjectiveCMethodDeclaration *)method;
 - (void)addPropertyDeclaration:(MPObjectiveCPropertyDeclaration *)property;
 - (void)addInstanceVariableDeclaration:(MPObjectiveCInstanceVariableDeclaration *)ivar;
+
 
 @end
 
@@ -90,10 +95,9 @@
 @property (readonly, copy) NSString *name;
 @property (readonly, copy) NSArray *conformedProtocols;
 
-@property (readonly) NSArray *propertyDeclarations;
 @property (readonly) NSArray *methodDeclarations;
 
-- (void)addConformedProtocol:(NSString *)superProtocol;
+- (void)addConformedProtocol:(NSString *)conformedProtocol;
 
 - (void)addPropertyDeclaration:(MPObjectiveCPropertyDeclaration *)propDec;
 - (void)addMethodDeclaration:(MPObjectiveCMethodDeclaration *)methodDec;
