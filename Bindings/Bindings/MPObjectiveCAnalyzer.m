@@ -169,6 +169,24 @@
 
 #pragma mark -
 
+- (NSArray *)typeDefinitionsForHeaderAtPath:(NSString *)includedHeaderPath {
+    NSMutableArray *typedefs = [NSMutableArray new];
+    
+    [self enumerateTokensForCompilationUnitAtPath:includedHeaderPath forEachToken:
+     ^(CKTranslationUnit *unit, CKToken *token)
+    {
+        
+    } matchingPattern:^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token)
+    {
+        [self logToken:token headerPath:path];
+        
+        return token.cursor.kind == CKCursorKindTypeAliasDecl
+            || token.cursor.kind == CKCursorKindTypedefDecl;
+    }];
+    
+    return typedefs.copy;
+}
+
 - (NSArray *)enumDeclarationsForHeaderAtPath:(NSString *)includedHeaderPath {
     NSMutableArray *enums = [NSMutableArray new];
     
@@ -265,7 +283,7 @@
          prevToken = token;
     } matchingPattern:
      ^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token) {
-         [self logToken:token headerPath:path];
+         //[self logToken:token headerPath:path];
          
          BOOL isEnumDeclaration = (token.kind == CKTokenKindPunctuation && token.cursor.kind == CKCursorKindEnumDecl);
          BOOL isEnumConstDeclaration = (token.kind == CKTokenKindIdentifier && token.cursor.kind == CKCursorKindEnumConstantDecl);
@@ -370,7 +388,7 @@
         prevToken = token;
         
     } matchingPattern:^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token) {
-        [self logToken:token headerPath:path];
+        //[self logToken:token headerPath:path];
 
         // BDSKErrorObject.h, 43: const, MPSlappedSalmon (token kind: 1, cursor kind: 9, VarDecl)
         // BDSKErrorObject.h, 43: static, MPSlappedSalmon (token kind: 1, cursor kind: 9, VarDecl)
@@ -667,7 +685,7 @@
             }
         }
     } matchingPattern:^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token) {
-        [self logToken:token headerPath:path];
+        //[self logToken:token headerPath:path];
         
         BOOL isInterfaceIdentifierToken = token.kind == CKTokenKindIdentifier
             && token.cursor.kind == CKCursorKindObjCInterfaceDecl;

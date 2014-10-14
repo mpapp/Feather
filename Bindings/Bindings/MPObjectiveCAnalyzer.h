@@ -39,6 +39,8 @@
 
 #pragma mark -
 
+- (NSArray *)typeDefinitionsForHeaderAtPath:(NSString *)includedHeaderPath;
+
 - (NSArray *)enumDeclarationsForHeaderAtPath:(NSString *)includedHeaderPath;
 
 - (NSArray *)constantDeclarationsForHeaderAtPath:(NSString *)includedHeaderPath;

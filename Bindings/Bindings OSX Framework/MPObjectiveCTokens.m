@@ -88,6 +88,55 @@
 
 @end
 
+@implementation MPObjectiveCTypeDefinition
+
+- (instancetype)init {
+    NSAssert(false, @"Use -initWithName:backingType: instead.");
+    return nil;
+}
+
+- (instancetype)initWithName:(NSString *)name backingType:(NSString *)backingType {
+    self = [super init];
+    
+    if (self) {
+        _name = name;
+        _backingType = backingType;
+    }
+    
+    return self;
+}
+
+static NSMutableDictionary *types = nil;
+
++ (void)registerType:(MPObjectiveCTypeDefinition *)typeDef {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        types = [NSMutableDictionary new];
+    });
+    
+    types[typeDef.name] = typeDef;
+}
+
++ (MPObjectiveCTypeDefinition *)typeWithName:(NSString *)name {
+    MPObjectiveCTypeDefinition *backingType = types[name];
+    NSAssert(backingType, @"No type with name '%@'", name);
+    while (true) {
+        MPObjectiveCTypeDefinition *prevType = backingType;
+        backingType = types[backingType.name];
+    }
+}
+
+- (NSUInteger)hash {
+    return _name.hash;
+}
+
+- (BOOL)isEqual:(id)object {
+    return [object isKindOfClass:MPObjectiveCTypeDefinition.class]
+        && [_name isEqualToString:[object name]];
+}
+
+@end
+
 #pragma mark - 
 
 @implementation MPObjectiveCConstantDeclaration

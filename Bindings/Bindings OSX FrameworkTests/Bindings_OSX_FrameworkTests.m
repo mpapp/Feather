@@ -30,6 +30,7 @@
 
 - (MPObjectiveCAnalyzer *)newAnalyzer {
     NSError *err = nil;
+    
     MPObjectiveCAnalyzer *analyzer = [[MPObjectiveCAnalyzer alloc] initWithObjectiveCHeaderText:
 @"#import <Foundation/Foundation.h>\n\n\
 extern NSString *BDSKParserErrorNotification;\n\
@@ -37,10 +38,20 @@ const static NSUInteger MPSalmonSlapCount = 42;\n\
 typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
     MPFoobarUnknown = 0,\n\
     MPFoobarSomethingElse = 20\n\
-};\n" additionalHeaderPaths:@[] error:&err];
+};\n" additionalHeaderPaths:@[@"/System/Library/Frameworks/Foundation.framework/Versions/C/Headers"] error:&err];
     XCTAssert(analyzer && !err, @"No error should occur when initializing the analyzer.");
     
     return analyzer;
+}
+
+- (void)testTypedefParsing {
+    MPObjectiveCAnalyzer *analyzer = [self newAnalyzer];
+    NSArray *typedefs = [analyzer.includedHeaderPaths mapObjectsUsingBlock:^id(NSString *headerPath, NSUInteger idx) {
+        return [analyzer typeDefinitionsForHeaderAtPath:headerPath];
+    }];
+    
+    XCTAssertTrue(typedefs.count == 2,
+                  @"Two type definitions should have been parsed.");
 }
 
 - (void)testEnumParsing {

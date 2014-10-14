@@ -51,11 +51,6 @@
 
 @end
 
-@interface MPObjectiveCTyped
-
-@end
-
-
 @interface MPObjectiveCEnumConstant : NSObject
 
 @property (readonly, weak) MPObjectiveCEnumDeclaration *enumDeclaration;
@@ -66,6 +61,14 @@
                                    name:(NSString *)name;
 @end
 
+@interface MPObjectiveCTypeDefinition : NSObject
+
+@property (readonly) NSString *name;
+@property (readonly) NSString *backingType;
+
+- (instancetype)initWithName:(NSString *)name backingType:(NSString *)backingType;
+
+@end
 
 @interface MPObjectiveCClassDeclaration : NSObject
 
