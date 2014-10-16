@@ -103,6 +103,34 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
     XCTAssertTrue(!constNumberDec.isExtern, @"Constant should not be extern");
 }
 
+- (void)testProtocolDeclarationParsing {
+    NSError *err = nil;
+    MPObjectiveCAnalyzer *analyzer
+    = [[MPObjectiveCAnalyzer alloc] initWithObjectiveCHeaderText:
+@"@protocol MPFooProtocol <NSObject>\n\
+\n\
+@property (readwrite, copy, getter=tehSalmon, setter=setSalmonsToSlap) NSArray *schoolOfSalmon;\n\
+- (instancetype)initWithBundleAtURL:(NSURL *)url additionalHeaderPaths:(NSArray *)includedHeaders error:(NSError **)error;\n\
++ (MPObjectiveCClassDeclaration *)classWithName:(NSString *)name;\n\
+- (id)justSomeObject;\n\
+\n@end\n\
+@protocol MPBarProtocol <MPFooProtocol>\n\
+@end\n\n\
+@protocol MPBazProtocol <MPFooProtocol, MPBarProtocol>\n\
+@end\n" additionalHeaderPaths:@[] error:&err];
+    XCTAssert(analyzer && !err,
+              @"No error should occur when initializing the analyzer.");
+    XCTAssert(analyzer.includedHeaderPaths.count == 1, @"There should be a single included header (%lu)",
+              analyzer.includedHeaderPaths.count);
+    
+    NSArray *protocols = [analyzer.includedHeaderPaths mapObjectsUsingBlock:^id(NSString *headerPath, NSUInteger idx)
+    {
+        return [analyzer protocolDeclarationsForHeaderAtPath:headerPath];
+    }];
+    
+    
+}
+
 - (void)testClassDeclarationParsing {
     NSError *err = nil;
     MPObjectiveCAnalyzer *analyzer

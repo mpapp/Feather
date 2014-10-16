@@ -444,7 +444,12 @@
     return constants.copy;
 }
 
-- (NSArray *)classDeclarationsForHeaderAtPath:(NSString *)includedHeaderPath {
+typedef NS_ENUM(NSUInteger, MPInterfaceType) {
+    MPInterfaceTypeClass = 0,
+    MPInterfaceTypeProtocol = 1
+};
+
+- (NSArray *)interfaceDeclarationsOfType:(MPInterfaceType)interfaceType forHeaderAtPath:(NSString *)includedHeaderPath {
     NSMutableArray *classes = [NSMutableArray new];
     
     __block NSString *currentClassName = nil;
@@ -475,10 +480,19 @@
     __block NSMutableArray *currentMethodParamNames = [NSMutableArray new];
     __block NSString *currentMethodSelector = nil;
     
+    CKCursorKind interfaceKind;
+    switch (interfaceType) {
+        case MPInterfaceTypeClass:
+            interfaceKind = CKCursorKindObjCInterfaceDecl;
+            break;
+        case MPInterfaceTypeProtocol:
+            interfaceKind = CKCursorKindObjCProtocolDecl;
+    }
+    
     [self enumerateTokensForCompilationUnitAtPath:includedHeaderPath
                                      forEachToken:^(CKTranslationUnit *unit, CKToken *token)
     {
-        if (token.cursor.kind == CKCursorKindObjCInterfaceDecl) {
+        if (token.cursor.kind == interfaceKind) {
             // we're at the '@' -- reset the current state
             if ([token.spelling isEqualToString:@"@"]) {
                 currentClassName = nil;
@@ -494,16 +508,26 @@
             if (token.kind == CKTokenKindPunctuation)
                 [currentClassPunctuation addObject:token.spelling];
             
-            if (![currentClassPunctuation containsObject:@":"]) {
+            if (![currentClassPunctuation containsObject:@":"]
+                || interfaceType == MPInterfaceTypeProtocol) {
                 if (token.kind == CKTokenKindIdentifier)  // class name
                     currentClassName = token.spelling;
                 
             } else if (![currentClassPunctuation containsObject:@"<"]) { // beyond class name, not yet in protocol conformance declarations
                 
+                Class cls = nil;
+                switch (interfaceType) {
+                    case MPInterfaceTypeClass:
+                        cls = [MPObjectiveCClassDeclaration class];
+                        break;
+                        
+                    case MPInterfaceTypeProtocol:
+                        cls = [MPObjectiveCProtocolDeclaration class];
+                        break;
+                }
+                
                 if (token.kind == CKTokenKindIdentifier) {
-                    currentClass = [[MPObjectiveCClassDeclaration alloc] initWithName:currentClassName
-                                                                       superClassName:token.spelling];
-                    
+                    currentClass = [[cls alloc] initWithName:currentClassName superClassName:token.spelling];
                     [classes addObject:currentClass];
                 }
                 
@@ -701,13 +725,13 @@
             }
         }
     } matchingPattern:^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token) {
-        //[self logToken:token headerPath:path];
+        [self logToken:token headerPath:path];
         
         BOOL isInterfaceIdentifierToken = token.kind == CKTokenKindIdentifier
-            && token.cursor.kind == CKCursorKindObjCInterfaceDecl;
+            && token.cursor.kind == interfaceKind;
         
         BOOL isInterfacePunctuation = token.kind == CKTokenKindPunctuation
-            && token.cursor.kind == CKCursorKindObjCInterfaceDecl;
+            && token.cursor.kind == interfaceKind;
         
         BOOL isPropertyIdentifierToken = token.kind == CKTokenKindIdentifier && token.cursor.kind == CKCursorKindObjCPropertyDecl;
         BOOL isPropertyPunctuation = token.kind == CKTokenKindPunctuation && token.cursor.kind == CKCursorKindObjCPropertyDecl;
@@ -732,6 +756,14 @@
     }];
     
     return classes.copy;
+}
+
+- (NSArray *)classDeclarationsForHeaderAtPath:(NSString *)path {
+    return [self interfaceDeclarationsOfType:MPInterfaceTypeClass forHeaderAtPath:path];
+}
+
+- (NSArray *)protocolDeclarationsForHeaderAtPath:(NSString *)path {
+    return [self interfaceDeclarationsOfType:MPInterfaceTypeProtocol forHeaderAtPath:path];
 }
 
 - (void)logToken:(CKToken *)token headerPath:(NSString *)headerPath {
