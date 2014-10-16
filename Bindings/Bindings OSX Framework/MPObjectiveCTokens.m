@@ -135,6 +135,10 @@ static NSMutableDictionary *types = nil;
         && [_name isEqualToString:[object name]];
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"[name:%@ backingType:%@]", self.name, self.backingType];
+}
+
 @end
 
 #pragma mark - 

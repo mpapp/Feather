@@ -33,12 +33,14 @@
     
     MPObjectiveCAnalyzer *analyzer = [[MPObjectiveCAnalyzer alloc] initWithObjectiveCHeaderText:
 @"#import <Foundation/Foundation.h>\n\n\
+typedef NSUInteger MPFooBarNumberA;\n\
+typedef NSInteger MPFooBarNumberB;\n\
 extern NSString *BDSKParserErrorNotification;\n\
 const static NSUInteger MPSalmonSlapCount = 42;\n\
 typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
     MPFoobarUnknown = 0,\n\
     MPFoobarSomethingElse = 20\n\
-};\n" additionalHeaderPaths:@[@"/System/Library/Frameworks/Foundation.framework/Versions/C/Headers"] error:&err];
+};\n" additionalHeaderPaths:@[] error:&err];
     XCTAssert(analyzer && !err, @"No error should occur when initializing the analyzer.");
     
     return analyzer;
@@ -50,8 +52,18 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
         return [analyzer typeDefinitionsForHeaderAtPath:headerPath];
     }];
     
-    XCTAssertTrue(typedefs.count == 2,
+    XCTAssertTrue([[typedefs firstObject] count] == 2,
                   @"Two type definitions should have been parsed.");
+    
+    BOOL namesMatch = [[[typedefs firstObject] valueForKey:@"name"] isEqualToArray:@[@"MPFooBarNumberA", @"MPFooBarNumberB"]];
+    XCTAssertTrue(namesMatch,
+                  @"Typedef names match expectation (%@).",
+                  [[typedefs firstObject] valueForKey:@"name"]);
+    
+    BOOL backingTypesMatch = [[[typedefs firstObject] valueForKey:@"backingType"] isEqualToArray:@[@"NSUInteger", @"NSInteger"]];
+    XCTAssertTrue(backingTypesMatch,
+                  @"Typedef backing types match expectation (%@).",
+                  [[typedefs firstObject] valueForKey:@"backingType"]);
 }
 
 - (void)testEnumParsing {

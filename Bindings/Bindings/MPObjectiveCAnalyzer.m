@@ -172,16 +172,32 @@
 - (NSArray *)typeDefinitionsForHeaderAtPath:(NSString *)includedHeaderPath {
     NSMutableArray *typedefs = [NSMutableArray new];
     
+    __block NSString *currentTypeName = nil;
     [self enumerateTokensForCompilationUnitAtPath:includedHeaderPath forEachToken:
      ^(CKTranslationUnit *unit, CKToken *token)
     {
-        
+        if ([token.spelling isEqualTo:@"typedef"]
+            && token.kind == CKTokenKindKeyword
+            && token.cursor.kind == CKCursorKindTypedefDecl) {
+            currentTypeName = token.cursor.displayName.copy;
+        }
+        else if (token.kind == CKTokenKindIdentifier
+                 && token.cursor.kind == CKCursorKindTypeRef
+                 && token.cursor.semanticParent.kind == CKCursorKindTypedefDecl) {
+            
+            if (!currentTypeName)
+                return;
+            
+            MPObjectiveCTypeDefinition *typeDef
+                = [[MPObjectiveCTypeDefinition alloc] initWithName:currentTypeName backingType:token.spelling];
+            
+            [typedefs addObject:typeDef];
+            currentTypeName = nil;
+        }
     } matchingPattern:^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token)
     {
-        [self logToken:token headerPath:path];
-        
-        return token.cursor.kind == CKCursorKindTypeAliasDecl
-            || token.cursor.kind == CKCursorKindTypedefDecl;
+        return token.cursor.kind == CKCursorKindTypedefDecl
+            || token.cursor.kind == CKCursorKindTypeRef;
     }];
     
     return typedefs.copy;
