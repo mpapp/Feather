@@ -108,7 +108,10 @@
 - (void)addConformedProtocol:(NSString *)conformedProtocol;
 
 - (void)addPropertyDeclaration:(MPObjectiveCPropertyDeclaration *)propDec;
-- (void)addMethodDeclaration:(MPObjectiveCMethodDeclaration *)methodDec;
+
+- (void)addClassMethodDeclaration:(MPObjectiveCClassMethodDeclaration *)methodDec;
+
+- (void)addInstanceMethodDeclaration:(MPObjectiveCInstanceMethodDeclaration *)methodDec;
 
 - (instancetype)initWithName:(NSString *)name;
 

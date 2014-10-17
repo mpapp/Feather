@@ -128,6 +128,8 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
         return [analyzer protocolDeclarationsForHeaderAtPath:headerPath];
     }];
     
+    XCTAssertTrue([protocols.firstObject count] == 3, @
+                  "There should be three protocols (%lu).", [protocols.firstObject count]);
     
 }
 

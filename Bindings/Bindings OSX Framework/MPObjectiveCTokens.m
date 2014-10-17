@@ -309,7 +309,8 @@ static NSMutableDictionary *_MPObjCClasses = nil;
 
 @interface MPObjectiveCProtocolDeclaration () {
     NSMutableArray *_conformedProtocols;
-    NSMutableArray *_methodDeclarations;
+    NSMutableArray *_classMethodDeclarations;
+    NSMutableArray *_instanceMethodDeclarations;
     NSMutableArray *_propertyDeclarations;
 }
 @end
@@ -327,7 +328,8 @@ static NSMutableDictionary *_MPObjCClasses = nil;
     if (self) {
         _name = name;
         _conformedProtocols = [NSMutableArray new];
-        _methodDeclarations = [NSMutableArray new];
+        _classMethodDeclarations = [NSMutableArray new];
+        _instanceMethodDeclarations = [NSMutableArray new];
         _propertyDeclarations = [NSMutableArray new];
     }
     
@@ -338,8 +340,12 @@ static NSMutableDictionary *_MPObjCClasses = nil;
     [_conformedProtocols addObject:superProtocol];
 }
 
-- (void)addMethodDeclaration:(MPObjectiveCMethodDeclaration *)methodDec {
-    [_methodDeclarations addObject:methodDec];
+- (void)addClassMethodDeclaration:(MPObjectiveCClassMethodDeclaration *)methodDec {
+    [_classMethodDeclarations addObject:methodDec];
+}
+
+- (void)addInstanceMethodDeclaration:(MPObjectiveCInstanceMethodDeclaration *)methodDec {
+    [_instanceMethodDeclarations addObject:methodDec];
 }
 
 - (void)addPropertyDeclaration:(MPObjectiveCPropertyDeclaration *)propDec {
@@ -350,8 +356,12 @@ static NSMutableDictionary *_MPObjCClasses = nil;
     return _conformedProtocols.copy;
 }
 
-- (NSArray *)methodDeclarations {
-    return _methodDeclarations.copy;
+- (NSArray *)classMethodDeclarations {
+    return _classMethodDeclarations.copy;
+}
+
+- (NSArray *)instanceMethodDeclarations {
+    return _instanceMethodDeclarations.copy;
 }
 
 - (NSArray *)propertyDeclarations {

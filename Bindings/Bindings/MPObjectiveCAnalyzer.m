@@ -453,7 +453,7 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
     NSMutableArray *classes = [NSMutableArray new];
     
     __block NSString *currentClassName = nil;
-    __block MPObjectiveCClassDeclaration *currentClass = nil;
+    __block id currentClass = nil;
     __block NSMutableArray *currentClassPunctuation = [NSMutableArray new];
     
     __block NSString *currentPropertyName = nil;
@@ -464,12 +464,10 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
     __block NSString *currentPropertyGetterName = nil;
     __block NSString *currentPropertySetterName = nil;
     
-    
     __block MPObjectiveCPropertyDeclaration *currentPropertyDec = nil;
     __block NSMutableArray *currentPropertyPunctuation = [NSMutableArray new];
     __block NSMutableArray *currentPropertyIdentifiers = [NSMutableArray new];
     __block NSMutableArray *currentPropertyAttributeIdentifiers = [NSMutableArray new];
-    
     
     __block MPObjectiveCMethodDeclaration *currentMethodDec = nil;
     __block BOOL currentMethodIsClassMethod = NO;
@@ -490,7 +488,8 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
     }
     
     [self enumerateTokensForCompilationUnitAtPath:includedHeaderPath
-                                     forEachToken:^(CKTranslationUnit *unit, CKToken *token)
+                                     forEachToken:
+     ^(CKTranslationUnit *unit, CKToken *token)
     {
         if (token.cursor.kind == interfaceKind) {
             // we're at the '@' -- reset the current state
@@ -508,26 +507,27 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
             if (token.kind == CKTokenKindPunctuation)
                 [currentClassPunctuation addObject:token.spelling];
             
-            if (![currentClassPunctuation containsObject:@":"]
-                || interfaceType == MPInterfaceTypeProtocol) {
-                if (token.kind == CKTokenKindIdentifier)  // class name
-                    currentClassName = token.spelling;
-                
-            } else if (![currentClassPunctuation containsObject:@"<"]) { // beyond class name, not yet in protocol conformance declarations
-                
-                Class cls = nil;
-                switch (interfaceType) {
-                    case MPInterfaceTypeClass:
-                        cls = [MPObjectiveCClassDeclaration class];
-                        break;
-                        
-                    case MPInterfaceTypeProtocol:
-                        cls = [MPObjectiveCProtocolDeclaration class];
-                        break;
-                }
+            if ((![currentClassPunctuation containsObject:@":"]
+                || interfaceType == MPInterfaceTypeProtocol)
+                && !currentClassName) {
                 
                 if (token.kind == CKTokenKindIdentifier) {
-                    currentClass = [[cls alloc] initWithName:currentClassName superClassName:token.spelling];
+                    currentClassName = token.spelling;
+                    
+                    if (interfaceType == MPInterfaceTypeProtocol) {
+                        currentClass = [[MPObjectiveCProtocolDeclaration alloc] initWithName:currentClassName];
+                        [classes addObject:currentClass];
+                    }
+                }
+            }
+            // beyond class name, not yet in protocol conformance declarations
+            else if (![currentClassPunctuation containsObject:@"<"]
+                     && (interfaceType == MPInterfaceTypeClass)) {
+                
+                NSAssert(interfaceType == MPInterfaceTypeClass, @"Should be unreachable for protocols");
+                
+                if (token.kind == CKTokenKindIdentifier) {
+                    currentClass = [[MPObjectiveCClassDeclaration alloc] initWithName:currentClassName superClassName:token.spelling];
                     [classes addObject:currentClass];
                 }
                 
