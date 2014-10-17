@@ -368,6 +368,15 @@ static NSMutableDictionary *_MPObjCClasses = nil;
     return _propertyDeclarations.copy;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"[name:%@ conformedProtocols:%@ instanceMethods:%@ classMethods:%@ properties:%@]",
+            self.name,
+            self.conformedProtocols,
+            self.instanceMethodDeclarations,
+            self.classMethodDeclarations,
+            self.propertyDeclarations];
+}
+
 @end
 
 

@@ -103,7 +103,8 @@
 
 @property (readonly, copy) NSArray *conformedProtocols;
 
-@property (readonly) NSArray *methodDeclarations;
+@property (readonly) NSArray *classMethodDeclarations;
+@property (readonly) NSArray *instanceMethodDeclarations;
 
 - (void)addConformedProtocol:(NSString *)conformedProtocol;
 

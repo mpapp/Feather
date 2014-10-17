@@ -131,6 +131,17 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
     XCTAssertTrue([protocols.firstObject count] == 3, @
                   "There should be three protocols (%lu).", [protocols.firstObject count]);
     
+    XCTAssertTrue([[[protocols.firstObject objectAtIndex:0] name] isEqualToString:@"MPFooProtocol"]);
+    XCTAssertTrue([[[protocols.firstObject objectAtIndex:0] conformedProtocols] containsObject:@"NSObject"]);
+    XCTAssertTrue([[[protocols.firstObject objectAtIndex:0] conformedProtocols] count] == 1);
+    XCTAssertTrue([[[protocols.firstObject objectAtIndex:0] instanceMethodDeclarations] count] == 2);
+    XCTAssertTrue([[[protocols.firstObject objectAtIndex:0] classMethodDeclarations] count] == 1);
+    XCTAssertTrue([[(MPObjectiveCClassMethodDeclaration *)[[[protocols.firstObject objectAtIndex:0] classMethodDeclarations] firstObject] selector] isEqualToString:@"classWithName:"]);
+    
+    XCTAssertTrue([[[protocols.firstObject objectAtIndex:1] name] isEqualToString:@"MPBarProtocol"]);
+    XCTAssertTrue([[[protocols.firstObject objectAtIndex:1] conformedProtocols] containsObject:@"MPFooProtocol"]);
+    XCTAssertTrue([[[protocols.firstObject objectAtIndex:2] name] isEqualToString:@"MPBazProtocol"]);
+    
 }
 
 - (void)testClassDeclarationParsing {
