@@ -20,7 +20,7 @@
 
 #import <dlfcn.h>
 
-@interface MPObjectiveCAnalyzer ()
+@interface MPObjCAnalyzer ()
 @property (readwrite) NSBundle *bundle;
 @property (readwrite) void *libraryHandle;
 @property (readwrite) NSString *tempFilePath;
@@ -30,7 +30,7 @@
 @end
 
 
-@implementation MPObjectiveCAnalyzer
+@implementation MPObjCAnalyzer
 
 - (instancetype)initWithDynamicLibraryAtPath:(NSString *)path
                          includedHeaderPaths:(NSArray *)includedHeaders
@@ -124,13 +124,17 @@
 // 6d) enumerate its class methods
 // 6e) enumerate its instance methods
 
-- (MPObjectiveCTranslationUnit *)analyzedTranslationUnitForClangKitTranslationUnit:(CKTranslationUnit *)unit
+- (MPObjCTranslationUnit *)analyzedTranslationUnitForClangKitTranslationUnit:(CKTranslationUnit *)unit
                                                                             atPath:(NSString *)path {
-    MPObjectiveCTranslationUnit *analyzedUnit = [[MPObjectiveCTranslationUnit alloc] initWithPath:path];
+    MPObjCTranslationUnit *analyzedUnit = [[MPObjCTranslationUnit alloc] initWithPath:path];
     
     // 1) get enum declarations
-    for (MPObjectiveCEnumDeclaration *declaration in [self enumDeclarationsForHeaderAtPath:path])
+    for (MPObjCEnumDeclaration *declaration in [self enumDeclarationsForHeaderAtPath:path])
         [analyzedUnit addEnumDeclaration:declaration];
+    
+    // 2) get const declarations
+    for (MPObjCConstantDeclaration *declaration in [self constantDeclarationsForHeaderAtPath:path])
+        [analyzedUnit addConstantDeclaration:declaration];
     
     return analyzedUnit;
 }
@@ -188,8 +192,8 @@
             if (!currentTypeName)
                 return;
             
-            MPObjectiveCTypeDefinition *typeDef
-                = [[MPObjectiveCTypeDefinition alloc] initWithName:currentTypeName backingType:token.spelling];
+            MPObjCTypeDefinition *typeDef
+                = [[MPObjCTypeDefinition alloc] initWithName:currentTypeName backingType:token.spelling];
             
             [typedefs addObject:typeDef];
             currentTypeName = nil;
@@ -207,8 +211,8 @@
     NSMutableArray *enums = [NSMutableArray new];
     
     __block CKToken *prevToken = prevToken;
-    __block MPObjectiveCEnumDeclaration *currentEnum = nil;
-    __block MPObjectiveCEnumConstant *currentEnumConstant = nil;
+    __block MPObjCEnumDeclaration *currentEnum = nil;
+    __block MPObjCEnumConstant *currentEnumConstant = nil;
     
     NSMutableArray *currentMacroExpansions = [NSMutableArray new];
     
@@ -228,7 +232,7 @@
          }
          else if (token.cursor.kind == CKCursorKindEnumDecl) {
              
-             MPObjectiveCEnumDeclaration *cursorEnum = [[MPObjectiveCEnumDeclaration alloc] initWithName:token.cursor.displayName];
+             MPObjCEnumDeclaration *cursorEnum = [[MPObjCEnumDeclaration alloc] initWithName:token.cursor.displayName];
              
              // should be something like:
              // <__NSArrayM 0x10034dc20>(
@@ -267,7 +271,7 @@
              
              NSParameterAssert(currentEnum);
              NSParameterAssert(![currentEnum.enumConstants containsObject:token]);
-             currentEnumConstant = [[MPObjectiveCEnumConstant alloc] initWithEnumDeclaration:currentEnum name:token.cursor.displayName];
+             currentEnumConstant = [[MPObjCEnumConstant alloc] initWithEnumDeclaration:currentEnum name:token.cursor.displayName];
              
              [currentEnum addEnumConstant:currentEnumConstant];
          }
@@ -281,7 +285,7 @@
                       && prevToken.cursor.kind == CKCursorKindEnumConstantDecl,
                       @"Integral constant should only follow enum constant declaration.");
          
-             MPObjectiveCEnumDeclaration *constant = currentEnum.enumConstants.lastObject;
+             MPObjCEnumDeclaration *constant = currentEnum.enumConstants.lastObject;
              NSParameterAssert(constant);
              
              NSNumberFormatter *f = [NSNumberFormatter new];
@@ -328,7 +332,7 @@
     
     __block NSUInteger prevLine = NSNotFound;
     __block NSString *currentType = nil;
-    __block MPObjectiveCConstantDeclaration *currentConst = nil;
+    __block MPObjCConstantDeclaration *currentConst = nil;
     __block CKToken *prevToken = nil;
     __block BOOL currentDeclarationIsObjectType = NO;
     
@@ -366,7 +370,7 @@
             if (currentVarDeclarationKeywords.count == 0 || !currentType)
                 return;
             
-            currentConst = [[MPObjectiveCConstantDeclaration alloc] initWithName:token.spelling value:nil
+            currentConst = [[MPObjCConstantDeclaration alloc] initWithName:token.spelling value:nil
                                                                             type:currentType];
             
             [constants addObject:currentConst];
@@ -464,12 +468,12 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
     __block NSString *currentPropertyGetterName = nil;
     __block NSString *currentPropertySetterName = nil;
     
-    __block MPObjectiveCPropertyDeclaration *currentPropertyDec = nil;
+    __block MPObjCPropertyDeclaration *currentPropertyDec = nil;
     __block NSMutableArray *currentPropertyPunctuation = [NSMutableArray new];
     __block NSMutableArray *currentPropertyIdentifiers = [NSMutableArray new];
     __block NSMutableArray *currentPropertyAttributeIdentifiers = [NSMutableArray new];
     
-    __block MPObjectiveCMethodDeclaration *currentMethodDec = nil;
+    __block MPObjCMethodDeclaration *currentMethodDec = nil;
     __block BOOL currentMethodIsClassMethod = NO;
     __block NSMutableArray *currentMethodPunctuation = [NSMutableArray new];
     __block NSMutableArray *currentMethodIdentifiers = [NSMutableArray new];
@@ -515,7 +519,7 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
                     currentClassName = token.spelling;
                     
                     if (interfaceType == MPInterfaceTypeProtocol) {
-                        currentClass = [[MPObjectiveCProtocolDeclaration alloc] initWithName:currentClassName];
+                        currentClass = [[MPObjCProtocolDeclaration alloc] initWithName:currentClassName];
                         [classes addObject:currentClass];
                     }
                 }
@@ -527,7 +531,7 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
                 NSAssert(interfaceType == MPInterfaceTypeClass, @"Should be unreachable for protocols");
                 
                 if (token.kind == CKTokenKindIdentifier) {
-                    currentClass = [[MPObjectiveCClassDeclaration alloc] initWithName:currentClassName superClassName:token.spelling];
+                    currentClass = [[MPObjCClassDeclaration alloc] initWithName:currentClassName superClassName:token.spelling];
                     [classes addObject:currentClass];
                 }
                 
@@ -581,7 +585,7 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
                     [currentPropertyIdentifiers addObject:token.spelling];
                     
                     if (currentPropertyIdentifiers.count == 2) {
-                        currentPropertyDec = [[MPObjectiveCPropertyDeclaration alloc] initWithName:currentPropertyIdentifiers[1]
+                        currentPropertyDec = [[MPObjCPropertyDeclaration alloc] initWithName:currentPropertyIdentifiers[1]
                                                                                           type:currentPropertyIdentifiers[0]];
                         currentPropertyDec.isReadWrite = currentPropertyIsReadwrite;
                         currentPropertyDec.isObjectType = currentPropertyIsObjectType;
@@ -652,8 +656,8 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
                 && ![currentMethodPunctuation containsObject:@")"]) {
                 
                 currentMethodDec = [[(currentMethodIsClassMethod
-                                      ? MPObjectiveCClassMethodDeclaration.class
-                                      : MPObjectiveCInstanceMethodDeclaration.class) alloc]
+                                      ? MPObjCClassMethodDeclaration.class
+                                      : MPObjCInstanceMethodDeclaration.class) alloc]
                                     initWithSelector:currentMethodSelector returnType:token.spelling];
                 
                 if (currentMethodIsClassMethod) {
@@ -704,7 +708,7 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
                 
                 [currentMethodParamNames addObject:token.spelling];
                 
-                [currentMethodDec addParameter:[[MPObjectiveCMethodParameter alloc]
+                [currentMethodDec addParameter:[[MPObjCMethodParameter alloc]
                                                 initWithName:token.spelling
                                                 type:paramType
                                                 selectorComponent:selectorComponent]];
@@ -713,8 +717,8 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
         else if (currentMethodSelector && token.cursor.kind == CKCursorKindTypeRef)
         {
             currentMethodDec = [[(currentMethodIsClassMethod
-                                  ? MPObjectiveCClassMethodDeclaration.class
-                                  : MPObjectiveCInstanceMethodDeclaration.class) alloc]
+                                  ? MPObjCClassMethodDeclaration.class
+                                  : MPObjCInstanceMethodDeclaration.class) alloc]
                                 initWithSelector:currentMethodSelector returnType:token.spelling];
             
             if (currentMethodIsClassMethod) {

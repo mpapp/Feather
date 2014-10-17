@@ -1,5 +1,5 @@
 //
-//  MPObjectiveCTokens.m
+//  MPObjCTokens.m
 //  Bindings
 //
 //  Created by Matias Piipari on 11/10/2014.
@@ -8,17 +8,17 @@
 
 #import "MPObjectiveCTokens.h"
 
-@interface MPObjectiveCEnumDeclaration () {
+@interface MPObjCEnumDeclaration () {
     NSMutableArray *_enumConstants;
 }
 @end
 
-@interface MPObjectiveCTranslationUnit () {
+@interface MPObjCTranslationUnit () {
     NSMutableArray *_enumDeclarations;
 }
 @end
 
-@implementation MPObjectiveCTranslationUnit
+@implementation MPObjCTranslationUnit
 
 - (instancetype)init {
     return [self initWithPath:nil];
@@ -39,13 +39,13 @@
     return _enumDeclarations.copy;
 }
 
-- (void)addEnumDeclaration:(MPObjectiveCEnumDeclaration *)declaration {
+- (void)addEnumDeclaration:(MPObjCEnumDeclaration *)declaration {
     [_enumDeclarations addObject:declaration];
 }
 
 @end
 
-@implementation MPObjectiveCEnumDeclaration
+@implementation MPObjCEnumDeclaration
 
 - (instancetype)initWithName:(NSString *)name {
     self = [super init];
@@ -67,7 +67,7 @@
         && [[object name] isEqualToString:self.name];
 }
 
-- (void)addEnumConstant:(MPObjectiveCEnumConstant *)enumConstant {
+- (void)addEnumConstant:(MPObjCEnumConstant *)enumConstant {
     NSParameterAssert(![self.enumConstants containsObject:enumConstant]);
     [_enumConstants addObject:enumConstant];
 }
@@ -88,7 +88,7 @@
 
 @end
 
-@implementation MPObjectiveCTypeDefinition
+@implementation MPObjCTypeDefinition
 
 - (instancetype)init {
     NSAssert(false, @"Use -initWithName:backingType: instead.");
@@ -108,7 +108,7 @@
 
 static NSMutableDictionary *types = nil;
 
-+ (void)registerType:(MPObjectiveCTypeDefinition *)typeDef {
++ (void)registerType:(MPObjCTypeDefinition *)typeDef {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         types = [NSMutableDictionary new];
@@ -117,11 +117,11 @@ static NSMutableDictionary *types = nil;
     types[typeDef.name] = typeDef;
 }
 
-+ (MPObjectiveCTypeDefinition *)typeWithName:(NSString *)name {
-    MPObjectiveCTypeDefinition *backingType = types[name];
++ (MPObjCTypeDefinition *)typeWithName:(NSString *)name {
+    MPObjCTypeDefinition *backingType = types[name];
     NSAssert(backingType, @"No type with name '%@'", name);
     while (true) {
-        MPObjectiveCTypeDefinition *prevType = backingType;
+        MPObjCTypeDefinition *prevType = backingType; // FIXME: handle hierarchies of typedefs going back all the way to a basic type
         backingType = types[backingType.name];
     }
 }
@@ -131,7 +131,7 @@ static NSMutableDictionary *types = nil;
 }
 
 - (BOOL)isEqual:(id)object {
-    return [object isKindOfClass:MPObjectiveCTypeDefinition.class]
+    return [object isKindOfClass:MPObjCTypeDefinition.class]
         && [_name isEqualToString:[object name]];
 }
 
@@ -143,7 +143,7 @@ static NSMutableDictionary *types = nil;
 
 #pragma mark - 
 
-@implementation MPObjectiveCConstantDeclaration
+@implementation MPObjCConstantDeclaration
 
 - (instancetype)initWithName:(NSString *)name value:(id)value type:(NSString *)type {
     self = [super init];
@@ -167,9 +167,9 @@ static NSMutableDictionary *types = nil;
 
 #pragma mark -
 
-@implementation MPObjectiveCEnumConstant
+@implementation MPObjCEnumConstant
 
-- (instancetype)initWithEnumDeclaration:(MPObjectiveCEnumDeclaration *)enumDeclaration
+- (instancetype)initWithEnumDeclaration:(MPObjCEnumDeclaration *)enumDeclaration
                                    name:(NSString *)name
 {
     self = [super init];
@@ -203,7 +203,7 @@ static NSMutableDictionary *types = nil;
 
 #pragma mark -
 
-@interface MPObjectiveCClassDeclaration () {
+@interface MPObjCClassDeclaration () {
     NSMutableArray *_conformedProtocols;
     NSMutableArray *_propertyDeclarations;
     NSMutableArray *_instanceMethodDeclarations;
@@ -212,7 +212,7 @@ static NSMutableDictionary *types = nil;
 }
 @end
 
-@implementation MPObjectiveCClassDeclaration
+@implementation MPObjCClassDeclaration
 
 - (instancetype)init {
     NSAssert(false, @"Use -initWithName:superClassName: instead.");
@@ -221,7 +221,7 @@ static NSMutableDictionary *types = nil;
 
 static NSMutableDictionary *_MPObjCClasses = nil;
 
-+ (void)registerClassDeclaration:(MPObjectiveCClassDeclaration *)objcClassDec {
++ (void)registerClassDeclaration:(MPObjCClassDeclaration *)objcClassDec {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         _MPObjCClasses = [NSMutableDictionary new];
@@ -230,7 +230,7 @@ static NSMutableDictionary *_MPObjCClasses = nil;
     NSAssert(!_MPObjCClasses[objcClassDec.name], @"Class '%@' already exists.", objcClassDec.name);
 }
 
-+ (MPObjectiveCClassDeclaration *)classWithName:(NSString *)name {
++ (MPObjCClassDeclaration *)classWithName:(NSString *)name {
     return _MPObjCClasses[name];
 }
 
@@ -277,19 +277,19 @@ static NSMutableDictionary *_MPObjCClasses = nil;
     [_conformedProtocols addObject:conformedProtocol];
 }
 
-- (void)addInstanceMethodDeclaration:(MPObjectiveCMethodDeclaration *)method {
+- (void)addInstanceMethodDeclaration:(MPObjCMethodDeclaration *)method {
     [_instanceMethodDeclarations addObject:method];
 }
 
-- (void)addClassMethodDeclaration:(MPObjectiveCClassMethodDeclaration *)method {
+- (void)addClassMethodDeclaration:(MPObjCClassMethodDeclaration *)method {
     [_classMethodDeclarations addObject:method];
 }
 
-- (void)addPropertyDeclaration:(MPObjectiveCPropertyDeclaration *)property {
+- (void)addPropertyDeclaration:(MPObjCPropertyDeclaration *)property {
     [_propertyDeclarations addObject:property];
 }
 
-- (void)addInstanceVariableDeclaration:(MPObjectiveCInstanceVariableDeclaration *)ivar {
+- (void)addInstanceVariableDeclaration:(MPObjCInstanceVariableDeclaration *)ivar {
     [_instanceVariableDeclarations addObject:ivar];
 }
 
@@ -307,15 +307,16 @@ static NSMutableDictionary *_MPObjCClasses = nil;
 @end
 
 
-@interface MPObjectiveCProtocolDeclaration () {
+@interface MPObjCProtocolDeclaration () {
     NSMutableArray *_conformedProtocols;
     NSMutableArray *_classMethodDeclarations;
     NSMutableArray *_instanceMethodDeclarations;
     NSMutableArray *_propertyDeclarations;
+    NSMutableArray *_constantDeclarations;
 }
 @end
 
-@implementation MPObjectiveCProtocolDeclaration
+@implementation MPObjCProtocolDeclaration
 
 - (instancetype)init {
     NSAssert(false, @"Use -initWithName: instead.");
@@ -340,15 +341,19 @@ static NSMutableDictionary *_MPObjCClasses = nil;
     [_conformedProtocols addObject:superProtocol];
 }
 
-- (void)addClassMethodDeclaration:(MPObjectiveCClassMethodDeclaration *)methodDec {
+- (void)addClassMethodDeclaration:(MPObjCClassMethodDeclaration *)methodDec {
     [_classMethodDeclarations addObject:methodDec];
 }
 
-- (void)addInstanceMethodDeclaration:(MPObjectiveCInstanceMethodDeclaration *)methodDec {
+- (void)addInstanceMethodDeclaration:(MPObjCInstanceMethodDeclaration *)methodDec {
     [_instanceMethodDeclarations addObject:methodDec];
 }
 
-- (void)addPropertyDeclaration:(MPObjectiveCPropertyDeclaration *)propDec {
+- (void)addConstantDeclaration:(MPObjCConstantDeclaration *)constDec {
+    [_constantDeclarations addObject:constDec];
+}
+
+- (void)addPropertyDeclaration:(MPObjCPropertyDeclaration *)propDec {
     [_propertyDeclarations addObject:propDec];
 }
 
@@ -368,8 +373,13 @@ static NSMutableDictionary *_MPObjCClasses = nil;
     return _propertyDeclarations.copy;
 }
 
+- (NSArray *)constantDeclarations {
+    return _constantDeclarations.copy;
+}
+
 - (NSString *)description {
-    return [NSString stringWithFormat:@"[name:%@ conformedProtocols:%@ instanceMethods:%@ classMethods:%@ properties:%@]",
+    return [NSString stringWithFormat:
+            @"[name:%@ conformedProtocols:%@ instanceMethods:%@ classMethods:%@ properties:%@]",
             self.name,
             self.conformedProtocols,
             self.instanceMethodDeclarations,
@@ -380,7 +390,7 @@ static NSMutableDictionary *_MPObjCClasses = nil;
 @end
 
 
-@implementation MPObjectiveCPropertyDeclaration
+@implementation MPObjCPropertyDeclaration
 
 - (instancetype)init {
     NSAssert(false, @"Use -initWithName:type: instead.");
@@ -405,7 +415,7 @@ static NSMutableDictionary *_MPObjCClasses = nil;
 @end
 
 
-@implementation MPObjectiveCInstanceVariableDeclaration
+@implementation MPObjCInstanceVariableDeclaration
 
 - (instancetype)init {
     NSAssert(false, @"Use -initWithName:type: instead.");
@@ -425,12 +435,12 @@ static NSMutableDictionary *_MPObjCClasses = nil;
 
 @end
 
-@interface MPObjectiveCMethodDeclaration () {
+@interface MPObjCMethodDeclaration () {
     NSMutableArray *_parameters;
 }
 @end
 
-@implementation MPObjectiveCMethodDeclaration
+@implementation MPObjCMethodDeclaration
 
 - (instancetype)init {
     NSAssert(false, @"Use -initWithSelector:returnType: instead");
@@ -450,7 +460,7 @@ static NSMutableDictionary *_MPObjCClasses = nil;
     return self;
 }
 
-- (void)addParameter:(MPObjectiveCMethodParameter *)param {
+- (void)addParameter:(MPObjCMethodParameter *)param {
     [_parameters addObject:param];
 }
 
@@ -465,14 +475,14 @@ static NSMutableDictionary *_MPObjCClasses = nil;
 
 @end
 
-@implementation MPObjectiveCInstanceMethodDeclaration
+@implementation MPObjCInstanceMethodDeclaration
 @end
 
-@implementation MPObjectiveCClassMethodDeclaration
+@implementation MPObjCClassMethodDeclaration
 @end
 
 
-@implementation MPObjectiveCMethodParameter
+@implementation MPObjCMethodParameter
 
 - (instancetype)init {
     NSAssert(false, @"Use -initWithName:type:selectorComponent: instead");

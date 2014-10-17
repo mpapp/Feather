@@ -1,5 +1,5 @@
 //
-//  MPObjectiveCTokens.h
+//  MPObjCTokens.h
 //  Bindings
 //
 //  Created by Matias Piipari on 11/10/2014.
@@ -8,24 +8,35 @@
 
 #import <Foundation/Foundation.h>
 
-@class MPObjectiveCEnumDeclaration, MPObjectiveCEnumConstant;
-@class MPObjectiveCMethodDeclaration, MPObjectiveCInstanceMethodDeclaration, MPObjectiveCClassMethodDeclaration;
-@class MPObjectiveCPropertyDeclaration, MPObjectiveCInstanceVariableDeclaration;
+@class MPObjCEnumDeclaration, MPObjCEnumConstant, MPObjCConstantDeclaration;
+@class MPObjCMethodDeclaration, MPObjCInstanceMethodDeclaration, MPObjCClassMethodDeclaration;
+@class MPObjCPropertyDeclaration, MPObjCInstanceVariableDeclaration;
+@class MPObjCClassDeclaration;
 
-@interface MPObjectiveCTranslationUnit : NSObject
+@interface MPObjCTranslationUnit : NSObject
 @property (readonly, copy) NSString *path;
 
 @property (readonly) NSArray *enumDeclarations;
 
 @property (readonly) NSArray *constantDeclarations;
 
+@property (readonly) NSArray *propertyDeclarations;
+
+@property (readonly) NSArray *classDeclarations;
+
 - (instancetype)initWithPath:(NSString *)path;
 
-- (void)addEnumDeclaration:(MPObjectiveCEnumDeclaration *)declaration;
+- (void)addEnumDeclaration:(MPObjCEnumDeclaration *)declaration;
+
+- (void)addConstantDeclaration:(MPObjCConstantDeclaration *)declaration;
+
+- (void)addProtocolDeclaration:(MPObjCPropertyDeclaration *)propDecl;
+
+- (void)addClassDeclaration:(MPObjCClassDeclaration *)classDecl;
 
 @end
 
-@interface MPObjectiveCEnumDeclaration : NSObject
+@interface MPObjCEnumDeclaration : NSObject
 @property (readonly) NSString *name;
 @property (readwrite) NSString *backingType;
 
@@ -33,11 +44,11 @@
 
 - (instancetype)initWithName:(NSString *)name;
 
-- (void)addEnumConstant:(MPObjectiveCEnumConstant *)enumConstant;
+- (void)addEnumConstant:(MPObjCEnumConstant *)enumConstant;
 
 @end
 
-@interface MPObjectiveCConstantDeclaration : NSObject
+@interface MPObjCConstantDeclaration : NSObject
 @property (readonly) NSString *name;
 @property (readwrite) id value;
 @property (readwrite) NSString *type;
@@ -51,17 +62,17 @@
 
 @end
 
-@interface MPObjectiveCEnumConstant : NSObject
+@interface MPObjCEnumConstant : NSObject
 
-@property (readonly, weak) MPObjectiveCEnumDeclaration *enumDeclaration;
+@property (readonly, weak) MPObjCEnumDeclaration *enumDeclaration;
 @property (readonly) NSString *name;
 @property (readwrite) NSNumber *value;
 
-- (instancetype)initWithEnumDeclaration:(MPObjectiveCEnumDeclaration *)enumDeclaration
+- (instancetype)initWithEnumDeclaration:(MPObjCEnumDeclaration *)enumDeclaration
                                    name:(NSString *)name;
 @end
 
-@interface MPObjectiveCTypeDefinition : NSObject
+@interface MPObjCTypeDefinition : NSObject
 
 @property (readonly) NSString *name;
 @property (readonly) NSString *backingType;
@@ -70,7 +81,7 @@
 
 @end
 
-@interface MPObjectiveCClassDeclaration : NSObject
+@interface MPObjCClassDeclaration : NSObject
 
 @property (readonly, copy) NSString *name;
 @property (readonly, copy) NSString *superClassName;
@@ -82,21 +93,21 @@
 @property (readonly) NSArray *classMethodDeclarations;
 @property (readonly) NSArray *instanceVariableDeclarations;
 
-+ (MPObjectiveCClassDeclaration *)classWithName:(NSString *)name;
++ (MPObjCClassDeclaration *)classWithName:(NSString *)name;
 
 - (instancetype)initWithName:(NSString *)name superClassName:(NSString *)superClassName;
 
 - (void)addConformedProtocol:(NSString *)conformedProtocol;
 
-- (void)addInstanceMethodDeclaration:(MPObjectiveCInstanceMethodDeclaration *)method;
-- (void)addClassMethodDeclaration:(MPObjectiveCClassMethodDeclaration *)method;
+- (void)addInstanceMethodDeclaration:(MPObjCInstanceMethodDeclaration *)method;
+- (void)addClassMethodDeclaration:(MPObjCClassMethodDeclaration *)method;
 
-- (void)addPropertyDeclaration:(MPObjectiveCPropertyDeclaration *)property;
-- (void)addInstanceVariableDeclaration:(MPObjectiveCInstanceVariableDeclaration *)ivar;
+- (void)addPropertyDeclaration:(MPObjCPropertyDeclaration *)property;
+- (void)addInstanceVariableDeclaration:(MPObjCInstanceVariableDeclaration *)ivar;
 
 @end
 
-@interface MPObjectiveCProtocolDeclaration : NSObject
+@interface MPObjCProtocolDeclaration : NSObject
 
 @property (readonly, copy) NSString *name;
 @property (copy) NSString *type;
@@ -108,17 +119,19 @@
 
 - (void)addConformedProtocol:(NSString *)conformedProtocol;
 
-- (void)addPropertyDeclaration:(MPObjectiveCPropertyDeclaration *)propDec;
+- (void)addPropertyDeclaration:(MPObjCPropertyDeclaration *)propDec;
 
-- (void)addClassMethodDeclaration:(MPObjectiveCClassMethodDeclaration *)methodDec;
+- (void)addClassMethodDeclaration:(MPObjCClassMethodDeclaration *)methodDec;
 
-- (void)addInstanceMethodDeclaration:(MPObjectiveCInstanceMethodDeclaration *)methodDec;
+- (void)addInstanceMethodDeclaration:(MPObjCInstanceMethodDeclaration *)methodDec;
+
+- (void)addConstantDeclaration:(MPObjCConstantDeclaration *)constDec;
 
 - (instancetype)initWithName:(NSString *)name;
 
 @end
 
-@interface MPObjectiveCPropertyDeclaration : NSObject
+@interface MPObjCPropertyDeclaration : NSObject
 @property (readonly, copy) NSString *name;
 @property (copy) NSString *type;
 
@@ -132,7 +145,7 @@
 
 @end
 
-@interface MPObjectiveCInstanceVariableDeclaration : NSObject
+@interface MPObjCInstanceVariableDeclaration : NSObject
 @property (readonly, copy) NSString *name;
 @property (readonly, copy) NSString *type;
 
@@ -140,7 +153,7 @@
 
 @end
 
-@interface MPObjectiveCMethodParameter : NSObject
+@interface MPObjCMethodParameter : NSObject
 @property (readonly) NSString *name;
 @property (readonly) NSString *type;
 @property BOOL isObjectType;
@@ -150,7 +163,7 @@
 
 @end
 
-@interface MPObjectiveCMethodDeclaration : NSObject
+@interface MPObjCMethodDeclaration : NSObject
 @property (readonly, copy) NSString *selector;
 @property (readonly, copy) NSString *returnType;
 @property (readonly, copy) NSArray *parameters;
@@ -158,12 +171,12 @@
 
 - (instancetype)initWithSelector:(NSString *)selector returnType:(NSString *)returnType;
 
-- (void)addParameter:(MPObjectiveCMethodParameter *)param;
+- (void)addParameter:(MPObjCMethodParameter *)param;
 
 @end
 
-@interface MPObjectiveCInstanceMethodDeclaration : MPObjectiveCMethodDeclaration
+@interface MPObjCInstanceMethodDeclaration : MPObjCMethodDeclaration
 @end
 
-@interface MPObjectiveCClassMethodDeclaration : MPObjectiveCMethodDeclaration
+@interface MPObjCClassMethodDeclaration : MPObjCMethodDeclaration
 @end

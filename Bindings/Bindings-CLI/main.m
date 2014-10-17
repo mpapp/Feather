@@ -30,7 +30,7 @@ int main(int argc, const char *argv[]) {
         NSString *frameworkPath = [[NSUserDefaults standardUserDefaults] objectForKey:@"framework"];
         NSString *dylibPath = [[NSUserDefaults standardUserDefaults] objectForKey:@"dylib"];
         
-        MPObjectiveCAnalyzer *analyzer = nil;
+        MPObjCAnalyzer *analyzer = nil;
         NSError *err = nil;
         
         if (argc < 2 && !frameworkPath) {
@@ -43,23 +43,23 @@ int main(int argc, const char *argv[]) {
             exit(2);
         }
         else if (frameworkPath) {
-            analyzer = [[MPObjectiveCAnalyzer alloc] initWithBundleAtURL:[NSURL fileURLWithPath:frameworkPath]
+            analyzer = [[MPObjCAnalyzer alloc] initWithBundleAtURL:[NSURL fileURLWithPath:frameworkPath]
                                                    additionalHeaderPaths:@[] error:&err];
         }
         else if (dylibPath) {
-            analyzer = [[MPObjectiveCAnalyzer alloc] initWithDynamicLibraryAtPath:dylibPath
+            analyzer = [[MPObjCAnalyzer alloc] initWithDynamicLibraryAtPath:dylibPath
                                                               includedHeaderPaths:@[] error:&err];
         }
         
         NSUserDefaults *defs = [NSUserDefaults standardUserDefaults];
         NSString *language = [defs objectForKey:@"language"];
-        MPObjectiveCTranslator *translator = [MPObjectiveCTranslator newTranslatorWithName:language];
+        MPObjCTranslator *translator = [MPObjCTranslator newTranslatorWithName:language];
         if ([language isEqualToString:@"csharp"] && [defs objectForKey:@"namespace"]) {
-            [(MPObjectiveCToCSharpTranslator *)translator setNamespaceString:[defs objectForKey:@"namespace"]];
+            [(MPObjCToCSharpTranslator *)translator setNamespaceString:[defs objectForKey:@"namespace"]];
         }
 
         [analyzer enumerateTranslationUnits:^(NSString *path, CKTranslationUnit *unit) {
-            MPObjectiveCTranslationUnit *tUnit
+            MPObjCTranslationUnit *tUnit
                 = [analyzer analyzedTranslationUnitForClangKitTranslationUnit:unit atPath:path];
             fprintf(stdout, "%s", [translator translationForUnit:tUnit].UTF8String);
         }];

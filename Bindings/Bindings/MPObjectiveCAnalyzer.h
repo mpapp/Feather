@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 
 @class CKTranslationUnit, CKToken, CKCursor;
-@class MPObjectiveCTranslationUnit;
+@class MPObjCTranslationUnit;
 
-@interface MPObjectiveCAnalyzer : NSObject
+@interface MPObjCAnalyzer : NSObject
 
 @property (readonly) NSArray *includedHeaderPaths;
 
@@ -25,7 +25,7 @@
 
 - (instancetype)initWithBundleAtURL:(NSURL *)url additionalHeaderPaths:(NSArray *)includedHeaders error:(NSError **)error;
 
-- (MPObjectiveCTranslationUnit *)analyzedTranslationUnitForClangKitTranslationUnit:(CKTranslationUnit *)unit
+- (MPObjCTranslationUnit *)analyzedTranslationUnitForClangKitTranslationUnit:(CKTranslationUnit *)unit
                                                                             atPath:(NSString *)path;
 
 #pragma mark -

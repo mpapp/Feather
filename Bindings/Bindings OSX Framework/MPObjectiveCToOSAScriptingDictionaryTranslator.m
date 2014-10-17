@@ -1,5 +1,5 @@
 //
-//  MPObjectiveCScriptingDictionaryTranslator.m
+//  MPObjCScriptingDictionaryTranslator.m
 //  Bindings
 //
 //  Created by Matias Piipari on 11/10/2014.
@@ -8,7 +8,7 @@
 
 #import "MPObjectiveCToOSAScriptingDictionaryTranslator.h"
 
-@implementation MPObjectiveCToOSAScriptingDefinitionTranslator
+@implementation MPObjCToOSAScriptingDefinitionTranslator
 
 + (NSString *)name {
     return @"sdef";

@@ -1,5 +1,5 @@
 //
-//  MPObjectiveCScriptingDictionaryTranslator.h
+//  MPObjCScriptingDictionaryTranslator.h
 //  Bindings
 //
 //  Created by Matias Piipari on 11/10/2014.
@@ -8,6 +8,6 @@
 
 #import "MPObjectiveCTranslator.h"
 
-@interface MPObjectiveCToOSAScriptingDefinitionTranslator : MPObjectiveCTranslator
+@interface MPObjCToOSAScriptingDefinitionTranslator : MPObjCTranslator
 
 @end

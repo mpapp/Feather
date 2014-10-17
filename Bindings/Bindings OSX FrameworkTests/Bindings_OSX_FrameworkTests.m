@@ -28,10 +28,10 @@
     [super tearDown];
 }
 
-- (MPObjectiveCAnalyzer *)newAnalyzer {
+- (MPObjCAnalyzer *)newAnalyzer {
     NSError *err = nil;
     
-    MPObjectiveCAnalyzer *analyzer = [[MPObjectiveCAnalyzer alloc] initWithObjectiveCHeaderText:
+    MPObjCAnalyzer *analyzer = [[MPObjCAnalyzer alloc] initWithObjectiveCHeaderText:
 @"#import <Foundation/Foundation.h>\n\n\
 typedef NSUInteger MPFooBarNumberA;\n\
 typedef NSInteger MPFooBarNumberB;\n\
@@ -47,7 +47,7 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
 }
 
 - (void)testTypedefParsing {
-    MPObjectiveCAnalyzer *analyzer = [self newAnalyzer];
+    MPObjCAnalyzer *analyzer = [self newAnalyzer];
     NSArray *typedefs = [analyzer.includedHeaderPaths mapObjectsUsingBlock:^id(NSString *headerPath, NSUInteger idx) {
         return [analyzer typeDefinitionsForHeaderAtPath:headerPath];
     }];
@@ -67,18 +67,18 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
 }
 
 - (void)testEnumParsing {
-    MPObjectiveCAnalyzer *analyzer = [self newAnalyzer];
+    MPObjCAnalyzer *analyzer = [self newAnalyzer];
     NSArray *enums = [analyzer.includedHeaderPaths mapObjectsUsingBlock:^id(NSString *headerPath, NSUInteger idx) {
         return [analyzer enumDeclarationsForHeaderAtPath:headerPath];
     }];
     
     XCTAssertTrue(enums.count == 1, @"One translation unit should have been analyzed (%lu)", enums.count);
     XCTAssertTrue([[[enums.firstObject firstObject] enumConstants] count] == 2, @"There should be two values (%lu)", [[[enums.firstObject firstObject] enumConstants] count]);
-    XCTAssertTrue([[enums.firstObject firstObject] isKindOfClass:MPObjectiveCEnumDeclaration.class], @"Object should be an MPObjectiveCEnumDeclaration");
+    XCTAssertTrue([[enums.firstObject firstObject] isKindOfClass:MPObjCEnumDeclaration.class], @"Object should be an MPObjCEnumDeclaration");
 }
 
 - (void)testConstantParsing {
-    MPObjectiveCAnalyzer *analyzer = [self newAnalyzer];
+    MPObjCAnalyzer *analyzer = [self newAnalyzer];
     NSArray *consts = [analyzer.includedHeaderPaths mapObjectsUsingBlock:^id(NSString *headerPath, NSUInteger idx)
     {
         return [analyzer constantDeclarationsForHeaderAtPath:headerPath];
@@ -87,7 +87,7 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
     NSArray *flattenedConsts = [consts valueForKeyPath:@"@unionOfArrays.self"];
     XCTAssertTrue(flattenedConsts.count == 2, @"Two constants should have been parsed (%lu).", flattenedConsts.count);
     
-    MPObjectiveCConstantDeclaration *constStrDec = [flattenedConsts firstObject];
+    MPObjCConstantDeclaration *constStrDec = [flattenedConsts firstObject];
     XCTAssertTrue([constStrDec.name isEqualToString:@"BDSKParserErrorNotification"],
                   @"Name should match expectation (%@)", constStrDec.name);
     XCTAssertTrue(!constStrDec.value, @"No value is known (extern: %hhd)", constStrDec.isExtern);
@@ -95,7 +95,7 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
     XCTAssertTrue(!constStrDec.isConst, @"Constant should not be const");
     XCTAssertTrue(constStrDec.isExtern, @"Constant should be extern");
     
-    MPObjectiveCConstantDeclaration *constNumberDec = [flattenedConsts lastObject];
+    MPObjCConstantDeclaration *constNumberDec = [flattenedConsts lastObject];
     XCTAssertTrue([constNumberDec.name isEqualToString:@"MPSalmonSlapCount"], @"Name should match expectation (%@)", constNumberDec.name);
     XCTAssertTrue([constNumberDec.value isEqualToNumber:@(42)], @"Value should match expectation (%@)", constNumberDec.value);
     XCTAssertTrue(constNumberDec.isStatic, @"Constant should be static");
@@ -105,13 +105,13 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
 
 - (void)testProtocolDeclarationParsing {
     NSError *err = nil;
-    MPObjectiveCAnalyzer *analyzer
-    = [[MPObjectiveCAnalyzer alloc] initWithObjectiveCHeaderText:
+    MPObjCAnalyzer *analyzer
+    = [[MPObjCAnalyzer alloc] initWithObjectiveCHeaderText:
 @"@protocol MPFooProtocol <NSObject>\n\
 \n\
 @property (readwrite, copy, getter=tehSalmon, setter=setSalmonsToSlap) NSArray *schoolOfSalmon;\n\
 - (instancetype)initWithBundleAtURL:(NSURL *)url additionalHeaderPaths:(NSArray *)includedHeaders error:(NSError **)error;\n\
-+ (MPObjectiveCClassDeclaration *)classWithName:(NSString *)name;\n\
++ (MPObjCClassDeclaration *)classWithName:(NSString *)name;\n\
 - (id)justSomeObject;\n\
 \n@end\n\
 @protocol MPBarProtocol <MPFooProtocol>\n\
@@ -136,7 +136,7 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
     XCTAssertTrue([[[protocols.firstObject objectAtIndex:0] conformedProtocols] count] == 1);
     XCTAssertTrue([[[protocols.firstObject objectAtIndex:0] instanceMethodDeclarations] count] == 2);
     XCTAssertTrue([[[protocols.firstObject objectAtIndex:0] classMethodDeclarations] count] == 1);
-    XCTAssertTrue([[(MPObjectiveCClassMethodDeclaration *)[[[protocols.firstObject objectAtIndex:0] classMethodDeclarations] firstObject] selector] isEqualToString:@"classWithName:"]);
+    XCTAssertTrue([[(MPObjCClassMethodDeclaration *)[[[protocols.firstObject objectAtIndex:0] classMethodDeclarations] firstObject] selector] isEqualToString:@"classWithName:"]);
     
     XCTAssertTrue([[[protocols.firstObject objectAtIndex:1] name] isEqualToString:@"MPBarProtocol"]);
     XCTAssertTrue([[[protocols.firstObject objectAtIndex:1] conformedProtocols] containsObject:@"MPFooProtocol"]);
@@ -145,11 +145,11 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
 
 - (void)testClassDeclarationParsing {
     NSError *err = nil;
-    MPObjectiveCAnalyzer *analyzer
-        = [[MPObjectiveCAnalyzer alloc] initWithObjectiveCHeaderText:@"@interface MPFoo : NSObject <X,Y,Z>\n\
+    MPObjCAnalyzer *analyzer
+        = [[MPObjCAnalyzer alloc] initWithObjectiveCHeaderText:@"@interface MPFoo : NSObject <X,Y,Z>\n\
 @property (readwrite, copy, getter=tehSalmon, setter=setSalmonsToSlap) NSArray *schoolOfSalmon;\n\
 - (instancetype)initWithBundleAtURL:(NSURL *)url additionalHeaderPaths:(NSArray *)includedHeaders error:(NSError **)error;\n\
-+ (MPObjectiveCClassDeclaration *)classWithName:(NSString *)name;\n\
++ (MPObjCClassDeclaration *)classWithName:(NSString *)name;\n\
 - (id)justSomeObject;\n\
 \n@end\n" additionalHeaderPaths:@[] error:&err];
     XCTAssert(analyzer && !err, @"No error should occur when initializing the analyzer.");
@@ -157,7 +157,7 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
     
     NSArray *classes = [analyzer classDeclarationsForHeaderAtPath:analyzer.includedHeaderPaths.firstObject];
     XCTAssertTrue(classes.count == 1, @"A single class was parsed.");
-    MPObjectiveCClassDeclaration *classDec = classes.firstObject;
+    MPObjCClassDeclaration *classDec = classes.firstObject;
     
     XCTAssertTrue([classDec.name isEqualToString:@"MPFoo"], @"Class name should match expectation (%@)", classDec.name);
     XCTAssertTrue([classDec.superClassName isEqualToString:@"NSObject"], @"Superclass name should match expectation (%@)", classDec.superClassName);
@@ -169,7 +169,7 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
     
     XCTAssertTrue(classDec.propertyDeclarations.count == 1,
                   @"Class should have one property declaration (%lu).", classDec.propertyDeclarations.count);
-    MPObjectiveCPropertyDeclaration *propDec = [classDec.propertyDeclarations firstObject];
+    MPObjCPropertyDeclaration *propDec = [classDec.propertyDeclarations firstObject];
     XCTAssertTrue([propDec.name isEqualToString:@"schoolOfSalmon"],
                   @"Property name should match expectation (%@)", propDec.name);
     XCTAssertTrue([propDec.type isEqualToString:@"NSArray"] ,
@@ -185,30 +185,30 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
     XCTAssertTrue(classDec.instanceMethodDeclarations.count == 2,
                   @"There should be a single instance method (%lu)", classDec.instanceMethodDeclarations.count);
     
-    MPObjectiveCInstanceMethodDeclaration *im1 = classDec.instanceMethodDeclarations[0];
+    MPObjCInstanceMethodDeclaration *im1 = classDec.instanceMethodDeclarations[0];
     XCTAssertTrue([im1.selector isEqualToString:@"initWithBundleAtURL:additionalHeaderPaths:error:"],
                   @"Unexpected selector: %@", im1.selector);
     XCTAssertTrue([im1.returnType isEqualToString:@"instancetype"], @"Unexpected return type: %@", im1.returnType);
     
-    MPObjectiveCInstanceMethodDeclaration *im2 = classDec.instanceMethodDeclarations[1];
+    MPObjCInstanceMethodDeclaration *im2 = classDec.instanceMethodDeclarations[1];
     XCTAssertTrue([im2.selector isEqualToString:@"justSomeObject"]);
     XCTAssertTrue([im2.returnType isEqualToString:@"id"], @"Unexpected return type: %@", im2.returnType);
     
     XCTAssertTrue(classDec.classMethodDeclarations.count == 1,
                   @"There should be a single class method (%lu)", classDec.classMethodDeclarations.count);
     
-    MPObjectiveCClassMethodDeclaration *cm1 = [[classDec classMethodDeclarations] firstObject];
-    XCTAssertTrue([cm1.returnType isEqualToString:@"MPObjectiveCClassDeclaration"]);
+    MPObjCClassMethodDeclaration *cm1 = [[classDec classMethodDeclarations] firstObject];
+    XCTAssertTrue([cm1.returnType isEqualToString:@"MPObjCClassDeclaration"]);
     XCTAssertTrue([cm1.selector isEqualToString:@"classWithName:"]);
 }
 
 - (void)testObjCToCSharpTransformation {
-    MPObjectiveCAnalyzer *analyzer = [self newAnalyzer];
-    MPObjectiveCTranslator *translator = [MPObjectiveCToCSharpTranslator new];
+    MPObjCAnalyzer *analyzer = [self newAnalyzer];
+    MPObjCTranslator *translator = [MPObjCToCSharpTranslator new];
     
     NSMutableArray *enumDeclarations = [NSMutableArray new];
     [analyzer enumerateTranslationUnits:^(NSString *path, CKTranslationUnit *unit) {
-        MPObjectiveCTranslationUnit *tUnit = [analyzer analyzedTranslationUnitForClangKitTranslationUnit:unit atPath:path];
+        MPObjCTranslationUnit *tUnit = [analyzer analyzedTranslationUnitForClangKitTranslationUnit:unit atPath:path];
         
         [enumDeclarations addObject:[translator translatedEnumDeclarationsForTranslationUnit:tUnit]];
     }];

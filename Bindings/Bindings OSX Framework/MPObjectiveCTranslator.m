@@ -1,5 +1,5 @@
 //
-//  MPObjectiveCTranslator.m
+//  MPObjCTranslator.m
 //  Bindings
 //
 //  Created by Matias Piipari on 11/10/2014.
@@ -10,7 +10,7 @@
 
 #import <Feather/NSObject+MPExtensions.h>
 
-@implementation MPObjectiveCTranslator
+@implementation MPObjCTranslator
 
 + (NSString *)name {
     NSAssert(false, @"Abstract method");
@@ -18,7 +18,7 @@
 }
 
 + (instancetype)newTranslatorWithName:(NSString *)name {
-    for (Class cls in [NSObject subclassesForClass:MPObjectiveCTranslator.class]) {
+    for (Class cls in [NSObject subclassesForClass:MPObjCTranslator.class]) {
         if ([[cls name] isEqualToString:name]) {
             return [cls new];
         }
@@ -27,7 +27,7 @@
     return nil;
 }
 
-- (NSString *)translationForUnit:(MPObjectiveCTranslationUnit *)translationUnit {
+- (NSString *)translationForUnit:(MPObjCTranslationUnit *)translationUnit {
     NSAssert(false, @"Abstract method");
     return nil;
 }
@@ -36,12 +36,12 @@
     return str.copy; // pass the string through.
 }
 
-- (NSString *)translatedEnumDeclaration:(MPObjectiveCEnumDeclaration *)declaration {
+- (NSString *)translatedEnumDeclaration:(MPObjCEnumDeclaration *)declaration {
     NSAssert(false, @"Abstract method");
     return nil;
 }
 
-- (NSString *)translatedEnumDeclarationsForTranslationUnit:(MPObjectiveCTranslationUnit *)translationUnit {
+- (NSString *)translatedEnumDeclarationsForTranslationUnit:(MPObjCTranslationUnit *)translationUnit {
     NSAssert(false, @"Abstract method");
     return nil;
 }

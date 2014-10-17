@@ -1,5 +1,5 @@
 //
-//  MPObjectiveCTranslator.h
+//  MPObjCTranslator.h
 //  Bindings
 //
 //  Created by Matias Piipari on 11/10/2014.
@@ -9,21 +9,20 @@
 #import <Foundation/Foundation.h>
 
 #import "MPObjectiveCTokens.h"
-#import "MPObjectiveCTokens.h"
 
-@interface MPObjectiveCTranslator : NSObject
+@interface MPObjCTranslator : NSObject
 
 + (NSString *)name;
-+ (MPObjectiveCTranslator *)newTranslatorWithName:(NSString *)name;
++ (MPObjCTranslator *)newTranslatorWithName:(NSString *)name;
 
 @property (readwrite) NSString *identifierPrefix;
 
-- (NSString *)translationForUnit:(MPObjectiveCTranslationUnit *)translationUnit;
+- (NSString *)translationForUnit:(MPObjCTranslationUnit *)translationUnit;
 
 - (NSString *)translatedPrefixedIdentifierString:(NSString *)str;
 
-- (NSString *)translatedEnumDeclarationsForTranslationUnit:(MPObjectiveCTranslationUnit *)translationUnit;
+- (NSString *)translatedEnumDeclarationsForTranslationUnit:(MPObjCTranslationUnit *)translationUnit;
 
-- (NSString *)translatedEnumDeclaration:(MPObjectiveCEnumDeclaration *)declaration;
+- (NSString *)translatedEnumDeclaration:(MPObjCEnumDeclaration *)declaration;
 
 @end
