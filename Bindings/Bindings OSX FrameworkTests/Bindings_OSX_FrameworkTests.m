@@ -141,7 +141,6 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
     XCTAssertTrue([[[protocols.firstObject objectAtIndex:1] name] isEqualToString:@"MPBarProtocol"]);
     XCTAssertTrue([[[protocols.firstObject objectAtIndex:1] conformedProtocols] containsObject:@"MPFooProtocol"]);
     XCTAssertTrue([[[protocols.firstObject objectAtIndex:2] name] isEqualToString:@"MPBazProtocol"]);
-    
 }
 
 - (void)testClassDeclarationParsing {

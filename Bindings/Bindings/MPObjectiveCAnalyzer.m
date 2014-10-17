@@ -531,7 +531,7 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
                     [classes addObject:currentClass];
                 }
                 
-            } else { // we're in the protocol declarations
+            } else { // we're in the protocol declarations (for some reason not all these get picked up via protocol references - perhaps when the interface is not detected?)
                 
                 if (token.kind == CKTokenKindIdentifier) {
                     NSParameterAssert(currentClass);
@@ -724,6 +724,10 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
                 [currentClass addInstanceMethodDeclaration:(id)currentMethodDec];
             }
         }
+        else if (currentClass && token.cursor.kind == CKCursorKindObjCProtocolRef) {
+            NSParameterAssert(currentClass);
+            [currentClass addConformedProtocol:token.spelling];
+        }
     } matchingPattern:^BOOL(NSString *path, CKTranslationUnit *unit, CKToken *token) {
         [self logToken:token headerPath:path];
         
@@ -743,6 +747,7 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
             && (token.cursor.kind == CKCursorKindObjCInstanceMethodDecl || token.cursor.kind == CKCursorKindObjCClassMethodDecl);
         BOOL isParameterToken = token.kind == CKTokenKindIdentifier && token.cursor.kind == CKCursorKindParmDecl;
         BOOL isTypeRefToken = token.kind == CKTokenKindIdentifier && token.cursor.kind == CKCursorKindTypeRef;
+        BOOL isProtocolRefRoken = token.kind == CKTokenKindIdentifier && token.cursor.kind == CKCursorKindObjCProtocolRef;
         
         return isInterfaceIdentifierToken
             || isInterfacePunctuation
@@ -752,7 +757,8 @@ typedef NS_ENUM(NSUInteger, MPInterfaceType) {
             || isMethodIdentifierToken
             || isMethodPunctuation
             || isParameterToken
-            || isTypeRefToken;
+            || isTypeRefToken
+            || isProtocolRefRoken;
     }];
     
     return classes.copy;
