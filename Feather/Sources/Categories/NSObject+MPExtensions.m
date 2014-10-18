@@ -8,6 +8,7 @@
 
 #import "NSObject+MPExtensions.h"
 #import "NSArray+MPExtensions.h"
+#import "NSSet+MPExtensions.h"
 #import "NSString+MPExtensions.h"
 
 #import <CouchbaseLite/CouchbaseLite.h>
@@ -21,7 +22,7 @@
 
 // Adapted from http://cocoawithlove.com/2010/01/getting-subclasses-of-objective-c-class.html
 
-+ (NSArray *)subclassesForClass:(Class)parentClass
++ (NSArray *)subclasses
 {
     int numClasses = objc_getClassList(NULL, 0);
     Class *classes = NULL;
@@ -37,7 +38,7 @@
         do
         {
             superClass = class_getSuperclass(superClass);
-        } while (superClass && superClass != parentClass);
+        } while (superClass && superClass != self);
         
         if (superClass == nil)
         {
@@ -50,6 +51,33 @@
     free(classes);
     
     return result;
+}
+
++ (NSArray *)descendingClasses {
+    NSMutableArray *descendents = [NSMutableArray new];
+    [descendents addObjectsFromArray:self.subclasses];
+    
+    Class cls = self;
+    
+    // collate all subclasses of the class
+    NSMutableSet *subclassSet = [NSMutableSet setWithCapacity:20];
+    NSMutableArray *subclasses = [cls.subclasses mutableCopy];
+    
+    NSLog(@"Subclasses of %@: %@", NSStringFromClass(cls), subclasses);
+    
+    [subclassSet addObject:cls];
+    [subclassSet addObjectsFromArray:subclasses];
+    
+    while (subclasses.count > 0)
+    {
+        Class subcls = [subclasses firstObject];
+        [subclassSet addObjectsFromArray:subcls.subclasses];
+        [subclasses removeObject:subcls];
+    }
+    
+    return [[subclassSet mapObjectsUsingBlock:^id(Class class) {
+        return NSStringFromClass(class);
+    }] allObjects];
 }
 
 + (NSArray *)classesMatchingPattern:(BOOL(^)(Class cls))patternBlock
@@ -111,7 +139,7 @@
 
 + (NSDictionary *)propertiesOfSubclassesForClass:(Class)class matching:(BOOL(^)(Class cls, NSString *key))patternBlock
 {
-    NSArray *classes = [[[class subclassesForClass:class] mapObjectsUsingBlock:^id(Class cls, NSUInteger idx) {
+    NSArray *classes = [[class.subclasses mapObjectsUsingBlock:^id(Class cls, NSUInteger idx) {
         return NSStringFromClass(cls);
     }] arrayByAddingObject:NSStringFromClass(class)];
     

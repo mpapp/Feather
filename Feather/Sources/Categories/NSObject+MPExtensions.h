@@ -22,7 +22,10 @@ NS_INLINE id MPNilToNSNull(id object)
 
 @interface NSObject (Feather)
 
-+ (NSArray *)subclassesForClass:(Class)class;
++ (NSArray *)subclasses;
+
+/** Subclasses of subclasses of ... of self */
++ (NSArray *)descendingClasses;
 
 + (BOOL)propertyWithKeyIsReadWrite:(NSString *)key;
 

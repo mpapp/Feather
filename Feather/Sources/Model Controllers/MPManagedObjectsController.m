@@ -176,7 +176,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken,
     ^{
-        NSArray *subclasses = [NSObject subclassesForClass:[MPManagedObject class]];
+        NSArray *subclasses = MPManagedObject.subclasses;
         NSUInteger subclassCount = subclasses.count;
         NSMutableArray *a = [NSMutableArray arrayWithCapacity:subclassCount];
         for (Class subclass in subclasses)
@@ -253,7 +253,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
         // collate all subclasses of the class
         NSMutableSet *subclassSet = [NSMutableSet setWithCapacity:20];
-        NSMutableArray *subclasses = [[NSObject subclassesForClass:cls] mutableCopy];
+        NSMutableArray *subclasses = [cls.subclasses mutableCopy];
 
         NSLog(@"Subclasses of %@: %@", NSStringFromClass(cls), subclasses);
 
@@ -263,7 +263,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         while (subclasses.count > 0)
         {
             Class subcls = [subclasses firstObject];
-            [subclassSet addObjectsFromArray:[NSObject subclassesForClass:subcls]];
+            [subclassSet addObjectsFromArray:subcls.subclasses];
             [subclasses removeObject:subcls];
         }
 

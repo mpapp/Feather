@@ -370,7 +370,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     dispatch_once(&onceToken, ^{
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:30];
         
-        for (Class cls in [[NSObject subclassesForClass:[MPManagedObject class]] arrayByAddingObject:class])
+        for (Class cls in [MPManagedObject.subclasses arrayByAddingObject:class])
         {
             Class controllerClass = [self _controllerClassForManagedObjectClass:cls];
             

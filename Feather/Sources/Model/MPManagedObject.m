@@ -560,7 +560,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 + (BOOL)isConcrete
 {
-    return [[self class] subclassesForClass:self.class].count == 0;
+    return self.subclasses.count == 0;
 }
 
 #pragma mark - Accessors

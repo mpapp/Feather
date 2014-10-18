@@ -57,7 +57,7 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
     ^{
         assert([NSNotificationCenter managedObjectChangeTypeStrings].count == [NSNotificationCenter managedObjectChangeTypes].count);
         
-        NSArray *subclasses = [NSObject subclassesForClass:[MPManagedObject class]];
+        NSArray *subclasses = MPManagedObject.subclasses;
         NSUInteger subclassCount = subclasses.count;
 
         NSMutableDictionary *d = [NSMutableDictionary dictionaryWithCapacity:subclassCount * [NSNotificationCenter managedObjectChangeTypes].count];
