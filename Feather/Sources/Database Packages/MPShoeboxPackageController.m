@@ -123,7 +123,7 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
     NSFileManager *fm = [NSFileManager defaultManager];
     NSString *path;
     
-    if ([NSBundle isXPCService])
+    if ([NSBundle isXPCService] || [NSBundle isCommandLineTool])
     {
         path = [[fm sharedApplicationGroupCachesDirectoryURL] URLByAppendingPathComponent:@"shared"].path;
     }

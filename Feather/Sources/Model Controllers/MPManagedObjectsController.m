@@ -156,7 +156,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 - (void)didInitialize
 {
     if ([NSBundle isCommandLineTool] || [NSBundle isXPCService])
-        return;
+        return; // Only the main application can set up the shared databases under the group container
     
     [self loadBundledResourcesWithCompletionHandler:^(NSError *err) {
         if (err)
