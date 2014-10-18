@@ -136,6 +136,14 @@
     for (MPObjCConstantDeclaration *declaration in [self constantDeclarationsForHeaderAtPath:path])
         [analyzedUnit addConstantDeclaration:declaration];
     
+    // 3) get protocol declarations
+    for (MPObjCProtocolDeclaration *declaration in [self protocolDeclarationsForHeaderAtPath:path])
+        [analyzedUnit addProtocolDeclaration:declaration];
+    
+    // 4) get class declarations
+    for (MPObjCClassDeclaration *declaration in [self classDeclarationsForHeaderAtPath:path])
+        [analyzedUnit addClassDeclaration:declaration];
+    
     return analyzedUnit;
 }
 

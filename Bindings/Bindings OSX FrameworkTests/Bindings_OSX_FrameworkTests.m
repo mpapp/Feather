@@ -207,15 +207,18 @@ typedef NS_ENUM(NSUInteger, MPSalmon) {\n\
     MPObjCTranslator *translator = [MPObjCToCSharpTranslator new];
     
     NSMutableArray *enumDeclarations = [NSMutableArray new];
+    NSMutableArray *classDeclarations = [NSMutableArray new];
     [analyzer enumerateTranslationUnits:^(NSString *path, CKTranslationUnit *unit) {
         MPObjCTranslationUnit *tUnit = [analyzer analyzedTranslationUnitForClangKitTranslationUnit:unit atPath:path];
         
         [enumDeclarations addObject:[translator translatedEnumDeclarationsForTranslationUnit:tUnit]];
+        [classDeclarations addObject:[translator]]
     }];
     
     BOOL enumDeclarationsMatchExpectation = [enumDeclarations.firstObject isEqualToString:@"public enum MPSalmon\n{\n        MPFoobarUnknown = 0,\n        MPFoobarSomethingElse = 20\n}\n"];
     
     XCTAssertTrue(enumDeclarationsMatchExpectation, @"Unepected enum declarations: %@", enumDeclarations.firstObject);
+    
 }
 
 @end

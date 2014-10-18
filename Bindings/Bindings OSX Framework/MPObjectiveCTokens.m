@@ -15,6 +15,9 @@
 
 @interface MPObjCTranslationUnit () {
     NSMutableArray *_enumDeclarations;
+    NSMutableArray *_constantDeclarations;
+    NSMutableArray *_classDeclarations;
+    NSMutableArray *_protocolDeclarations;
 }
 @end
 
@@ -39,8 +42,32 @@
     return _enumDeclarations.copy;
 }
 
+- (NSArray *)constantDeclarations {
+    return _constantDeclarations.copy;
+}
+
+- (NSArray *)protocolDeclarations {
+    return _protocolDeclarations;
+}
+
+- (NSArray *)classDeclarations {
+    return _classDeclarations;
+}
+
 - (void)addEnumDeclaration:(MPObjCEnumDeclaration *)declaration {
     [_enumDeclarations addObject:declaration];
+}
+
+- (void)addConstantDeclaration:(MPObjCConstantDeclaration *)declaration {
+    [_constantDeclarations addObject:declaration];
+}
+
+- (void)addProtocolDeclaration:(MPObjCPropertyDeclaration *)propDecl {
+    [_protocolDeclarations addObject:propDecl];
+}
+
+- (void)addClassDeclaration:(MPObjCClassDeclaration *)classDecl {
+    [_classDeclarations addObject:classDecl];
 }
 
 @end

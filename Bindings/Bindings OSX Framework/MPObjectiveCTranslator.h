@@ -25,4 +25,14 @@
 
 - (NSString *)translatedEnumDeclaration:(MPObjCEnumDeclaration *)declaration;
 
+- (NSString *)translatedConstantDeclarationsForTranslationUnit:(MPObjCTranslationUnit *)tUnit
+                                                   libraryName:(NSString *)libraryName;
+
+
+- (NSString *)translatedProtocolDeclarationsForTranslationUnit:(MPObjCTranslationUnit *)tUnit;
+
+- (NSString *)translatedProtocolDeclaration:(MPObjCProtocolDeclaration *)propDec;
+
+- (NSString *)translatedClassDeclarationsForTranslationUnit:(MPObjCTranslationUnit *)tUnit;
+
 @end

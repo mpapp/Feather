@@ -11,7 +11,7 @@
 @class MPObjCEnumDeclaration, MPObjCEnumConstant, MPObjCConstantDeclaration;
 @class MPObjCMethodDeclaration, MPObjCInstanceMethodDeclaration, MPObjCClassMethodDeclaration;
 @class MPObjCPropertyDeclaration, MPObjCInstanceVariableDeclaration;
-@class MPObjCClassDeclaration;
+@class MPObjCProtocolDeclaration, MPObjCClassDeclaration;
 
 @interface MPObjCTranslationUnit : NSObject
 @property (readonly, copy) NSString *path;
@@ -20,7 +20,7 @@
 
 @property (readonly) NSArray *constantDeclarations;
 
-@property (readonly) NSArray *propertyDeclarations;
+@property (readonly) NSArray *protocolDeclarations;
 
 @property (readonly) NSArray *classDeclarations;
 
@@ -30,7 +30,7 @@
 
 - (void)addConstantDeclaration:(MPObjCConstantDeclaration *)declaration;
 
-- (void)addProtocolDeclaration:(MPObjCPropertyDeclaration *)propDecl;
+- (void)addProtocolDeclaration:(MPObjCProtocolDeclaration *)propDecl;
 
 - (void)addClassDeclaration:(MPObjCClassDeclaration *)classDecl;
 
