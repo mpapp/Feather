@@ -9,11 +9,14 @@
 #import <Foundation/Foundation.h>
 
 /** A protocol for items in a tree hierarchy (e.g. source list items). */
-@protocol MPTreeItem <NSObject>
+@protocol MPTreeItem < NSObject>
 @property (readwrite, copy) NSString *title;
 @property (readonly) id<MPTreeItem> parent;
 @property (readonly, strong) NSArray *children;
+
+/** Siblings are the children of self's parent, **including self**. */
 @property (readonly, strong) NSArray *siblings;
+
 @property (readonly) NSUInteger childCount;
 @property (readonly) BOOL hasChildren;
 
