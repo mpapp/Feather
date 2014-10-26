@@ -83,7 +83,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 @synthesize controller = _controller;
 @synthesize embeddedObjectCache = _embeddedObjectCache;
 @synthesize deletedDocumentID = _deletedDocumentID;
-@dynamic isModerated, isRejected, isAccepted, creator;
+@dynamic isModerated, isRejected, isAccepted, creator, prototype;
 
 + (void)initialize
 {
@@ -676,18 +676,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (NSString *)prototypeID
 {
-    return [self getValueOfProperty:@"prototypeID"];
-}
-
-- (void)setPrototypeID:(NSString *)prototypeID
-{
-    assert(!self.prototypeID || [prototypeID isEqualToString:prototypeID]); // should be set only once
-    [self setValue:prototypeID ofProperty:@"prototypeID"];
-}
-
-- (id)prototype
-{
-    return [self.controller prototypeForObject:self];
+    return [self getValueOfProperty:@"prototype"];
 }
 
 - (BOOL)hasPrototype
@@ -1323,6 +1312,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 @end
 
 @implementation MPManagedObject (Protected)
+@dynamic prototype;
 
 + (instancetype)modelForDocument:(CBLDocument *)document
 {

@@ -17,7 +17,7 @@
 @property (weak, readwrite) MPManagedObjectsController *controller;
 @property (readwrite, assign, getter=isShared, setter=setShared:) BOOL isShared;
 @property (readwrite, assign) MPManagedObjectModerationState moderationState;
-@property (readwrite, copy) NSString *prototypeID;
+@property (readwrite) MPManagedObject *prototype;
 
 - (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller
                                       properties:(NSDictionary *)properties

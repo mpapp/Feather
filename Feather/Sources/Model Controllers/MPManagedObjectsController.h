@@ -125,8 +125,8 @@ typedef enum MPManagedObjectsControllerErrorCode
 - (BOOL)resolveConflictingRevisionsForObject:(MPManagedObject *)obj
                                        error:(NSError **)err;
 
-/** Prototype (for some object types called the "template") for an object. Created on demand if not present and should be. */
-- (MPManagedObject *)prototypeForObject:(MPManagedObject *)object;
+/** The base class of objects that are acceptable as a prototype. By default forwards to managedObjectClass. */
+- (Class)prototypeClass;
 
 #pragma mark -
 #pragma mark Managed Object CRUD
@@ -137,7 +137,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** Returns a new managed object with the specified prototype. */
 - (id)newObjectWithPrototype:(MPManagedObject *)prototype;
 
-/** */
+/** Objects derived from the specified prototype ID */
 - (NSArray *)objectsWithPrototypeID:(NSString *)prototypeID;
 
 /** Initializes a MPManagedObjectsController. Not to be called directly on MPManagedObjectsController (an abstract class). Initialization calls -registerManagedObjectsController: on the database controller with self given as the argument.

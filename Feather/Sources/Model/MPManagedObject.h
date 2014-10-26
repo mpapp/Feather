@@ -118,14 +118,14 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 @property (readonly, assign) BOOL isRejected;
 - (void)reject;
 
-/** The identifier of the object on which this object is based on. Implies that the object is a template. */
-@property (readonly, copy) NSString *prototypeID;
-
 /** Returns a value transformed from the prototype object to the prototyped object. Can be for instance the original value, a placeholder value, a copy of the original value, or nil. For instance the property 'title' might be transformed to hide the user's set value for a title to just "Document title". */
 - (id)prototypeTransformedValueForPropertiesDictionaryKey:(NSString *)key forCopyManagedByController:(MPManagedObjectsController *)cc;
 
 /** A human readable name for a property key. Default implementation returns simply the key, capitalized. */
 - (NSString *)humanReadableNameForPropertyKey:(NSString *)key;
+
+/** The identifier of the object on which this object is based on. Implies that the object is a template. */
+@property (readonly, copy) NSString *prototypeID;
 
 /** The prototype object on which this object is based on. */
 @property (readonly, strong) id prototype;

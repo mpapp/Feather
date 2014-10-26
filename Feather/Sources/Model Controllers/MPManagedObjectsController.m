@@ -313,16 +313,6 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 #pragma mark - Prototyping
 
-- (MPManagedObject *)prototypeForObject:(MPManagedObject *)object
-{
-    assert(object);
-    assert(object.document);
-
-    if (object.prototypeID) return nil;
-
-    return [[self managedObjectClass] modelForDocument:[self.db.database documentWithID:object.document.documentID]];
-}
-
 - (void)refreshCachedValues {}
 
 #pragma mark - Conflict resolution
@@ -402,8 +392,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     [[self.db.database viewNamed:@"objectsByPrototypeID"]
      setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
      {
-         if (doc[@"prototypeID"])
-             emit(doc[@"prototypeID"], nil);
+         if (doc[@"prototype"])
+             emit(doc[@"prototype"], nil);
          else
              emit([NSNull null], nil);
 
@@ -456,14 +446,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (NSArray *)objectsWithPrototypeID:(NSString *)prototypeID
 {
-    NSError *err = nil;
-    NSArray *objs = [self managedObjectsForQueryEnumerator:[[self objectsByPrototypeQuery] run:&err]];
-    if (!objs)
-    {
-        [[self.packageController notificationCenter] postErrorNotification:err];
-        return nil;
-    }
-    return objs;
+    return [self objectsMatchingQueriedView:@"objectsByPrototypeID" keys:@[prototypeID]];
 }
 
 - (NSString *)objectsByTitleViewName
@@ -527,19 +510,30 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return obj;
 }
 
+- (Class)prototypeClass {
+    return self.managedObjectClass;
+}
+
 - (id)newObjectWithPrototype:(MPManagedObject *)prototype
 {
     assert(prototype);
-    assert([prototype isKindOfClass:[self managedObjectClass]]);
+    assert([prototype isKindOfClass:self.prototypeClass]);
     assert([prototype canFormPrototype]);
     assert(prototype.document.documentID);
 
-    MPManagedObject *obj = [[[prototype class] alloc] initWithNewDocumentForController:self];
-    obj.prototypeID = prototype.document.documentID;
+    // TODO: might need also -prototypeInstanceClassForPrototype: if this appers insufficient.
+    Class instantiableClass = self.prototypeClass == self.managedObjectClass
+                                ? prototype.class
+                                : self.managedObjectClass;
+    
+    MPManagedObject *obj = [[instantiableClass alloc] initWithNewDocumentForController:self];
+    obj.prototype = prototype;
 
     for (NSString *key in prototype.document.userProperties)
     {
-        [obj setValue:[prototype prototypeTransformedValueForPropertiesDictionaryKey:key forCopyManagedByController:self] ofProperty:key];
+        id transformedValue = [prototype prototypeTransformedValueForPropertiesDictionaryKey:key
+                                                                  forCopyManagedByController:self];
+        [obj setValue:transformedValue ofProperty:key];
     }
 
     return obj;
