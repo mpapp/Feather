@@ -190,6 +190,12 @@ typedef enum MPManagedObjectsControllerErrorCode
   * @param err An error pointer. */
 - (NSArray *)objectsFromContentsOfArrayJSONAtURL:(NSURL *)url error:(NSError **)err;
 
+/** Loads objects from JSON data. Each record in the array is validated to be a serialized MPManagedObject. */
+- (NSArray *)objectsFromArrayJSONData:(NSData *)objData error:(NSError *__autoreleasing *)err;
+
+/** Loads a managed object from a JSON dictionary. Record is validated to be a serialized MPManagedObject. */
+- (MPManagedObject *)objectFromJSONDictionary:(NSDictionary *)d isExisting:(BOOL *)isExisting error:(NSError **)err;
+
 /** Load bundled objects from resource with specified name and extension from inside the application main bundle. If resource checksum matches already saved checksum, return preloadedObjects, otherwise save the objects from the file into DB and return them. */
 - (NSArray *)loadBundledObjectsFromResource:(NSString *)resourceName
                               withExtension:(NSString *)extension

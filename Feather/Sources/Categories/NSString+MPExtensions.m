@@ -109,6 +109,17 @@
     return result;
 }
 
+- (NSString *)stringByUnescapingXMLEntities
+{
+    CFStringRef str
+        = CFXMLCreateStringByUnescapingEntities(
+            kCFAllocatorDefault,
+            (__bridge CFStringRef)self,
+            NULL);
+    
+    return (__bridge_transfer NSString *)str;
+}
+
 // http://stackoverflow.com/questions/3200521/cocoa-trim-all-leading-whitespace-from-nsstring
 - (NSString*)stringByTrimmingLeadingWhitespace
 {

@@ -552,62 +552,82 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 - (NSArray *)objectsFromContentsOfArrayJSONAtURL:(NSURL *)url error:(NSError **)err
 {
     NSData *objData = [NSData dataWithContentsOfURL:url options:NSDataReadingMapped error:err];
-    if (!objData) return nil;
+    if (!objData)
+        return nil;
 
+    return [self objectsFromArrayJSONData:objData error:err];
+}
+
+- (NSArray *)objectsFromArrayJSONData:(NSData *)objData error:(NSError *__autoreleasing *)err
+{
     JSONDecoder *decoder = [JSONDecoder decoderWithParseOptions:JKParseOptionNone];
     NSArray *objs = [decoder mutableObjectWithData:objData error:err];
-    if (!objs) return nil;
-
+    if (!objs)
+        return nil;
+    
     NSMutableArray *mos = [NSMutableArray arrayWithCapacity:objs.count];
     for (NSMutableDictionary *d in objs)
     {
-        if (![d isManagedObjectDictionary:err]) {
-            NSLog(@"ERROR: %@", *err);
-            assert(false);
+        BOOL isExisting = NO;
+        MPManagedObject *mo = [self objectFromJSONDictionary:d isExisting:&isExisting error:err];
+        
+        if (!mo)
             return nil;
-        }
-        NSString *docID = [d managedObjectDocumentID];
-        assert(docID);
-
-        Class moClass = NSClassFromString([d managedObjectType]);
-        assert(moClass);
         
-        __block CBLDocument *doc = nil;
-        mp_dispatch_sync([(CBLManager *)[self.packageController server] dispatchQueue], [self.packageController serverQueueToken], ^{
-            doc = [self.db.database existingDocumentWithID:docID];
-        });
-        
-        MPManagedObject *mo = doc ? [moClass modelForDocument:doc] : nil;
-        
-        if (mo)
-        {
-            [mo setValuesForPropertiesWithDictionary:d];
-            if ([mo needsSave])
-            {
-                [mos addObject:mo];
-            }
-        }
-        else
-        {
-            Class moc = NSClassFromString([d managedObjectType]);
-            assert(moc);
-            mo = [[moc alloc] initWithNewDocumentForController:self properties:d documentID:docID];
+        if (mo.needsSave || !isExisting)
             [mos addObject:mo];
-        }
-        assert(mo);
     }
-
+    
     if (mos.count > 0) {
         NSError *e = nil;
         if (![MPManagedObject saveModels:mos error:&e]) {
             if (err)
                 *err = e;
-
+            
             return nil;
         }
     }
+    
+    return mos.copy;
+}
 
-    return mos;
+- (MPManagedObject *)objectFromJSONDictionary:(NSDictionary *)d isExisting:(BOOL *)isExisting error:(NSError **)err
+{
+    if (![d isManagedObjectDictionary:err]) {
+        NSLog(@"ERROR: %@", *err);
+        assert(false);
+        return nil;
+    }
+    
+    NSString *docID = [d managedObjectDocumentID];
+    assert(docID);
+    
+    Class moClass = NSClassFromString([d managedObjectType]);
+    assert(moClass);
+    
+    __block CBLDocument *doc = nil;
+    mp_dispatch_sync([(CBLManager *)[self.packageController server] dispatchQueue],
+                     [self.packageController serverQueueToken], ^{
+                         doc = [self.db.database existingDocumentWithID:docID];
+                     });
+    
+    MPManagedObject *mo = doc ? [moClass modelForDocument:doc] : nil;
+    
+    if (mo)
+    {
+        [mo setValuesForPropertiesWithDictionary:d];
+        if (mo.needsSave && isExisting)
+            *isExisting = YES;
+    }
+    else
+    {
+        Class moc = NSClassFromString([d managedObjectType]);
+        assert(moc);
+        mo = [[moc alloc] initWithNewDocumentForController:self properties:d documentID:docID];
+    }
+    
+    NSParameterAssert(mo);
+    return mo;
 }
 
 #pragma mark - Querying
