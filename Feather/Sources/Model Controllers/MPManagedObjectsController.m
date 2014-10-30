@@ -565,6 +565,11 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     if (!objs)
         return nil;
     
+    return [self objectsFromJSONEncodableObjectArray:objs error:err];
+}
+
+- (NSArray *)objectsFromJSONEncodableObjectArray:(NSArray *)objs error:(NSError **)err
+{
     NSMutableArray *mos = [NSMutableArray arrayWithCapacity:objs.count];
     for (NSMutableDictionary *d in objs)
     {

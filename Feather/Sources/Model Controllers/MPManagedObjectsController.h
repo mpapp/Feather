@@ -193,6 +193,9 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** Loads objects from JSON data. Each record in the array is validated to be a serialized MPManagedObject. */
 - (NSArray *)objectsFromArrayJSONData:(NSData *)objData error:(NSError *__autoreleasing *)err;
 
+/** Objects from JSON encodable object array. */
+- (NSArray *)objectsFromJSONEncodableObjectArray:(NSArray *)objs error:(NSError **)err;
+
 /** Loads a managed object from a JSON dictionary. Record is validated to be a serialized MPManagedObject. */
 - (MPManagedObject *)objectFromJSONDictionary:(NSDictionary *)d isExisting:(BOOL *)isExisting error:(NSError **)err;
 
