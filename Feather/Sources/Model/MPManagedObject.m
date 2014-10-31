@@ -511,7 +511,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     }
 }
 
-- (void)createAttachmentWithName:(NSString *)name
+- (BOOL)createAttachmentWithName:(NSString *)name
                       withString:(NSString *)string
                             type:(NSString *)type
                            error:(NSError **)err {
@@ -522,21 +522,24 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
                                        code:MPManagedObjectErrorCodeTypeMissing
                                    userInfo:@{NSLocalizedDescriptionKey:
                     [NSString stringWithFormat:@"No type was given for creating attachment from string '%@'", string]}];
+        
+        return NO;
     }
     
     NSData *body = [string dataUsingEncoding:NSUTF8StringEncoding];
+    [self setAttachmentNamed:name withContentType:type content:body];
     
-    return [self setAttachmentNamed:name withContentType:type content:body];
+    return YES;
 }
 
-- (void)createAttachmentWithName:(NSString*)name
+- (BOOL)createAttachmentWithName:(NSString*)name
                withContentsOfURL:(NSURL *)url
                             type:(NSString *)type
                            error:(NSError **)err {
     if (!type && [url isFileURL])
     {
         if (![[NSFileManager defaultManager] mimeTypeForFileAtURL:url error:err])
-            return;
+            return NO;
     }
 
     if (!type)
@@ -548,14 +551,15 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
                                    userInfo:@{NSLocalizedDescriptionKey:
             [NSString stringWithFormat:@"No type was given for creating attachment from file at path %@", url]}];
         }
-        return;
+        return NO;
     }
     
     NSData *body = [NSData dataWithContentsOfURL:url options:0 error:err];
     if (!body)
-        return;
+        return NO;
     
-    return [self setAttachmentNamed:name withContentType:type content:body];
+    [self setAttachmentNamed:name withContentType:type content:body];
+    return YES;
 }
 
 + (BOOL)isConcrete
@@ -632,8 +636,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         [nc postNotificationForSharingManagedObject:self];
     }
 }
-- (BOOL)isShared { return [[self getValueOfProperty:@"shared"] boolValue]; }
-- (void)shareWithError:(NSError *__autoreleasing *)err
+
+- (BOOL)isShared {
+    return [[self getValueOfProperty:@"shared"] boolValue];
+}
+
+- (BOOL)shareWithError:(NSError *__autoreleasing *)err
 {
     MPContributor *me = [[self.controller.db.packageController contributorsController] me];
     
@@ -644,10 +652,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
                                        code:MPManagedObjectErrorCodeUserNotCreator
                                    userInfo:@{NSLocalizedDescriptionKey :
             [NSString stringWithFormat:@"%@ != %@", self.creator.document.documentID, me.document.documentID] }];
-        return;
+        return NO;
     }
     assert(!self.isShared);
     [self setShared:YES];
+    
+    return YES;
 }
 
 - (void)setModerationState:(MPManagedObjectModerationState)moderationState
@@ -1579,7 +1589,13 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         {
             emb = obj;
         }
-        [embeddedObjs addObject:emb];
+        else {
+            @throw [[MPUnexpectedStateExpection alloc] initWithReason:[NSString stringWithFormat:@"Object of unexpected type: %@", obj]];
+            return nil;
+        }
+        
+        if (emb)
+            [embeddedObjs addObject:emb];
     }
     
     return embeddedObjs;
@@ -1600,6 +1616,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         }
         else if ([obj isKindOfClass:[MPEmbeddedObject class]]) {
             emb = obj;
+        }
+        else {
+            @throw [[MPUnexpectedStateExpection alloc] initWithReason:
+                        [NSString stringWithFormat:@"Object of unexpected type: %@", obj]];
+            return nil;
         }
         
         embeddedObjs[key] = emb;

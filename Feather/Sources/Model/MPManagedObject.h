@@ -102,7 +102,7 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 /** The object has been marked shared by the user. Cannot guaranteed to be undone. */
 @property (readonly, assign, getter=isShared) BOOL shared;
 
-- (void)shareWithError:(NSError **)err;
+- (BOOL)shareWithError:(NSError **)err;
 
 /** The object's moderation state. By default has value MPManagedObjectModerationStateUnmoderated. Other values imply that the object is also marked shared. */
 @property (readonly, assign) MPManagedObjectModerationState moderationState;
@@ -224,7 +224,7 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
  * @param type The content type of the attachment (MIME type).
  * @param err An optional error pointer.
  */
-- (void)createAttachmentWithName:(NSString *)name
+- (BOOL)createAttachmentWithName:(NSString *)name
                       withString:(NSString *)string
                             type:(NSString *)type
                            error:(NSError **)err;
@@ -235,7 +235,7 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
  * @param type Optional content type of the attachment (MIME type). If nil is given, an attempt is made to determine the file type from the file contents.
  * @param err An optional error pointer.
  */
-- (void)createAttachmentWithName:(NSString*)name
+- (BOOL)createAttachmentWithName:(NSString *)name
                withContentsOfURL:(NSURL *)url
                             type:(NSString *)type
                            error:(NSError **)err;

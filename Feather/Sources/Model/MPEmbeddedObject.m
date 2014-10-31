@@ -415,7 +415,7 @@
 
 - (CBLDatabase *)databaseForModelProperty:(NSString *)property
 {
-    id<MPEmbeddingObject> embedder = self;
+    id<MPEmbeddingObject> embedder = nil;
     while (![(embedder = self.embeddingObject) isKindOfClass:[MPManagedObject class]])
     {
         assert(embedder);

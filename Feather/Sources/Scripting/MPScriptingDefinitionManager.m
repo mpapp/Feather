@@ -112,7 +112,8 @@
                 if (![code isEqualToString:@"pnam"] && ![code isEqualToString:@"ID  "])
                     assert(!cocoaPropertyMap[code] || [cocoaPropertyMap[code] isEqualToString:cocoaKey]);
                 
-                cocoaPropertyMap[code] = cocoaKey;
+                if (code && cocoaKey)
+                    cocoaPropertyMap[code] = cocoaKey;
             }
             
             

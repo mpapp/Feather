@@ -473,7 +473,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     NSArray *contents = [fm contentsOfDirectoryAtPath:self.path error:error];
     if (!contents)
     {
-        MPLog(@"Failed to get contents of directory '%@': %@", self.path, *error);
+        MPLog(@"Failed to get contents of directory '%@': %@", self.path, error ? *error : nil);
         return NO;
     }
     
@@ -485,7 +485,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         BOOL success = [fm copyItemAtURL:sourceURL toURL:targetURL error:error];
         if (!success)
         {
-            MPLog(@"Failed to copy '%@' into '%@': %@", sourceURL.path, targetURL, *error);
+            MPLog(@"Failed to copy '%@' into '%@': %@", sourceURL.path, targetURL, error ? *error : nil);
             return NO;
         }
     }
