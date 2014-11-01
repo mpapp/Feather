@@ -147,11 +147,9 @@ typedef enum MPManagedObjectsControllerErrorCode
 - (instancetype)initWithPackageController:(MPDatabasePackageController *)packageController
                                  database:(MPDatabase *)db error:(NSError **)err;
 
-/**
- * A callback fired after the hosting MPDatabasePackageController for a MPManagedObjectsController has finished initialising all its managed objects controller 
- * (you can run code dependent on other managed objects controller here).
- */
-- (void)didInitialize;
+/** A callback fired after the hosting MPDatabasePackageController for a MPManagedObjectsController has finished initialising all its managed objects controller
+  * (you can run code dependent on other managed objects controller here). */
+- (BOOL)didInitialize:(NSError **)err;
 
 /** Configure the design document of this controller. Can (and commonly is) overloaded by subclasses, but not to be called manually. */
 - (void)configureViews __attribute__((objc_requires_super));
@@ -179,6 +177,16 @@ typedef enum MPManagedObjectsControllerErrorCode
 
 /** An optional resource name for a touchdb typed file in the app's Contents/Resources directory. If overridden with a non-nil value, the resource is loaded upon initialisation. */
 @property (readonly, copy) NSString *bundledResourceDatabaseName;
+
+/** A query that should find all the bundled data that applies for this controller. */
+@property (readonly, strong) CBLQuery *bundledJSONDataQuery;
+
+/** Filename for a bundled JSON datafile that is loaded by the controller upon initialization. */
+@property (readonly, strong) NSString *bundledJSONDataFilename;
+
+/** Bundled JSON data derived objects. */
+@property (readonly) NSArray *bundledJSONDerivedData;
+
 
 - (id)objectWithIdentifier:(NSString *)identifier;
 

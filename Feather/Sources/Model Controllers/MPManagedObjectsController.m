@@ -47,7 +47,11 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 }
 @property (readonly, strong) NSMutableDictionary *objectCache;
 
-@property (readonly) BOOL loadingBundledData;
+@property (readonly) BOOL loadingBundledDatabaseResources;
+
+@property (readonly) BOOL loadingBundledJSONResources;
+
+@property (readwrite) NSArray *bundledJSONDerivedData;
 
 @end
 
@@ -153,15 +157,18 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     }
 }
 
-- (void)didInitialize
+- (BOOL)didInitialize:(NSError **)error
 {
     if ([NSBundle isCommandLineTool] || [NSBundle isXPCService])
-        return; // Only the main application can set up the shared databases under the group container
+        return YES; // Only the main application can set up the shared databases under the group container
     
-    [self loadBundledResourcesWithCompletionHandler:^(NSError *err) {
-        if (err)
-            [[self.packageController notificationCenter] postErrorNotification:err];
-    }];
+    if (![self loadBundledDatabaseResources:error])
+        return NO;
+    
+    if (![self loadBundledJSONResources:error])
+        return NO;
+    
+    return YES;
 }
 
 - (void)dealloc
@@ -423,6 +430,18 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         
         return YES;
     }];
+    
+    [[self.db.database viewNamed:self.bundledJSONDataViewName]
+                    setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
+     {
+         if (![self managesDocumentWithDictionary:doc])
+             return;
+         
+         if (![doc[@"bundled"] boolValue])
+             return;
+         
+         emit(doc.managedObjectDocumentID, nil);
+     } version:@"1.1"];
 }
 
 - (NSString *)allObjectsViewName
@@ -716,26 +735,80 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (NSString *)bundledResourceDatabaseName
 {
-    return nil; // overload in subclass to load bundled data
+    return nil; // override in subclass to load bundled data
 }
 
+- (NSString *)bundledJSONDataViewName {
+    return [NSString stringWithFormat:@"bundled-%@", [self.managedObjectClass plural]];
+}
 
-- (void)loadBundledResourcesWithCompletionHandler:(void(^)(NSError *err))completionHandler
+- (CBLQuery *)bundledJSONDataQuery {
+    
+    if (!self.bundledJSONDataFilename)
+        return nil;
+    
+    CBLQuery *q = [[self.db.database viewNamed:self.bundledJSONDataViewName] createQuery];
+    q.prefetch = YES;
+    
+    return q;
+}
+
+- (NSString *)bundledJSONDataFilename {
+    return nil; // override in subclass to bundle data.
+}
+
+- (NSString *)bundledJSONDataChecksumKey {
+    return [NSString stringWithFormat:@"%@-checksum", self.bundledJSONDataFilename];
+}
+
+- (NSComparator)bundledJSONDataComparator {
+    return nil;
+}
+
+- (BOOL)loadBundledJSONResources:(NSError **)err {
+    
+    if (!self.bundledJSONDataFilename)
+        return NO;
+    
+    NSParameterAssert(!_loadingBundledJSONResources);
+    _loadingBundledJSONResources = YES;
+    
+    NSParameterAssert(self.bundledJSONDataQuery);
+    
+    NSArray *foundBundledObjs =
+        [self managedObjectsForQueryEnumerator:self.bundledJSONDataQuery.run];
+    
+    _bundledJSONDerivedData =
+        [self loadBundledObjectsFromResource:self.bundledJSONDataFilename
+                               withExtension:@".json"
+                            matchedToObjects:foundBundledObjs
+                     dataChecksumMetadataKey:self.bundledJSONDataChecksumKey error:err];
+    
+    if (!_bundledJSONDerivedData) {
+        return NO;
+    }
+
+    else if (self.bundledJSONDataComparator)
+        _bundledJSONDerivedData = [_bundledJSONDerivedData sortedArrayUsingComparator:self.bundledJSONDataComparator];
+    
+    NSParameterAssert(_bundledJSONDerivedData);
+    return YES;
+}
+
+- (BOOL)loadBundledDatabaseResources:(NSError **)error
 {
-    assert(!_loadingBundledData);
-    _loadingBundledData = YES;
+    assert(!_loadingBundledDatabaseResources);
+    _loadingBundledDatabaseResources = YES;
     
     assert([NSThread isMainThread]);
     
-    NSString *checksumKey = [NSString stringWithFormat:@"bundled-%@-md5", self.bundledResourceDatabaseName];
+    NSString *checksumKey = [NSString stringWithFormat:@"bundled-%@-checksum",
+                             self.bundledResourceDatabaseName];
 
     // nothing to do if there is no resource for this controller
     if (!self.bundledResourceDatabaseName)
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(nil);
-        });
-        return;
+        return YES;
     }
 
     NSFileManager *fm = [NSFileManager defaultManager];
@@ -749,12 +822,11 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     NSString *tempBundledBundlesPath = [tempBundledBundlesDirURL.path stringByAppendingPathComponent:[bundledBundlesPath lastPathComponent]];
     NSString *tempAttachmentsPath = [tempBundledBundlesDirURL.path stringByAppendingPathComponent:attachmentsDirectoryName];
     
-    if (!tempBundledBundlesPath || !tempAttachmentsPath)
-    {
+    if (!tempBundledBundlesPath || !tempAttachmentsPath) {
         err = [NSError errorWithDomain:MPManagedObjectErrorDomain code:1 userInfo:@{NSLocalizedDescriptionKey:MPStringF(@"Failed to derive temporary paths from %@ and %@", bundledBundlesPath, bundledAttachmentsPath)}];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(err);
-        });
+        
+        if (error)
+            *error = err;
     }
     
     NSString *md5 = [fm md5DigestStringAtPath:bundledBundlesPath];
@@ -765,46 +837,31 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     // this version already loaded
     if ([[metadata getValueOfProperty:checksumKey] isEqualToString:md5])
     {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(nil);
-        });
-        return;
+        return YES;
     }
     
-    if (![fm copyItemAtPath:bundledBundlesPath toPath:tempBundledBundlesPath error:&err])
-    {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(err);
-        });
-    }
+    if (![fm copyItemAtPath:bundledBundlesPath toPath:tempBundledBundlesPath error:error])
+        return NO;
     
     if ([fm fileExistsAtPath:bundledAttachmentsPath])
-    {
-        if (![fm copyItemAtPath:bundledAttachmentsPath toPath:tempAttachmentsPath error:&err])
-        {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                completionHandler(err);
-            });
-        }
-    }
-
+        if (![fm copyItemAtPath:bundledAttachmentsPath toPath:tempAttachmentsPath error:error])
+            return NO;
+    
     //__block BOOL shouldRun = YES;
     
     CBLReplication *replication = nil;
     
-    NSError *error = nil;
-    
     if (![self.db pullFromDatabaseAtPath:tempBundledBundlesPath
-                             replication:&replication error:&error]) { // if failed to START replication
-        dispatch_async(dispatch_get_main_queue(), ^{
-            completionHandler(error);
-        });
+                             replication:&replication
+                                   error:error]) { // if failed to START replication
         
         if (![NSFileManager.defaultManager removeItemAtPath:tempBundledBundlesDirURL.path error:&err])
-            NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
+            NSLog(@"ERROR! Failed to remove temporary data from path %@: %@",
+                  tempBundledBundlesPath, err);
         
-        return;
+        return NO;
     }
+    
     replication.delegate = self;
     
     __weak NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -822,7 +879,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         [strongSelf processUpdatedBundledDataLoadReplication:replication];
     }];
     
-    while (_loadingBundledData)
+    while (_loadingBundledDatabaseResources)
     {
         [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
     }
@@ -835,6 +892,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         NSLog(@"ERROR! Failed to remove temporary data from path %@: %@", tempBundledBundlesPath, err);
     
     MPLog(@"Completed loading resources for %@", self);
+    
+    return YES;
 }
 
 - (void)processUpdatedBundledDataLoadReplication:(CBLReplication *)replication
@@ -863,7 +922,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            _loadingBundledData = NO;
+            _loadingBundledDatabaseResources = NO;
         });
     }
     else if (replication.status == kCBLReplicationStopped)
@@ -872,7 +931,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         [[self.packageController notificationCenter] postErrorNotification:replication.lastError];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            _loadingBundledData = NO;
+            _loadingBundledDatabaseResources = NO;
         });
     }
 }
@@ -1083,7 +1142,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (void)registerObject:(MPManagedObject *)mo
 {
-    assert([mo isKindOfClass:[self managedObjectClass]]);
+    assert([mo isKindOfClass:self.managedObjectClass]);
     assert(_objectCache);
     assert(mo.document.documentID);
     _objectCache[mo.document.documentID] = mo;
