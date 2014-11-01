@@ -14,6 +14,17 @@ typedef NS_ENUM(NSUInteger, MPFileTargetErrorCode)
     MPFileTargetErrorCodeFailedToDetermineMimeType = 1
 };
 
+
+extern NSString * const MPFeatherNSFileManagerExtensionsErrorDomain;
+
+extern NS_ENUM(NSUInteger, MPFeatherNSFileManagerExtensionsErrorCode) {
+    MPFeatherNSFileManagerExtensionsErrorCodeUnknown = 0,
+    MPFeatherNSFileManagerExtensionsErrorCodeCannotDetermineCachesDirectory = 1,
+    MPFeatherNSFileManagerExtensionsErrorCodeCachesExistsButNotDirectory = 2,
+    MPFeatherNSFileManagerExtensionsErrorCodeFailedToCreateCachesDirectory = 3,
+    MPFeatherNSFileManagerExtensionsErrorCodeFailedToCreateTempDirectory = 4
+};
+
 @interface NSFileManager (MPExtensions)
 
 @property (readonly, copy) NSString *applicationSupportFolder;
