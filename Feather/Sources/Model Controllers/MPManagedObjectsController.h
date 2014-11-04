@@ -190,6 +190,11 @@ typedef enum MPManagedObjectsControllerErrorCode
 
 - (id)objectWithIdentifier:(NSString *)identifier;
 
+/** Whether the controller relays a search for an object to the shared package controller
+  * if no match was found in an identifier search. 
+  * Default NO, can be implemented in subclasses. */
+@property (readonly) BOOL relaysFetchingByIdentifier;
+
 /** Objects with the given 'title' field value (meaningless for objects with no title field) */
 - (NSArray *)objectsWithTitle:(NSString *)title;
 

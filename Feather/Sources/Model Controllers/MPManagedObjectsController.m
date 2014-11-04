@@ -25,6 +25,8 @@
 #import "MPException.h"
 #import "MPDatabase.h"
 
+#import "MPShoeboxPackageController.h"
+
 #import "JSONKit.h"
 #import "RegexKitLite.h"
 #import <CouchbaseLite/CouchbaseLite.h>
@@ -515,10 +517,22 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         doc = [self.db.database existingDocumentWithID:identifier];
     });
     
-    if (!doc)
-        return nil;
-
+    if (!doc) {
+        if (!self.relaysFetchingByIdentifier) {
+            MPLog(@"WARNING! Failed to find object by ID: %@", identifier);
+            return nil;
+        }
+        
+        MPManagedObjectsController *moc
+            = [[MPShoeboxPackageController sharedShoeboxController] controllerForManagedObjectClass:self.class];
+        return [moc objectWithIdentifier:identifier];
+    }
+    
     return [cls modelForDocument:doc];
+}
+
+- (BOOL)relaysFetchingByIdentifier {
+    return NO;
 }
 
 - (id)newObject

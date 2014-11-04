@@ -306,8 +306,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 - (MPManagedObjectsController *)_controllerForManagedObjectClass:(Class)class
 {
-    assert(class);
-    assert([class isSubclassOfClass:[MPManagedObject class]] && class != [MPManagedObject class]);
+    NSParameterAssert(class);
+    NSAssert([class isSubclassOfClass:[MPManagedObject class]] && class != [MPManagedObject class],
+             @"Unexpected class: %@", class);
     Class origClass = class;
     
     NSString *origClassName = NSStringFromClass(origClass);
