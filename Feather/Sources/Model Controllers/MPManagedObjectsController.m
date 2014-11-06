@@ -524,7 +524,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         }
         
         MPManagedObjectsController *moc
-            = [[MPShoeboxPackageController sharedShoeboxController] controllerForManagedObjectClass:self.class];
+            = [[MPShoeboxPackageController sharedShoeboxController] controllerForManagedObjectClass:cls];
         return [moc objectWithIdentifier:identifier];
     }
     
