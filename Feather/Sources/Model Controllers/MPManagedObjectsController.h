@@ -21,7 +21,8 @@ extern NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotifica
 typedef enum MPManagedObjectsControllerErrorCode
 {
     MPManagedObjectsControllerErrorCodeUnknown = 0,
-    MPManagedObjectsControllerErrorCodeInvalidJSON = 1
+    MPManagedObjectsControllerErrorCodeInvalidJSON = 1,
+    MPManagedObjectsControllerErrorCodeFailedTempFileCreation = 2
 } MPManagedObjectsControllerErrorCode;
 
 @class MPDatabase;
@@ -177,6 +178,13 @@ typedef enum MPManagedObjectsControllerErrorCode
 
 /** An optional resource name for a touchdb typed file in the app's Contents/Resources directory. If overridden with a non-nil value, the resource is loaded upon initialisation. */
 @property (readonly, copy) NSString *bundledResourceDatabaseName;
+
+@property (readonly) BOOL hasBundledResourceDatabase;
+
+@property (readonly) BOOL hasBundledJSONData;
+
+/** YES if hasBundledResourceDatabase or hasBundledJSONData returns YES. */
+@property (readonly) BOOL requiresBundledDataLoading;
 
 /** A query that should find all the bundled data that applies for this controller. */
 @property (readonly, strong) CBLQuery *bundledJSONDataQuery;

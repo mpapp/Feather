@@ -449,9 +449,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return success;
 }
 
-- (void)CBLDocument:(CBLDocument *)doc
+- (void)document:(CBLDocument *)doc
           didChange:(CBLDatabaseChange *)change {
-    [super CBLDocument:doc didChange:change];
+    [super document:doc didChange:change];
     
     // TODO: confirm that responses to external changes are not broken by ignoring local changes here.
     if (!change.source)

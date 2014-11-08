@@ -771,6 +771,10 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return nil; // override in subclass to bundle data.
 }
 
+- (BOOL)hasBundledJSONData {
+    return self.bundledJSONDataFilename != nil;
+}
+
 - (NSString *)bundledJSONDataChecksumKey {
     return [NSString stringWithFormat:@"%@-checksum", self.bundledJSONDataFilename];
 }
@@ -782,7 +786,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 - (BOOL)loadBundledJSONResources:(NSError **)err {
     
     if (!self.bundledJSONDataFilename)
-        return NO;
+        return YES;
     
     NSParameterAssert(!_loadingBundledJSONResources);
     _loadingBundledJSONResources = YES;
@@ -837,10 +841,14 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     NSString *tempAttachmentsPath = [tempBundledBundlesDirURL.path stringByAppendingPathComponent:attachmentsDirectoryName];
     
     if (!tempBundledBundlesPath || !tempAttachmentsPath) {
-        err = [NSError errorWithDomain:MPManagedObjectErrorDomain code:1 userInfo:@{NSLocalizedDescriptionKey:MPStringF(@"Failed to derive temporary paths from %@ and %@", bundledBundlesPath, bundledAttachmentsPath)}];
+        err = [NSError errorWithDomain:MPManagedObjectErrorDomain
+                                  code:MPManagedObjectsControllerErrorCodeFailedTempFileCreation
+                              userInfo:@{NSLocalizedDescriptionKey:MPStringF(@"Failed to derive temporary paths from %@ and %@", bundledBundlesPath, bundledAttachmentsPath)}];
         
         if (error)
             *error = err;
+        
+        return NO;
     }
     
     NSString *md5 = [fm md5DigestStringAtPath:bundledBundlesPath];
@@ -910,9 +918,18 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return YES;
 }
 
+- (BOOL)hasBundledResourceDatabase {
+    return self.bundledResourceDatabaseName != nil;
+}
+
+- (BOOL)requiresBundledDataLoading {
+    return self.hasBundledJSONData || self.hasBundledResourceDatabase;
+}
+
 - (void)processUpdatedBundledDataLoadReplication:(CBLReplication *)replication
 {
     MPMetadata *metadata = self.db.metadata;
+    //NSParameterAssert(!replication.lastError);
     if (replication.status == kCBLReplicationStopped && !replication.lastError)
     {
         __block BOOL metadataSaveSuccess = NO;
@@ -921,6 +938,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
             metadataSaveSuccess = [metadata save:&metadataSaveErr];
         });
         
+        _loadingBundledDatabaseResources = NO;
+
         if (!metadataSaveSuccess)
         {
             NSLog(@"ERROR! Could not load bundled data from '%@.touchdb': %@", self.bundledResourceDatabaseName, metadataSaveErr);
@@ -934,10 +953,6 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
             NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
             [nc postNotificationName:MPManagedObjectsControllerLoadedBundledResourcesNotification object:self];
         }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            _loadingBundledDatabaseResources = NO;
-        });
     }
     else if (replication.status == kCBLReplicationStopped)
     {
