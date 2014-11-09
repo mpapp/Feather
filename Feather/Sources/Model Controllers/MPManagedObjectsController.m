@@ -518,7 +518,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     });
     
     if (!doc) {
-        if (!self.relaysFetchingByIdentifier) {
+        if (!self.relaysFetchingByIdentifier && self.packageController != [MPShoeboxPackageController sharedShoeboxController]) {
             MPLog(@"WARNING! Failed to find object by ID: %@", identifier);
             return nil;
         }
