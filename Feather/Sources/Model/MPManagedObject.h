@@ -102,7 +102,7 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 /** The object has been marked shared by the user. Cannot guaranteed to be undone. */
 @property (readonly, assign, getter=isShared) BOOL shared;
 
-- (void)shareWithError:(NSError **)err;
+- (BOOL)shareWithError:(NSError **)err;
 
 /** The object's moderation state. By default has value MPManagedObjectModerationStateUnmoderated. Other values imply that the object is also marked shared. */
 @property (readonly, assign) MPManagedObjectModerationState moderationState;
@@ -118,14 +118,14 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 @property (readonly, assign) BOOL isRejected;
 - (void)reject;
 
-/** The identifier of the object on which this object is based on. Implies that the object is a template. */
-@property (readonly, copy) NSString *prototypeID;
-
 /** Returns a value transformed from the prototype object to the prototyped object. Can be for instance the original value, a placeholder value, a copy of the original value, or nil. For instance the property 'title' might be transformed to hide the user's set value for a title to just "Document title". */
 - (id)prototypeTransformedValueForPropertiesDictionaryKey:(NSString *)key forCopyManagedByController:(MPManagedObjectsController *)cc;
 
 /** A human readable name for a property key. Default implementation returns simply the key, capitalized. */
 - (NSString *)humanReadableNameForPropertyKey:(NSString *)key;
+
+/** The identifier of the object on which this object is based on. Implies that the object is a template. */
+@property (readonly, copy) NSString *prototypeID;
 
 /** The prototype object on which this object is based on. */
 @property (readonly, strong) id prototype;
@@ -224,7 +224,7 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
  * @param type The content type of the attachment (MIME type).
  * @param err An optional error pointer.
  */
-- (void)createAttachmentWithName:(NSString *)name
+- (BOOL)createAttachmentWithName:(NSString *)name
                       withString:(NSString *)string
                             type:(NSString *)type
                            error:(NSError **)err;
@@ -235,7 +235,7 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
  * @param type Optional content type of the attachment (MIME type). If nil is given, an attempt is made to determine the file type from the file contents.
  * @param err An optional error pointer.
  */
-- (void)createAttachmentWithName:(NSString*)name
+- (BOOL)createAttachmentWithName:(NSString *)name
                withContentsOfURL:(NSURL *)url
                             type:(NSString *)type
                            error:(NSError **)err;

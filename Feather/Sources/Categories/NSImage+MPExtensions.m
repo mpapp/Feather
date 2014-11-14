@@ -54,6 +54,8 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     CGColorSpaceRelease(colorSpace);
     
     NSImage *tmpImage = [[NSImage alloc] initWithCGImage:imageMasked size:self.size];
+    CGImageRelease(imageMasked);
+    
     NSData *imageData = [tmpImage TIFFRepresentation];
     NSImage *image = [[NSImage alloc] initWithData:imageData];
     
@@ -113,7 +115,10 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         NSUInteger diff = 0;
         for (NSUInteger i = 0; i < length; i++)
             diff += abs((int)(bytes1[i]) - (int)(bytes2[i]));
-        diff /= length;
+        
+        if (length > 0)
+            diff /= length;
+        
         result = (CGFloat)diff / (CGFloat)0xFF;
     }
     

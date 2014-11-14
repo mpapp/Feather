@@ -21,7 +21,8 @@ extern NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotifica
 typedef enum MPManagedObjectsControllerErrorCode
 {
     MPManagedObjectsControllerErrorCodeUnknown = 0,
-    MPManagedObjectsControllerErrorCodeInvalidJSON = 1
+    MPManagedObjectsControllerErrorCodeInvalidJSON = 1,
+    MPManagedObjectsControllerErrorCodeFailedTempFileCreation = 2
 } MPManagedObjectsControllerErrorCode;
 
 @class MPDatabase;
@@ -125,8 +126,8 @@ typedef enum MPManagedObjectsControllerErrorCode
 - (BOOL)resolveConflictingRevisionsForObject:(MPManagedObject *)obj
                                        error:(NSError **)err;
 
-/** Prototype (for some object types called the "template") for an object. Created on demand if not present and should be. */
-- (MPManagedObject *)prototypeForObject:(MPManagedObject *)object;
+/** The base class of objects that are acceptable as a prototype. By default forwards to managedObjectClass. */
+- (Class)prototypeClass;
 
 #pragma mark -
 #pragma mark Managed Object CRUD
@@ -137,7 +138,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** Returns a new managed object with the specified prototype. */
 - (id)newObjectWithPrototype:(MPManagedObject *)prototype;
 
-/** */
+/** Objects derived from the specified prototype ID */
 - (NSArray *)objectsWithPrototypeID:(NSString *)prototypeID;
 
 /** Initializes a MPManagedObjectsController. Not to be called directly on MPManagedObjectsController (an abstract class). Initialization calls -registerManagedObjectsController: on the database controller with self given as the argument.
@@ -147,11 +148,9 @@ typedef enum MPManagedObjectsControllerErrorCode
 - (instancetype)initWithPackageController:(MPDatabasePackageController *)packageController
                                  database:(MPDatabase *)db error:(NSError **)err;
 
-/**
- * A callback fired after the hosting MPDatabasePackageController for a MPManagedObjectsController has finished initialising all its managed objects controller 
- * (you can run code dependent on other managed objects controller here).
- */
-- (void)didInitialize;
+/** A callback fired after the hosting MPDatabasePackageController for a MPManagedObjectsController has finished initialising all its managed objects controller
+  * (you can run code dependent on other managed objects controller here). */
+- (BOOL)didInitialize:(NSError **)err;
 
 /** Configure the design document of this controller. Can (and commonly is) overloaded by subclasses, but not to be called manually. */
 - (void)configureViews __attribute__((objc_requires_super));
@@ -180,7 +179,29 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** An optional resource name for a touchdb typed file in the app's Contents/Resources directory. If overridden with a non-nil value, the resource is loaded upon initialisation. */
 @property (readonly, copy) NSString *bundledResourceDatabaseName;
 
+@property (readonly) BOOL hasBundledResourceDatabase;
+
+@property (readonly) BOOL hasBundledJSONData;
+
+/** YES if hasBundledResourceDatabase or hasBundledJSONData returns YES. */
+@property (readonly) BOOL requiresBundledDataLoading;
+
+/** A query that should find all the bundled data that applies for this controller. */
+@property (readonly, strong) CBLQuery *bundledJSONDataQuery;
+
+/** Filename for a bundled JSON datafile that is loaded by the controller upon initialization. */
+@property (readonly, strong) NSString *bundledJSONDataFilename;
+
+/** Bundled JSON data derived objects. */
+@property (readonly) NSArray *bundledJSONDerivedData;
+
+
 - (id)objectWithIdentifier:(NSString *)identifier;
+
+/** Whether the controller relays a search for an object to the shared package controller
+  * if no match was found in an identifier search. 
+  * Default NO, can be implemented in subclasses. */
+@property (readonly) BOOL relaysFetchingByIdentifier;
 
 /** Objects with the given 'title' field value (meaningless for objects with no title field) */
 - (NSArray *)objectsWithTitle:(NSString *)title;
@@ -189,6 +210,15 @@ typedef enum MPManagedObjectsControllerErrorCode
   * @param url The URL to load the objects from.
   * @param err An error pointer. */
 - (NSArray *)objectsFromContentsOfArrayJSONAtURL:(NSURL *)url error:(NSError **)err;
+
+/** Loads objects from JSON data. Each record in the array is validated to be a serialized MPManagedObject. */
+- (NSArray *)objectsFromArrayJSONData:(NSData *)objData error:(NSError *__autoreleasing *)err;
+
+/** Objects from JSON encodable object array. */
+- (NSArray *)objectsFromJSONEncodableObjectArray:(NSArray *)objs error:(NSError **)err;
+
+/** Loads a managed object from a JSON dictionary. Record is validated to be a serialized MPManagedObject. */
+- (MPManagedObject *)objectFromJSONDictionary:(NSDictionary *)d isExisting:(BOOL *)isExisting error:(NSError **)err;
 
 /** Load bundled objects from resource with specified name and extension from inside the application main bundle. If resource checksum matches already saved checksum, return preloadedObjects, otherwise save the objects from the file into DB and return them. */
 - (NSArray *)loadBundledObjectsFromResource:(NSString *)resourceName

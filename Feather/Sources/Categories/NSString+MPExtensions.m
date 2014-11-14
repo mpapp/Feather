@@ -109,6 +109,17 @@
     return result;
 }
 
+- (NSString *)stringByUnescapingXMLEntities
+{
+    CFStringRef str
+        = CFXMLCreateStringByUnescapingEntities(
+            kCFAllocatorDefault,
+            (__bridge CFStringRef)self,
+            NULL);
+    
+    return (__bridge_transfer NSString *)str;
+}
+
 // http://stackoverflow.com/questions/3200521/cocoa-trim-all-leading-whitespace-from-nsstring
 - (NSString*)stringByTrimmingLeadingWhitespace
 {
@@ -119,6 +130,28 @@
         i++;
     }
     return [self substringFromIndex:i];
+}
+
+// http://stackoverflow.com/questions/5689288/how-to-remove-whitespace-from-right-end-of-nsstring
+- (NSString *)stringByTrimmingTrailingCharactersInSet:(NSCharacterSet *)characterSet {
+    NSUInteger location = 0;
+    NSUInteger length = [self length];
+    unichar charBuffer[length];
+    [self getCharacters:charBuffer];
+    
+    for (; length > 0; length--) {
+        if (![characterSet characterIsMember:charBuffer[length - 1]]) {
+            break;
+        }
+    }
+    
+    return [self substringWithRange:NSMakeRange(location, length - location)];
+}
+
+- (NSString *)stringByTrimmingTrailingWhitespace
+{
+    return [self stringByTrimmingTrailingCharactersInSet:
+                [NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
 // Extracted from papers-shared NSString_Extensions

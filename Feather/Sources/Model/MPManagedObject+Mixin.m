@@ -286,7 +286,7 @@
     // getter name is nil if it's the default
     char *getterName = property_copyAttributeValue(prop, "G");
     if (getterName == NULL) {
-        getterName = malloc(sizeof(char *) * (propNameLen + 1));
+        getterName = malloc(sizeof(char) * (propNameLen + 1));
         strncpy(getterName, propName, propNameLen + 1);
     }
     
@@ -314,7 +314,7 @@
         // setter name is nil if it's default
         char *setterName = property_copyAttributeValue(prop, "S");
         if (setterName == NULL) {
-            setterName = malloc(sizeof(char *) * (propNameLen + 5)); // 5 = 'set' + ':' + end char
+            setterName = malloc(sizeof(char) * (propNameLen + 5)); // 5 = 'set' + ':' + end char
             
             // construct 'setPropertyName:'
             strncpy(setterName, "set", 3);

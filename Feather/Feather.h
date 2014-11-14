@@ -13,6 +13,8 @@
 #import "MPManagedObject+Mixin.h"
 #import "MPEmbeddedObject.h"
 
+#import "MPTreeItem.h"
+
 #import "MPDatabase.h"
 #import "MPDatabasePackageController.h"
 #import "MPShoeboxPackageController.h"

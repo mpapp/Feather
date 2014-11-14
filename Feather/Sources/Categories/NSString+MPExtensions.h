@@ -61,8 +61,13 @@ NS_INLINE  NSMutableString *MPMutableStringForString(NSString *s)
 /** Escapes characters that aren't either alphanumeric Unicode or in the traditional ASCII printable character range 32..127. */
 @property (copy,readonly) NSString *stringByEscapingNonPrintableAndInvisibleCharacters;
 
+/** Unescape XML entities in the input. */
+@property (copy, readonly) NSString *stringByUnescapingXMLEntities;
+
 /** Removes instances of characters in the whitespace character set from the string. */
 @property (copy,readonly) NSString *stringByTrimmingLeadingWhitespace;
+
+@property (copy, readonly) NSString *stringByTrimmingTrailingWhitespace;
 
 - (NSString *)stringByTrimmingToLength:(NSUInteger)len truncate:(BOOL)truncate;
 

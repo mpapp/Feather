@@ -198,11 +198,6 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
 {
     MPManagedObject *mo = notification.object;
     assert(mo.controller);
-    
-    if ([mo formsPrototypeWhenShared])
-    {
-        [mo.controller prototypeForObject:mo];
-    }
 }
 
 #pragma mark - Singleton

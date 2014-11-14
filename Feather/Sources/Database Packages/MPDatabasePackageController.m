@@ -306,8 +306,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 - (MPManagedObjectsController *)_controllerForManagedObjectClass:(Class)class
 {
-    assert(class);
-    assert([class isSubclassOfClass:[MPManagedObject class]] && class != [MPManagedObject class]);
+    NSParameterAssert(class);
+    NSAssert([class isSubclassOfClass:[MPManagedObject class]] && class != [MPManagedObject class],
+             @"Unexpected class: %@", class);
     Class origClass = class;
     
     NSString *origClassName = NSStringFromClass(origClass);
@@ -370,7 +371,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     dispatch_once(&onceToken, ^{
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:30];
         
-        for (Class cls in [[NSObject subclassesForClass:[MPManagedObject class]] arrayByAddingObject:class])
+        for (Class cls in [MPManagedObject.subclasses arrayByAddingObject:class])
         {
             Class controllerClass = [self _controllerClassForManagedObjectClass:cls];
             
@@ -473,7 +474,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     NSArray *contents = [fm contentsOfDirectoryAtPath:self.path error:error];
     if (!contents)
     {
-        MPLog(@"Failed to get contents of directory '%@': %@", self.path, *error);
+        MPLog(@"Failed to get contents of directory '%@': %@", self.path, error ? *error : nil);
         return NO;
     }
     
@@ -485,7 +486,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         BOOL success = [fm copyItemAtURL:sourceURL toURL:targetURL error:error];
         if (!success)
         {
-            MPLog(@"Failed to copy '%@' into '%@': %@", sourceURL.path, targetURL, *error);
+            MPLog(@"Failed to copy '%@' into '%@': %@", sourceURL.path, targetURL, error ? *error : nil);
             return NO;
         }
     }
