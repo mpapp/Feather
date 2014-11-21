@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
+#import <Cocoa/Cocoa.h>
 #import <Foundation/Foundation.h>
 #import <CouchbaseLite/CouchbaseLite.h>
 

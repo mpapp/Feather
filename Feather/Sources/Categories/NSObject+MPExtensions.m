@@ -35,6 +35,12 @@
     for (NSInteger i = 0; i < numClasses; i++)
     {
         Class superClass = classes[i];
+        NSString *superClassName = NSStringFromClass(superClass);
+        
+        // skip the KVO induced dynamically created subclasses.
+        if ([superClassName hasPrefix:@"NSKVONotifying"])
+            continue;
+        
         do
         {
             superClass = class_getSuperclass(superClass);

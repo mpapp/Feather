@@ -23,6 +23,10 @@
 @interface MPInitIsPrivateException : MPUnexpectedSelectorException
 @end
 
+@interface MPIllegalStateException : MPException
+- (instancetype)initWithReason:(NSString *)reason;
+@end
+
 @interface MPAbstractMethodException : MPException
 - (instancetype)initWithSelector:(SEL)sel;
 + (id)exceptionWithSelector:(SEL)sel;

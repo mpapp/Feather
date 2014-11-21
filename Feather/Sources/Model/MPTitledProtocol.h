@@ -10,5 +10,6 @@
 
 @protocol MPTitledProtocol <NSObject>
 @property (readwrite, copy) NSString *title;
+@property (readwrite, copy) NSString *subtitle;
 @property (readwrite, copy) NSString *desc;
 @end

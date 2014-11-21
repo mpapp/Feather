@@ -10,73 +10,93 @@
 	<string>Feather</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>1A9F8545-1931-48C9-B683-0985D6477686</key>
-		<string>git://github.com/couchbaselabs/WebSockets-Cocoa.git</string>
-		<key>2A8CFE4F-A2D4-4EBB-807C-9DA373451AAD</key>
-		<string>git://github.com/snej/MYUtilities.git</string>
-		<key>2D5EF8BA-4BC7-4709-8D75-6499EAC2968B</key>
-		<string>https://github.com/robbiehanson/CocoaAsyncSocket.git</string>
-		<key>38DF3854-0B1D-4114-8F86-D18EEF8BC943</key>
-		<string>ssh://github.com/mz2/ObjectiveMixin.git</string>
-		<key>46F3A850-A391-4A93-929B-8C9C214EDA80</key>
+		<key>04101981B66E318109934C9516F88D824BB96459</key>
 		<string>git://github.com/couchbaselabs/fmdb.git</string>
-		<key>7BA723E9-1118-424C-A7C2-1B2910967727</key>
-		<string>ssh://github.com/mpapp/Feather.git</string>
-		<key>7DBD4377-D63F-41CC-BB92-4007882CE2DD</key>
-		<string>git://github.com/couchbaselabs/CocoaHTTPServer.git</string>
-		<key>8B1BE305-380E-4AE3-A56F-F4D298A147A3</key>
-		<string>ssh://github.com/mz2/JSONKit.git</string>
-		<key>8BE95A96-05C5-46A6-B6F0-C9EA8C94DBE5</key>
-		<string>ssh://github.com/couchbase/couchbase-lite-ios.git</string>
-		<key>931D415E-CF69-4C4D-BC47-690EC6A4F6CD</key>
-		<string>ssh://github.com/kishikawakatsumi/UICKeyChainStore.git</string>
-		<key>D916AD76-CA6C-4205-81B1-95F75420C1CF</key>
+		<key>0B5936C9CBA1409844D74AA6E444E0F825C39CB9</key>
+		<string>github.com:mpapp/Manuscripts.app</string>
+		<key>1C75F1C5CFCB95B3702F6F632FA05ED5244B519E</key>
+		<string>https://github.com/robbiehanson/CocoaAsyncSocket.git</string>
+		<key>35B5C9A93714EC9BEB56BAE809C5551E5C66E52D</key>
+		<string>github.com:mpapp/CocoaLumberjack.git</string>
+		<key>3733900D8AB4366208522E5EEA28BF0F22D0471F</key>
+		<string>github.com:mpapp/Feather.git</string>
+		<key>3B6E0836A249709CBC66E3BD2D6E8381049097CC</key>
+		<string>github.com:mpapp/WebSockets-Cocoa.git</string>
+		<key>453D599526BF0B6575298B801E1D1F32B5362486</key>
+		<string>github.com:mz2/ObjectiveMixin.git</string>
+		<key>544A1888719D3D5DF0068CDCD68741D47391CE87</key>
+		<string>github.com:mz2/google-diff-match-patch.git</string>
+		<key>5928309140879E871CA2C91C35635A4223DBC07C</key>
+		<string>github.com:kishikawakatsumi/UICKeyChainStore.git</string>
+		<key>71CFC0DE1DEFC877B0C5B9F98B971EBA2921D608</key>
+		<string>github.com:mpapp/CocoaHTTPServer.git</string>
+		<key>9EB8DA420176E66DD13DE995CAB7884E375CF83A</key>
 		<string>git://github.com/couchbaselabs/ios-oauthconsumer.git</string>
-		<key>EEAA7D32-BDFC-4323-88D8-D9B529157EBF</key>
+		<key>A285BCEC7D6D8A0B6D4A852E70EFCD820E12B9FD</key>
+		<string>github.com:mz2/couchbase-lite-ios.git</string>
+		<key>EDD5A95C0B9BA456AC83DA491C4680B9358547CF</key>
+		<string>github.com:mz2/MYUtilities.git</string>
+		<key>EF51387A5AF28E4351AFB0302884600583A438B5</key>
+		<string>github.com:mz2/JSONKit.git</string>
+		<key>F084A5E79D508F8E5EB6C3DC3C9997CD80515925</key>
 		<string>git://github.com/snej/sqlite3-unicodesn.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Feather.xcodeproj/project.xcworkspace</string>
+	<string>Feather.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>1A9F8545-1931-48C9-B683-0985D6477686</key>
-		<string>../../External/couchbase-lite-ios/vendor/WebSockets-Cocoa</string>
-		<key>2A8CFE4F-A2D4-4EBB-807C-9DA373451AAD</key>
-		<string>../../External/couchbase-lite-ios/vendor/MYUtilities</string>
-		<key>2D5EF8BA-4BC7-4709-8D75-6499EAC2968B</key>
-		<string>../../External/couchbase-lite-ios/vendor/WebSockets-Cocoa/vendor/CocoaAsyncSocket</string>
-		<key>38DF3854-0B1D-4114-8F86-D18EEF8BC943</key>
-		<string>../../External/ObjectiveMixin</string>
-		<key>46F3A850-A391-4A93-929B-8C9C214EDA80</key>
-		<string>../../External/couchbase-lite-ios/vendor/fmdb</string>
-		<key>7BA723E9-1118-424C-A7C2-1B2910967727</key>
+		<key>04101981B66E318109934C9516F88D824BB96459</key>
+		<string>../..External/couchbase-lite-ios/vendor/fmdb/</string>
+		<key>0B5936C9CBA1409844D74AA6E444E0F825C39CB9</key>
+		<string>../../../..</string>
+		<key>1C75F1C5CFCB95B3702F6F632FA05ED5244B519E</key>
+		<string>../..External/couchbase-lite-ios/vendor/WebSockets-Cocoa/vendor/CocoaAsyncSocket/</string>
+		<key>35B5C9A93714EC9BEB56BAE809C5551E5C66E52D</key>
+		<string>../..External/couchbase-lite-ios/vendor/CocoaHTTPServer/Vendor/CocoaLumberjack/</string>
+		<key>3733900D8AB4366208522E5EEA28BF0F22D0471F</key>
 		<string>../..</string>
-		<key>7DBD4377-D63F-41CC-BB92-4007882CE2DD</key>
-		<string>../../External/couchbase-lite-ios/vendor/CocoaHTTPServer</string>
-		<key>8B1BE305-380E-4AE3-A56F-F4D298A147A3</key>
-		<string>../../External/JSONKit</string>
-		<key>8BE95A96-05C5-46A6-B6F0-C9EA8C94DBE5</key>
-		<string>../../External/couchbase-lite-ios</string>
-		<key>931D415E-CF69-4C4D-BC47-690EC6A4F6CD</key>
-		<string>../../External/UICKeyChainStore</string>
-		<key>D916AD76-CA6C-4205-81B1-95F75420C1CF</key>
-		<string>../../External/couchbase-lite-ios/vendor/oauthconsumer</string>
-		<key>EEAA7D32-BDFC-4323-88D8-D9B529157EBF</key>
-		<string>../../External/couchbase-lite-ios/vendor/sqlite3-unicodesn</string>
+		<key>3B6E0836A249709CBC66E3BD2D6E8381049097CC</key>
+		<string>../..External/couchbase-lite-ios/vendor/WebSockets-Cocoa/</string>
+		<key>453D599526BF0B6575298B801E1D1F32B5362486</key>
+		<string>../..External/ObjectiveMixin/</string>
+		<key>544A1888719D3D5DF0068CDCD68741D47391CE87</key>
+		<string>../..External/google-diff-match-patch/</string>
+		<key>5928309140879E871CA2C91C35635A4223DBC07C</key>
+		<string>../..External/UICKeyChainStore/</string>
+		<key>71CFC0DE1DEFC877B0C5B9F98B971EBA2921D608</key>
+		<string>../..External/couchbase-lite-ios/vendor/CocoaHTTPServer/</string>
+		<key>9EB8DA420176E66DD13DE995CAB7884E375CF83A</key>
+		<string>../..External/couchbase-lite-ios/vendor/oauthconsumer/</string>
+		<key>A285BCEC7D6D8A0B6D4A852E70EFCD820E12B9FD</key>
+		<string>../..External/couchbase-lite-ios/</string>
+		<key>EDD5A95C0B9BA456AC83DA491C4680B9358547CF</key>
+		<string>../..External/couchbase-lite-ios/vendor/MYUtilities/</string>
+		<key>EF51387A5AF28E4351AFB0302884600583A438B5</key>
+		<string>../..External/JSONKit/</string>
+		<key>F084A5E79D508F8E5EB6C3DC3C9997CD80515925</key>
+		<string>../..External/couchbase-lite-ios/vendor/sqlite3-unicodesn/</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>ssh://github.com/mpapp/Feather.git</string>
+	<string>github.com:mpapp/Feather.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>7BA723E9-1118-424C-A7C2-1B2910967727</string>
+	<string>3733900D8AB4366208522E5EEA28BF0F22D0471F</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>2D5EF8BA-4BC7-4709-8D75-6499EAC2968B</string>
+			<string>0B5936C9CBA1409844D74AA6E444E0F825C39CB9</string>
+			<key>IDESourceControlWCCName</key>
+			<string>..</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>1C75F1C5CFCB95B3702F6F632FA05ED5244B519E</string>
 			<key>IDESourceControlWCCName</key>
 			<string>CocoaAsyncSocket</string>
 		</dict>
@@ -84,7 +104,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>7DBD4377-D63F-41CC-BB92-4007882CE2DD</string>
+			<string>71CFC0DE1DEFC877B0C5B9F98B971EBA2921D608</string>
 			<key>IDESourceControlWCCName</key>
 			<string>CocoaHTTPServer</string>
 		</dict>
@@ -92,7 +112,15 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>8BE95A96-05C5-46A6-B6F0-C9EA8C94DBE5</string>
+			<string>35B5C9A93714EC9BEB56BAE809C5551E5C66E52D</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CocoaLumberjack</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>A285BCEC7D6D8A0B6D4A852E70EFCD820E12B9FD</string>
 			<key>IDESourceControlWCCName</key>
 			<string>couchbase-lite-ios</string>
 		</dict>
@@ -100,7 +128,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>7BA723E9-1118-424C-A7C2-1B2910967727</string>
+			<string>3733900D8AB4366208522E5EEA28BF0F22D0471F</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Feather</string>
 		</dict>
@@ -108,7 +136,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>46F3A850-A391-4A93-929B-8C9C214EDA80</string>
+			<string>04101981B66E318109934C9516F88D824BB96459</string>
 			<key>IDESourceControlWCCName</key>
 			<string>fmdb</string>
 		</dict>
@@ -116,7 +144,15 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>8B1BE305-380E-4AE3-A56F-F4D298A147A3</string>
+			<string>544A1888719D3D5DF0068CDCD68741D47391CE87</string>
+			<key>IDESourceControlWCCName</key>
+			<string>google-diff-match-patch</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>EF51387A5AF28E4351AFB0302884600583A438B5</string>
 			<key>IDESourceControlWCCName</key>
 			<string>JSONKit</string>
 		</dict>
@@ -124,7 +160,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>2A8CFE4F-A2D4-4EBB-807C-9DA373451AAD</string>
+			<string>EDD5A95C0B9BA456AC83DA491C4680B9358547CF</string>
 			<key>IDESourceControlWCCName</key>
 			<string>MYUtilities</string>
 		</dict>
@@ -132,7 +168,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>D916AD76-CA6C-4205-81B1-95F75420C1CF</string>
+			<string>9EB8DA420176E66DD13DE995CAB7884E375CF83A</string>
 			<key>IDESourceControlWCCName</key>
 			<string>oauthconsumer</string>
 		</dict>
@@ -140,7 +176,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>38DF3854-0B1D-4114-8F86-D18EEF8BC943</string>
+			<string>453D599526BF0B6575298B801E1D1F32B5362486</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ObjectiveMixin</string>
 		</dict>
@@ -148,7 +184,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>EEAA7D32-BDFC-4323-88D8-D9B529157EBF</string>
+			<string>F084A5E79D508F8E5EB6C3DC3C9997CD80515925</string>
 			<key>IDESourceControlWCCName</key>
 			<string>sqlite3-unicodesn</string>
 		</dict>
@@ -156,7 +192,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>931D415E-CF69-4C4D-BC47-690EC6A4F6CD</string>
+			<string>5928309140879E871CA2C91C35635A4223DBC07C</string>
 			<key>IDESourceControlWCCName</key>
 			<string>UICKeyChainStore</string>
 		</dict>
@@ -164,7 +200,7 @@
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>1A9F8545-1931-48C9-B683-0985D6477686</string>
+			<string>3B6E0836A249709CBC66E3BD2D6E8381049097CC</string>
 			<key>IDESourceControlWCCName</key>
 			<string>WebSockets-Cocoa</string>
 		</dict>

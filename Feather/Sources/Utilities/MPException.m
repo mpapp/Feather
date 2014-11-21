@@ -37,6 +37,17 @@
 @implementation MPInitIsPrivateException
 @end
 
+@implementation MPIllegalStateException
+
+- (instancetype)initWithReason:(NSString *)reason {
+    self = [super initWithName:NSStringFromClass(self.class)
+                        reason:reason
+                      userInfo:@{}];
+    return self;
+}
+
+@end
+
 @implementation MPAbstractMethodException
 
 - (instancetype)init

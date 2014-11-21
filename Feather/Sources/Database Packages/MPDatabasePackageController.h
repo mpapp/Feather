@@ -13,7 +13,7 @@
 
 typedef void (^MPPullCompletionHandler)(NSDictionary *errDict);
 
-@class MPDatabase, MPSnapshot;
+@class MPDatabase, MPSnapshot, MPDraft;
 @class CBLDocument;
 
 @class MPSearchIndexController;
@@ -231,6 +231,10 @@ typedef enum MPDatabasePackageControllerErrorCode
 + (MPDatabasePackageController *)databasePackageControllerWithIdentifier:(NSString *)identifier;
 
 @property (strong, readonly) NSArray *rootSections;
+
+/** The active draft is the draft user is presently viewing and editing. */
+@property (strong, readwrite) MPDraft *activeDraft;
+
 @property (strong, readonly) NSArray *nonEmptyRootSections;
 @property (strong, readonly) NSArray *outlinerRootSections;
 

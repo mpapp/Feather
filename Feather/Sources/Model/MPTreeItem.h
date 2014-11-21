@@ -23,6 +23,9 @@
 /** The properties such as title are intended to be mutable by the user. */
 @property (readonly) BOOL isEditable;
 
+/** A transient property indicate whether the item is presently being edited. */
+@property (readwrite) BOOL inEditMode;
+
 @property (readonly) NSInteger priority;
 
 @property (readonly, weak) id packageController;

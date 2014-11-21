@@ -16,6 +16,8 @@
 
 @implementation MPVirtualSection
 
+@synthesize inEditMode;
+
 + (void)initialize
 {
     if (self == [MPVirtualSection class])
@@ -76,6 +78,13 @@
 
 - (void)setTitle:(NSString *)title { @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; }
 - (NSString *)title { @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; return nil; }
+
+- (void)setSubtitle:(NSString *)subtitle { @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; }
+- (NSString *)subtitle { return @""; }
+
+- (void)setDesc:(NSString *)desc { @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; }
+- (NSString *)desc { @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; return nil; }
+
 - (NSArray *)children { @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; return nil; }
 
 - (NSArray *)representedObjects { return [self children]; } // synonymous in the base class with -children, subclasses can redefine this.

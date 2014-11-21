@@ -18,7 +18,7 @@
 }
 
 + (instancetype)newTranslatorWithName:(NSString *)name {
-    for (Class cls in [NSObject subclassesForClass:MPObjCTranslator.class]) {
+    for (Class cls in MPObjCTranslator.subclasses) {
         if ([[cls name] isEqualToString:name]) {
             return [cls new];
         }

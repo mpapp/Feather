@@ -9,7 +9,7 @@
 #import "MPIndexableMixin.h"
 
 @implementation MPIndexableMixin
-@dynamic title, desc, contents;
+@dynamic title, subtitle, desc, contents;
 
 + (NSArray *)indexablePropertyKeys {
     return @[ @"title", @"desc", @"contents" ];

@@ -12,9 +12,10 @@
 #import <Feather/MPTreeItem.h>
 #import <Feather/NSNotificationCenter+MPExtensions.h>
 #import <Feather/MPCacheable.h>
+#import <Feather/MPTitledProtocol.h>
 
 /** MPRootSection is an abstract base class for the root section objects (Sections, Authors, etc) in the application source list. */
-@interface MPRootSection : NSObject <MPTreeItem, MPManagedObjectRecentChangeObserver, MPCacheable>
+@interface MPRootSection : NSObject <MPTreeItem, MPManagedObjectRecentChangeObserver, MPCacheable, MPTitledProtocol>
 
 /** The database controller which this MPRootSection is associated with. */
 @property (readonly, weak) MPDatabasePackageController *packageController;

@@ -18,6 +18,8 @@
 
 @implementation MPRootSection
 
+@synthesize inEditMode;
+
 - (instancetype)init
 {
     @throw [MPAbstractMethodException exceptionWithSelector:_cmd];
@@ -88,6 +90,19 @@
 - (NSString *)title
 { @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return nil; }
 
+- (void)setDesc:(NSString *)desc
+{ @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; }
+
+- (NSString *)desc
+{ @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; }
+
+- (void)setSubtitle:(NSString *)subtitle
+{ @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; }
+
+- (NSString *)subtitle {
+    return @"";
+}
+
 - (id<MPTreeItem>)parent
 { return nil; }
 
@@ -133,7 +148,9 @@
     return img;
 }
 
-- (BOOL)isEditable { return NO; }
+- (BOOL)isEditable {
+    return NO;
+}
 
 - (Class)representedObjectClass
 {
