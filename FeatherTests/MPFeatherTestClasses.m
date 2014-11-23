@@ -48,7 +48,7 @@
 
 @implementation MPTestObject
 @dynamic embeddedTestObject;
-@dynamic title, desc, contents;
+@dynamic title, subtitle, desc, contents;
 
 + (NSArray *)indexablePropertyKeys {
     return @[ @"title", @"desc", @"contents" ];

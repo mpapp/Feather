@@ -741,7 +741,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     for (id o in objectArray) { assert([o isKindOfClass:[MPManagedObject class]]); }
 #endif
     NSArray *ids = [objectArray mapObjectsUsingBlock:^id(MPManagedObject *o, NSUInteger idx) {
-        NSString *docID = [[o document] documentID]; assert(docID);
+        NSString *docID = [[o document] documentID]; NSParameterAssert(docID);
         return docID;
     }];
     [self setValue:ids ofProperty:propertyKey];
@@ -792,12 +792,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 {
     NSMutableDictionary *dict = [self getValueOfProperty:dictPropertyKey];
     id obj = dict[embeddedKey];
-    if ([obj isEqual:value]) return; // value unchanged.
+    if ([obj isEqual:value])
+        return; // value unchanged.
     
     assert([dict isKindOfClass:[NSMutableDictionary class]]);
     
     if (!dict)
-        [self setValue:[NSMutableDictionary dictionaryWithCapacity:16] ofProperty:dictPropertyKey];
+        [self setValue:[NSMutableDictionary dictionaryWithCapacity:16]
+            ofProperty:dictPropertyKey];
     
     [dict setValue:value forKey:embeddedKey];
     [self cacheValue:dict ofProperty:dictPropertyKey changed:YES];

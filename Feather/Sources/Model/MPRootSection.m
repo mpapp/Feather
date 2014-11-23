@@ -152,6 +152,10 @@
     return NO;
 }
 
+- (BOOL)isOptional {
+    return NO;
+}
+
 - (Class)representedObjectClass
 {
     NSString *className = NSStringFromClass([self class]);

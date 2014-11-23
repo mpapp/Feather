@@ -109,7 +109,13 @@
     return @"Untitled";
 }
 
-- (BOOL)isEditable { return NO; }
+- (BOOL)isEditable {
+    return NO;
+}
+
+- (BOOL)isOptional {
+    return NO;
+}
 
 - (NSImage *)thumbnailImage
 {
