@@ -738,7 +738,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (void)setObjectIdentifierArrayValueForManagedObjectArray:(NSArray *)objectArray property:(NSString *)propertyKey
 {
 #ifdef DEBUG
-    for (id o in objectArray) { assert([o isKindOfClass:[MPManagedObject class]]); }
+    for (id o in objectArray) {
+        NSParameterAssert([o isKindOfClass:[MPManagedObject class]]);
+    }
 #endif
     NSArray *ids = [objectArray mapObjectsUsingBlock:^id(MPManagedObject *o, NSUInteger idx) {
         NSString *docID = [[o document] documentID]; NSParameterAssert(docID);
