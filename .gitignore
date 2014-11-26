@@ -1,5 +1,4 @@
 .DS_Store
-mz2.xcuserdatad
-2pii.xcuserdatad
+xcuserdata
 node_modules
 build
