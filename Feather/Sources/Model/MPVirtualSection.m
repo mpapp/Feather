@@ -120,7 +120,7 @@
 - (NSImage *)thumbnailImage
 {
     NSImage *img = [NSImage imageNamed:[self thumbnailImageName]];
-    [img setTemplate:YES];
+    //[img setTemplate:YES];
     return img;
 }
 
