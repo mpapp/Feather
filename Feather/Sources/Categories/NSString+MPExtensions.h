@@ -74,6 +74,10 @@ NS_INLINE  NSMutableString *MPMutableStringForString(NSString *s)
 /** String representation of an OSType. Works also for FourLetterCode, DescType, ResType */
 + (NSString *)stringWithOSType:(OSType)type;
 
+/** Validates the string as an email address. Note that the presentation email does not exhaustively follow all the RFCs but is a best effort.
+  * See http://blog.logichigh.com/2010/09/02/validating-an-e-mail-address/ and http://stackoverflow.com/questions/3139619/check-that-an-email-address-is-valid-on-ios for more info. */
+@property (readonly) BOOL isValidEmailAddress;
+
 /** OSType (FourLetterCode, DescType, ResType) representation of a string. */
 @property (readonly) OSType OSType;
 
