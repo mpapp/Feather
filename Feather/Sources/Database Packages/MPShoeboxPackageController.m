@@ -192,7 +192,7 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
 
 #pragma mark - MPManagedObjectSharingObserver
 
-// observing is set up in the MPManuscriptPackageController end.
+// observing is set up in the MPManuscriptsPackageController end.
 
 - (void)didShareManagedObject:(NSNotification *)notification
 {
