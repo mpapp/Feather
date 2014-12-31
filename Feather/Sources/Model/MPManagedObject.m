@@ -1060,7 +1060,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return @{
       @"_id":self.documentID,
       @"objectType" : self.objectType,
-      @"databasePackageID" : ((MPDatabasePackageController *)(self.controller.packageController)).identifier
+      @"databasePackageID" : ((MPDatabasePackageController *)(self.controller.packageController)).fullyQualifiedIdentifier
     };
 }
 
@@ -1075,7 +1075,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     if ([type isEqual:MPPasteboardTypeManagedObjectFull])
     {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:self.propertiesToSave];
-        dict[@"databasePackageID"] = ((MPDatabasePackageController *)(self.controller.packageController)).identifier;
+        dict[@"databasePackageID"] = ((MPDatabasePackageController *)(self.controller.packageController)).fullyQualifiedIdentifier;
         
         assert([type isEqualToString:MPPasteboardTypeManagedObjectFull]);
         dataRep = [NSPropertyListSerialization dataFromPropertyList:dict
@@ -1124,8 +1124,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (id)initWithPasteboardPropertyList:(id)propertyList ofType:(NSString *)type
 {
-    assert([type isEqualToString:MPPasteboardTypeManagedObjectFull]
-           || [type isEqualToString:MPPasteboardTypeManagedObjectID]);
+    NSParameterAssert([type isEqualToString:MPPasteboardTypeManagedObjectFull]
+                      || [type isEqualToString:MPPasteboardTypeManagedObjectID]);
 
     id obj = [self initWithPasteboardObjectIDPropertyList:propertyList ofType:MPPasteboardTypeManagedObjectID];
     if ([type isEqual:MPPasteboardTypeManagedObjectFull] && obj)
@@ -1136,10 +1136,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (id)initWithPasteboardObjectIDPropertyList:(id)propertyList ofType:(NSString *)type
 {
-    assert([type isEqual:MPPasteboardTypeManagedObjectID]);
-    
-    assert(self.class == NSClassFromString([propertyList managedObjectType]));
-    assert([propertyList isKindOfClass:[NSDictionary class]]);
+    NSParameterAssert([type isEqual:MPPasteboardTypeManagedObjectID]);
+    NSParameterAssert(self.class == NSClassFromString([propertyList managedObjectType]));
+    NSParameterAssert([propertyList isKindOfClass:[NSDictionary class]]);
     
     return [self.class objectWithReferableDictionaryRepresentation:propertyList];
 }
@@ -1152,7 +1151,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     assert(objectType);
     
     NSString *packageControllerID = [referableDictionaryRep objectForKey:@"databasePackageID"];
-    MPDatabasePackageController *pkgc = [MPDatabasePackageController databasePackageControllerWithIdentifier:packageControllerID];
+    MPDatabasePackageController *pkgc = [MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:packageControllerID];
     assert(pkgc);
     
     MPManagedObjectsController *moc = [pkgc controllerForManagedObjectClass:objectType];

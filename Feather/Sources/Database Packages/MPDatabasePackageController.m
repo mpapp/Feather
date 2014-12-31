@@ -93,8 +93,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (instancetype)initWithPath:(NSString *)path
                     readOnly:(BOOL)readOnly
                     delegate:(id<MPDatabasePackageControllerDelegate>)delegate
-             error:(NSError *__autoreleasing *)err
-{
+             error:(NSError *__autoreleasing *)err {
     // off-main thread access of MPDatabasePackageController is safe,
     // but initialisation is needed on main thread in order to call -didInitialize safely
     // after full initialization has finished
@@ -124,14 +123,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         _server.dispatchQueue = mp_dispatch_queue_create(_path, _serverQueueToken, DISPATCH_QUEUE_SERIAL);
         _server.etagPrefix = [[NSUUID UUID] UUIDString]; // TODO: persist the etag inside the package for added performance (this gives predictable behaviour: every app start effectively clears the cache).
         
-        [_server.customHTTPHeaders addEntriesFromDictionary:@{
-                                  @"Access-Control-Allow-Origin"      : @"*",
-                                  @"Access-Control-Allow-Credentials" : @"false",
-                                  @"Access-Control-Allow-Methods"     : @"GET, POST, PUT, DELETE, OPTIONS",
-                                  @"Access-Control-Allow-Headers"     : @"Origin, X-CSRFToken, Content-Type, Accept",
-                                  @"Pragma"                           : @"no-cache",
-                                  @"Cache-Control"                    : @"no-cache"
-                                  }];
+        [_server.customHTTPHeaders addEntriesFromDictionary:[self databaseListenerHTTPHeaders]];
         
         _managedObjectsControllers = [NSMutableSet setWithCapacity:20];
         
@@ -220,6 +212,17 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return self;
 }
 
+- (NSDictionary *)databaseListenerHTTPHeaders {
+    return @{
+             @"Access-Control-Allow-Origin"      : @"*",
+             @"Access-Control-Allow-Credentials" : @"false",
+             @"Access-Control-Allow-Methods"     : @"GET, POST, PUT, DELETE, OPTIONS",
+             @"Access-Control-Allow-Headers"     : @"Origin, X-CSRFToken, Content-Type, Accept",
+             @"Pragma"                           : @"no-cache",
+             @"Cache-Control"                    : @"no-cache"
+    };
+}
+
 + (NSMapTable *)databasePackageControllerRegistry
 {
     static NSMapTable *reg = nil;
@@ -235,8 +238,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 {
     // there should not be two or more database package controllers that are identical in memory at the same time.
     // for instance, if a package controller is duplicated, its identifier should be modified.
-    assert(![[self databasePackageControllerRegistry] objectForKey:packageController.identifier]);
-    [self.databasePackageControllerRegistry setObject:packageController forKey:packageController.identifier];
+    NSParameterAssert(![[self databasePackageControllerRegistry] objectForKey:packageController.fullyQualifiedIdentifier]);
+    [self.databasePackageControllerRegistry setObject:packageController forKey:packageController.fullyQualifiedIdentifier];
 }
 
 + (void)deregisterDatabasePackageController:(MPDatabasePackageController *)packageController
@@ -244,8 +247,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     [self.databasePackageControllerRegistry removeObjectForKey:packageController.identifier];
 }
 
-+ (MPDatabasePackageController *)databasePackageControllerWithIdentifier:(NSString *)identifier
++ (MPDatabasePackageController *)databasePackageControllerWithFullyQualifiedIdentifier:(NSString *)identifier
 {
+    NSAssert([identifier containsString:@"::"],
+             @"Identifier '%@' does not look like a fully qualified identifier.", identifier);
     return [self.databasePackageControllerRegistry objectForKey:identifier];
 }
 
@@ -371,8 +376,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     dispatch_once(&onceToken, ^{
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:30];
         
-        for (Class cls in [MPManagedObject.subclasses arrayByAddingObject:class])
-        {
+        for (Class cls in [MPManagedObject.subclasses arrayByAddingObject:class]) {
             Class controllerClass = [self _controllerClassForManagedObjectClass:cls];
             
             if (controllerClass)
@@ -422,20 +426,15 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     NSFileManager *fm = [[NSFileManager alloc] init];
     BOOL isDirectory, exists = [fm fileExistsAtPath:rootURL.path isDirectory:&isDirectory];
     
-    if (exists)
-    {
-        if (!overwrite)
-        {
-            if (error && failIfExists)
-            {
-                if (!isDirectory)
-                {
+    if (exists) {
+        if (!overwrite) {
+            if (error && failIfExists) {
+                if (!isDirectory) {
                     *error = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
                                                  code:MPDatabasePackageControllerErrorCodeFileNotDirectory
                                              userInfo:@{NSLocalizedDescriptionKey : [NSString stringWithFormat:@"File at '%@' is not a directory", rootURL.path]}];
                 }
-                else
-                {
+                else {
                     *error = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
                                                  code:MPDatabasePackageControllerErrorCodeDirectoryAlreadyExists
                                              userInfo:@{NSLocalizedDescriptionKey : [NSString stringWithFormat:@"Directory at '%@' already exists", rootURL.path]}];
@@ -498,8 +497,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 - (NSSet *)databases
 {
-    assert(_managedObjectsControllers);
-    assert(_managedObjectsControllers.count);
+    NSParameterAssert(_managedObjectsControllers);
+    NSParameterAssert(_managedObjectsControllers.count);
     
     NSMutableSet *set = [NSMutableSet setWithCapacity:_managedObjectsControllers.count];
     
@@ -563,17 +562,16 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 - (void)close
 {
-    assert(_managedObjectsControllers);
+    NSParameterAssert(_managedObjectsControllers);
     // multiple MOCs can be connected to the same database.
     NSSet *databases = [_managedObjectsControllers valueForKey:@"db"];
     
-    assert(_managedObjectsControllers);
-    assert(databases.count > 0);
+    NSParameterAssert(_managedObjectsControllers);
+    NSParameterAssert(databases.count > 0);
     
     [self.databaseListener stop];
     
-    for (MPDatabase *db in databases)
-    {
+    for (MPDatabase *db in databases) {
         mp_dispatch_sync(db.server.dispatchQueue, [db.packageController serverQueueToken], ^{
             [db.server close];
         });
@@ -620,30 +618,29 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 #pragma mark - Syncing with a remote server
 
-- (NSURL *)remoteURL
-{
+- (NSURL *)remoteURL {
     @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return nil;
     return nil;
 }
 
-- (NSURL *)remoteServiceURL
-{
+- (NSURL *)remoteServiceURL {
     @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return nil;
 }
 
-- (NSURL *)remoteDatabaseURLForLocalDatabase:(MPDatabase *)database
-{
+- (NSURL *)remoteDatabaseURLForLocalDatabase:(MPDatabase *)database {
     @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return nil;
 }
 
-- (NSURL *)remoteServiceURLForLocalDatabase:(MPDatabase *)database
-{
+- (NSURL *)remoteServiceURLForLocalDatabase:(MPDatabase *)database {
     @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return nil;
 }
 
-- (NSString *)identifier
-{
+- (NSString *)identifier {
     @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return nil;
+}
+                                          
+- (NSString *)fullyQualifiedIdentifier {
+    return [self.path stringByAppendingFormat:@"::%@", self.identifier];
 }
 
 - (NSURLCredential *)remoteDatabaseCredentialsForLocalDatabase:(MPDatabase *)database
@@ -971,9 +968,9 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
 
 - (MPSnapshot *)newSnapshotWithName:(NSString *)name error:(NSError **)err
 {
-    assert(name);
-    assert(_managedObjectsControllers);
-    assert(_managedObjectsControllers.count > 1); // snapshots controller itself is included
+    NSParameterAssert(name);
+    NSParameterAssert(_managedObjectsControllers);
+    NSParameterAssert(_managedObjectsControllers.count > 1); // snapshots controller itself is included
     
     __block MPSnapshot *snp = nil;
     MPSnapshotsController *sc = self.snapshotsController;
@@ -981,8 +978,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
         if (e)
             return;
         
-        for (MPManagedObjectsController *moc in _managedObjectsControllers)
-        {
+        for (MPManagedObjectsController *moc in _managedObjectsControllers) {
             if (moc == sc) continue;
             for (MPManagedObject *mo in [moc allObjects])
             {
@@ -1073,6 +1069,86 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
     @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
 }
 
+
+#pragma mark - Dictionary representations
+
+- (BOOL)saveToURL:(NSURL *)URL error:(NSError *__autoreleasing *)error {
+    NSFileManager *fm = [NSFileManager defaultManager];
+    if (![self saveManifestDictionary:error])
+        return NO;
+    
+    if (![self saveDictionaryRepresentation:error])
+        return NO;
+    
+    for (MPDatabase *db in self.databases)
+        dispatch_suspend(db.database.manager.dispatchQueue);
+    
+    BOOL success = [fm copyItemAtURL:[NSURL fileURLWithPath:self.path] toURL:URL error:error];
+    
+    for (MPDatabase *db in self.databases)
+        dispatch_resume(db.database.manager.dispatchQueue);
+    
+    return success;
+}
+
+- (NSURL *)URL {
+    return [NSURL fileURLWithPath:self.path];
+}
+
+- (NSURL *)relativePreviewURL {
+    return [[NSURL URLWithString:@"QuickLook"] URLByAppendingPathComponent:@"preview.pdf"];
+}
+
+- (NSURL *)relativeThumbnailURL {
+    return [[NSURL URLWithString:@"QuickLook"] URLByAppendingPathComponent:@"thumbnail.pdf"];
+}
+
+- (NSURL *)absolutePreviewURL {
+    return [self.URL URLByAppendingPathComponent:self.relativePreviewURL.path];
+}
+
+- (NSURL *)absoluteThumbnailURL {
+    return [self.URL URLByAppendingPathComponent:self.relativeThumbnailURL.path];
+}
+
+- (BOOL)saveManifestDictionary:(NSError **)error {
+    return [self.manifestDictionary writeToURL:self.manifestDictionaryURL atomically:YES];
+}
+
+- (NSURL *)manifestDictionaryURL {
+    return [[NSURL fileURLWithPath:self.path] URLByAppendingPathComponent:@"manifest.json"];
+}
+
+- (NSDictionary *)manifestDictionary {
+    return @{};
+}
+
+- (NSURL *)dictionaryRepresentationURL {
+    return [[NSURL fileURLWithPath:self.path] URLByAppendingPathComponent:@"dictionary.json"];
+}
+
+- (BOOL)saveDictionaryRepresentation:(NSError **)error {
+    return [self.dictionaryRepresentation writeToURL:self.dictionaryRepresentationURL atomically:YES];
+}
+
+- (NSDictionary *)dictionaryRepresentation {
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    
+    for (MPDatabase *db in self.databases) {
+        NSMutableArray *objs = [NSMutableArray new];
+        
+        for (CBLQueryRow *docRow in db.database.createAllDocumentsQuery.run) {
+            CBLDocument *doc = docRow.document;
+            if (doc)
+                [objs addObject:docRow.document.properties];
+        }
+        
+        dict[db.name] = objs.copy;
+    }
+    
+    return dict.copy;
+}
+
 @end
 
 #pragma mark - Protected interface
@@ -1151,5 +1227,6 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
     
     [moc didChangeDocument:document forObject:(id)document.modelObject source:source];
 }
+
 
 @end

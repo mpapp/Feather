@@ -51,8 +51,11 @@ typedef enum MPDatabasePackageControllerErrorCode
  * In Feather.app, MPDatabasePackageController's subclass MPFeatherPackageController is the controller which the NSDocument subclass MPDocument relies on for reading and writing Feather document packages. There is however no dependence on Feather or a document based design in MPDatabasePackageController. It is intended to be crossplatform. */
 @interface MPDatabasePackageController : NSObject <CBLViewCompiler, NSNetServiceDelegate, NSNetServiceBrowserDelegate>
 
-/** The filesystem path of the database package. */
+/** The filesystem base path (= path to the the root) of the database package. */
 @property (strong, readonly) NSString *path;
+
+/** A file URL to the root of the database package. */
+@property (strong, readonly) NSURL *URL;
 
 /** The database server for this database package. */
 @property (strong, readonly) CBLManager *server;
@@ -206,6 +209,10 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** A globally unique identifier for the database controller. Must be overloaded by a subclass. */
 @property (strong, readonly) NSString *identifier;
 
+/** A fully qualified identifier is like the identifier but better. 
+  * It includes the full path to the file, meaning that if multiple databases of the same identifier are presently open from different paths on disk, they will also be unique. */
+@property (strong, readonly) NSString *fullyQualifiedIdentifier;
+
 /** An optional delegate for the database package controller. */
 @property (weak) id<MPDatabasePackageControllerDelegate> delegate;
 
@@ -228,8 +235,9 @@ typedef enum MPDatabasePackageControllerErrorCode
 - (BOOL)restoreFromSnapshotWithName:(NSString *)name error:(NSError **)err;
 
 /** Returns a database package controller with the specified identifier, if one happens to be currently open. */
-+ (MPDatabasePackageController *)databasePackageControllerWithIdentifier:(NSString *)identifier;
++ (MPDatabasePackageController *)databasePackageControllerWithFullyQualifiedIdentifier:(NSString *)identifier;
 
+/** Root sections represent are 'virtual' model objects intended to present views to objects in the database package. */
 @property (strong, readonly) NSArray *rootSections;
 
 /** The active draft is the draft user is presently viewing and editing. */
@@ -244,5 +252,35 @@ typedef enum MPDatabasePackageControllerErrorCode
 - (void)startListenerWithCompletionHandler:(void(^)(NSError *err))completionHandler;
 - (void)stopListener;
 
-@end
+#pragma mark - 
 
+/** Saves the database as well, a manifest, as well as a JSON dictionary representation. */
+- (BOOL)saveToURL:(NSURL *)URL error:(NSError **)error;
+
+/** Relative URL to a file that contains a preview of the database package.
+  * URL is relative to the URL of the database package controller. */
+@property (readonly) NSURL *relativePreviewURL;
+
+/** Relative URL to a file that contains a thumbnail of the database package.
+ * URL is relative to the URL of the database package controller. */
+@property (readonly) NSURL *relativeThumbnailURL;
+
+/** Absolute URL pointing at a preview of the database package. */
+@property (readonly) NSURL *absolutePreviewURL;
+
+/** AbsoluteURL pointing at a thumbnail of the database package. */
+@property (readonly) NSURL *absoluteThumbnailURL;
+
+/** URL from which to find a manifest for the database package. */
+@property (readonly) NSURL *manifestDictionaryURL;
+
+/** URL from which to find a dictionary representation for the database package. */
+@property (readonly) NSURL *dictionaryRepresentationURL;
+
+/** The manifest dictionary includes metadata intended for consuming the database package without opening the database proper. */
+@property (readonly) NSDictionary *manifestDictionary;
+
+/** JSON encodable dictionary representation of all objects in the database package. */
+@property (readonly) NSDictionary *dictionaryRepresentation;
+
+@end
