@@ -247,6 +247,27 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return moClass;
 }
 
++ (NSString *)canonicalizedIdentifierStringForString:(NSString *)string {
+    /* The JavaScript original:
+    function canonicalizeIdentifier(cslIdentifier) {
+        return cslIdentifier
+        .replace("http://", "")
+        .replace(/\//g, "-")
+                 .replace(/\./g, "-")
+                 .replace(' ', '-')
+                 .replace(':', '-');
+                 }
+    */
+    
+    // TODO: replace with a more sensible implementation.
+    return [[[[[[string stringByReplacingOccurrencesOfString:@"http://" withString:@""]
+        stringByReplacingOccurrencesOfString:@"https://" withString:@""]
+            stringByReplacingOccurrencesOfString:@"/" withString:@"-"]
+                stringByReplacingOccurrencesOfString:@"." withString:@"-"]
+                    stringByReplacingOccurrencesOfString:@" " withString:@"-"]
+                         stringByReplacingOccurrencesOfString:@":" withString:@"-"];
+}
+
 + (NSString *)humanReadableName
 {
     NSString *className = NSStringFromClass(self);
@@ -318,8 +339,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (BOOL)save {
     NSError *err = nil;
     BOOL success;
-    if (!(success = [self save:&err]))
-    {
+    if (!(success = [self save:&err])) {
+#ifdef DEBUG
+        NSAssert(false, @"Encountered an error when saving: %@", err);
+#endif
         MPDatabasePackageController *pkgc = [self.database packageController];
         [pkgc.notificationCenter postErrorNotification:err];
         return NO;
@@ -350,8 +373,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 - (BOOL)save:(NSError *__autoreleasing *)outError {
-    assert(_controller);
-    assert(self.document);
+    NSParameterAssert(_controller);
+    NSParameterAssert(self.document);
     [_controller willSaveObject:self];
     
     assert(self.document.modelObject);
@@ -818,17 +841,18 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (CBLDatabase *)databaseForModelProperty:(NSString *)propertyName
 {
     Class cls = [[self class] classOfProperty:propertyName];
-    assert([cls isSubclassOfClass:[MPManagedObject class]]);
+    NSParameterAssert([cls isSubclassOfClass:[MPManagedObject class]]);
     
     CBLDatabase *db = [self.controller.packageController controllerForManagedObjectClass:cls].db.database;
     if (db)
         return db;
     
-    if (!db) assert([cls conformsToProtocol:@protocol(MPReferencableObject)]);
+    if (!db)
+        NSParameterAssert([cls conformsToProtocol:@protocol(MPReferencableObject)]);
     
     MPShoeboxPackageController *spkg = [MPShoeboxPackageController sharedShoeboxController];
     db = [spkg controllerForManagedObjectClass:cls].db.database;
-    assert(db);
+    NSParameterAssert(db);
     
     return db;
 }

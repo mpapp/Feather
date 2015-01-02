@@ -169,6 +169,10 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID;
 
+/** Canonicalization removes a http://, https:// scheme, 
+  * as well as replacing  ':', '/' and '.' characters with a '-'. */
++ (NSString *)canonicalizedIdentifierStringForString:(NSString *)string;
+
 /** Human readable name for the type */
 + (NSString *)humanReadableName;
 

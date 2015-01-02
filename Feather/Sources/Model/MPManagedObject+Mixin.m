@@ -6,6 +6,9 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
+#import "MPDatabasePackageController.h"
+#import "MPShoeboxPackageController.h"
+
 #import "MPManagedObject+MixIn.h"
 #import "MPManagedObjectsController+Protected.h"
 
@@ -103,12 +106,14 @@
         {
             NSString *propStoredNameStr = [NSString stringWithFormat:@"%@Timestamp", propNameStr];
             [self implementPropertyWithName:propNameStr
-                       getterImplementation:^id(id _self) {
-                           return [_self getValueOfProperty:propStoredNameStr];
-                       }
-                       setterImplementation:^(id _self, id setObj) {
-                           [_self setValue:setObj ofProperty:propStoredNameStr];
-                       } overload:overloadMethods];
+                       getterImplementation:
+             ^id(id _self) {
+                 return [_self getValueOfProperty:propStoredNameStr];
+             }
+                       setterImplementation:
+             ^(id _self, id setObj) {
+                [_self setValue:setObj ofProperty:propStoredNameStr];
+            } overload:overloadMethods];
         }
         else if ([propType isEqualToString:@"NSArray"])
         {
@@ -117,14 +122,13 @@
             
             [self implementPropertyWithName:propNameStr
                        getterImplementation:
-             ^id(MPManagedObject *_self)
-             {
+             ^id(MPManagedObject *_self) {
                  return [_self getValueOfObjectIdentifierArrayProperty:propStoredNameStr];
              }
                        setterImplementation:
-             ^(MPManagedObject *_self, NSArray *setObjs)
-             {
-                 [_self setObjectIdentifierArrayValueForManagedObjectArray:setObjs property:propStoredNameStr];
+             ^(MPManagedObject *_self, NSArray *setObjs) {
+                 [_self setObjectIdentifierArrayValueForManagedObjectArray:setObjs
+                                                                  property:propStoredNameStr];
              } overload:overloadMethods];
         }
         else
@@ -135,28 +139,47 @@
             if ([class isSubclassOfClass:[MPManagedObject class]])
             {
                 [self implementPropertyWithName:propNameStr
-                           getterImplementation:^MPManagedObject *(MPManagedObject *_self) {
-                               NSString *objectID = [_self getValueOfProperty:propNameStr];
-                               if (!objectID) return nil;
-                               Class moClass = [MPManagedObject managedObjectClassFromDocumentID:objectID];
-                               CBLDatabase *db = [_self databaseForModelProperty:propNameStr];
-                               CBLDocument *doc = [db existingDocumentWithID:objectID];
-                               assert([doc.modelObject isKindOfClass:moClass]);
-                               return (MPManagedObject *)doc.modelObject;
-                           }
-                           setterImplementation:^(MPManagedObject *_self, MPManagedObject *setObj) {
-                               [_self setValue:[setObj.document documentID] ofProperty:propNameStr];
-                           } overload:overloadMethods];
+                           getterImplementation:
+                 ^MPManagedObject *(MPManagedObject *_self)
+                {
+                    NSString *objectID = [_self getValueOfProperty:propNameStr];
+                    if (!objectID)
+                        return nil;
+                    
+                    Class moClass = [MPManagedObject managedObjectClassFromDocumentID:objectID];
+                    Class propertyClass = [_self.class classOfProperty:propNameStr];
+                    NSAssert([moClass isSubclassOfClass:propertyClass], @"Unexpected class: %@", moClass);
+                    
+                    MPManagedObjectsController *moc = [[[_self controller] packageController] controllerForManagedObjectClass:moClass];
+                    if (!moc) {
+                        moc = [[MPShoeboxPackageController sharedShoeboxController] controllerForManagedObjectClass:moClass];
+                    }
+                    
+                    /* // The old method for recovering the object.
+                     CBLDatabase *db = [_self databaseForModelProperty:propNameStr];
+                     CBLDocument *doc = [db existingDocumentWithID:objectID];
+                     NSParameterAssert([doc.modelObject isKindOfClass:moClass]);
+                     */
+
+                    return [moc objectWithIdentifier:objectID];
+                }
+                           setterImplementation:
+                 ^(MPManagedObject *_self, MPManagedObject *setObj)
+                {
+                    [_self setValue:[setObj.document documentID] ofProperty:propNameStr];
+                } overload:overloadMethods];
             }
             else
             {
                 [self implementPropertyWithName:propNameStr
-                           getterImplementation:^id(id _self) {
-                               return [_self getValueOfProperty:propNameStr];
-                           }
-                           setterImplementation:^(id _self, id setObj) {
-                               [_self setValue:setObj ofProperty:propNameStr];
-                           } overload:overloadMethods];
+                           getterImplementation:
+                 ^id(id _self) {
+                     return [_self getValueOfProperty:propNameStr];
+                 }
+                           setterImplementation:^(id _self, id setObj)
+                {
+                    [_self setValue:setObj ofProperty:propNameStr];
+                } overload:overloadMethods];
             }
         }
     }
