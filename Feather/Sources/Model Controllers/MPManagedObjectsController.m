@@ -761,6 +761,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     if (!self.bundledJSONDataFilename)
         return nil;
     
+    NSParameterAssert(self.bundledJSONDataViewName);
     CBLQuery *q = [[self.db.database viewNamed:self.bundledJSONDataViewName] createQuery];
     q.prefetch = YES;
     
