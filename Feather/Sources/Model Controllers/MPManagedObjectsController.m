@@ -501,7 +501,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (id)objectWithIdentifier:(NSString *)identifier
 {
-    MPManagedObject *mo = _objectCache[identifier];
+    __block MPManagedObject *mo = _objectCache[identifier];
     if (mo)
     {
         assert(mo.controller == self);
@@ -513,22 +513,44 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     assert(cls);
     __block CBLDocument *doc = nil;
     
-    mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.packageController serverQueueToken], ^{
+    mp_dispatch_sync(self.db.database.manager.dispatchQueue,
+                     [self.packageController serverQueueToken], ^{
         doc = [self.db.database existingDocumentWithID:identifier];
     });
     
     if (!doc) {
-        if (!self.relaysFetchingByIdentifier && self.packageController != [MPShoeboxPackageController sharedShoeboxController]) {
+        if (!self.relaysFetchingByIdentifier
+            || self.packageController == MPShoeboxPackageController.sharedShoeboxController) {
             MPLog(@"WARNING! Failed to find object by ID: %@", identifier);
             return nil;
         }
         
         MPManagedObjectsController *moc
             = [[MPShoeboxPackageController sharedShoeboxController] controllerForManagedObjectClass:cls];
+        NSAssert(moc != self, @"Attempting to recursively get object by ID from self.");
+        
         return [moc objectWithIdentifier:identifier];
     }
     
-    return [cls modelForDocument:doc];
+    mp_dispatch_sync(self.db.database.manager.dispatchQueue,
+                     [self.packageController serverQueueToken],
+    ^{
+        if ((mo = (id)[doc modelObject])) {
+            
+            if (![doc isDeleted])
+                NSParameterAssert(mo);
+            
+            if (mo)
+                return;
+        }
+        
+        mo = [cls modelForDocument:doc];
+        
+        if (![doc isDeleted])
+            NSParameterAssert(mo);
+    });
+    
+    return mo;
 }
 
 - (BOOL)relaysFetchingByIdentifier {
