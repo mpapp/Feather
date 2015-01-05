@@ -168,9 +168,14 @@
     return [dict copy];
 }
 
++ (NSSet *)propertyKeys {
+    @synchronized (self) {
+        return [self _propertyKeys];
+    }
+}
 
 // Adapted from CouchDynamicObject -propertyNames
-+ (NSSet *)propertyKeys
++ (NSSet *)_propertyKeys
 {
     static NSMutableDictionary* classToNames;
     if (!classToNames)
