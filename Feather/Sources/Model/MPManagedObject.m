@@ -834,7 +834,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (id)getValueForDictionaryEmbeddedKey:(NSString *)embeddedKey ofProperty:(NSString *)dictPropertyKey
 {
     NSMutableDictionary *dict = [self getValueOfProperty:dictPropertyKey];
-    if (dict) assert([dict isKindOfClass:[NSMutableDictionary class]]);
+    if (dict)
+        NSParameterAssert([dict isKindOfClass:[NSMutableDictionary class]]);
     return dict[embeddedKey];
 }
 
@@ -1488,6 +1489,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         }
     }
     
+    NSParameterAssert(self.document);
     [super setValue:value ofProperty:property];
 }
 

@@ -49,7 +49,8 @@
 - (NSArray *)filteredArrayMatching:(BOOL(^)(id evalutedObject))patternBlock
 {
     // FIXME: Implement without requiring a temporary NSPredicate object
-    return [self filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+    return [self filteredArrayUsingPredicate:
+    [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         return patternBlock(evaluatedObject);
     }]];
 }

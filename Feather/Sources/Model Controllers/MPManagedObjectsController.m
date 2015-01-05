@@ -904,7 +904,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     
     while (_loadingBundledDatabaseResources)
     {
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
+        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode
+                                 beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
     }
     
     [[NSNotificationCenter defaultCenter] removeObserver:replicationObserver];
