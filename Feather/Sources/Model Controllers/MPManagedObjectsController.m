@@ -544,6 +544,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                 return;
         }
         
+        // this branch may be unnecessary and we should try to do without.
         mo = [cls modelForDocument:doc];
         
         if (![doc isDeleted])
