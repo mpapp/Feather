@@ -206,6 +206,13 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
  */
 - (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller;
 
+/** Initialise a managed object with a new document managed by the specified controller.
+  * @param managedObject a non-nil managed object of the same class as the object being returned.
+  * @param controller The managed object controller for this object. Must not be nil, but may be different to the controller of managedObject.
+  * */
+- (instancetype)initCopyOfManagedObject:(MPManagedObject *)managedObject
+                             controller:(MPManagedObjectsController *)controller;
+
 /** A utility method which helps implementing setters for properties which have a managed object subclass as their type (e.g. 'section' as property key is internally stored as 'sectionIDs', setter stores document IDs).  */
 - (void)setObjectIdentifierArrayValueForManagedObjectArray:(NSArray *)objectArray property:(NSString *)propertyKey;
 

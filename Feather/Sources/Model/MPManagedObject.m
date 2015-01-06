@@ -158,14 +158,27 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return self;
 }
 
-- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller
-{
+- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller {
     return [self initWithNewDocumentForController:controller properties:nil documentID:nil];
 }
 
-- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller properties:(NSDictionary *)properties
-{
+- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller properties:(NSDictionary *)properties {
     return [self initWithNewDocumentForController:controller properties:properties documentID:nil];
+}
+
+- (instancetype)initCopyOfManagedObject:(MPManagedObject *)managedObject
+                             controller:(MPManagedObjectsController *)controller {
+    NSParameterAssert(managedObject);
+    NSParameterAssert([managedObject.class isKindOfClass:self.class]);
+    NSParameterAssert(controller);
+    
+    // drop _id, _rev, _attachments
+    NSDictionary *props = [managedObject.propertiesToSave dictionaryWithObjectsMatching:^BOOL(id evaluatedKey, id evaluatedObject) {
+        return ![evaluatedKey hasPrefix:@"_"];
+    }];
+    
+    self = [self initWithNewDocumentForController:controller properties:props];
+    return self;
 }
 
 - (void)didInitialize
