@@ -169,7 +169,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (instancetype)initCopyOfManagedObject:(MPManagedObject *)managedObject
                              controller:(MPManagedObjectsController *)controller {
     NSParameterAssert(managedObject);
-    NSParameterAssert([managedObject.class isKindOfClass:self.class]);
+    NSParameterAssert([managedObject isKindOfClass:self.class]);
     NSParameterAssert(controller);
     
     // drop _id, _rev, _attachments
