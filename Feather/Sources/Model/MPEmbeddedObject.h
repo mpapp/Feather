@@ -9,6 +9,7 @@
 #import <CouchbaseLite/CouchbaseLite.h>
 #import "MPEmbeddedPropertyContainingMixin.h"
 
+
 @protocol MPWaitingOperation;
 @class MPEmbeddedObject;
 
@@ -39,6 +40,7 @@
 
 /** A model object that can be embedded as values in MPManagedObject's keys. 
   * MPEmbeddedObject itself conforms to MPEmbeddingObject because it can embed other objects. */
+NS_REQUIRES_PROPERTY_DEFINITIONS
 @interface MPEmbeddedObject : MYDynamicObject <MPEmbeddingObject>
 
 @property (readonly, copy) NSString *identifier;

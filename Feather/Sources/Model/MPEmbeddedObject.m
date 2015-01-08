@@ -29,6 +29,11 @@
 @end
 
 @implementation MPEmbeddedObject
+@synthesize embeddingObject = _embeddingObject;
+@synthesize embeddedObjectCache = _embeddedObjectCache;
+@synthesize properties = _properties;
+@synthesize needsSave = _needsSave;
+@synthesize changedNames = _changedNames;
 
 #ifdef DEBUG
 
