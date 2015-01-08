@@ -418,17 +418,28 @@
 
 #pragma mark - Accessor implementations
 
-- (CBLDatabase *)databaseForModelProperty:(NSString *)property
-{
+- (CBLDatabase *)databaseForModelProperty:(NSString *)property {
     id<MPEmbeddingObject> embedder = nil;
-    while (![(embedder = self.embeddingObject) isKindOfClass:[MPManagedObject class]])
-    {
-        assert(embedder);
+    while (![(embedder = self.embeddingObject) isKindOfClass:[MPManagedObject class]]) {
+        NSParameterAssert(embedder);
     }
-    assert([embedder isKindOfClass:[MPManagedObject class]]);
+    NSParameterAssert([embedder isKindOfClass:[MPManagedObject class]]);
+    
     MPManagedObject *mo = (MPManagedObject *)embedder;
     
-    return mo.database;
+    Class cls = [self.class classOfProperty:property];
+    
+    // try to infer the MOC and via that its database,
+    // 1) get the controller for the embedder (first MO encountered when walking 'embeddingObject' relations).
+    // 2) failing that get the MOC via shared package controller.
+    // either #1 or #2 must succeed.
+    MPManagedObjectsController *inferredMOC = [mo.controller.packageController controllerForManagedObjectClass:cls];
+    CBLDatabase *inferredDB = inferredMOC
+                                ? inferredMOC.db.database
+                                : [MPShoeboxPackageController.sharedShoeboxController controllerForManagedObjectClass:cls].db.database;
+    NSParameterAssert(inferredDB);
+    
+    return inferredDB;
 }
 
 // adapted from CouchModel

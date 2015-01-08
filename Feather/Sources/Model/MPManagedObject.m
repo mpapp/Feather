@@ -854,7 +854,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (CBLDatabase *)databaseForModelProperty:(NSString *)propertyName
 {
-    Class cls = [[self class] classOfProperty:propertyName];
+    Class cls = [self.class classOfProperty:propertyName];
     NSParameterAssert([cls isSubclassOfClass:[MPManagedObject class]]);
     
     CBLDatabase *db = [self.controller.packageController controllerForManagedObjectClass:cls].db.database;
