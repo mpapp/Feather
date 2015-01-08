@@ -177,6 +177,31 @@
     return (lcr.location == NSNotFound && ucr.location != NSNotFound);
 }
 
+// http://stackoverflow.com/questions/5034628/retrieve-root-url-nsstring
++ (NSString *)rootDomainForHostName:(NSString *)domain {
+    domain = domain.lowercaseString;
+    
+    // Return nil if none found.
+    NSString *rootDomain = nil;
+    
+    // Convert the string to an NSURL to take advantage of NSURL's parsing abilities.
+    NSURL *url = [NSURL URLWithString:domain];
+    
+    // Get the host, e.g. "secure.twitter.com"
+    NSString *host = [url host];
+    
+    // Separate the host into its constituent components, e.g. [@"secure", @"twitter", @"com"]
+    NSArray *hostComponents = [host componentsSeparatedByString:@"."];
+    if ([hostComponents count] >=2) {
+        // Create a string out of the last two components in the host name, e.g. @"twitter" and @"com"
+        rootDomain = [NSString stringWithFormat:@"%@.%@",
+                      [hostComponents objectAtIndex:([hostComponents count] - 2)],
+                      [hostComponents objectAtIndex:([hostComponents count] - 1)]];
+    }
+    
+    return rootDomain;
+}
+
 // inspired by NSString_Extensions
 - (NSString *)stringByTrimmingToLength:(NSUInteger)len truncate:(BOOL)truncate
 {

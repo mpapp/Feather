@@ -69,6 +69,10 @@ NS_INLINE  NSMutableString *MPMutableStringForString(NSString *s)
 
 @property (copy, readonly) NSString *stringByTrimmingTrailingWhitespace;
 
+/** A best effort to return the top level domain part of a host name. 
+  * For instance returns 'twitter.com' for 'dev.twitter.com'. */
++ (NSString *)rootDomainForHostName:(NSString *)hostName;
+
 - (NSString *)stringByTrimmingToLength:(NSUInteger)len truncate:(BOOL)truncate;
 
 /** String representation of an OSType. Works also for FourLetterCode, DescType, ResType */
