@@ -246,6 +246,9 @@ typedef enum MPDatabasePackageControllerErrorCode
 @property (strong, readonly) NSArray *nonEmptyRootSections;
 @property (strong, readonly) NSArray *outlinerRootSections;
 
+/** Returns a managed object given the identifier. */
+- (id)objectWithIdentifier:(NSString *)identifier __attribute__((nonnull));
+
 /** Root section class names ordered in the priority order needed. */
 + (NSArray *)orderedRootSectionClassNames;
 

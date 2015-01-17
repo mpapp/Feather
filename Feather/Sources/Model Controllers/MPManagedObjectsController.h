@@ -195,7 +195,9 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** Bundled JSON data derived objects. */
 @property (readonly) NSArray *bundledJSONDerivedData;
 
-
+/** Gets an object managed by this managed objects controller from its cache, or from database, 
+  * or in case it's not part of the shared package, 
+  * from the shared package controller's database from its corresponding managed objects controller if one exists. */
 - (id)objectWithIdentifier:(NSString *)identifier;
 
 /** Whether the controller relays a search for an object to the shared package controller

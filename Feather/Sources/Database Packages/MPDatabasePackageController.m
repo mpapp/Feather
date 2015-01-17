@@ -404,6 +404,16 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return moc;
 }
 
+- (id)objectWithIdentifier:(NSString *)identifier {
+    NSParameterAssert(identifier);
+    
+    Class moClass = [MPManagedObject managedObjectClassFromDocumentID:identifier];
+    MPManagedObjectsController *moc = [self controllerForManagedObjectClass:moClass];
+    MPManagedObject *mo = [moc objectWithIdentifier:identifier];
+    
+    return mo;
+}
+
 - (NSNotificationCenter *)notificationCenter
 {
     return [NSNotificationCenter defaultCenter]; // subclass can provide its own notification center
