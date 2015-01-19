@@ -671,6 +671,8 @@ typedef void (^CBLDatabaseDoAsyncHandler)();
     for (CBLQueryRow *row in rows)
     {
         CBLDocument *doc = row.document;
+        if (doc.isDeleted)
+            continue;
         MPManagedObject *mo = [[MPManagedObject managedObjectClassFromDocumentID:doc.documentID] modelForDocument:doc];
         assert(mo);
         [objs addObject:mo];
