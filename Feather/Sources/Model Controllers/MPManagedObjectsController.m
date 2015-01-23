@@ -633,7 +633,11 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         MPManagedObject *mo = [self objectFromJSONDictionary:d isExisting:&isExisting error:err];
         
         if (!mo)
-            return nil;
+        {
+            NSLog(@"ERROR: Failed to import dictionary: %@", d);
+            //return nil;
+            continue;
+        }
         
         if (mo.needsSave || !isExisting)
             [mos addObject:mo];
@@ -644,8 +648,11 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         if (![MPManagedObject saveModels:mos error:&e]) {
             if (err)
                 *err = e;
-            
-            return nil;
+            if (err) {
+                //*err = e;
+                NSLog(@"ERROR: Failed to save objects from JSON: %@", e);
+            }
+            //return nil;
         }
     }
     
