@@ -129,6 +129,11 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         
         for (NSString *dbName in [[self class] databaseNames])
         {
+            NSURL *bootstrapDataURL = nil;
+            if ((bootstrapDataURL = [self bootstrapDatabaseURLForDatabaseWithName:dbName])) {
+                
+            }
+            
             NSString *pushFilterName = [self pushFilterNameForDatabaseNamed:dbName];
             MPDatabase *db = [[MPDatabase alloc] initWithServer:_server
                                              packageController:self
@@ -140,10 +145,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
             if (!db) {
                 return nil;
             }
+            
             [self setValue:db forKey:[NSString stringWithFormat:@"%@Database", db.name]];
             
-            if (pushFilterName)
-            {
+            if (pushFilterName) {
                 CBLFilterBlock filterBlock
                     = [self pushFilterBlockWithName:pushFilterName forDatabase:db];
                 [db defineFilterNamed:pushFilterName block:filterBlock];
@@ -549,6 +554,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     MPDatabase *db = [self valueForKey:[NSString stringWithFormat:@"%@Database", name]];
     assert(db);
     return db;
+}
+
+- (NSURL *)bootstrapDatabaseURLForDatabaseWithName:(NSString *)dbName {
+    return nil; // override in subclasses to provide a bundled file URL for a database that should be used as a starting point.
 }
 
 - (MPDatabase *)primaryDatabase

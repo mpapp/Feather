@@ -206,6 +206,10 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** Returns a database with a given name. Should by only called with names from the set +databaseNames. */
 - (MPDatabase *)databaseWithName:(NSString *)name;
 
+/** Returns a file URL to a database that is to be used as a basis for the data in the database with the specified name (bootstrap the data = copy data into shared database, then modify it there).
+  * Base class implementation returns always nil, can be overridden in subclasses. */
+- (NSURL *)bootstrapDatabaseURLForDatabaseWithName:(NSString *)dbName __attribute__((nonnull));
+
 /** A globally unique identifier for the database controller. Must be overloaded by a subclass. */
 @property (strong, readonly) NSString *identifier;
 
