@@ -641,6 +641,26 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     
     if (mos.count > 0) {
         NSError *e = nil;
+        
+        NSSet *docIDs = [NSSet setWithArray:[mos valueForKey:@"documentID"]];
+        
+        if (docIDs.count != mos.count) {
+            NSMutableDictionary *counts = @{}.mutableCopy;
+            for (NSString *docID in docIDs) {
+                counts[docID] = @([counts[docID] unsignedIntegerValue] + 1);
+            }
+            
+            for (id k in [counts.allKeys sortedArrayUsingComparator:^NSComparisonResult(NSString *a, NSString *b) {
+                return [a compare:b];
+            }]) {
+                if ([counts[k] unsignedIntegerValue] > 1) {
+                    NSLog(@"ERROR! Duplicate template with ID '%@'", k);
+                }
+            }
+            
+            NSAssert(docIDs.count == mos.count, @"There should be no duplicate document IDs amongst the saved objects.");
+        }
+        
         if (![MPManagedObject saveModels:mos error:&e]) {
             if (err)
                 *err = e;
