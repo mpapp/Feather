@@ -24,7 +24,7 @@
 @property (readonly) BOOL isEditable;
 
 /** The item has a visible title */
-@property (readonly, getter=isTitled) BOOL titled;
+@property (readonly) BOOL isTitled;
 
 /** The item can be included or excluded from a selection of some sort (such as inclusion in a draft). */
 @property (readonly) BOOL isOptional;
