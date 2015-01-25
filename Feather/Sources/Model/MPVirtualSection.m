@@ -34,6 +34,8 @@
 
 - (instancetype)initWithPackageController:(MPDatabasePackageController *)pkgController parent:(id<MPTreeItem>)parent
 {
+    NSParameterAssert([NSThread isMainThread]);
+    
     if (self = [super init])
     {
         assert(pkgController);
@@ -58,34 +60,54 @@
          didAdd:
          ^(id<MPManagedObjectChangeObserver, MPCacheable> _self, NSNotification *notification)
          {
-             [_self clearCachedValues];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [_self clearCachedValues];
+             });
          }
          didUpdate:
          ^(id<MPManagedObjectChangeObserver, MPCacheable> _self, NSNotification *notification)
          {
-             [_self clearCachedValues];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [_self clearCachedValues];
+             });
          }
          didRemove:^(id<MPManagedObjectChangeObserver, MPCacheable> _self, NSNotification *notification)
          {
-             [_self clearCachedValues];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [_self clearCachedValues];
+             });
          }];
 }
 
-- (void)dealloc
-{
+- (void)dealloc {
+    NSParameterAssert([NSThread isMainThread]);
     [[_packageController notificationCenter] removeObserver:self];
 }
 
-- (void)setTitle:(NSString *)title { @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; }
-- (NSString *)title { @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; return nil; }
+- (void)setTitle:(NSString *)title {
+    @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
+}
+- (NSString *)title {
+    @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; return nil;
+}
 
-- (void)setSubtitle:(NSString *)subtitle { @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; }
-- (NSString *)subtitle { return @""; }
+- (void)setSubtitle:(NSString *)subtitle {
+    @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
+}
+- (NSString *)subtitle {
+    return @"";
+}
 
-- (void)setDesc:(NSString *)desc { @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; }
-- (NSString *)desc { @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; return nil; }
+- (void)setDesc:(NSString *)desc {
+    @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
+}
+- (NSString *)desc {
+    @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; return nil;
+}
 
-- (NSArray *)children { @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; return nil; }
+- (NSArray *)children {
+    @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; return nil;
+}
 
 - (NSArray *)representedObjects { return [self children]; } // synonymous in the base class with -children, subclasses can redefine this.
 
@@ -111,6 +133,10 @@
 
 - (BOOL)isEditable {
     return NO;
+}
+
+- (BOOL)isTitled {
+    return YES;
 }
 
 - (BOOL)isOptional {
@@ -176,8 +202,12 @@
     return [_wrappedObject thumbnailImage];
 }
 
-- (NSString *)placeholderString { return _wrappedObject.placeholderString; }
-- (BOOL)isEditable { return YES; }
+- (NSString *)placeholderString {
+    return _wrappedObject.placeholderString;
+}
+- (BOOL)isEditable {
+    return YES;
+}
 
 - (BOOL)save:(NSError **)err
 {
@@ -217,14 +247,20 @@
               didAdd:
          ^(id<MPManagedObjectChangeObserver, MPCacheable> _self, NSNotification *notification)
          {
-             [_self clearCachedValues];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [_self clearCachedValues];
+             });
          } didUpdate:
          ^(id<MPManagedObjectChangeObserver, MPCacheable> _self, NSNotification *notification)
          {
-             [_self clearCachedValues];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [_self clearCachedValues];
+             });
          } didRemove:^(id<MPManagedObjectChangeObserver, MPCacheable> _self, NSNotification *notification)
          {
-             [_self clearCachedValues];
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [_self clearCachedValues];
+             });
          }];
     }
 }
@@ -237,7 +273,9 @@
     [self observeManagedObjectChanges];
 }
 
-- (Class)representedObjectClass { return _managedObjectClass; }
+- (Class)representedObjectClass {
+    return _managedObjectClass;
+}
 
 
 @end

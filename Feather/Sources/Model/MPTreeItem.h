@@ -23,6 +23,9 @@
 /** The properties such as title are intended to be mutable by the user. */
 @property (readonly) BOOL isEditable;
 
+/** The item has a visible title */
+@property (readonly, getter=isTitled) BOOL titled;
+
 /** The item can be included or excluded from a selection of some sort (such as inclusion in a draft). */
 @property (readonly) BOOL isOptional;
 

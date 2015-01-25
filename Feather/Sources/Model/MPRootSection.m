@@ -72,9 +72,17 @@
     return self;
 }
 
-- (void)hasAddedManagedObject:(NSNotification *)notification { [self clearCachedValues]; }
-- (void)hasUpdatedManagedObject:(NSNotification *)notification { [self clearCachedValues]; }
-- (void)hasRemovedManagedObject:(NSNotification *)notification { [self clearCachedValues]; }
+- (void)hasAddedManagedObject:(NSNotification *)notification {
+    [self clearCachedValues];
+}
+
+- (void)hasUpdatedManagedObject:(NSNotification *)notification {
+    [self clearCachedValues];
+}
+
+- (void)hasRemovedManagedObject:(NSNotification *)notification {
+    [self clearCachedValues];
+}
 
 - (void)dealloc
 {
@@ -84,20 +92,26 @@
     [nc removeObserver:self];
 }
 
-- (void)setTitle:(NSString *)title
-{ @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; }
+- (void)setTitle:(NSString *)title {
+    @throw [MPAbstractMethodException exceptionWithSelector:_cmd];
+}
 
-- (NSString *)title
-{ @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return nil; }
+- (NSString *)title {
+    @throw [MPAbstractMethodException exceptionWithSelector:_cmd];
+    return nil;
+}
 
-- (void)setDesc:(NSString *)desc
-{ @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; }
+- (void)setDesc:(NSString *)desc {
+    @throw [MPAbstractMethodException exceptionWithSelector:_cmd];
+}
 
-- (NSString *)desc
-{ @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; }
+- (NSString *)desc {
+    @throw [MPAbstractMethodException exceptionWithSelector:_cmd];
+}
 
-- (void)setSubtitle:(NSString *)subtitle
-{ @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; }
+- (void)setSubtitle:(NSString *)subtitle {
+    @throw [MPAbstractMethodException exceptionWithSelector:_cmd];
+}
 
 - (NSString *)subtitle {
     return @"";
@@ -150,6 +164,10 @@
 
 - (BOOL)isEditable {
     return NO;
+}
+
+- (BOOL)isTitled {
+    return YES;
 }
 
 - (BOOL)isOptional {
