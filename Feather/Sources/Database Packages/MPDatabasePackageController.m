@@ -129,10 +129,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         
         for (NSString *dbName in [[self class] databaseNames])
         {
-            NSURL *bootstrapDataURL = nil;
-            if ((bootstrapDataURL = [self bootstrapDatabaseURLForDatabaseWithName:dbName])) {
-                
-            }
+            if (![self bootstrapDatabaseWithName:dbName error:err])
+                return nil;
             
             NSString *pushFilterName = [self pushFilterNameForDatabaseNamed:dbName];
             MPDatabase *db = [[MPDatabase alloc] initWithServer:_server
@@ -215,6 +213,42 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     }
     
     return self;
+}
+
+- (BOOL)bootstrapDatabaseWithName:(NSString *)dbName error:(NSError **)err {
+    NSURL *bootstrapDataURL = [self bootstrapDatabaseURLForDatabaseWithName:dbName];
+    
+    if (!bootstrapDataURL)
+        return YES;
+    
+    NSFileManager *fm = [NSFileManager defaultManager];
+    
+    NSURL *dbURL = [bootstrapDataURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.cblite", dbName]];
+    NSParameterAssert([fm fileExistsAtPath:dbURL.path isDirectory:nil]);
+    
+    NSURL *targetDBURL = [NSURL fileURLWithPath:[_server.directory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.cblite", dbName]]];
+    
+    // nothing needed if file already exists.
+    if ([fm fileExistsAtPath:targetDBURL.path isDirectory:nil])
+        return YES;
+    
+    if (![fm copyItemAtURL:dbURL toURL:targetDBURL error:err]) {
+        return nil;
+    }
+    
+    NSURL *attachmentsURL = [bootstrapDataURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@ attachments", dbName]];
+    NSParameterAssert([fm fileExistsAtPath:attachmentsURL.path isDirectory:nil]);
+    
+    NSURL *targetAttachmentsURL = [NSURL fileURLWithPath:[_server.directory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ attachments", dbName]]];
+    
+    if ([fm fileExistsAtPath:attachmentsURL.path isDirectory:nil] &&
+        ![fm fileExistsAtPath:targetAttachmentsURL.path isDirectory:nil]) {
+        
+        if (![fm copyItemAtURL:attachmentsURL toURL:targetAttachmentsURL error:err])
+            return nil;
+    }
+    
+    return YES;
 }
 
 - (NSDictionary *)databaseListenerHTTPHeaders {

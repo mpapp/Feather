@@ -646,7 +646,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         
         if (docIDs.count != mos.count) {
             NSMutableDictionary *counts = @{}.mutableCopy;
-            for (NSString *docID in docIDs) {
+            for (NSString *docID in [mos valueForKey:@"documentID"]) {
                 counts[docID] = @([counts[docID] unsignedIntegerValue] + 1);
             }
             
