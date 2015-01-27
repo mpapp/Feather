@@ -104,12 +104,14 @@
         
         _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
 
-        // TODO: make embedded objects thread-safely unique
-        MPEmbeddedObject *obj = [embeddingObject embeddedObjectWithIdentifier:self.identifier];
-        if (!obj)
-            [embeddingObject cacheEmbeddedObjectByIdentifier:self];
-        else
-            return obj;
+        // thread-safely unique
+        @synchronized(embeddingObject) {
+            MPEmbeddedObject *obj = [embeddingObject embeddedObjectWithIdentifier:self.identifier];
+            if (!obj)
+                [embeddingObject cacheEmbeddedObjectByIdentifier:self];
+            else
+                return obj;
+        }
     }
     
     return self;
@@ -133,12 +135,14 @@
         
         _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
         
-        // TODO: make embedded objects thread-safely unique
-        MPEmbeddedObject *obj = [embeddingObject embeddedObjectWithIdentifier:self.identifier];
-        if (!obj)
-            [embeddingObject cacheEmbeddedObjectByIdentifier:self];
-        else
-            return obj;
+        // thread-safely unique
+        @synchronized(embeddingObject) {
+            MPEmbeddedObject *obj = [embeddingObject embeddedObjectWithIdentifier:self.identifier];
+            if (!obj)
+                [embeddingObject cacheEmbeddedObjectByIdentifier:self];
+            else
+                return obj;            
+        }
     }
     
     return self;
