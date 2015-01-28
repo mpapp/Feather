@@ -31,3 +31,11 @@
 - (NSUInteger)crc32Checksum;
 
 @end
+
+@interface NSData (AESAdditions)
+
+- (NSData *)AES256EncryptWithKey:(NSString *)key;
+
+- (NSData *)AES256DecryptWithKey:(NSString *)key;
+
+@end
