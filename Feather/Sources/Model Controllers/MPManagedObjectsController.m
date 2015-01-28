@@ -876,8 +876,10 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     NSFileManager *fm = [NSFileManager defaultManager];
     
     NSString *attachmentsDirectoryName = MPStringF(@"%@ attachments", self.bundledResourceDatabaseName);
-    NSString *bundledBundlesPath = [[NSBundle appBundle] pathForResource:self.bundledResourceDatabaseName ofType:@"cblite"];
-    NSString *bundledAttachmentsPath = [[NSBundle appBundle] pathForResource:attachmentsDirectoryName ofType:@""];
+    NSString *bundledManuscriptDataDirectory = MPStringF(@"%@.manuscripts-data", self.bundledResourceDatabaseName);
+    
+    NSString *bundledBundlesPath = [[NSBundle appBundle] pathForResource:self.bundledResourceDatabaseName ofType:@"cblite" inDirectory:bundledManuscriptDataDirectory];
+    NSString *bundledAttachmentsPath = [[NSBundle appBundle] pathForResource:attachmentsDirectoryName ofType:@"" inDirectory:bundledManuscriptDataDirectory];
     
     NSError *err = nil;
     NSURL *tempBundledBundlesDirURL = [fm temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:checksumKey error:&err];
