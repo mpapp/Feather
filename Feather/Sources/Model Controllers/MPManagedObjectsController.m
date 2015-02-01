@@ -164,11 +164,14 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     if ([NSBundle isCommandLineTool] || [NSBundle isXPCService])
         return YES; // Only the main application can set up the shared databases under the group container
     
-    if (![self loadBundledDatabaseResources:error])
-        return NO;
-    
-    if (![self loadBundledJSONResources:error])
-        return NO;
+    // only load bundled data if the database itself is not intended to be started from bootstrapped data.
+    if (![self.packageController bootstrapDatabaseURLForDatabaseWithName:self.db.name]) {
+        if (![self loadBundledDatabaseResources:error])
+            return NO;
+        
+        if (![self loadBundledJSONResources:error])
+            return NO;
+    }
     
     return YES;
 }
