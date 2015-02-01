@@ -3,7 +3,7 @@
 //  Bindings
 //
 //  Created by Matias Piipari on 10/10/2014.
-//  Copyright (c) 2014 Manuscripts.app Limited. All rights reserved.
+//  Copyright (c) 2014-2015 Manuscripts.app Limited. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
