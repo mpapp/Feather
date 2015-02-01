@@ -850,7 +850,10 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
         }
 
         dispatch_async(dispatch_get_main_queue(), ^{
-            [strongSelf advertiseListener];
+            // this can block startup otherwise.
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                [strongSelf advertiseListener];
+            });
             [self didStartManuscriptsPackageListener];
             completionHandler(nil);
         });
