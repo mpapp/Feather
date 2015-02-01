@@ -87,6 +87,7 @@
 - (void)setTitle:(NSString *)title {
     @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
 }
+
 - (NSString *)title {
     @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; return nil;
 }
@@ -94,6 +95,7 @@
 - (void)setSubtitle:(NSString *)subtitle {
     @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
 }
+
 - (NSString *)subtitle {
     return @"";
 }
@@ -101,6 +103,7 @@
 - (void)setDesc:(NSString *)desc {
     @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
 }
+
 - (NSString *)desc {
     @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; return nil;
 }
@@ -109,13 +112,29 @@
     @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd]; return nil;
 }
 
-- (NSArray *)representedObjects { return [self children]; } // synonymous in the base class with -children, subclasses can redefine this.
+- (NSArray *)representedObjects {
+    return [self children];
+} // synonymous in the base class with -children, subclasses can redefine this.
 
-- (NSUInteger)childCount { return self.children.count; }
-- (BOOL)hasChildren { return self.childCount > 0; }
-- (NSArray *)siblings { return self.parent.children; }
+- (NSUInteger)childCount {
+    return self.children.count;
+}
 
-- (NSInteger)priority { return [self.parent.children indexOfObject:self]; }
+- (BOOL)hasChildren {
+    return self.childCount > 0;
+}
+
+- (NSArray *)siblings {
+    return self.parent.children;
+}
+
+- (NSInteger)priority {
+    return [self.parent.children indexOfObject:self];
+}
+
+- (NSString *)identifier {
+    return nil;
+}
 
 - (BOOL)save
 {
@@ -214,7 +233,13 @@
     return [_wrappedObject save:err];
 }
 
-- (NSArray *)children { return @[]; }
+- (NSString *)identifier {
+    return nil;
+}
+
+- (NSArray *)children {
+    return @[];
+}
 
 + (NSArray *)arrayOfWrappedObjects:(NSArray *)wrappedObjects withParent:(id<MPTreeItem>)parent
 {

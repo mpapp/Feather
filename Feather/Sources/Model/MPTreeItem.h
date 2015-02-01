@@ -36,6 +36,10 @@
 
 @property (readonly, weak) id packageController;
 
+/** An optional identifier for nodes. 
+  * nil when object intended not identifiable, string otherwise. */
+@property (readonly) NSString *identifier;
+
 - (BOOL)save;
 
 @end

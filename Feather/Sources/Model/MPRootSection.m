@@ -117,8 +117,13 @@
     return @"";
 }
 
-- (id<MPTreeItem>)parent
-{ return nil; }
+- (NSString *)identifier {
+    return nil;
+}
+
+- (id<MPTreeItem>)parent {
+    return nil;
+}
 
 - (NSArray *)children
 {
