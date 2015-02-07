@@ -67,6 +67,10 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     }
 }
 
++ (BOOL)hasMainThreadIsolatedCachedProperties {
+    return NO;
+}
+
 - (instancetype)init
 {
     @throw [NSException exceptionWithName:@"MPInvalidInitException" reason:nil userInfo:nil];

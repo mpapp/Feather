@@ -40,15 +40,16 @@
     return cachedProperties;
 }
 
-- (void)clearCachedValues
-{
+- (void)clearCachedValues {
+    if (self.class.hasMainThreadIsolatedCachedProperties)
+        NSAssert(NSThread.isMainThread, @"Class %@ has main thread isolated cached properties", self.class);
+    
     NSSet *cachedKeys = [[self class] cachedPropertiesByClassName][NSStringFromClass([self class])];
     for (NSString *cachedKey in cachedKeys)
         [self setValue:nil forKey:cachedKey];
 }
 
-- (void)refreshCachedValues
-{
+- (void)refreshCachedValues {
     @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
 }
 
