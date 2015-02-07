@@ -77,15 +77,21 @@
 }
 
 - (void)hasAddedManagedObject:(NSNotification *)notification {
-    [self clearCachedValues];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self clearCachedValues];
+    });
 }
 
 - (void)hasUpdatedManagedObject:(NSNotification *)notification {
-    [self clearCachedValues];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self clearCachedValues];
+    });
 }
 
 - (void)hasRemovedManagedObject:(NSNotification *)notification {
-    [self clearCachedValues];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self clearCachedValues];
+    });
 }
 
 - (void)dealloc
