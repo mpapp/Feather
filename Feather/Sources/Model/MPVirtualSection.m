@@ -60,22 +60,15 @@
          didAdd:
          ^(id<MPManagedObjectChangeObserver, MPCacheable> _self, NSNotification *notification)
          {
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 [_self clearCachedValues];
-             });
+             
          }
          didUpdate:
          ^(id<MPManagedObjectChangeObserver, MPCacheable> _self, NSNotification *notification)
          {
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 [_self clearCachedValues];
-             });
          }
          didRemove:^(id<MPManagedObjectChangeObserver, MPCacheable> _self, NSNotification *notification)
          {
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 [_self clearCachedValues];
-             });
+             
          }];
 }
 
@@ -272,20 +265,11 @@
               didAdd:
          ^(id<MPManagedObjectChangeObserver, MPCacheable> _self, NSNotification *notification)
          {
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 [_self clearCachedValues];
-             });
          } didUpdate:
          ^(id<MPManagedObjectChangeObserver, MPCacheable> _self, NSNotification *notification)
          {
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 [_self clearCachedValues];
-             });
          } didRemove:^(id<MPManagedObjectChangeObserver, MPCacheable> _self, NSNotification *notification)
          {
-             dispatch_async(dispatch_get_main_queue(), ^{
-                 [_self clearCachedValues];
-             });
          }];
     }
 }

@@ -11,4 +11,5 @@
 @interface MPRootSection ()
 - (void)refreshCachedValues;
 @property (readwrite) NSArray *cachedChildren;
+@property (readwrite) NSArray *fixedChildren;
 @end
