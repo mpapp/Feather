@@ -34,6 +34,10 @@
     }
 }
 
++ (BOOL)hasMainThreadIsolatedCachedProperties {
+    return YES; // UI oriented caches.
+}
+
 + (Class)managedObjectClass
 {
     NSString *className = [NSStringFromClass(self) stringByReplacingOccurrencesOfRegex:@"RootSection$"

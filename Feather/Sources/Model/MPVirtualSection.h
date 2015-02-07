@@ -34,14 +34,21 @@
 
 @end
 
-@interface MPObjectWrappingSection : MPVirtualSection
+@interface MPObjectWrappingSection : MPVirtualSection 
 
 @property (readonly, copy) NSString *extendedTitle;
-@property (readonly, strong) MPManagedObject<MPTitledProtocol, MPPlaceHolding, MPThumbnailable> *wrappedObject;
+
+/** The object being wrapped. */
+@property (readonly, strong) MPManagedObject<MPTitledProtocol, MPPlaceHolding, MPThumbnailable, MPTreeItem> *wrappedObject;
+
+// FIXME: make this readonly.
+/** The children of the wrapped object, each a MPManagedObject which implements MPTreeItem. */
+@property (readwrite, strong) NSArray *wrappedChildren;
 
 - (instancetype)initWithParent:(id<MPTreeItem>)parentItem
                  wrappedObject:(MPManagedObject<MPTitledProtocol, MPPlaceHolding> *)obj;
 
+/** Create an array of MPObjectWrappingSection objects with the specified parent. */
 + (NSArray *)arrayOfWrappedObjects:(NSArray *)wrappedObjects
                         withParent:(id<MPTreeItem>)parent;
 

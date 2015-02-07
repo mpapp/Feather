@@ -190,6 +190,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         [_controller registerObject:self];
 }
 
++ (BOOL)hasMainThreadIsolatedCachedProperties {
+    return NO;
+}
+
 - (void)cacheEmbeddedObjectByIdentifier:(MPEmbeddedObject *)obj
 {
     assert(obj);

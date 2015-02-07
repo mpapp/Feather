@@ -26,6 +26,10 @@
     }
 }
 
++ (BOOL)hasMainThreadIsolatedCachedProperties {
+    return YES; // UI oriented cache.
+}
+
 - (instancetype)init
 {
     @throw [[MPInitIsPrivateException alloc] initWithSelector:_cmd];
@@ -166,22 +170,20 @@
 
 @implementation MPObjectWrappingSection
 
-- (instancetype)initWithPackageController:(MPDatabasePackageController *)pkgController
-{
+- (instancetype)initWithPackageController:(MPDatabasePackageController *)pkgController {
     @throw [[MPInitIsPrivateException alloc] initWithSelector:_cmd];
 }
 
-- (instancetype)initWithParent:(id<MPTreeItem>)parentItem wrappedObject:(MPManagedObject<MPTitledProtocol,MPPlaceHolding, MPThumbnailable> *)obj
-{
+- (instancetype)initWithParent:(id<MPTreeItem>)parentItem
+                 wrappedObject:(MPManagedObject<MPTitledProtocol,MPPlaceHolding, MPThumbnailable, MPTreeItem> *)obj {
     return [self initWithParent:parentItem wrappedObject:obj representedObjects:@[ obj ] representedObjectClass:obj.class observedManagedObjectClasses:nil];
 }
 
 - (instancetype)initWithParent:(id<MPTreeItem>)parentItem
-                 wrappedObject:(MPManagedObject<MPTitledProtocol, MPPlaceHolding, MPThumbnailable> *)obj
+                 wrappedObject:(MPManagedObject<MPTitledProtocol, MPPlaceHolding, MPThumbnailable, MPTreeItem> *)obj
             representedObjects:(NSArray *)representedObjects
         representedObjectClass:(Class)representedObjectClass
-  observedManagedObjectClasses:(NSArray *)additionalObservedManagedObjectClasses
-{
+  observedManagedObjectClasses:(NSArray *)additionalObservedManagedObjectClasses {
     assert(parentItem);
     assert(parentItem.packageController);
     
@@ -231,11 +233,11 @@
 }
 
 - (NSArray *)children {
-    return @[];
+    return self.wrappedChildren;
 }
 
-+ (NSArray *)arrayOfWrappedObjects:(NSArray *)wrappedObjects withParent:(id<MPTreeItem>)parent
-{
++ (NSArray *)arrayOfWrappedObjects:(NSArray *)wrappedObjects
+                        withParent:(id<MPTreeItem>)parent {
     // the package controller property should be the same for the parent and all the wrapped objects
     if (wrappedObjects.count > 0)
         [[wrappedObjects valueForKey:@"controller"] matchingValueForKey:@"packageController"
