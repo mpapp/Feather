@@ -125,6 +125,25 @@
     return [d copy];
 }
 
++ (NSDictionary *)decodeDictionaryFromJSONString:(NSString *)s
+{
+    NSError *error = nil;
+    NSDictionary *d = [NSJSONSerialization JSONObjectWithData:[s dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+    assert(d);
+    assert(!error);
+    return d;
+}
+
+- (NSString *)encodeAsJSON
+{
+    NSError *error = nil;
+    NSData *data = [NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingPrettyPrinted error:&error];
+    assert(data);
+    assert(!error);
+    NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    return s;
+}
+
 @end
 
 
