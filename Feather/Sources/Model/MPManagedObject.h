@@ -167,6 +167,10 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 /** Validation function for saves. All MPManagedObject revision saves (creation & update, NOT deletion) will be evaluated through this function. Default implementation returns YES. Note that there is no need to validate the presence of 'objectType' fields, required prefixing, or other universally required MPManagedObject properties here. Revisions for which this method is run are guaranteed to be non-deleted. */
 + (BOOL)validateRevision:(CBLRevision *)revision;
 
+/** Return YES if a property with the given name is required _in the properties dictionary_. 
+  * Default implementation returns NO to all properties, and at the time of writing is not used by MPManagedObject validateRevision: but is used by some subclasses. */
++ (BOOL)requiresProperty:(NSString *)property;
+
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID;
 
 /** Canonicalization removes a http://, https:// scheme, 

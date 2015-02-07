@@ -247,9 +247,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return [NSString stringWithFormat:@"%@:%@", NSStringFromClass([self class]), [[NSUUID UUID] UUIDString]];
 }
 
-+ (BOOL)validateRevision:(CBLRevision *)revision
-{
++ (BOOL)validateRevision:(CBLRevision *)revision {
     return YES;
+}
+
++ (BOOL)requiresProperty:(NSString *)property {
+    return NO;
 }
 
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID
