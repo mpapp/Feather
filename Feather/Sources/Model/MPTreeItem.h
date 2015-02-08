@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const MPTreeItemDoubleClickedNotification;
+
 /** A protocol for items in a tree hierarchy (e.g. source list items). */
 @protocol MPTreeItem < NSObject>
 @property (readwrite, copy) NSString *title;
