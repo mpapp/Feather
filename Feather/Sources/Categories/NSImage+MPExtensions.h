@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-const NSUInteger MPEMUsPerInch = 914400;
+static const NSUInteger MPEMUsPerInch = 914400;
 
 
 // EMU size is WordML terminology.
