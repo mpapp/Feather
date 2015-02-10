@@ -73,17 +73,22 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 @property (readonly, copy) NSString *deletedDocumentID;
 
+@property (readwrite) NSString *sessionID;
+
 @end
 
 @implementation MPReferencableObjectMixin
 @end
 
+
 @implementation MPManagedObject
+
 @synthesize isNewObject = _isNewObject;
 @synthesize controller = _controller;
 @synthesize embeddedObjectCache = _embeddedObjectCache;
 @synthesize deletedDocumentID = _deletedDocumentID;
-@dynamic isModerated, isRejected, isAccepted, creator, prototype;
+
+@dynamic isModerated, isRejected, isAccepted, creator, prototype, sessionID;
 
 + (void)initialize
 {
@@ -191,6 +196,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 + (BOOL)hasMainThreadIsolatedCachedProperties {
+    return NO;
+}
+
++ (BOOL)shouldTrackSessionID
+{
     return NO;
 }
 
@@ -402,6 +412,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         self.document.modelObject = self;
     
     [self updateTimestamps];
+    
+    if ([self.class shouldTrackSessionID])
+        self.sessionID = [[self.controller packageController] sessionID];
     
     __block BOOL success = NO;
     
