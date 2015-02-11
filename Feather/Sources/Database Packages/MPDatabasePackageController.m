@@ -969,8 +969,10 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
 
 - (void)netService:(NSNetService *)service didUpdateTXTRecordData:(NSData *)data
 {
+#if MP_RELEASE
     NSDictionary *info = [NSNetService dictionaryFromTXTRecordData:[service TXTRecordData]];
     MPLog(@"Service for database package %@ updated TXT record: %@", [self identifier], info);
+#endif
 }
 
 #pragma mark - Listener monitoring
