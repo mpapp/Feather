@@ -57,6 +57,8 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** A file URL to the root of the database package. */
 @property (strong, readonly) NSURL *URL;
 
+@property (readonly) NSString *sessionID;
+
 /** The database server for this database package. */
 @property (strong, readonly) CBLManager *server;
 

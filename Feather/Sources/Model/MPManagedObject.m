@@ -73,17 +73,22 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 @property (readonly, copy) NSString *deletedDocumentID;
 
+@property (readwrite) NSString *sessionID;
+
 @end
 
 @implementation MPReferencableObjectMixin
 @end
 
+
 @implementation MPManagedObject
+
 @synthesize isNewObject = _isNewObject;
 @synthesize controller = _controller;
 @synthesize embeddedObjectCache = _embeddedObjectCache;
 @synthesize deletedDocumentID = _deletedDocumentID;
-@dynamic isModerated, isRejected, isAccepted, creator, prototype;
+
+@dynamic isModerated, isRejected, isAccepted, creator, prototype, sessionID;
 
 + (void)initialize
 {
@@ -194,6 +199,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return NO;
 }
 
++ (BOOL)shouldTrackSessionID
+{
+    return NO;
+}
+
 - (void)cacheEmbeddedObjectByIdentifier:(MPEmbeddedObject *)obj
 {
     assert(obj);
@@ -247,9 +257,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return [NSString stringWithFormat:@"%@:%@", NSStringFromClass([self class]), [[NSUUID UUID] UUIDString]];
 }
 
-+ (BOOL)validateRevision:(CBLRevision *)revision
-{
++ (BOOL)validateRevision:(CBLRevision *)revision {
     return YES;
+}
+
++ (BOOL)requiresProperty:(NSString *)property {
+    return NO;
 }
 
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID
@@ -399,6 +412,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         self.document.modelObject = self;
     
     [self updateTimestamps];
+    
+    if ([self.class shouldTrackSessionID])
+        self.sessionID = [[self.controller packageController] sessionID];
     
     __block BOOL success = NO;
     

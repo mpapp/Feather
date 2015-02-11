@@ -86,6 +86,9 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 /** The last update date: the moment -save or -saveModels was issued the last time. It is later than the last a property change was made, and earlier than the exact moment at which the update was registered in the database. */
 @property (readonly, assign) NSDate *updatedAt;
 
+/** Identifier automatically set by each save of this object to the value of the current session, but only if [self.class shouldTrackSessionID] returns YES. */
+@property (readonly) NSString *sessionID;
+
 /** The MPContributor who created the object. */
 @property (readonly, strong) MPContributor *creator;
 
@@ -166,6 +169,12 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 
 /** Validation function for saves. All MPManagedObject revision saves (creation & update, NOT deletion) will be evaluated through this function. Default implementation returns YES. Note that there is no need to validate the presence of 'objectType' fields, required prefixing, or other universally required MPManagedObject properties here. Revisions for which this method is run are guaranteed to be non-deleted. */
 + (BOOL)validateRevision:(CBLRevision *)revision;
+
+/** Return YES if a property with the given name is required _in the properties dictionary_. 
+  * Default implementation returns NO to all properties, and at the time of writing is not used by MPManagedObject validateRevision: but is used by some subclasses. */
++ (BOOL)requiresProperty:(NSString *)property;
+
++ (BOOL)shouldTrackSessionID;
 
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID;
 

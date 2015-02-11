@@ -21,6 +21,8 @@
 
 #import "NSNotificationCenter+MPExtensions.h"
 
+#import <Feather/MPVirtualSection.h>
+
 #import <Feather/NSObject+MPExtensions.h>
 #import <Feather/NSArray+MPExtensions.h>
 #import <Feather/NSDictionary+MPExtensions.h>

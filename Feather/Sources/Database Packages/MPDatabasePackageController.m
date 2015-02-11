@@ -88,6 +88,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 @end
 
 @implementation MPDatabasePackageController
+
 @synthesize snapshotsDatabase = _snapshotsDatabase;
 
 - (instancetype)initWithPath:(NSString *)path
@@ -104,6 +105,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         assert(path);
         
         _path = path;
+        
+        _sessionID = [[[NSUUID UUID] UUIDString] copy];
+        MPLog(@"Database package session ID is %@", _sessionID);
         
         _delegate = delegate;
         

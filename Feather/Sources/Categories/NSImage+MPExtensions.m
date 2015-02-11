@@ -129,4 +129,35 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     return result;
 }
 
++ (NSImage *)imageForURL:(NSURL *)imageURL
+{
+    return [[NSImage alloc] initByReferencingURL:imageURL];
+}
+
+- (NSImageRep *)rep
+{
+    if (self.representations.count > 0)
+        return self.representations[0];
+    return nil;
+}
+
+- (NSUInteger)DPI
+{
+    return (72.0 * self.rep.pixelsWide) / self.size.width;
+}
+
+- (MPEMUSize)EMUSize
+{
+    MPEMUSize size = {.width=0, .height=0};
+    NSUInteger DPI = self.DPI;
+    
+    if (DPI > 0)
+    {
+        size.width = MPEMUsPerInch * self.size.width / DPI;
+        size.height = MPEMUsPerInch * self.size.height / DPI;
+    }
+    
+    return size;
+}
+
 @end

@@ -8,11 +8,25 @@
 
 #import <Cocoa/Cocoa.h>
 
+static const NSUInteger MPEMUsPerInch = 914400;
+
+
+// EMU size is WordML terminology.
+typedef struct MPEMUSize
+{
+    NSUInteger width;
+    NSUInteger height;
+} MPEMUSize;
+
 @interface NSImage (MPExtensions)
 
 - (NSImage *)roundCornersImageCornerRadius:(NSInteger)radius;
 
 @property (readonly) CGImageRef CGImage;
+
++ (NSImage *)imageForURL:(NSURL *)imageURL;
+- (NSUInteger)DPI;
+- (MPEMUSize)EMUSize;
 
 @end
 

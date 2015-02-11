@@ -25,6 +25,9 @@
 /** A method to convert an NSAppleEventDescriptor into an NSDictionary. */
 + (id)scriptingRecordWithDescriptor:(NSAppleEventDescriptor *)inDesc;
 
++ (NSDictionary *)decodeDictionaryFromJSONString:(NSString *)s;
+- (NSString *)encodeAsJSON;
+
 @end
 
 
