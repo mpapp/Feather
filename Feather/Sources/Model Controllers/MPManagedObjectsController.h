@@ -198,7 +198,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** Gets an object managed by this managed objects controller from its cache, or from database, 
   * or in case it's not part of the shared package, 
   * from the shared package controller's database from its corresponding managed objects controller if one exists. */
-- (id)objectWithIdentifier:(NSString *)identifier;
+- (id)objectWithIdentifier:(NSString *)identifier __attribute__((nonnull));
 
 /** Whether the controller relays a search for an object to the shared package controller
   * if no match was found in an identifier search. 

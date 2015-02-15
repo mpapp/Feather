@@ -236,24 +236,24 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
                  name:MPNotificationNameMultipleMasterSelection object:nil];
 }
 
-- (void)postNotificationForChangingMasterSelectionToSingleObject:(id)obj
+- (void)postNotificationForChangingMasterSelectionToSingleObject:(id)obj userInfo:(NSDictionary *)userInfo
 {
-    [self postNotificationName:MPNotificationNameSingleMasterSelection object:obj userInfo:nil];
+    [self postNotificationName:MPNotificationNameSingleMasterSelection object:obj userInfo:userInfo];
 }
 
-- (void)postNotificationForChangingDetailSelectionToSingleObject:(id)obj
+- (void)postNotificationForChangingDetailSelectionToSingleObject:(id)obj userInfo:(NSDictionary *)userInfo
 {
-    [self postNotificationName:MPNotificationNameSingleDetailSelection object:obj userInfo:nil];
+    [self postNotificationName:MPNotificationNameSingleDetailSelection object:obj userInfo:userInfo];
 }
 
-- (void)postNotificationForChangingMasterSelectionToMultipleObjects:(NSArray *)objs
+- (void)postNotificationForChangingMasterSelectionToMultipleObjects:(NSArray *)objs userInfo:(NSDictionary *)userInfo
 {
-    [self postNotificationName:MPNotificationNameMultipleMasterSelection object:objs userInfo:nil];
+    [self postNotificationName:MPNotificationNameMultipleMasterSelection object:objs userInfo:userInfo];
 }
 
-- (void)postNotificationForChangingDetailSelectionToMultipleObjects:(NSArray *)objs
+- (void)postNotificationForChangingDetailSelectionToMultipleObjects:(NSArray *)objs userInfo:(NSDictionary *)userInfo
 {
-    [self postNotificationName:MPNotificationNameMultipleDetailSelection object:objs userInfo:nil];
+    [self postNotificationName:MPNotificationNameMultipleDetailSelection object:objs userInfo:userInfo];
 }
 
 

@@ -72,10 +72,22 @@ typedef enum MPReplicationEventType {
 + (NSString *)notificationNameForPastChangeOfType:(MPChangeType)changeType forManagedObjectClass:(Class)moClass;
 
 - (void)addObjectSelectionChangeObserver:(id<MPObjectSelectionObserver>)observer;
-- (void)postNotificationForChangingMasterSelectionToSingleObject:(id)obj;
-- (void)postNotificationForChangingDetailSelectionToSingleObject:(id)obj;
-- (void)postNotificationForChangingMasterSelectionToMultipleObjects:(NSArray *)objs;
-- (void)postNotificationForChangingDetailSelectionToMultipleObjects:(NSArray *)objs;
+
+/** Notify of master selection changing to a single object. 
+  * User info dictionary can contain hints of how view should react. */
+- (void)postNotificationForChangingMasterSelectionToSingleObject:(id)obj userInfo:(NSDictionary *)userInfo;
+
+/** Notify of detail selection changing to a multiple selection.
+ * User info dictionary can contain hints of how view should react. */
+- (void)postNotificationForChangingDetailSelectionToSingleObject:(id)obj userInfo:(NSDictionary *)userInfo;
+
+/** Notify of master selection changing to a single object.
+ * User info dictionary can contain hints of how view should react. */
+- (void)postNotificationForChangingMasterSelectionToMultipleObjects:(NSArray *)objs userInfo:(NSDictionary *)userInfo;
+
+/** Notify of detail selection changing to a multiple selection.
+ * User info dictionary can contain hints of how view should react. */
+- (void)postNotificationForChangingDetailSelectionToMultipleObjects:(NSArray *)objs userInfo:(NSDictionary *)userInfo;
 
 /** Hierarchy of dictionaries of the managed object notification names by class name 
   * (1st level dictionary) and the change type (2nd level dictionary). 

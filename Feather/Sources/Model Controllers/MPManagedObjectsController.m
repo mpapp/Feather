@@ -508,10 +508,15 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (id)objectWithIdentifier:(NSString *)identifier
 {
+    NSParameterAssert(identifier);
+    NSAssert([[MPManagedObject managedObjectClassFromDocumentID:identifier] isSubclassOfClass:self.managedObjectClass],
+             @"Identifier is for an unexpected kind of object: %@ (%@)", identifier, self);
+    
     __block MPManagedObject *mo = _objectCache[identifier];
     if (mo)
     {
-        assert(mo.controller == self);
+        NSAssert(mo.controller == self, @"Object has unexpected controller: %@", mo.controller);
+        NSAssert([mo isKindOfClass:self.managedObjectClass], @"Object is of unexpected kind: %@", mo);
         return mo;
     }
     
@@ -558,6 +563,10 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
             NSParameterAssert(mo);
     });
     
+    if (mo) {
+        NSAssert(mo.controller == self, @"Object has unexpected controller: %@", mo.controller);
+        NSAssert([mo isKindOfClass:self.managedObjectClass], @"Object is of unexpected kind: %@", mo);        
+    }
     return mo;
 }
 
