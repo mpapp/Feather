@@ -971,6 +971,7 @@
 				5FDB32FF1705CB950049EBB5 /* Frameworks */,
 				5FDB33001705CB950049EBB5 /* Headers */,
 				5FDB33011705CB950049EBB5 /* Resources */,
+				5FAD6B581A92A3E20091283F /* Modify Version in Info.plist */,
 			);
 			buildRules = (
 			);
@@ -1165,6 +1166,20 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		5FAD6B581A92A3E20091283F /* Modify Version in Info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Modify Version in Info.plist";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "${SRCROOT}/Extras/set-bundle-version.sh";
+		};
 		5FDB33191705CB950049EBB5 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
