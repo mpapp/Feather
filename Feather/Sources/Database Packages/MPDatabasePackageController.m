@@ -228,7 +228,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     NSFileManager *fm = [NSFileManager defaultManager];
     
     NSURL *dbURL = [bootstrapDataURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@.cblite", dbName]];
-    NSParameterAssert([fm fileExistsAtPath:dbURL.path isDirectory:nil]);
+    NSAssert([fm fileExistsAtPath:dbURL.path isDirectory:nil], @"Expected to find %@", dbURL);
     
     NSURL *targetDBURL = [NSURL fileURLWithPath:[_server.directory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.cblite", dbName]]];
     
@@ -241,7 +241,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     }
     
     NSURL *attachmentsURL = [bootstrapDataURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@ attachments", dbName]];
-    NSParameterAssert([fm fileExistsAtPath:attachmentsURL.path isDirectory:nil]);
+    if (![fm fileExistsAtPath:attachmentsURL.path isDirectory:nil]) {
+        // no attachments to copy, we're done.
+        return YES;
+    }
     
     NSURL *targetAttachmentsURL = [NSURL fileURLWithPath:[_server.directory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@ attachments", dbName]]];
     
