@@ -91,6 +91,17 @@
                  there is a MPTestObjectsController but no MPMoreSpecificTestObjectsController.");
 }
 
+- (void)testDocumentIDAfterDeletion {
+    
+    MPFeatherTestPackageController *tpkg = [MPFeatherTestPackageController sharedPackageController];
+    MPTestObjectsController *ac = tpkg.testObjectsController;
+    MPTestObject *obj = [[MPFeatherTestE alloc] initWithNewDocumentForController:ac];
+    
+    XCTAssertTrue([obj save], @"Saving object should have succeeded: %@", obj);
+    XCTAssertTrue([obj deleteDocument], @"Deleting object should have succeeded: %@", obj);
+    XCTAssertTrue([obj documentID], @"Object should still have a documentID after deletion: %@", obj);
+}
+
 - (void)testConcreteness
 {
     MPFeatherTestPackageController *tpkg = [MPFeatherTestPackageController sharedPackageController];
