@@ -252,6 +252,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return _deletedDocumentID;
 }
 
+- (BOOL)isDeleted
+{
+    return (self.document == nil);
+}
+
 + (NSString *)idForNewDocumentInDatabase:(CBLDatabase *)db
 {
     return [NSString stringWithFormat:@"%@:%@", NSStringFromClass([self class]), [[NSUUID UUID] UUIDString]];

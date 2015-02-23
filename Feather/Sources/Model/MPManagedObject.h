@@ -149,6 +149,9 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 /** A shorthand for saving a number of model objects and on hitting an error posting an error notification to the package controller's notification center. */
 + (BOOL)saveModels:(NSArray *)models;
 
+/** Whether this managed object has been deleted. */
+@property (readonly) BOOL isDeleted;
+
 /** A shorthand for deleting a model object and on hitting an error posting an error notification to the package controller's notification center. */
 - (BOOL)deleteDocument;
 
