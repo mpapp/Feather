@@ -511,8 +511,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 - (void)document:(CBLDocument *)doc
-          didChange:(CBLDatabaseChange *)change {
+       didChange:(CBLDatabaseChange *)change {
     [super document:doc didChange:change];
+    
+    if ([change isCurrentRevision] && [[doc currentRevision] isDeletion]) {
+        _deletedDocumentID = [doc documentID];
+    }
     
     // TODO: confirm that responses to external changes are not broken by ignoring local changes here.
     if (!change.source)
