@@ -181,7 +181,7 @@
 }
 
 - (NSString *)HTMLStringCleanedFromWebKitArtefacts {
-    return [[self stringByReplacingOccurrencesOfString:@"&nbsp;" withString:@""] stringByReplacingOccurrencesOfString:@"<br>" withString:@""];
+    return [[self stringByReplacingOccurrencesOfString:@"&nbsp;" withString:@" "] stringByReplacingOccurrencesOfString:@"<br>" withString:@""];
 }
 
 - (NSString *)stringByRemovingHTMLTags {
