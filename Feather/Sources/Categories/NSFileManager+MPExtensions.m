@@ -67,10 +67,10 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
     return [self temporaryURLInApplicationCachesSubdirectoryNamed:subdirectoryName createDirectory:NO extension:pathExtension error:outError];
 }
 
-- (NSURL *) temporaryURLInApplicationCachesSubdirectoryNamed:(NSString *)subdirectoryName
-                                             createDirectory:(BOOL)createDirectory
-                                                   extension:(NSString *)pathExtension
-                                                       error:(NSError *__autoreleasing *)outError
+- (NSURL *)temporaryURLInApplicationCachesSubdirectoryNamed:(NSString *)subdirectoryName
+                                            createDirectory:(BOOL)createDirectory
+                                                  extension:(NSString *)pathExtension
+                                                      error:(NSError *__autoreleasing *)outError
 {
     NSError *error;
     NSURL *cachesRootDirectoryURL = [self URLForDirectory:NSCachesDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:&error];
@@ -170,7 +170,7 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
 }
 
 // taken from http://stackoverflow.com/questions/5836587/how-do-i-get-all-resource-paths-in-my-bundle-recursively-in-ios
-- (NSArray *)recursivePathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)directoryPath{
+- (NSArray *)recursivePathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)directoryPath {
     
     NSMutableArray *filePaths = [NSMutableArray new];
     
@@ -179,16 +179,38 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
     
     NSString *filePath;
     
-    while ((filePath = [enumerator nextObject]) != nil){
+    while ((filePath = [enumerator nextObject]) != nil) {
         
         // If we have the right type of file, add it to the list
         // Make sure to prepend the directory path
-        if([[filePath pathExtension] isEqualToString:type]){
+        if ([[filePath pathExtension] isEqualToString:type] || !type) {
             [filePaths addObject:[directoryPath stringByAppendingPathComponent:filePath]];
         }
     }
     
-    return filePaths;
+    return filePaths.copy;
+}
+
+- (BOOL)ensurePermissionMaskIncludes:(int)grantedMask inDirectory:(NSString *)directoryPath error:(NSError **)error {
+    for (NSString *path in [self recursivePathsForResourcesOfType:nil inDirectory:directoryPath]) {
+        NSDictionary *attribs = [self attributesOfItemAtPath:path error:error];
+        
+        if (!attribs) {
+            return NO;
+        }
+        
+        int permissions = [attribs[NSFilePosixPermissions] intValue];
+        permissions |= grantedMask;
+        
+        NSMutableDictionary *newAttribs = [attribs mutableCopy];
+        newAttribs[NSFilePosixPermissions] = @(permissions);
+        
+        if (![self setAttributes:newAttribs.copy ofItemAtPath:path error:error]) {
+            return NO;
+        }
+    }
+    
+    return YES;
 }
 
 @end

@@ -45,6 +45,10 @@ extern NS_ENUM(NSUInteger, MPFeatherNSFileManagerExtensionsErrorCode) {
 
 - (NSURL *)URLForApplicationSupportDirectoryNamed:(NSString *)subpath;
 
+/** Returns absolute paths to paths for resources of given type inside directory. If type is nil, all files are listed. */
 - (NSArray *)recursivePathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)directoryPath;
+
+/** Ensures that all files under the specified directory (with limitless recursion) will receive the specified permission mask (mask applied with | so including set bits are spared). */
+- (BOOL)ensurePermissionMaskIncludes:(int)grantedMask inDirectory:(NSString *)directoryPath error:(NSError **)error;
 
 @end
