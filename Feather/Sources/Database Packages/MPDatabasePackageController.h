@@ -62,6 +62,9 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** The database server for this database package. */
 @property (strong, readonly) CBLManager *server;
 
+/** All objects in the database package's databases. No particular sort order is guaranteed. */
+@property (readonly) NSArray *allObjects;
+
 @property (readonly) unsigned long long serverQueueToken;
 
 /** The base remote URL for the document package. NOTE! An abstract method. */
@@ -249,8 +252,8 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** The active draft is the draft user is presently viewing and editing. */
 @property (strong, readwrite) MPDraft *activeDraft;
 
-@property (strong, readonly) NSArray *nonEmptyRootSections;
-@property (strong, readonly) NSArray *outlinerRootSections;
+@property (strong, readonly) NSArray *nonEmptyRootSections __attribute__((deprecated));
+@property (strong, readonly) NSArray *outlinerRootSections __attribute__((deprecated));
 
 /** Returns a managed object given the identifier. */
 - (id)objectWithIdentifier:(NSString *)identifier __attribute__((nonnull));

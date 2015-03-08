@@ -131,7 +131,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         
         _managedObjectsControllers = [NSMutableSet setWithCapacity:20];
         
-        for (NSString *dbName in [[self class] databaseNames])
+        for (NSString *dbName in self.class.databaseNames)
         {
             if (![self bootstrapDatabaseWithName:dbName error:err])
                 return nil;
@@ -775,6 +775,21 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         *errorDict = errDict;
     
     return errDict.count == 0;
+}
+
+- (NSArray *)allObjects {
+    NSMutableArray *objs = [NSMutableArray new];
+    
+    for (MPManagedObjectsController *moc in [self managedObjectsControllers]) {
+        [objs addObjectsFromArray:moc.allObjects];
+    }
+    
+    for (MPDatabase *db in self.orderedDatabases) {
+        [objs addObject:[db metadata]];
+        [objs addObject:[db localMetadata]];
+    }
+    
+    return objs;
 }
 
 #pragma mark - Listener creation
