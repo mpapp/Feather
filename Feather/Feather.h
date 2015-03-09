@@ -33,3 +33,5 @@
 
 #import "MPException.h"
 #import "MPAssert.h"
+
+#import "MPJSONRepresentable.h"

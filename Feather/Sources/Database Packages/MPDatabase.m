@@ -582,7 +582,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         assert(_cachedLocalMetadata);
         
         NSError *err = nil;
-        if ([_cachedLocalMetadata save:&err])
+        if (![_cachedLocalMetadata save:&err])
         {
             NSLog(@"ERROR! Failed to save database metadata: %@", _cachedLocalMetadata);
             [[self.packageController notificationCenter] postErrorNotification:err];
@@ -767,6 +767,17 @@ typedef void (^CBLDatabaseDoAsyncHandler)();
         value = [super getValueOfProperty:property];
     });
     return value;
+}
+
+- (NSString *)JSONStringRepresentation:(NSError *__autoreleasing *)error {
+    NSData *data = [NSJSONSerialization dataWithJSONObject:[self propertiesToSave]
+                                                   options:NSJSONWritingPrettyPrinted
+                                                     error:error];
+    
+    if (!data)
+        return nil;
+    
+    return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 }
 
 #pragma mark - Scripting support

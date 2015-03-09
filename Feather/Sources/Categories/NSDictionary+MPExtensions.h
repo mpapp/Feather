@@ -26,7 +26,8 @@
 + (id)scriptingRecordWithDescriptor:(NSAppleEventDescriptor *)inDesc;
 
 + (NSDictionary *)decodeDictionaryFromJSONString:(NSString *)s;
-- (NSString *)encodeAsJSON;
+
+- (NSString *)JSONStringRepresentation:(NSError **)err;
 
 @end
 

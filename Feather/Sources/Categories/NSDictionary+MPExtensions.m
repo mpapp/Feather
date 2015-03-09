@@ -11,6 +11,8 @@
 #import "NSSet+MPExtensions.h"
 #import "NSString+MPExtensions.h"
 
+#import "MPJSONRepresentable.h"
+
 #import <Feather/MPScriptingDefinitionManager.h>
 
 @implementation NSDictionary (Feather)
@@ -142,6 +144,43 @@
     assert(!error);
     NSString *s = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     return s;
+}
+
+- (NSString *)JSONStringRepresentation:(NSError **)err
+{
+    NSMutableDictionary *dict = [NSMutableDictionary new];
+    
+    for (id k in self) {
+        id v = self[k];
+        
+        BOOL requiresJSONStringRep
+        = [v conformsToProtocol:@protocol(MPJSONRepresentable)]
+        || [v isKindOfClass:NSArray.class]
+        || [v isKindOfClass:NSDictionary.class];
+        
+        if (requiresJSONStringRep) {
+            id rep = [v JSONStringRepresentation:err];
+            
+            // TODO: don't de/reserialise just to get objects into a JSON encodable state.
+            rep = [NSJSONSerialization JSONObjectWithData:[rep dataUsingEncoding:NSUTF8StringEncoding]
+                                                  options:0 error:err];
+            
+            if (!rep)
+                return nil;
+
+            dict[k] = rep;
+        }
+        else {
+            dict[k] = v; // other values assumed to be NSJSONSerialization compatible.
+        }
+    };
+    
+    NSData *data = [NSJSONSerialization dataWithJSONObject:dict options:NSJSONWritingPrettyPrinted error:err];
+    if (!data)
+        return nil;
+    
+    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    return str;
 }
 
 @end

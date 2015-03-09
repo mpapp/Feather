@@ -785,8 +785,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     }
     
     for (MPDatabase *db in self.orderedDatabases) {
-        [objs addObject:[db metadata]];
-        [objs addObject:[db localMetadata]];
+        [objs addObject:db.metadata];
     }
     
     return objs;
@@ -1159,6 +1158,8 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
     
     if (![self saveDictionaryRepresentation:error])
         return NO;
+    
+    // TODO: need a WAL checkpoint here?
     
     for (MPDatabase *db in self.databases)
         dispatch_suspend(db.database.manager.dispatchQueue);

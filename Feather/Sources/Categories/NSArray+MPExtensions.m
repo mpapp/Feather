@@ -7,6 +7,7 @@
 //
 
 #import "NSArray+MPExtensions.h"
+#import "MPJSONRepresentable.h"
 
 @implementation NSArray (Feather)
 
@@ -123,11 +124,21 @@
 - (NSString *)JSONStringRepresentation:(NSError **)err
 {
     NSArray *objs = [self mapObjectsUsingBlock:^id(id o, NSUInteger idx) {
-        id rep = [o JSONStringRepresentation:err];
+        BOOL requiresJSONStringRep
+            = [o conformsToProtocol:@protocol(MPJSONRepresentable)]
+                || [o isKindOfClass:NSArray.class]
+                || [o isKindOfClass:NSDictionary.class];
         
-        // TODO: don't de/reserialise just to get objects into a JSON encodable state.
-        rep = [NSJSONSerialization JSONObjectWithData:[rep dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
-        return rep ? rep : [NSNull null];
+        if (requiresJSONStringRep) {
+            id rep = requiresJSONStringRep ? [o JSONStringRepresentation:err] : o;
+            
+            // TODO: don't de/reserialise just to get objects into a JSON encodable state.
+            rep = [NSJSONSerialization JSONObjectWithData:[rep dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+            return rep ? rep : [NSNull null];
+        }
+        else {
+            return o;
+        }
     }];
     
     NSData *data = [NSJSONSerialization dataWithJSONObject:objs options:NSJSONWritingPrettyPrinted error:err];

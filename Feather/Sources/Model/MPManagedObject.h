@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import <Foundation/Foundation.h>
 #import <CouchbaseLite/CouchbaseLite.h>
+#import <Feather/MPJSONRepresentable.h>
 
 #import "MPCacheable.h"
 
@@ -72,7 +73,7 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
  * (the prefix is there to act as an annotation to denote the type of the contents in the collection).
  */
 @interface MPManagedObject : CBLModel
-    <NSPasteboardWriting, NSPasteboardReading, MPCacheable, MPEmbeddingObject>
+    <NSPasteboardWriting, NSPasteboardReading, MPCacheable, MPEmbeddingObject, MPJSONRepresentable>
 
 /** The managed objects controller which manages (and caches) the object. */
 @property (weak, readonly) MPManagedObjectsController *controller;

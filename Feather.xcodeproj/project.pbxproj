@@ -31,6 +31,7 @@
 		5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D38091725D8A600D19D7C /* MPCategorizableMixin.m */; };
 		5F3D380E1725D8E000D19D7C /* MPBundlableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D380C1725D8E000D19D7C /* MPBundlableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3D380F1725D8E000D19D7C /* MPBundlableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D380D1725D8E000D19D7C /* MPBundlableMixin.m */; };
+		5F3D8C0C1AAD07C900D0D4A8 /* MPJSONRepresentable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6414BC19A2A876007E5245 /* CBLDocument+MPScriptingSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6414BA19A2A876007E5245 /* CBLDocument+MPScriptingSupport.h */; };
 		5F6414BD19A2A876007E5245 /* CBLDocument+MPScriptingSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6414BB19A2A876007E5245 /* CBLDocument+MPScriptingSupport.m */; };
 		5F6857A01727C38900FE06B0 /* MPVirtualSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579D1727C38900FE06B0 /* MPVirtualSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -309,6 +310,7 @@
 		5F3D38091725D8A600D19D7C /* MPCategorizableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCategorizableMixin.m; path = Sources/Model/MPCategorizableMixin.m; sourceTree = "<group>"; };
 		5F3D380C1725D8E000D19D7C /* MPBundlableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPBundlableMixin.h; path = Sources/Model/MPBundlableMixin.h; sourceTree = "<group>"; };
 		5F3D380D1725D8E000D19D7C /* MPBundlableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPBundlableMixin.m; path = Sources/Model/MPBundlableMixin.m; sourceTree = "<group>"; };
+		5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPJSONRepresentable.h; path = Sources/Model/MPJSONRepresentable.h; sourceTree = "<group>"; };
 		5F6414BA19A2A876007E5245 /* CBLDocument+MPScriptingSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CBLDocument+MPScriptingSupport.h"; path = "Feather/Sources/Scripting/CBLDocument+MPScriptingSupport.h"; sourceTree = "<group>"; };
 		5F6414BB19A2A876007E5245 /* CBLDocument+MPScriptingSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CBLDocument+MPScriptingSupport.m"; path = "Feather/Sources/Scripting/CBLDocument+MPScriptingSupport.m"; sourceTree = "<group>"; };
 		5F68579D1727C38900FE06B0 /* MPVirtualSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPVirtualSection.h; path = Sources/Model/MPVirtualSection.h; sourceTree = "<group>"; };
@@ -786,6 +788,7 @@
 		5FDB3A8017079B220049EBB5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */,
 				5FDB3A3A1707992B0049EBB5 /* MPManagedObject.h */,
 				5FDB3A3B1707992B0049EBB5 /* MPManagedObject.m */,
 				5F293B9E170CAECC001C2111 /* MPEmbeddedObject.h */,
@@ -890,6 +893,7 @@
 				5FDB3831170702F40049EBB5 /* NSDictionary+MPExtensions.h in Headers */,
 				5FDB3835170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.h in Headers */,
 				5FDB3839170703850049EBB5 /* NSFileManager+MPExtensions.h in Headers */,
+				5F3D8C0C1AAD07C900D0D4A8 /* MPJSONRepresentable.h in Headers */,
 				5FDB383D1707038F0049EBB5 /* NSData+MPExtensions.h in Headers */,
 				5FDB3841170703EC0049EBB5 /* NSNotificationCenter+MPExtensions.h in Headers */,
 				5FDB3A3F1707992B0049EBB5 /* MPManagedObject.h in Headers */,

@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <CouchbaseLite/CouchbaseLite.h>
 
+#import <Feather/MPJSONRepresentable.h>
+
 extern NSString * const MPDatabaseErrorDomain;
 
 typedef enum MPDatabaseErrorCode
@@ -188,7 +190,7 @@ typedef enum MPDatabaseErrorCode
  * A metadata document: a maximum of one metadata document is stored per database (think of it like NSUserDefaults stored in a CouchDB-like database).
  * MPMetadata inherits directly from CouchModel and not from MPManagedObject to avoid a requirement to have a managed objects controller for it, which would would a) be unnecessary and b) would introduce a MOC <=> MPDatabase retain cycle.
  */
-@interface MPMetadata : CBLModel
+@interface MPMetadata : CBLModel <MPJSONRepresentable>
 
 /** Saves and posts an error notification on errors to the object's package controller's notification center. */
 - (BOOL)save;
