@@ -776,10 +776,13 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                 }
             }
             else {
-                assert(modelObj.document == row.document);
+                NSAssert(modelObj.document == row.document,
+                         @"Unexpected row.document: %@ != %@ (%@ ; %@)",
+                         modelObj.document, row.document,
+                         modelObj.propertiesToSave, row.document.properties);
             }
 
-            assert([modelObj isKindOfClass:[MPManagedObject class]]);
+            NSAssert([modelObj isKindOfClass:[MPManagedObject class]], @"Model object is of unexpected class: %@", modelObj);
 
             [entries addObject:modelObj];
         });
@@ -1416,7 +1419,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     mp_dispatch_sync(self.database.manager.dispatchQueue, [self.database.packageController serverQueueToken], ^{
         objectType = self.properties[@"objectType"];
     });
-    assert(objectType);
+    NSAssert(objectType, @"Unexpected nil objectType: %@ (%@)", self.properties, self.documentID);
     return NSClassFromString(objectType);
 }
 
