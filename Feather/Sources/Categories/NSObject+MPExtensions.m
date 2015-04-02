@@ -24,6 +24,13 @@
 
 + (NSArray *)subclasses
 {
+    @synchronized (self) {
+        return [self _subclasses];
+    }
+}
+
++ (NSArray *)_subclasses
+{
     int numClasses = objc_getClassList(NULL, 0);
     Class *classes = NULL;
     
