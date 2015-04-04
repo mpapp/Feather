@@ -770,9 +770,13 @@ typedef void (^CBLDatabaseDoAsyncHandler)();
 }
 
 - (NSString *)JSONStringRepresentation:(NSError *__autoreleasing *)error {
-    NSData *data = [NSJSONSerialization dataWithJSONObject:[self propertiesToSave]
-                                                   options:NSJSONWritingPrettyPrinted
-                                                     error:error];
+    __block NSData *data = nil;
+    
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [[self.database packageController] serverQueueToken], ^{
+        data = [NSJSONSerialization dataWithJSONObject:self.propertiesToSave
+                                               options:NSJSONWritingPrettyPrinted
+                                                 error:error];
+    });
     
     if (!data)
         return nil;
