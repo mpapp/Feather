@@ -35,12 +35,11 @@
     Class *classes = NULL;
     
     size_t classPointerSize = sizeof(Class);
-    classes = (Class *)malloc(classPointerSize * numClasses);
+    classes = (Class *)malloc(classPointerSize * (numClasses + 1));
     numClasses = objc_getClassList(classes, numClasses);
     
     NSMutableArray *result = [NSMutableArray array];
-    for (NSInteger i = 0; i < numClasses; i++)
-    {
+    for (NSInteger i = 0; i < numClasses; i++) {
         Class superClass = classes[i];
         NSString *superClassName = NSStringFromClass(superClass);
         
