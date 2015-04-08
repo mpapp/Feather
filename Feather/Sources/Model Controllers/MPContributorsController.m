@@ -51,7 +51,9 @@ NSString * const MPContributorRoleTranslator = @"translator";
     NSString *allObjsViewName = [self allObjectsViewName];
     
     CBLView *view = [self.db.database viewNamed:allObjsViewName];
-    [view setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
+    [view setMapBlock:self.allObjectsBlock version:@"1.1"];
+    
+    [[self.db.database viewNamed:@"contributorsByRole"] setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
      {
          if (![self managesDocumentWithDictionary:doc])
              return;
@@ -67,20 +69,8 @@ NSString * const MPContributorRoleTranslator = @"translator";
      } version:@"1.1"];
 }
 
-- (NSArray *)contributorsInRole:(NSString *)role
-{
-    CBLQuery *query = [[self.db.database viewNamed:@"contributorsByRole"] createQuery];
-    query.prefetch = YES;
-    query.key = role;
-    
-    NSError *err = nil;
-    CBLQueryEnumerator *qenum = [query run:&err];
-    if (!qenum)
-    {
-        [[self.packageController notificationCenter] postErrorNotification:err];
-        return nil;
-    }
-    return [self managedObjectsForQueryEnumerator:qenum];
+- (NSArray *)contributorsInRole:(NSString *)role {
+    return [self objectsMatchingQueriedView:@"contributorsByRole" keys:@[role]];
 }
 
 - (NSArray *)allContributors
