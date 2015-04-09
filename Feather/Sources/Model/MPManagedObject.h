@@ -290,3 +290,12 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 #endif
 
 @end
+
+
+#pragma mark -
+
+/** A proxy object which calls -save every time setValue:forKey: is called. */
+@interface MPAutosavingManagedObjectProxy : NSProxy
+@property (readonly) MPManagedObject *managedObject;
+- (instancetype)initWithObject:(MPManagedObject *)o;
+@end

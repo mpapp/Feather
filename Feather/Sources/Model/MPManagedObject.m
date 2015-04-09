@@ -1743,3 +1743,29 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 @end
+
+#pragma mark - MPAutosavingManagedObject
+
+@implementation MPAutosavingManagedObjectProxy
+
+- (instancetype)initWithObject:(MPManagedObject *)o {
+    NSParameterAssert(o);
+    _managedObject = o;
+    return self;
+}
+
+- (void)setValue:(id)val forKey:(id)key {
+    [_managedObject setValue:val forKey:key];
+    [_managedObject save];
+}
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
+    return [(id)self.managedObject methodSignatureForSelector:selector];
+}
+
+- (void)forwardInvocation:(NSInvocation *)invocation {
+    NSParameterAssert(self.managedObject);
+    [invocation invokeWithTarget:self.managedObject];
+}
+
+@end
