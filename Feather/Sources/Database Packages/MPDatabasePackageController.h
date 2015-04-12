@@ -159,6 +159,10 @@ typedef enum MPDatabasePackageControllerErrorCode
  **/
 - (void)pullFromRemoteWithErrorDictionary:(NSDictionary **)errorDict;
 
+/** Pulls from all the databases of the package at the specified file URL. 
+  * Returns NO and an error if pulling failed to _start_ (errors may happen during the pull too). */
+- (BOOL)pullFromPackageFileURL:(NSURL *)url error:(NSError **)error;
+
 /** Pull and push asynchronously to a remote database package.
    * @param errorDict A dictionary of errors for *starting* replications (i.e. there can be errors during the asynchronous replication that are not captured here), keys being database names. */
 - (BOOL)syncWithRemote:(NSDictionary **)errorDict;
@@ -297,5 +301,22 @@ typedef enum MPDatabasePackageControllerErrorCode
 
 /** JSON encodable dictionary representation of all objects in the database package. */
 @property (readonly) NSDictionary *dictionaryRepresentation;
+
+@end
+
+#pragma mark -
+
+typedef NSURL *(^MPDatabasePackageControllerRootURLHandler)();
+typedef void (^MPDatabasePackageControllerUpdateChangeCountHandler)(NSDocumentChangeType changeType);
+
+@interface MPDatabasePackageControllerBlockBasedDelegate : NSObject <MPDatabasePackageControllerDelegate>
+
+- (instancetype)initWithPackageController:(MPDatabasePackageController *)pkgc
+                           rootURLHandler:(MPDatabasePackageControllerRootURLHandler)handler
+                        updateChangeCountHandler:(MPDatabasePackageControllerUpdateChangeCountHandler)changeType;
+
+@property (readwrite, weak) MPDatabasePackageController *packageController;
+@property (readonly) MPDatabasePackageControllerRootURLHandler rootURLHandler;
+@property (readonly)MPDatabasePackageControllerUpdateChangeCountHandler updateChangeCountHandler;
 
 @end

@@ -13,6 +13,7 @@
 
 #import <Feather/NSBundle+MPExtensions.h>
 #import <Feather/NSNotificationCenter+ErrorNotification.h>
+#import <Feather/NSFileManager+MPExtensions.h>
 
 #import "MPContributor.h"
 #import "MPContributorsController.h"
@@ -752,6 +753,66 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         *errorDict = errDict;
 }
 
+- (BOOL)pullFromPackageFileURL:(NSURL *)versionURL error:(NSError *__autoreleasing *)err {
+    
+    MPDatabasePackageControllerBlockBasedDelegate *blockDelegate
+    = [[MPDatabasePackageControllerBlockBasedDelegate alloc] initWithPackageController:nil
+                                                                        rootURLHandler:
+       ^NSURL *
+       {
+           return versionURL;
+       } updateChangeCountHandler:
+       ^(NSDocumentChangeType changeType)
+       {
+           NSLog(@"Change type: %lu", changeType);
+       }];
+    
+    
+    NSParameterAssert(![NSThread isMainThread]);
+    
+    __block MPDatabasePackageController *pkgc = nil;
+    
+    NSString *tempDirName = [NSString stringWithFormat:@"sync-%@-%@",
+                             versionURL.path.lastPathComponent.stringByDeletingPathExtension,
+                             NSUUID.UUID.UUIDString];
+    
+    NSURL *url = [[NSFileManager.defaultManager temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:tempDirName error:err] URLByAppendingPathComponent:[versionURL lastPathComponent]];
+    
+    if (![NSFileManager.defaultManager createDirectoryAtURL:[url URLByDeletingLastPathComponent]
+                                withIntermediateDirectories:YES attributes:nil error:err]) {
+        NSLog(@"ERROR: Failed to create directory for temporary copy of %@ for pull replication.", versionURL);
+        return NO;
+    }
+    
+    if (![NSFileManager.defaultManager copyItemAtURL:versionURL toURL:url error:err]) {
+        NSLog(@"ERROR: Failed to take a temporary copy of %@ for pull replication.", versionURL);
+        return NO;
+    }
+    
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        NSError *err = nil;
+        pkgc = [[self.class alloc] initWithPath:url.path readOnly:NO
+                                                           delegate:blockDelegate error:&err];
+        NSAssert(!err, @"Unexpected error when attempting to open database at path '%@'", versionURL.path);
+    });
+    blockDelegate.packageController = pkgc;
+    
+    for (MPDatabase *db in pkgc.orderedDatabases) {
+        MPDatabase *ownDB = [self databaseWithName:db.name];
+        NSAssert(ownDB, @"Expecting to find database with name '%@'", db.name);
+        
+        NSError *startError = nil;
+        CBLReplication *replication = nil;
+        [ownDB pullFromDatabaseAtPath:[db.server.directory stringByAppendingPathComponent:db.name]
+                          replication:&replication
+                                error:&startError];
+        
+        // TODO: Add pull observer for each database, all of which when complete should sets the block based database package controller delegate to nil.
+    }
+    
+    return YES;
+}
+
 - (BOOL)syncWithRemote:(NSDictionary **)errorDict
 {
     NSSet *databases = [self databases];
@@ -1319,5 +1380,33 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
     [moc didChangeDocument:document forObject:(id)document.modelObject source:source];
 }
 
+
+@end
+
+#pragma mark -
+
+@implementation MPDatabasePackageControllerBlockBasedDelegate
+
+- (instancetype)initWithPackageController:(MPDatabasePackageController *)pkgc
+                           rootURLHandler:(__autoreleasing MPDatabasePackageControllerRootURLHandler)rootURL
+                 updateChangeCountHandler:(__autoreleasing MPDatabasePackageControllerUpdateChangeCountHandler)changeType {
+    self = [super init];
+    
+    if (self) {
+        _packageController = pkgc;
+        _rootURLHandler = rootURL;
+        _updateChangeCountHandler = changeType;
+    }
+    
+    return self;
+}
+
+- (NSURL *)packageRootURL {
+    return _rootURLHandler();
+}
+
+- (void)updateChangeCount:(NSDocumentChangeType)changeType {
+    _updateChangeCountHandler(changeType);
+}
 
 @end
