@@ -1159,8 +1159,6 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
     if (![self saveDictionaryRepresentation:error])
         return NO;
     
-    // TODO: need a WAL checkpoint here?
-    
     for (MPDatabase *db in self.databases)
         dispatch_suspend(db.database.manager.dispatchQueue);
     
