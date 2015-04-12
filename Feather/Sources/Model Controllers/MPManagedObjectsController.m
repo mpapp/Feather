@@ -27,7 +27,6 @@
 
 #import "MPShoeboxPackageController.h"
 
-#import "JSONKit.h"
 #import "RegexKitLite.h"
 #import <CouchbaseLite/CouchbaseLite.h>
 
@@ -632,8 +631,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (NSArray *)objectsFromArrayJSONData:(NSData *)objData error:(NSError *__autoreleasing *)err
 {
-    JSONDecoder *decoder = [JSONDecoder decoderWithParseOptions:JKParseOptionNone];
-    NSArray *objs = [decoder mutableObjectWithData:objData error:err];
+    NSArray *objs = [NSJSONSerialization JSONObjectWithData:objData options:0 error:err];
     if (!objs)
         return nil;
     

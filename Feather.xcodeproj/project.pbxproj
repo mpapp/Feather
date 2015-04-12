@@ -91,8 +91,6 @@
 		5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33D71705D1380049EBB5 /* libicucore.dylib */; };
 		5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34361705D90A0049EBB5 /* Mixin.h */; };
 		5FDB34391705D90A0049EBB5 /* Mixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34371705D90A0049EBB5 /* Mixin.m */; };
-		5FDB34541705DB570049EBB5 /* JSONKit.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34521705DB570049EBB5 /* JSONKit.h */; };
-		5FDB34551705DB570049EBB5 /* JSONKit.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34531705DB570049EBB5 /* JSONKit.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc -Wno-deprecated-objc-pointer-introspection"; }; };
 		5FDB3819170702470049EBB5 /* NSError+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3817170702470049EBB5 /* NSError+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB381A170702470049EBB5 /* NSError+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3818170702470049EBB5 /* NSError+MPExtensions.m */; };
 		5FDB381D170702650049EBB5 /* NSString+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB381B170702650049EBB5 /* NSString+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -383,8 +381,6 @@
 		5FDB33D71705D1380049EBB5 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		5FDB34361705D90A0049EBB5 /* Mixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mixin.h; path = External/ObjectiveMixin/ObjectiveMixin/Mixin.h; sourceTree = SOURCE_ROOT; };
 		5FDB34371705D90A0049EBB5 /* Mixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Mixin.m; path = External/ObjectiveMixin/ObjectiveMixin/Mixin.m; sourceTree = SOURCE_ROOT; };
-		5FDB34521705DB570049EBB5 /* JSONKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JSONKit.h; path = External/JSONKit/JSONKit.h; sourceTree = SOURCE_ROOT; };
-		5FDB34531705DB570049EBB5 /* JSONKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JSONKit.m; path = External/JSONKit/JSONKit.m; sourceTree = SOURCE_ROOT; };
 		5FDB3817170702470049EBB5 /* NSError+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSError+MPExtensions.h"; path = "Sources/Categories/NSError+MPExtensions.h"; sourceTree = "<group>"; };
 		5FDB3818170702470049EBB5 /* NSError+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSError+MPExtensions.m"; path = "Sources/Categories/NSError+MPExtensions.m"; sourceTree = "<group>"; };
 		5FDB381B170702650049EBB5 /* NSString+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+MPExtensions.h"; path = "Sources/Categories/NSString+MPExtensions.h"; sourceTree = "<group>"; };
@@ -688,7 +684,6 @@
 				5FADC6D218FADB11006F4119 /* google-diff-match-patch */,
 				5F293BF2170DFD3A001C2111 /* UICKeyChainStore */,
 				5FDB3A02170793130049EBB5 /* NSData+Base64 */,
-				5FDB35CE1705FCFD0049EBB5 /* JSONKit */,
 				5FDB35CD1705FCF30049EBB5 /* RegexKitLite */,
 				5FDB35CC1705FCEA0049EBB5 /* ObjectiveMixin */,
 			);
@@ -765,15 +760,6 @@
 				5FDB33D31705D0D90049EBB5 /* RegexKitLite.m */,
 			);
 			name = RegexKitLite;
-			sourceTree = "<group>";
-		};
-		5FDB35CE1705FCFD0049EBB5 /* JSONKit */ = {
-			isa = PBXGroup;
-			children = (
-				5FDB34521705DB570049EBB5 /* JSONKit.h */,
-				5FDB34531705DB570049EBB5 /* JSONKit.m */,
-			);
-			name = JSONKit;
 			sourceTree = "<group>";
 		};
 		5FDB3A02170793130049EBB5 /* NSData+Base64 */ = {
@@ -921,7 +907,6 @@
 				5FDB1F4B18F8C84800B3290D /* NSAttributedString+MPExtensions.h in Headers */,
 				5FDB33D41705D0DA0049EBB5 /* RegexKitLite.h in Headers */,
 				5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */,
-				5FDB34541705DB570049EBB5 /* JSONKit.h in Headers */,
 				5FDB3A05170793550049EBB5 /* NSData+Base64.h in Headers */,
 				5FDB3AA81707A36D0049EBB5 /* Feather.h in Headers */,
 				D9FE2FFD19D6F0A000CD224D /* MPAssert.h in Headers */,
@@ -1209,7 +1194,6 @@
 				5FDB33D51705D0DA0049EBB5 /* RegexKitLite.m in Sources */,
 				5FDB34391705D90A0049EBB5 /* Mixin.m in Sources */,
 				5F3766011A1AA2850068DA39 /* ABRecord+MPExtensions.m in Sources */,
-				5FDB34551705DB570049EBB5 /* JSONKit.m in Sources */,
 				5FDB381A170702470049EBB5 /* NSError+MPExtensions.m in Sources */,
 				5FADC6EF18FADB33006F4119 /* DiffMatchPatch.m in Sources */,
 				5FDB381E170702650049EBB5 /* NSString+MPExtensions.m in Sources */,

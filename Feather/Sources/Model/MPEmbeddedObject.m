@@ -7,7 +7,6 @@
 //
 
 #import "MPEmbeddedObject.h"
-#import "JSONKit.h"
 #import "MPException.h"
 #import "MPManagedObject.h"
 #import "MPManagedObject+Protected.h"
@@ -67,7 +66,15 @@
                    embeddingObject:(id<MPEmbeddingObject>)embeddingObject
                       embeddingKey:(NSString *)key
 {
-    NSMutableDictionary *propertiesDict = [jsonString objectFromJSONString];
+    NSError *err = nil;
+    NSDictionary *propertiesDict = [NSJSONSerialization JSONObjectWithData:
+                                    [jsonString dataUsingEncoding:NSUTF8StringEncoding]
+                                                                   options:0 error:&err];
+    if (!propertiesDict) {
+        NSLog(@"ERROR! Failed to parse embedded object from string '%@' for object %@ key %@: %@",
+              jsonString, embeddingObject, key, err);
+    }
+    
     return [self initWithDictionary:propertiesDict embeddingObject:embeddingObject embeddingKey:key];
 }
 
@@ -156,7 +163,15 @@
         return nil;
     
     Class cls = nil;
-    NSDictionary *dictionary = [string objectFromJSONString];
+
+    NSError *err = nil;
+    NSDictionary *dictionary = [NSJSONSerialization JSONObjectWithData:[string dataUsingEncoding:NSUTF8StringEncoding]
+                                                               options:0 error:&err];
+    if (!dictionary) {
+        NSLog(@"Failed to parse embedded object of class %@ from string %@ for object %@ key %@: %@",
+              self.class, string, embeddingObject, key, err);
+        return nil;
+    }
 
     if (self == [MPEmbeddedObject class])
     {
@@ -501,15 +516,14 @@
     assert([rawValue isKindOfClass:[NSArray class]]);
     
     NSMutableArray *embeddedObjs = [NSMutableArray arrayWithCapacity:rawValue.count];
-    for (id rawObj in rawValue)
-    {
-        if (![rawObj isKindOfClass:[NSString class]])
-        {
+    for (id rawObj in rawValue) {
+        if (![rawObj isKindOfClass:[NSString class]]) {
             MPLog(@"Embedded object array typed valued property %@ of %@ contains object other than string: %@", property, self, rawObj);
             return nil;
         }
         
-        NSDictionary *dict = [rawObj objectFromJSONString];
+        NSError *err = nil;
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:[rawObj dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&err];
         NSString *objType = dict[@"objectType"];
         assert(objType);
         Class cls = NSClassFromString(objType);
@@ -552,7 +566,15 @@
             return nil;
         }
         
-        NSDictionary *dict = [rawObj objectFromJSONString];
+        NSError *err = nil;
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:[rawObj dataUsingEncoding:NSUTF8StringEncoding]
+                                                                     options:0 error:&err];
+        if (!dict) {
+            NSLog(@"ERROR! Failed to parse value for property %@ of object %@: %@",
+                  property, self, err);
+            return nil;
+        }
+
         NSString *objType = dict[@"objectType"];
         assert(objType);
         Class cls = NSClassFromString(objType);
