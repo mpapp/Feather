@@ -1151,6 +1151,17 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
 
 #pragma mark - Dictionary representations
 
+- (BOOL)checkpointDatabases:(NSError **)err
+{
+    for (MPDatabase *db in self.databases) {
+        BOOL success = [db.database checkpoint:err];
+        
+        if (!success)
+            return NO;
+    }
+    return YES;
+}
+
 - (BOOL)saveToURL:(NSURL *)URL error:(NSError *__autoreleasing *)error {
     NSFileManager *fm = [NSFileManager defaultManager];
     if (![self saveManifestDictionary:error])
@@ -1159,7 +1170,8 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
     if (![self saveDictionaryRepresentation:error])
         return NO;
     
-    // TODO: need a WAL checkpoint here?
+    if (![self checkpointDatabases:error])
+        return NO;
     
     for (MPDatabase *db in self.databases)
         dispatch_suspend(db.database.manager.dispatchQueue);
