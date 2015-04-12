@@ -258,6 +258,9 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** Returns a managed object given the identifier. */
 - (id)objectWithIdentifier:(NSString *)identifier __attribute__((nonnull));
 
+/** WAL Checkpoints the document databases. */
+- (BOOL)checkpointDatabases:(NSError **)err;
+
 /** Root section class names ordered in the priority order needed. */
 + (NSArray *)orderedRootSectionClassNames;
 
