@@ -28,6 +28,9 @@
   * Joint authorship priorities are legal (for instance joint 1st authorship). */
 @property (readonly) NSInteger priority;
 
+/** Description of the contributor's contributions. */
+@property (readwrite) NSString *contribution;
+
 - (NSComparisonResult)compare:(MPContributor *)contributor;
 
 #ifndef MPAPP

@@ -12,7 +12,7 @@
 #import <CouchbaseLite/CouchbaseLite.h>
 
 @implementation MPContributor
-@dynamic category, role, isMe;
+@dynamic category, role, isMe, contribution;
 @dynamic isCorresponding;
 
 // FIXME: Make abstract method in an abstract base class.
@@ -70,5 +70,9 @@
 
 #endif
 
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"[%@ (%@ rev:%@)]", self.fullName, self.documentID, self.document.currentRevisionID];
+}
 
 @end
