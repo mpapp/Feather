@@ -145,18 +145,15 @@ NSString * const MPContributorRoleTranslator = @"translator";
     
     for (NSInteger i = contributors.count - 1; i >= 0; i--) {
         MPContributor *contributor = contributors[i];
-        NSUInteger oldIndex = [newUniverse indexOfObject:contributors];
+        NSUInteger oldIndex = [newUniverse indexOfObject:contributor];
         NSParameterAssert(oldIndex != NSNotFound);
         NSParameterAssert(oldIndex != index);
         
         [newUniverse removeObject:contributor];
         [newUniverse insertObject:contributor atIndex:index];
         
-        handler(oldIndex, index);
+        handler(contributor, oldIndex, index);
     }
-    
-    NSParameterAssert([self refreshPrioritiesForContributors:contributors
-                                         changedContributors:nil] > 0);
 }
 
 #pragma mark -
