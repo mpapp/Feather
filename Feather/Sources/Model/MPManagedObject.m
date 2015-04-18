@@ -1135,7 +1135,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 {
     // Only these two types should be called directly on MPManagedObject instances (ObjectID array type is for a collection of objects)
     NSParameterAssert([type isEqual:MPPasteboardTypeManagedObjectFull]
-                   || [type isEqual:MPPasteboardTypeManagedObjectID]);
+                   || [type isEqual:MPPasteboardTypeManagedObjectID]
+                   || [type isEqual:MPPasteboardTypeManagedObjectIDArray]);
     
     NSString *errorStr = nil;
     NSData *dataRep = nil;
@@ -1154,6 +1155,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         dataRep = [NSPropertyListSerialization dataFromPropertyList:self.referableDictionaryRepresentation
                                                              format:NSPropertyListXMLFormat_v1_0
                                                    errorDescription:&errorStr];
+    }
+    else if ([type isEqual:MPPasteboardTypeManagedObjectIDArray])
+    {
+        dataRep = [NSPropertyListSerialization dataFromPropertyList:@[self.referableDictionaryRepresentation]
+                                                             format:NSPropertyListXMLFormat_v1_0 errorDescription:&errorStr];
     }
     
     if (!dataRep && errorStr)
@@ -1179,24 +1185,27 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 + (NSArray *)readableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
     return @[ MPPasteboardTypeManagedObjectFull,
-              MPPasteboardTypeManagedObjectID ];
+              MPPasteboardTypeManagedObjectID,
+              MPPasteboardTypeManagedObjectIDArray ];
 }
 
 + (NSPasteboardReadingOptions)readingOptionsForType:(NSString *)type pasteboard:(NSPasteboard *)pasteboard
 {
     NSParameterAssert([type isEqualToString:MPPasteboardTypeManagedObjectFull]
-                   || [type isEqualToString:MPPasteboardTypeManagedObjectID]);
+                   || [type isEqualToString:MPPasteboardTypeManagedObjectID]
+                   || [type isEqualToString:MPPasteboardTypeManagedObjectIDArray]);
     return NSPasteboardReadingAsPropertyList;
 }
 
-- (id)initWithPasteboardPropertyList:(id)propertyList ofType:(NSString *)type
-{
+- (id)initWithPasteboardPropertyList:(id)propertyList ofType:(NSString *)type {
     NSParameterAssert([type isEqualToString:MPPasteboardTypeManagedObjectFull]
-                   || [type isEqualToString:MPPasteboardTypeManagedObjectID]);
+                   || [type isEqualToString:MPPasteboardTypeManagedObjectID]
+                   || [type isEqualToString:MPPasteboardTypeManagedObjectIDArray]);
 
     id obj = [self initWithPasteboardObjectIDPropertyList:propertyList ofType:MPPasteboardTypeManagedObjectID];
-    if ([type isEqual:MPPasteboardTypeManagedObjectFull] && obj)
-            [obj setValuesForPropertiesWithDictionary:propertyList];
+    if ([type isEqual:MPPasteboardTypeManagedObjectFull] && obj) {
+        [obj setValuesForPropertiesWithDictionary:propertyList];
+    }
     
     return obj;
 }

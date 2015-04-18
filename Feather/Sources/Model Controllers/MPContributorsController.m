@@ -12,9 +12,11 @@
 
 #import "MPDatabase.h"
 
+#import "NSString+MPExtensions.h"
 #import "NSArray+MPExtensions.h"
 #import "NSBundle+MPExtensions.h"
 #import "NSNotificationCenter+ErrorNotification.h"
+#import <MPFoundation/MPContributor+Manuscripts.h>
 
 #import <CouchbaseLite/CouchbaseLite.h>
 
@@ -71,7 +73,16 @@ NSString * const MPContributorRoleTranslator = @"translator";
 }
 
 - (NSArray *)contributorsInRole:(NSString *)role {
-    return [self objectsMatchingQueriedView:@"contributorsByRole" keys:@[role]];
+    return [[self objectsMatchingQueriedView:@"contributorsByRole"
+                                        keys:@[role]]
+            sortedArrayUsingComparator:^NSComparisonResult(MPContributor *a, MPContributor *b)
+    {
+        NSComparisonResult r = [@(a.priority) compare:@(b.priority)];
+        if (r != NSOrderedSame)
+            return r;
+        
+        return [a.nameString compare:b.nameString];
+    }];
 }
 
 - (NSArray *)allContributors {
@@ -154,6 +165,8 @@ NSString * const MPContributorRoleTranslator = @"translator";
         
         handler(contributor, oldIndex, index);
     }
+    
+    [self refreshPrioritiesForContributors:newUniverse changedContributors:nil];
 }
 
 #pragma mark -
