@@ -294,8 +294,15 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 {
     NSString *objectType = [CBLDocumentDict managedObjectType];
 
-    if (!objectType) return NO;
+    if (!objectType)
+        return NO;
+    
     return [self.managedObjectSubclasses containsObject:objectType];
+}
+
+- (BOOL)managesDocumentWithIdentifier:(NSString *)documentID {
+    NSString *clsString = NSStringFromClass([MPManagedObject managedObjectClassFromDocumentID:documentID]);
+    return [self.managedObjectSubclasses containsObject:clsString];
 }
 
 - (BOOL)managesObjectsOfClass:(Class)class
@@ -430,13 +437,23 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     [self.db.database setFilterNamed:MPStringF(@"%@/managed-objects-filter", NSStringFromClass(self.class))
                              asBlock:
      ^BOOL(CBLSavedRevision *revision, NSDictionary *params)
-    {
+{
         id strongSelf = weakSelf;
-        BOOL manages = [strongSelf managesDocumentWithDictionary:revision.properties];
-        if (!manages)
-            return NO;
+        BOOL managesBasedOnDict = [strongSelf managesDocumentWithDictionary:revision.properties];
+        BOOL managesBasedOnID = NO;
         
-        return YES;
+        if (!managesBasedOnDict) {
+            
+            // try finding _id and determining object type based on it.
+            // this should only be necessary for deletions, otherwise data is malformed (lacks 'objectType').
+            managesBasedOnID = [strongSelf managesDocumentWithIdentifier:revision.properties[@"_id"]];
+            if (managesBasedOnID) {
+                NSCAssert(revision.properties[@"_deleted"],
+                          @"Expecting revision to be a deletion:\n%@", revision.properties);
+            }
+        }
+        
+        return managesBasedOnDict || managesBasedOnID;
     }];
     
     [[self.db.database viewNamed:self.bundledJSONDataViewName]
