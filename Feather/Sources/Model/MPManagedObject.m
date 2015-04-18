@@ -1495,6 +1495,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)setValue:(id)value ofProperty:(NSString *)property
 {
+    if ([self isDeleted])
+        return;
+    
     #ifdef DEBUG
     if ([property isEqualToString:@"objectType"])
         assert(value);
