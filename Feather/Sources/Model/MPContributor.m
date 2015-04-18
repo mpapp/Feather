@@ -11,7 +11,12 @@
 
 #import <CouchbaseLite/CouchbaseLite.h>
 
+@interface MPContributor ()
+@property (readwrite) NSInteger priority;
+@end
+
 @implementation MPContributor
+@dynamic priority;
 @dynamic category, role, isMe, contribution;
 @dynamic isCorresponding;
 
@@ -21,40 +26,35 @@
 #endif
 
 
-- (NSImage *)thumbnailImage { NSImage *img = [NSImage imageNamed:@"face-monkey.png"]; [img setTemplate:YES]; return img;  }
+- (NSImage *)thumbnailImage {
+    NSImage *img = [NSImage imageNamed:@"face-monkey.png"];
+    [img setTemplate:YES];
+    
+    return img;
+}
 
-- (NSArray *)siblings
-{
+- (NSArray *)siblings {
     assert(self.controller);
     return [(MPContributorsController *)self.controller allContributors];
 }
 
-- (NSArray *)children
-{
+- (NSArray *)children {
     return @[];
 }
 
-- (NSUInteger)childCount
-{
+- (NSUInteger)childCount {
     return 0;
 }
 
-- (BOOL)hasChildren
-{
+- (BOOL)hasChildren {
     return NO;
 }
 
-- (id)parent
-{
+- (id)parent {
     return nil;
 }
 
-- (NSInteger)priority { return [[self getValueOfProperty:@"priority"] integerValue]; }
-
-- (void)setPriority:(NSUInteger)priority { [self setValue:@(priority) ofProperty:@"priority"]; }
-
-- (NSString *)placeholderString
-{
+- (NSString *)placeholderString {
     return @"First Last";
 }
 
@@ -65,14 +65,21 @@
 {
     return [self.fullName caseInsensitiveCompare:contributor.fullName];
 }
-- (void)setTitle:(NSString *)title { [self setFullName:title]; }
-- (NSString *)title { return [self fullName] ? [self fullName] : @""; }
+- (void)setTitle:(NSString *)title {
+    [self setFullName:title];
+}
+
+- (NSString *)title {
+    return [self fullName] ? [self fullName] : @"";
+}
 
 #endif
 
 - (NSString *)description
 {
-    return [NSString stringWithFormat:@"[%@ (%@ rev:%@)]", self.fullName, self.documentID, self.document.currentRevisionID];
+    return [NSString stringWithFormat:@"[%@ (%@ rev:%@)]",
+            self.fullName,
+            self.documentID, self.document.currentRevisionID];
 }
 
 @end

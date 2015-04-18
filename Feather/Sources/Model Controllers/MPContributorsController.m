@@ -18,6 +18,9 @@
 
 #import <CouchbaseLite/CouchbaseLite.h>
 
+@interface MPContributor ()
+@property (readwrite) NSInteger priority;
+@end
 
 NSString * const MPContributorRoleAuthor = @"author";
 NSString * const MPContributorRoleEditor = @"editor";
@@ -34,8 +37,7 @@ NSString * const MPContributorRoleTranslator = @"translator";
 
 @implementation MPContributorsController
 
-- (MPContributor *)me
-{
+- (MPContributor *)me {
     if (!_me)
     {
         _me = [self newObject];
@@ -44,8 +46,7 @@ NSString * const MPContributorRoleTranslator = @"translator";
     return _me;
 }
 
-- (void)configureViews
-{
+- (void)configureViews {
     [super configureViews];
     
     NSString *allObjsViewName = [self allObjectsViewName];
@@ -73,8 +74,7 @@ NSString * const MPContributorRoleTranslator = @"translator";
     return [self objectsMatchingQueriedView:@"contributorsByRole" keys:@[role]];
 }
 
-- (NSArray *)allContributors
-{
+- (NSArray *)allContributors {
     if (!_cachedContributors)
     {
         [self refreshCachedContributors];
@@ -84,18 +84,15 @@ NSString * const MPContributorRoleTranslator = @"translator";
     return _cachedContributors;
 }
 
-- (NSArray *)allAuthors
-{
+- (NSArray *)allAuthors {
     return [self contributorsInRole:MPContributorRoleAuthor];
 }
 
-- (NSArray *)allEditors
-{
+- (NSArray *)allEditors {
     return [self contributorsInRole:MPContributorRoleEditor];
 }
 
-- (NSArray *)allTranslators
-{
+- (NSArray *)allTranslators {
     return [self contributorsInRole:MPContributorRoleTranslator];
 }
 
@@ -104,18 +101,62 @@ NSString * const MPContributorRoleTranslator = @"translator";
     _cachedContributors
         = [[self allObjects] sortedArrayUsingComparator:
            ^NSComparisonResult(MPContributor *a, MPContributor *b) {
-        if (a.priority > b.priority) return NSOrderedDescending;
-        else if (a.priority < b.priority) return NSOrderedAscending;
+        if (a.priority > b.priority)
+            return NSOrderedDescending;
+        else if (a.priority < b.priority)
+            return NSOrderedAscending;
         
         return [a compare:b];
     }];
     assert(_cachedContributors);
 }
 
-- (void)refreshCachedValues
-{
+- (void)refreshCachedValues {
     [super refreshCachedValues];
     [self refreshCachedContributors];
+}
+
++ (NSUInteger)refreshPrioritiesForContributors:(NSArray *)contributors
+                           changedContributors:(NSArray **)changedContributors {
+    NSMutableArray *changed = [NSMutableArray new];
+    
+    [contributors enumerateObjectsUsingBlock:^(MPContributor *c,
+                                               NSUInteger idx,
+                                               BOOL *stop) {
+        if (c.priority == idx)
+            return;
+        
+        c.priority = idx;
+        [changed addObject:c];
+    }];
+    
+    if (changedContributors)
+        *changedContributors = changed.copy;
+    
+    return changed.count;
+}
+
++ (void)moveContributors:(NSArray *)contributors
+     amongstContributors:(NSArray *)universeOfContributors
+                 toIndex:(NSUInteger)index
+      indexChangeHandler:(MPContributorPriorityChangeHandler)handler
+{
+    NSMutableArray *newUniverse = universeOfContributors.mutableCopy;
+    
+    for (NSInteger i = contributors.count - 1; i >= 0; i--) {
+        MPContributor *contributor = contributors[i];
+        NSUInteger oldIndex = [newUniverse indexOfObject:contributors];
+        NSParameterAssert(oldIndex != NSNotFound);
+        NSParameterAssert(oldIndex != index);
+        
+        [newUniverse removeObject:contributor];
+        [newUniverse insertObject:contributor atIndex:index];
+        
+        handler(oldIndex, index);
+    }
+    
+    NSParameterAssert([self refreshPrioritiesForContributors:contributors
+                                         changedContributors:nil] > 0);
 }
 
 #pragma mark -

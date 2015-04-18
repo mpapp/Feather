@@ -47,4 +47,16 @@ extern NSString * const MPContributorRoleTranslator;
 @property (readonly, strong) NSArray *allEditors;
 @property (readonly, strong) NSArray *allTranslators;
 
+typedef void (^MPContributorPriorityChangeHandler)(NSUInteger oldIndex, NSUInteger newIndex);
+
+/** Refreshes the priorities of the contributors 
+  * such that it matches the index of the contributor in the array. */
++ (NSUInteger)refreshPrioritiesForContributors:(NSArray *)contributors
+                           changedContributors:(NSArray **)changedContributors;
+
++ (void)moveContributors:(NSArray *)contributors
+     amongstContributors:(NSArray *)universeOfContributors
+                 toIndex:(NSUInteger)index
+      indexChangeHandler:(MPContributorPriorityChangeHandler)handler;
+
 @end

@@ -25,7 +25,7 @@
 @property BOOL isCorresponding;
 
 /** The priority of the author in the author list. 
-  * Joint authorship priorities are legal (for instance joint 1st authorship). */
+  * Joint authorships are legal but not expressed with an equal priority. */
 @property (readonly) NSInteger priority;
 
 /** Description of the contributor's contributions. */

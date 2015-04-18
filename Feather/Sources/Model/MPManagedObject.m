@@ -1134,8 +1134,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (id)pasteboardPropertyListForType:(NSString *)type
 {
     // Only these two types should be called directly on MPManagedObject instances (ObjectID array type is for a collection of objects)
-    assert([type isEqual:MPPasteboardTypeManagedObjectFull]
-           || [type isEqual:MPPasteboardTypeManagedObjectID]);
+    NSParameterAssert([type isEqual:MPPasteboardTypeManagedObjectFull]
+                   || [type isEqual:MPPasteboardTypeManagedObjectID]);
     
     NSString *errorStr = nil;
     NSData *dataRep = nil;
@@ -1144,7 +1144,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:self.propertiesToSave];
         dict[@"databasePackageID"] = ((MPDatabasePackageController *)(self.controller.packageController)).fullyQualifiedIdentifier;
         
-        assert([type isEqualToString:MPPasteboardTypeManagedObjectFull]);
+        NSParameterAssert([type isEqualToString:MPPasteboardTypeManagedObjectFull]);
         dataRep = [NSPropertyListSerialization dataFromPropertyList:dict
                                                              format:NSPropertyListXMLFormat_v1_0
                                                    errorDescription:&errorStr];
@@ -1184,15 +1184,15 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 + (NSPasteboardReadingOptions)readingOptionsForType:(NSString *)type pasteboard:(NSPasteboard *)pasteboard
 {
-    assert([type isEqualToString:MPPasteboardTypeManagedObjectFull]
-           || [type isEqualToString:MPPasteboardTypeManagedObjectID]);
+    NSParameterAssert([type isEqualToString:MPPasteboardTypeManagedObjectFull]
+                   || [type isEqualToString:MPPasteboardTypeManagedObjectID]);
     return NSPasteboardReadingAsPropertyList;
 }
 
 - (id)initWithPasteboardPropertyList:(id)propertyList ofType:(NSString *)type
 {
     NSParameterAssert([type isEqualToString:MPPasteboardTypeManagedObjectFull]
-                      || [type isEqualToString:MPPasteboardTypeManagedObjectID]);
+                   || [type isEqualToString:MPPasteboardTypeManagedObjectID]);
 
     id obj = [self initWithPasteboardObjectIDPropertyList:propertyList ofType:MPPasteboardTypeManagedObjectID];
     if ([type isEqual:MPPasteboardTypeManagedObjectFull] && obj)
@@ -1219,15 +1219,15 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     
     NSString *packageControllerID = [referableDictionaryRep objectForKey:@"databasePackageID"];
     MPDatabasePackageController *pkgc = [MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:packageControllerID];
-    assert(pkgc);
+    NSParameterAssert(pkgc);
     
     MPManagedObjectsController *moc = [pkgc controllerForManagedObjectClass:objectType];
-    assert(moc);
+    NSParameterAssert(moc);
     
     NSString *objectID = [referableDictionaryRep managedObjectDocumentID];
     
     id obj = [moc objectWithIdentifier:objectID];
-    assert(obj);
+    NSParameterAssert(obj);
     
     return obj;
 }
