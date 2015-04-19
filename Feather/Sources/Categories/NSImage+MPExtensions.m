@@ -67,8 +67,8 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 
 - (NSImage *)framedWithSize:(NSSize)size {
     // margin for frame
-    float margin = 4;
-    float marginForShadow = 5;
+    float margin = 3;
+    float marginForShadow = 3;
     // radius of frame corners
     float frameRadius = 2;
     

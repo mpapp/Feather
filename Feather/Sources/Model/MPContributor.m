@@ -11,6 +11,8 @@
 #import "MPDatabasePackageController.h"
 #import "MPShoeboxPackageController.h"
 
+#import "NSImage+MPExtensions.h"
+
 #import <CouchbaseLite/CouchbaseLite.h>
 
 @interface MPContributor ()
@@ -76,10 +78,17 @@
 }
 
 - (NSImage *)thumbnailImage {
+    if ([self valueForKey:@"avatarImage"]) {
+        return [self valueForKey:@"avatarImage"];
+    }
+    
     NSImage *img = [NSImage imageNamed:@"face-monkey.png"];
     [img setTemplate:YES];
-    
     return img;
+}
+
++ (NSSet *)keyPathsForValuesAffectingThumbnailImage {
+    return [NSSet setWithArray:@[@"avatarImage"]];
 }
 
 - (NSArray *)siblings {

@@ -37,6 +37,8 @@
   * Different authors may have different address book IDs to refer to the same record. */
 @property (readwrite) NSArray *addressBookIDs;
 
+@property (readonly) NSImage *thumbnailImage;
+
 /** An array of MPContributorIdentity objects for the contributor. Mutate it by adding / removing MPContributorIdentity objects. */
 @property (readonly) NSArray *identities;
 
