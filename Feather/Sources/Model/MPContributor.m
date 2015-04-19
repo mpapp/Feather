@@ -17,6 +17,10 @@
 @property (readwrite) NSInteger priority;
 @end
 
+@interface MPContributorsController ()
+@property (readwrite) MPContributor *me;
+@end
+
 @implementation MPContributor
 @dynamic priority;
 @dynamic category, role, contribution;
@@ -62,6 +66,8 @@
         myIdentity.contributor = self;
         myIdentity.identifier = identifier;
         myIdentity.namespace = @"com.manuscriptsapp.shared.package.identity";
+        
+        ((MPContributorsController *)self.controller).me = self;
     }
     else {
         // delete found identity linking self to the shared package identifier.

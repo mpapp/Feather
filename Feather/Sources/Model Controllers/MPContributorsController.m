@@ -33,6 +33,7 @@ NSString * const MPContributorRoleTranslator = @"translator";
 }
 
 @property (readwrite, strong) NSArray *cachedContributors;
+@property (readwrite) MPContributor *me;
 
 @end
 
@@ -41,10 +42,18 @@ NSString * const MPContributorRoleTranslator = @"translator";
 - (MPContributor *)me {
     if (!_me)
     {
+        
+        
         _me = [self newObject];
+        _me.fullName = NSFullUserName();
+        _me.role = MPContributorRoleAuthor;
     }
     
     return _me;
+}
+
+- (void)setMe:(MPContributor *)contributor {
+    _me = contributor;
 }
 
 - (MPContributor *)existingMe {
@@ -226,6 +235,21 @@ NSString * const MPContributorRoleTranslator = @"translator";
     _cachedContributors = [_cachedContributors arrayByRemovingObject:notification.object];
 }
 
+#pragma mark - Deletion handling
+
+- (void)willDeleteObject:(MPContributor *)object
+{
+    NSParameterAssert([object isKindOfClass:MPContributor.class]);
+    
+    [super willDeleteObject:object];
+    [object.identities enumerateObjectsUsingBlock:^(MPContributorIdentity *c, NSUInteger idx, BOOL *stop) {
+        [c deleteDocument];
+    }];
+    
+    if (object == _me)
+        _me = nil;
+}
+
 @end
 
 
@@ -251,6 +275,8 @@ NSString * const MPContributorRoleTranslator = @"translator";
         NSAssert(doc[@"contributor"], @"Expecting 'contributor' field in a contributor identity document: %@", doc);
         emit(doc[@"contributor"], nil);
     } version:@"1.0"];
+    
+    [[self.db.database viewNamed:self.allObjectsViewName] setMapBlock:self.allObjectsBlock version:@"1.0"];
 }
 
 - (NSArray *)contributorIdentitiesForContributor:(MPContributor *)contributor {
