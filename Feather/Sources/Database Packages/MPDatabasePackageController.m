@@ -169,6 +169,11 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         if (!_contributorsController)
             return nil;
         
+        _contributorIdentitiesController = [[MPContributorIdentitiesController alloc] initWithPackageController:self
+                                                                                                       database:self.primaryDatabase error:err];
+        if (!_contributorIdentitiesController)
+            return nil;
+        
         assert(_snapshotsDatabase);
         _snapshotsController
             = [[MPSnapshotsController alloc] initWithPackageController:self database:_snapshotsDatabase error:err];

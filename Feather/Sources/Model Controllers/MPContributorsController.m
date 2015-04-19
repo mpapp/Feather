@@ -16,7 +16,6 @@
 #import "NSArray+MPExtensions.h"
 #import "NSBundle+MPExtensions.h"
 #import "NSNotificationCenter+ErrorNotification.h"
-#import <MPFoundation/MPContributor+Manuscripts.h>
 
 #import <CouchbaseLite/CouchbaseLite.h>
 
@@ -48,6 +47,18 @@ NSString * const MPContributorRoleTranslator = @"translator";
     return _me;
 }
 
+- (MPContributor *)existingMe {
+    MPContributor *me = nil;
+    for (MPContributor *c in self.allObjects) {
+        if (c.isMe) {
+            NSAssert(!me, @"At least two 'me' contributors exist: %@ != %@", me, c);
+            me = c;
+        }
+    }
+    
+    return me;
+}
+
 - (void)configureViews {
     [super configureViews];
     
@@ -61,7 +72,7 @@ NSString * const MPContributorRoleTranslator = @"translator";
          if (![self managesDocumentWithDictionary:doc])
              return;
          
-         // if role has not been set, assume the author has role 'author'
+         // TODO: remove the following clause that ensures that if role has not been set, assume the author has role 'author'
          if (!doc[@"role"] || [doc[@"role"] isEqualToString:MPContributorRoleAuthor])
          {
              emit(MPContributorRoleAuthor, nil);
@@ -70,19 +81,52 @@ NSString * const MPContributorRoleTranslator = @"translator";
          
          emit(doc[@"role"], nil);
      } version:@"1.1"];
+    
+    [[self.db.database viewNamed:@"contributorsByAddressBookID"] setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit) {
+        if (![self managesDocumentWithDictionary:doc])
+            return;
+        
+        if (!doc[@"addressBookIDs"])
+            return;
+        
+        for (NSString *uniqueID in doc[@"addressBookIDs"])
+            emit(uniqueID, nil);
+    } version:@"1.0"];
+    
+    [[self.db.database viewNamed:@"contributorsByFullName"] setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit) {
+        if (![self managesDocumentWithDictionary:doc])
+            return;
+        
+        if (!doc[@"fullName"])
+            return;
+        
+        emit(doc[@"fullName"], nil);
+    } version:@"1.0"];
+}
+
+- (MPContributor *)contributorWithAddressBookID:(NSString *)personUniqueID {
+    NSParameterAssert(personUniqueID);
+    
+    NSArray *contributors = [self objectsMatchingQueriedView:@"contributorsByAddressBookID" keys:@[personUniqueID]];
+    NSAssert(contributors.count < 2, @"A maximum of one contributor should have been retrieved: %@", contributors);
+    
+    return contributors.firstObject;
+}
+
+- (NSArray *)contributorsWithFullName:(NSString *)fullName {
+    NSParameterAssert(fullName);
+    
+    NSArray *contributors = [self objectsMatchingQueriedView:@"contributorsByFullName" keys:@[fullName]];
+    NSAssert(contributors.count < 2, @"A maximum of one contributor should have been retrieved: %@", contributors);
+    
+    return contributors.firstObject;
 }
 
 - (NSArray *)contributorsInRole:(NSString *)role {
+    NSAssert(self.contributorComparator, @"Assign contributorComparator to a non-nil value before calling -contributorsInRole.");
     return [[self objectsMatchingQueriedView:@"contributorsByRole"
                                         keys:@[role]]
-            sortedArrayUsingComparator:^NSComparisonResult(MPContributor *a, MPContributor *b)
-    {
-        NSComparisonResult r = [@(a.priority) compare:@(b.priority)];
-        if (r != NSOrderedSame)
-            return r;
-        
-        return [a.nameString compare:b.nameString];
-    }];
+            sortedArrayUsingComparator:self.contributorComparator];
 }
 
 - (NSArray *)allContributors {
@@ -109,17 +153,9 @@ NSString * const MPContributorRoleTranslator = @"translator";
 
 - (void)refreshCachedContributors
 {
-    _cachedContributors
-        = [[self allObjects] sortedArrayUsingComparator:
-           ^NSComparisonResult(MPContributor *a, MPContributor *b) {
-        if (a.priority > b.priority)
-            return NSOrderedDescending;
-        else if (a.priority < b.priority)
-            return NSOrderedAscending;
-        
-        return [a compare:b];
-    }];
-    assert(_cachedContributors);
+    NSAssert(self.contributorComparator, @"contributorComparator needs to be assigned before calling -refreshCachedContributors.");
+    _cachedContributors = [[self allObjects] sortedArrayUsingComparator:self.contributorComparator];
+    NSParameterAssert(_cachedContributors);
 }
 
 - (void)refreshCachedValues {
@@ -188,6 +224,56 @@ NSString * const MPContributorRoleTranslator = @"translator";
         { assert([_cachedContributors containsObject:notification.object]); }
     
     _cachedContributors = [_cachedContributors arrayByRemovingObject:notification.object];
+}
+
+@end
+
+
+#pragma mark -
+
+
+@implementation MPContributorIdentitiesController
+
+- (void)configureViews {
+    [super configureViews];
+    
+    [[self.db.database viewNamed:@"contributor-identities-by-identifier"] setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit) {
+        if (![self managesDocumentWithDictionary:doc])
+            return;
+        
+        emit(doc[@"identifier"], nil);
+    } version:@"1.0"];
+    
+    [[self.db.database viewNamed:@"contributor-identities-by-contributor"] setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit) {
+        if (![self managesDocumentWithDictionary:doc])
+            return;
+        
+        NSAssert(doc[@"contributor"], @"Expecting 'contributor' field in a contributor identity document: %@", doc);
+        emit(doc[@"contributor"], nil);
+    } version:@"1.0"];
+}
+
+- (NSArray *)contributorIdentitiesForContributor:(MPContributor *)contributor {
+    return [[self objectsMatchingQueriedView:@"contributor-identities-by-contributor" keys:@[contributor.documentID]]
+     mapObjectsUsingBlock:^id(MPContributorIdentity *c, NSUInteger idx) {
+         return c.contributor;
+    }];
+}
+
+- (NSArray *)contributorIdentitiesWithIdentifier:(NSString *)identifier {
+    return [self objectsMatchingQueriedView:@"contributor-identities-by-identifier" keys:@[identifier]];
+}
+
+- (NSArray *)contributorsWithContributorIdentifier:(NSString *)identifier {
+    return [[self contributorIdentitiesWithIdentifier:identifier] mapObjectsUsingBlock:
+            ^id(MPContributorIdentity *identity, NSUInteger idx)
+            {
+                return identity.contributor;
+            }];
+}
+
+- (NSArray *)contributorsWithContributorIdentity:(MPContributorIdentity *)identity {
+    return [self contributorsWithContributorIdentifier:identity.identifier];
 }
 
 @end

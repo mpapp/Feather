@@ -1435,9 +1435,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     if (![self.class isConcrete])
         @throw [NSException exceptionWithName:@"MPAbstractClassException" reason:nil userInfo:nil];
     
-    assert(controller);
-    assert(controller.db);
-    assert(controller.db.database);
+    NSParameterAssert(controller);
+    NSParameterAssert(controller.db);
+    NSParameterAssert(controller.db.database);
     
     _controller = controller;
     _newDocumentID = identifier;

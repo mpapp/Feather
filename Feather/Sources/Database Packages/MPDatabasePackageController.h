@@ -203,8 +203,11 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** A utility property to ease KVC access to databases by their name (e.g. for scripting). */
 @property (copy, readonly) NSDictionary *databasesByName;
 
-/** */
+/** Controller assigned to all MPContributor objects in the package. */
 @property (strong, readonly) MPContributorsController *contributorsController;
+
+/** Controller assigned to all MPContributorIdentity objects in the package. */
+@property (strong, readonly) MPContributorIdentitiesController *contributorIdentitiesController;
 
 /** A set of database names. Subclasses should overload this if they wish to include databases additional to the 'snapshots' database created by the abstract base class MPDatabasePackageController. Overloaded method _must_ include the super class -databaseNames in the set of database names returned. Databases are created automatically upon initialization based on the names determined here. */
 + (NSSet *)databaseNames;

@@ -15,6 +15,9 @@
 
 #import "MPTreeItem.h"
 
+#import "MPContributor.h"
+#import "MPContributorsController.h"
+
 #import "MPDatabase.h"
 #import "MPDatabasePackageController.h"
 #import "MPShoeboxPackageController.h"

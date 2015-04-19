@@ -21,7 +21,7 @@
 
 - (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller
                                       properties:(NSDictionary *)properties
-                                      documentID:(NSString *)identifier;
+                                      documentID:(NSString *)identifier __attribute__((nonnull(1)));
 
 - (void)setEmbeddedObjectArray:(NSArray *)value ofProperty:(NSString *)property;
 - (NSArray *)getEmbeddedObjectArrayProperty:(NSString *)property;
