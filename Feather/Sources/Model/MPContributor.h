@@ -42,6 +42,9 @@
 /** An array of MPContributorIdentity objects for the contributor. Mutate it by adding / removing MPContributorIdentity objects. */
 @property (readonly) NSArray *identities;
 
+/** Date when the contributor in question has been last invited to use the app. */
+@property (readwrite) NSDate *appInvitationDate;
+
 - (NSComparisonResult)compare:(MPContributor *)contributor;
 
 #ifndef MPAPP

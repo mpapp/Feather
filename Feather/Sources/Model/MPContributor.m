@@ -28,6 +28,7 @@
 @dynamic category, role, contribution;
 @dynamic isCorresponding;
 @dynamic addressBookIDs;
+@dynamic appInvitationDate;
 
 // FIXME: Make abstract method in an abstract base class.
 #ifndef MPAPP
