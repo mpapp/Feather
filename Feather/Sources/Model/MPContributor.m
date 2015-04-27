@@ -83,7 +83,7 @@
         return [self valueForKey:@"avatarImage"];
     }
     
-    NSImage *img = [NSImage imageNamed:@"face-monkey.png"];
+    NSImage *img = [NSImage imageNamed:@"user"];
     [img setTemplate:YES];
     return img;
 }
