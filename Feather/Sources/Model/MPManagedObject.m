@@ -340,7 +340,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     NSDate *now = [NSDate date];
     if (!createdAtExists)
     {
-        assert(self.needsSave);
+        NSParameterAssert(self.needsSave);
         [self setCreatedAt:now];
     }
     
@@ -924,8 +924,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         NSArray *components = [objectID componentsSeparatedByString:@":"];
         assert(components.count == 2);
         Class concreteClass = NSClassFromString(components[0]);
-        assert(concreteClass);
-        assert([concreteClass isSubclassOfClass:cls]);
+        NSAssert(concreteClass, @"Expecting a class with name %@", components[0]);
+        NSAssert([concreteClass isSubclassOfClass:cls], @"Expecting %@ to be a subclass of %@", concreteClass, cls);
         moc = [self.controller.packageController controllerForManagedObjectClass:concreteClass];
         assert(moc);
         cls = concreteClass;
@@ -1134,8 +1134,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (id)pasteboardPropertyListForType:(NSString *)type
 {
     // Only these two types should be called directly on MPManagedObject instances (ObjectID array type is for a collection of objects)
-    assert([type isEqual:MPPasteboardTypeManagedObjectFull]
-           || [type isEqual:MPPasteboardTypeManagedObjectID]);
+    NSParameterAssert([type isEqual:MPPasteboardTypeManagedObjectFull]
+                   || [type isEqual:MPPasteboardTypeManagedObjectID]
+                   || [type isEqual:MPPasteboardTypeManagedObjectIDArray]);
     
     NSString *errorStr = nil;
     NSData *dataRep = nil;
@@ -1144,7 +1145,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:self.propertiesToSave];
         dict[@"databasePackageID"] = ((MPDatabasePackageController *)(self.controller.packageController)).fullyQualifiedIdentifier;
         
-        assert([type isEqualToString:MPPasteboardTypeManagedObjectFull]);
+        NSParameterAssert([type isEqualToString:MPPasteboardTypeManagedObjectFull]);
         dataRep = [NSPropertyListSerialization dataFromPropertyList:dict
                                                              format:NSPropertyListXMLFormat_v1_0
                                                    errorDescription:&errorStr];
@@ -1154,6 +1155,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         dataRep = [NSPropertyListSerialization dataFromPropertyList:self.referableDictionaryRepresentation
                                                              format:NSPropertyListXMLFormat_v1_0
                                                    errorDescription:&errorStr];
+    }
+    else if ([type isEqual:MPPasteboardTypeManagedObjectIDArray])
+    {
+        dataRep = [NSPropertyListSerialization dataFromPropertyList:@[self.referableDictionaryRepresentation]
+                                                             format:NSPropertyListXMLFormat_v1_0 errorDescription:&errorStr];
     }
     
     if (!dataRep && errorStr)
@@ -1179,24 +1185,27 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 + (NSArray *)readableTypesForPasteboard:(NSPasteboard *)pasteboard
 {
     return @[ MPPasteboardTypeManagedObjectFull,
-              MPPasteboardTypeManagedObjectID ];
+              MPPasteboardTypeManagedObjectID,
+              MPPasteboardTypeManagedObjectIDArray ];
 }
 
 + (NSPasteboardReadingOptions)readingOptionsForType:(NSString *)type pasteboard:(NSPasteboard *)pasteboard
 {
-    assert([type isEqualToString:MPPasteboardTypeManagedObjectFull]
-           || [type isEqualToString:MPPasteboardTypeManagedObjectID]);
+    NSParameterAssert([type isEqualToString:MPPasteboardTypeManagedObjectFull]
+                   || [type isEqualToString:MPPasteboardTypeManagedObjectID]
+                   || [type isEqualToString:MPPasteboardTypeManagedObjectIDArray]);
     return NSPasteboardReadingAsPropertyList;
 }
 
-- (id)initWithPasteboardPropertyList:(id)propertyList ofType:(NSString *)type
-{
+- (id)initWithPasteboardPropertyList:(id)propertyList ofType:(NSString *)type {
     NSParameterAssert([type isEqualToString:MPPasteboardTypeManagedObjectFull]
-                      || [type isEqualToString:MPPasteboardTypeManagedObjectID]);
+                   || [type isEqualToString:MPPasteboardTypeManagedObjectID]
+                   || [type isEqualToString:MPPasteboardTypeManagedObjectIDArray]);
 
     id obj = [self initWithPasteboardObjectIDPropertyList:propertyList ofType:MPPasteboardTypeManagedObjectID];
-    if ([type isEqual:MPPasteboardTypeManagedObjectFull] && obj)
-            [obj setValuesForPropertiesWithDictionary:propertyList];
+    if ([type isEqual:MPPasteboardTypeManagedObjectFull] && obj) {
+        [obj setValuesForPropertiesWithDictionary:propertyList];
+    }
     
     return obj;
 }
@@ -1219,15 +1228,15 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     
     NSString *packageControllerID = [referableDictionaryRep objectForKey:@"databasePackageID"];
     MPDatabasePackageController *pkgc = [MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:packageControllerID];
-    assert(pkgc);
+    NSParameterAssert(pkgc);
     
     MPManagedObjectsController *moc = [pkgc controllerForManagedObjectClass:objectType];
-    assert(moc);
+    NSParameterAssert(moc);
     
     NSString *objectID = [referableDictionaryRep managedObjectDocumentID];
     
     id obj = [moc objectWithIdentifier:objectID];
-    assert(obj);
+    NSParameterAssert(obj);
     
     return obj;
 }
@@ -1426,9 +1435,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     if (![self.class isConcrete])
         @throw [NSException exceptionWithName:@"MPAbstractClassException" reason:nil userInfo:nil];
     
-    assert(controller);
-    assert(controller.db);
-    assert(controller.db.database);
+    NSParameterAssert(controller);
+    NSParameterAssert(controller.db);
+    NSParameterAssert(controller.db.database);
     
     _controller = controller;
     _newDocumentID = identifier;
@@ -1495,6 +1504,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)setValue:(id)value ofProperty:(NSString *)property
 {
+    if ([self isDeleted])
+        return;
+    
     #ifdef DEBUG
     if ([property isEqualToString:@"objectType"])
         assert(value);
@@ -1740,6 +1752,32 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     
     for (NSString *key in self.class.embeddedProperties)
         [[self valueForKey:key] markNeedsNoSave];
+}
+
+@end
+
+#pragma mark - MPAutosavingManagedObject
+
+@implementation MPAutosavingManagedObjectProxy
+
+- (instancetype)initWithObject:(MPManagedObject *)o {
+    NSParameterAssert(o);
+    _managedObject = o;
+    return self;
+}
+
+- (void)setValue:(id)val forKey:(id)key {
+    [_managedObject setValue:val forKey:key];
+    [_managedObject save];
+}
+
+- (NSMethodSignature *)methodSignatureForSelector:(SEL)selector {
+    return [(id)self.managedObject methodSignatureForSelector:selector];
+}
+
+- (void)forwardInvocation:(NSInvocation *)invocation {
+    NSParameterAssert(self.managedObject);
+    [invocation invokeWithTarget:self.managedObject];
 }
 
 @end

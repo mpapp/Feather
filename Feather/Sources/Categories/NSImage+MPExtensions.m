@@ -8,6 +8,9 @@
 
 #import "NSImage+MPExtensions.h"
 
+#define RGB(R,G,B) [NSColor colorWithCalibratedRed:(R)/255. green:(G)/255. blue:(B)/255. alpha:1]
+#define RGBA(R,G,B,A) [NSColor colorWithCalibratedRed:(R)/255. green:(G)/255. blue:(B)/255. alpha:(A)]
+
 @implementation NSImage (RoundCorner)
 
 void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, float ovalHeight)
@@ -60,6 +63,76 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     NSImage *image = [[NSImage alloc] initWithData:imageData];
     
     return image;
+}
+
+- (NSImage *)framedWithSize:(NSSize)size {
+    // margin for frame
+    float margin = 3;
+    float marginForShadow = 3;
+    // radius of frame corners
+    float frameRadius = 2;
+    
+    // rectangle of whole view
+    NSRect fullRect;
+    fullRect = NSZeroRect;
+    fullRect.size = size;
+    float coef = MIN(size.height / self.size.height,
+                     size.width / self.size.width);
+    fullRect.size = self.size;
+    fullRect.size.height *= coef;
+    fullRect.size.width *= coef;
+    
+    NSImage *img = [[NSImage alloc] initWithSize:fullRect.size];
+    [img lockFocus];
+    {
+        // rectangle for frame which is margined
+        NSRect frameRect = fullRect;
+        frameRect.size.height -= margin * 2 + marginForShadow;
+        frameRect.size.width -= margin * 2 + marginForShadow;
+        frameRect.origin.x += margin;
+        frameRect.origin.y += margin;
+        
+        // width of frame should be 5% of ave(height, width) of picture
+        float frameSize = 0.05 * (frameRect.size.height + frameRect.size.width) / 2;
+        
+        // draw frame with small radius corners
+        NSBezierPath *framePath = [NSBezierPath bezierPathWithRoundedRect:frameRect xRadius:frameRadius yRadius:frameRadius];
+        
+        // we need shadow on both frame and picture
+        NSShadow *shadow = [[NSShadow alloc] init];
+        [shadow setShadowColor:RGBA(40, 40, 40, 0.7)];
+        [shadow setShadowOffset:NSMakeSize(3.1, -3.1)];
+        [shadow setShadowBlurRadius:5];
+        
+        [NSGraphicsContext saveGraphicsState];
+        [shadow set];
+        
+        // draw frame
+        [[NSColor whiteColor] setFill];
+        [framePath fill];
+        [NSGraphicsContext restoreGraphicsState];
+        
+        // rectangle of actual picture
+        NSRect pictureRect = frameRect;
+        pictureRect.size.height -= frameSize * 2;
+        pictureRect.size.width -= frameSize * 2;
+        pictureRect.origin.x += frameSize;
+        pictureRect.origin.y += frameSize;
+        
+        // draw picture in frame with shadow and gray stroke
+        NSBezierPath *picturePath = [NSBezierPath bezierPathWithRoundedRect:pictureRect xRadius:frameRadius yRadius:frameRadius];
+        [RGB(240, 240, 240) set];
+        [picturePath stroke];
+        
+        [NSGraphicsContext saveGraphicsState];
+        [shadow setShadowOffset:NSZeroSize];
+        [shadow set];
+        [self drawInRect:pictureRect fromRect:NSZeroRect operation:NSCompositeCopy fraction:1 respectFlipped:YES hints:nil];
+        [NSGraphicsContext restoreGraphicsState];
+    }
+    [img unlockFocus];
+    
+    return img;
 }
 
 - (CGImageRef)CGImage

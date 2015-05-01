@@ -28,6 +28,9 @@ typedef struct MPEMUSize
 - (NSUInteger)DPI;
 - (MPEMUSize)EMUSize;
 
+/** A framed version of the image */
+- (NSImage *)framedWithSize:(NSSize)size;
+
 @end
 
 // Kindly contributed by Charles Parnot (FDFoundation)

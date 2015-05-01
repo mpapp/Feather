@@ -27,7 +27,6 @@
 
 #import "MPShoeboxPackageController.h"
 
-#import "JSONKit.h"
 #import "RegexKitLite.h"
 #import <CouchbaseLite/CouchbaseLite.h>
 
@@ -295,8 +294,15 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 {
     NSString *objectType = [CBLDocumentDict managedObjectType];
 
-    if (!objectType) return NO;
+    if (!objectType)
+        return NO;
+    
     return [self.managedObjectSubclasses containsObject:objectType];
+}
+
+- (BOOL)managesDocumentWithIdentifier:(NSString *)documentID {
+    NSString *clsString = NSStringFromClass([MPManagedObject managedObjectClassFromDocumentID:documentID]);
+    return [self.managedObjectSubclasses containsObject:clsString];
 }
 
 - (BOOL)managesObjectsOfClass:(Class)class
@@ -431,13 +437,23 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     [self.db.database setFilterNamed:MPStringF(@"%@/managed-objects-filter", NSStringFromClass(self.class))
                              asBlock:
      ^BOOL(CBLSavedRevision *revision, NSDictionary *params)
-    {
+{
         id strongSelf = weakSelf;
-        BOOL manages = [strongSelf managesDocumentWithDictionary:revision.properties];
-        if (!manages)
-            return NO;
+        BOOL managesBasedOnDict = [strongSelf managesDocumentWithDictionary:revision.properties];
+        BOOL managesBasedOnID = NO;
         
-        return YES;
+        if (!managesBasedOnDict) {
+            
+            // try finding _id and determining object type based on it.
+            // this should only be necessary for deletions, otherwise data is malformed (lacks 'objectType').
+            managesBasedOnID = [strongSelf managesDocumentWithIdentifier:revision.properties[@"_id"]];
+            if (managesBasedOnID) {
+                NSCAssert(revision.properties[@"_deleted"],
+                          @"Expecting revision to be a deletion:\n%@", revision.properties);
+            }
+        }
+        
+        return managesBasedOnDict || managesBasedOnID;
     }];
     
     [[self.db.database viewNamed:self.bundledJSONDataViewName]
@@ -632,8 +648,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (NSArray *)objectsFromArrayJSONData:(NSData *)objData error:(NSError *__autoreleasing *)err
 {
-    JSONDecoder *decoder = [JSONDecoder decoderWithParseOptions:JKParseOptionNone];
-    NSArray *objs = [decoder mutableObjectWithData:objData error:err];
+    NSArray *objs = [NSJSONSerialization JSONObjectWithData:objData options:0 error:err];
     if (!objs)
         return nil;
     
@@ -776,10 +791,13 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                 }
             }
             else {
-                assert(modelObj.document == row.document);
+                NSAssert(modelObj.document == row.document,
+                         @"Unexpected row.document: %@ != %@ (%@ ; %@)",
+                         modelObj.document, row.document,
+                         modelObj.propertiesToSave, row.document.properties);
             }
 
-            assert([modelObj isKindOfClass:[MPManagedObject class]]);
+            NSAssert([modelObj isKindOfClass:[MPManagedObject class]], @"Model object is of unexpected class: %@", modelObj);
 
             [entries addObject:modelObj];
         });
@@ -1416,7 +1434,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     mp_dispatch_sync(self.database.manager.dispatchQueue, [self.database.packageController serverQueueToken], ^{
         objectType = self.properties[@"objectType"];
     });
-    assert(objectType);
+    NSAssert(objectType, @"Unexpected nil objectType: %@ (%@)", self.properties, self.documentID);
     return NSClassFromString(objectType);
 }
 

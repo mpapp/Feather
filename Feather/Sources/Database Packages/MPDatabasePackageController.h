@@ -159,6 +159,10 @@ typedef enum MPDatabasePackageControllerErrorCode
  **/
 - (void)pullFromRemoteWithErrorDictionary:(NSDictionary **)errorDict;
 
+/** Pulls from all the databases of the package at the specified file URL. 
+  * Returns NO and an error if pulling failed to _start_ (errors may happen during the pull too). */
+- (BOOL)pullFromPackageFileURL:(NSURL *)url error:(NSError **)error;
+
 /** Pull and push asynchronously to a remote database package.
    * @param errorDict A dictionary of errors for *starting* replications (i.e. there can be errors during the asynchronous replication that are not captured here), keys being database names. */
 - (BOOL)syncWithRemote:(NSDictionary **)errorDict;
@@ -199,8 +203,11 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** A utility property to ease KVC access to databases by their name (e.g. for scripting). */
 @property (copy, readonly) NSDictionary *databasesByName;
 
-/** */
+/** Controller assigned to all MPContributor objects in the package. */
 @property (strong, readonly) MPContributorsController *contributorsController;
+
+/** Controller assigned to all MPContributorIdentity objects in the package. */
+@property (strong, readonly) MPContributorIdentitiesController *contributorIdentitiesController;
 
 /** A set of database names. Subclasses should overload this if they wish to include databases additional to the 'snapshots' database created by the abstract base class MPDatabasePackageController. Overloaded method _must_ include the super class -databaseNames in the set of database names returned. Databases are created automatically upon initialization based on the names determined here. */
 + (NSSet *)databaseNames;
@@ -258,6 +265,9 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** Returns a managed object given the identifier. */
 - (id)objectWithIdentifier:(NSString *)identifier __attribute__((nonnull));
 
+/** WAL Checkpoints the document databases. */
+- (BOOL)checkpointDatabases:(NSError **)err;
+
 /** Root section class names ordered in the priority order needed. */
 + (NSArray *)orderedRootSectionClassNames;
 
@@ -294,5 +304,22 @@ typedef enum MPDatabasePackageControllerErrorCode
 
 /** JSON encodable dictionary representation of all objects in the database package. */
 @property (readonly) NSDictionary *dictionaryRepresentation;
+
+@end
+
+#pragma mark -
+
+typedef NSURL *(^MPDatabasePackageControllerRootURLHandler)();
+typedef void (^MPDatabasePackageControllerUpdateChangeCountHandler)(NSDocumentChangeType changeType);
+
+@interface MPDatabasePackageControllerBlockBasedDelegate : NSObject <MPDatabasePackageControllerDelegate>
+
+- (instancetype)initWithPackageController:(MPDatabasePackageController *)pkgc
+                           rootURLHandler:(MPDatabasePackageControllerRootURLHandler)handler
+                        updateChangeCountHandler:(MPDatabasePackageControllerUpdateChangeCountHandler)changeType;
+
+@property (readwrite, weak) MPDatabasePackageController *packageController;
+@property (readonly) MPDatabasePackageControllerRootURLHandler rootURLHandler;
+@property (readonly)MPDatabasePackageControllerUpdateChangeCountHandler updateChangeCountHandler;
 
 @end

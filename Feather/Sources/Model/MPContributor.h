@@ -18,20 +18,53 @@
 @property (readwrite) MPContributorCategory *category;
 @property (readwrite, strong) NSString *role;
 
-/** A database package should contain at most one MPContributor object which is considered to be 'me' for a user editing the document.
- @return Returns YES if user matches the current user, NO otherwise. */
-@property BOOL isMe;
+/** A database package should contain at most one MPContributor object which is considered to be 'me' for a user editing the document on any given device.
+ @return Returns YES if user matches the current user on the current device, NO otherwise. */
+@property (readwrite) BOOL isMe;
 
 @property BOOL isCorresponding;
 
+
+
 /** The priority of the author in the author list. 
-  * Joint authorship priorities are legal (for instance joint 1st authorship). */
+  * Joint authorships are legal but not expressed with an equal priority. */
 @property (readonly) NSInteger priority;
+
+/** Description of the contributor's contributions. */
+@property (readwrite) NSString *contribution;
+
+/** An array of ABPerson uniqueIds for the contributor. 
+  * Different authors may have different address book IDs to refer to the same record. */
+@property (readwrite) NSArray *addressBookIDs;
+
+@property (readonly) NSImage *thumbnailImage;
+
+/** An array of MPContributorIdentity objects for the contributor. Mutate it by adding / removing MPContributorIdentity objects. */
+@property (readonly) NSArray *identities;
+
+/** Date when the contributor in question has been last invited to use the app. */
+@property (readwrite) NSDate *appInvitationDate;
 
 - (NSComparisonResult)compare:(MPContributor *)contributor;
 
 #ifndef MPAPP
 @property (readwrite, copy) NSString *fullName;
 #endif
+
+@end
+
+#pragma mark -
+
+/** A contributor identity maps a contributor to an identifier of some kind. */
+@interface MPContributorIdentity : MPManagedObject
+
+/** The contributor should be set only once. */
+@property (readwrite, nonatomic) MPContributor *contributor;
+
+/** The contributor should be set only once. */
+@property (readwrite, nonatomic) NSString *identifier;
+
+/** The contributor should be set only once. */
+@property (readwrite, nonatomic) NSString *namespace;
 
 @end

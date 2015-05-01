@@ -37,6 +37,14 @@
 @implementation MPInitIsPrivateException
 @end
 
+@implementation MPInvalidInitException
+- (instancetype)initWithSelector:(SEL)sel expectedSelector:(SEL)expectedSelector {
+    return [super initWithName:NSStringFromClass([self class])
+                        reason:[NSString stringWithFormat:@"Don't init with %@. Init with %@ instead.", NSStringFromSelector(sel), NSStringFromSelector(expectedSelector)]
+                      userInfo:nil];
+}
+@end
+
 @implementation MPIllegalStateException
 
 - (instancetype)initWithReason:(NSString *)reason {

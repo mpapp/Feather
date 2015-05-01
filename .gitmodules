@@ -1,9 +1,6 @@
 [submodule "External/ObjectiveMixin"]
 	path = External/ObjectiveMixin
 	url = git@github.com:mz2/ObjectiveMixin.git
-[submodule "External/JSONKit"]
-	path = External/JSONKit
-	url = git@github.com:mz2/JSONKit.git
 [submodule "External/UICKeyChainStore"]
 	path = External/UICKeyChainStore
 	url = git@github.com:kishikawakatsumi/UICKeyChainStore.git
