@@ -22,15 +22,18 @@
 
 // Adapted from http://cocoawithlove.com/2010/01/getting-subclasses-of-objective-c-class.html
 
-+ (NSArray *)subclasses
-{
++ (NSArray *)subclasses {
     @synchronized (self) {
         return [self _subclasses];
     }
 }
 
-+ (NSArray *)_subclasses
-{
++ (NSArray *)_subclasses {
+    // retrieve the list of subclasses from a cache.
+    NSArray *subclasses = objc_getAssociatedObject(self, "subclasses");
+    if (subclasses)
+        return subclasses;
+    
     int numClasses = objc_getClassList(NULL, 0);
     Class *classes = NULL;
     
@@ -47,13 +50,11 @@
         if ([superClassName hasPrefix:@"NSKVONotifying"])
             continue;
         
-        do
-        {
+        do {
             superClass = class_getSuperclass(superClass);
         } while (superClass && superClass != self);
         
-        if (superClass == nil)
-        {
+        if (superClass == nil) {
             continue;
         }
         
@@ -61,6 +62,9 @@
     }
     
     free(classes);
+    
+    // cache the list of subclasses.
+    objc_setAssociatedObject(self, "subclasses", result.copy, OBJC_ASSOCIATION_RETAIN);
     
     return result;
 }
