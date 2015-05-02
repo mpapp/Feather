@@ -22,10 +22,6 @@
  @return Returns YES if user matches the current user on the current device, NO otherwise. */
 @property (readwrite) BOOL isMe;
 
-@property BOOL isCorresponding;
-
-
-
 /** The priority of the author in the author list. 
   * Joint authorships are legal but not expressed with an equal priority. */
 @property (readonly) NSInteger priority;

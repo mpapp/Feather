@@ -26,7 +26,6 @@
 @implementation MPContributor
 @dynamic priority;
 @dynamic category, role, contribution;
-@dynamic isCorresponding;
 @dynamic addressBookIDs;
 @dynamic appInvitationDate;
 
