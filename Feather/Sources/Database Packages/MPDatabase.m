@@ -86,10 +86,16 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         assert(packageController);
         _packageController = packageController;
         
-        __block NSError *err = nil;
+        __block NSError *e = nil;
         mp_dispatch_sync(_server.dispatchQueue, packageController.serverQueueToken, ^{
-            _database = [_server databaseNamed:[MPDatabase sanitizedDatabaseIDWithString:name] error:&err];
+            _database = [_server databaseNamed:[MPDatabase sanitizedDatabaseIDWithString:name] error:&e];
         });
+        
+        if (!_database) {
+            NSParameterAssert(err);
+            if (err)
+                *err = e;
+        }
         
         objc_setAssociatedObject(_database, "dbp", self, OBJC_ASSOCIATION_ASSIGN);
         
