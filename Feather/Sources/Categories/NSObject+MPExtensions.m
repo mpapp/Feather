@@ -195,7 +195,8 @@
     if (!classToNames)
         classToNames = [[NSMutableDictionary alloc] init];
     
-    if (self == [NSObject class]) return [NSSet set];
+    if (self == [NSObject class])
+        return [NSSet set];
     
     NSSet* cachedPropertyNames = classToNames[self];
     if (cachedPropertyNames)
