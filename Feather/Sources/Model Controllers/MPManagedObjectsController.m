@@ -861,6 +861,10 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return nil;
 }
 
+- (NSString *)bundledResourceExtension {
+    return @".json";
+}
+
 - (BOOL)loadBundledJSONResources:(NSError **)err {
     
     if (!self.bundledJSONDataFilename)
@@ -876,7 +880,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     
     _bundledJSONDerivedData =
         [self loadBundledObjectsFromResource:self.bundledJSONDataFilename
-                               withExtension:@".json"
+                               withExtension:self.bundledResourceExtension
                             matchedToObjects:foundBundledObjs
                      dataChecksumMetadataKey:self.bundledJSONDataChecksumKey error:err];
     
@@ -1067,6 +1071,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     MPMetadata *metadata = [self.db metadata];
 
     NSURL *jsonURL = [[NSBundle appBundle] URLForResource:resourceName withExtension:extension];
+    NSAssert(jsonURL, @"Could not find resource '%@' with extension '%@'", resourceName, extension);
+    
     NSFileManager *fm = [NSFileManager defaultManager];
     NSString *md5 = [fm md5DigestStringAtPath:[jsonURL path]];
 

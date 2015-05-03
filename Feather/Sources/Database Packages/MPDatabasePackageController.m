@@ -183,10 +183,15 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         _pulls = [[NSMutableArray alloc] initWithCapacity:[[[self class] databaseNames] count]];
         _completedPulls = [[NSMutableArray alloc] initWithCapacity:[[[self class] databaseNames] count]];
         
-        if (![NSBundle isCommandLineTool] && // FIXME: manuel will need to serve static resources to equation compilers somehow
-            ![NSBundle isXPCService] &&
-            [self synchronizesPeerlessly])
-        {
+        BOOL requiresListener = ![NSBundle isCommandLineTool] && // FIXME: manuel will need to serve static resources to equation compilers somehow
+                                ![NSBundle isXPCService] &&
+                                [self synchronizesPeerlessly];
+        
+        if ([self.delegate respondsToSelector:@selector(packageControllerRequiresListener:)]) {
+            requiresListener = [self.delegate packageControllerRequiresListener:self];
+        }
+        
+        if (requiresListener) {
             [self startListenerWithCompletionHandler:^(NSError *err)
             {
                 [self.notificationCenter postNotificationName:MPDatabasePackageListenerDidStartNotification object:self];

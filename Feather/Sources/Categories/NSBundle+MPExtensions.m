@@ -38,7 +38,9 @@
     if ([self inTestSuite])
         return NO;
     
-    BOOL b = ([[NSBundle mainBundle] objectForInfoDictionaryKey:@"NSMainNibFile"] == nil); // FIXME: this is not very air-tight logic
+    BOOL b = ([NSBundle.mainBundle objectForInfoDictionaryKey:@"NSMainNibFile"] == nil
+              && [NSBundle.mainBundle objectForInfoDictionaryKey:@"NSMainStoryboardFile"] == nil);
+    
     return b;
 }
 

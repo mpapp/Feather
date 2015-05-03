@@ -196,6 +196,9 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** Filename for a bundled JSON datafile that is loaded by the controller upon initialization. */
 @property (readonly, strong) NSString *bundledJSONDataFilename;
 
+/** The bundled resource file extension. By default ".json", can be overridden in subclasses. */
+@property (readonly, strong) NSString *bundledResourceExtension;
+
 /** Bundled JSON data derived objects. */
 @property (readonly) NSArray *bundledJSONDerivedData;
 

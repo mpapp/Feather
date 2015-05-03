@@ -25,9 +25,20 @@ extern NSString *const MPDatabasePackageListenerDidStartNotification;
 
 /** A delegate protocol for MPDatabasePackageController's optional delegate. */
 @protocol MPDatabasePackageControllerDelegate <NSObject>
+
 @property (readonly, strong) NSURL *packageRootURL;
 @optional
-- (void)updateChangeCount:(NSDocumentChangeType)changeType; // pass back document change notifications upon db changes.
+
+/** Callback used to send back document change notifications upon db changes. */
+- (void)updateChangeCount:(NSDocumentChangeType)changeType;
+
+/** If callback is not implemented, listener is added. 
+  * If callback is implemented, YES return value causes a listener to be created, NO leads to it being omitted. 
+  * 
+  * Listener is by default not started for XPC services, 
+ * command line tools and when the package controller has not been set to synchronize peerlessly (`-synchronizesPeerlessly`). */
+- (BOOL)packageControllerRequiresListener:(MPDatabasePackageController *)packageController;
+
 @end
 
 extern NSString * const MPDatabasePackageControllerErrorDomain;
