@@ -187,6 +187,10 @@
 // Adapted from CouchDynamicObject -propertyNames
 + (NSSet *)_propertyKeys
 {
+    NSSet *propertyKeys = objc_getAssociatedObject(self, "propertyKeys");
+    if (propertyKeys)
+        return propertyKeys;
+    
     static NSMutableDictionary* classToNames;
     if (!classToNames)
         classToNames = [[NSMutableDictionary alloc] init];
@@ -210,6 +214,9 @@
     }
     [propertyNames unionSet:[[self superclass] propertyKeys]];
     classToNames[(id)self] = propertyNames;
+    
+    objc_setAssociatedObject(self, "propertyKeys", propertyNames, OBJC_ASSOCIATION_RETAIN);
+    
     return propertyNames;
 }
 
