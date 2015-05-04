@@ -674,11 +674,18 @@ typedef void (^CBLDatabaseDoAsyncHandler)();
     assert([self packageController]);
     CBLQueryEnumerator *rows = [self getDocumentsWithIDs:ids];
     NSMutableArray *objs = [NSMutableArray arrayWithCapacity:rows.count];
-    for (CBLQueryRow *row in rows)
-    {
+    for (CBLQueryRow *row in rows) {
         CBLDocument *doc = row.document;
-        MPManagedObject *mo = [[MPManagedObject managedObjectClassFromDocumentID:doc.documentID] modelForDocument:doc];
-        assert(mo);
+        
+        MPManagedObject *mo = nil;
+        if (!doc) {
+            mo = [[self packageController] objectWithIdentifier:row.key]; // can be in a different database, or the shared package.
+        }
+        else {
+            mo = [[MPManagedObject managedObjectClassFromDocumentID:doc.documentID] modelForDocument:doc];
+        }
+        
+        NSParameterAssert(mo);
         [objs addObject:mo];
     }
     return objs;
