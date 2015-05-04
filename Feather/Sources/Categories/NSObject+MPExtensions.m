@@ -191,16 +191,8 @@
     if (propertyKeys)
         return propertyKeys;
     
-    static NSMutableDictionary* classToNames;
-    if (!classToNames)
-        classToNames = [[NSMutableDictionary alloc] init];
-    
     if (self == [NSObject class])
         return [NSSet set];
-    
-    NSSet* cachedPropertyNames = classToNames[self];
-    if (cachedPropertyNames)
-        return cachedPropertyNames;
     
     NSMutableSet* propertyNames = [NSMutableSet set];
     
@@ -214,7 +206,6 @@
         free(propertiesExcludingSuperclass);
     }
     [propertyNames unionSet:[[self superclass] propertyKeys]];
-    classToNames[(id)self] = propertyNames;
     
     objc_setAssociatedObject(self, "propertyKeys", propertyNames, OBJC_ASSOCIATION_RETAIN);
     
