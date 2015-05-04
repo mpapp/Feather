@@ -685,10 +685,14 @@ typedef void (^CBLDatabaseDoAsyncHandler)();
             mo = [[MPManagedObject managedObjectClassFromDocumentID:doc.documentID] modelForDocument:doc];
         }
         
-        NSParameterAssert(mo);
-        [objs addObject:mo];
+        if (mo) {
+            [objs addObject:mo];
+        } else {
+            MPLog(@"WARNING: Failed to recover object by ID %@", row.documentID);
+        }
     }
-    return objs;
+    
+    return objs.copy;
 }
 
 - (CBLQueryEnumerator *)getDocumentsWithIDs:(NSArray *)docIDs

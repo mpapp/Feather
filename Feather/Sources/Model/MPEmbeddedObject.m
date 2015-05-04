@@ -251,19 +251,15 @@
 {
     id val = [self getValueOfProperty:property];
     //if ([val isEqualToValue:value]) return YES;
-    if ([val isEqual:value]) return YES;
+    if ([val isEqual:value])
+        return YES;
     
-    assert(property);
-    assert(self.embeddingObject);
-    assert(self.embeddingKey);
+    NSAssert(property, @"Attempting to set value of property with nil argument for object: %@", self);
+    NSAssert(self.embeddingObject, @"Object should have a non-nil embeddingObject: %@", self);
+    NSAssert(self.embeddingKey, @"Object should have a non-nil embeddingKey: %@", self);
+    NSAssert(_properties, @"Object should have its _properties set when setting value to a property: %@", self);
     
-    // FIXME: Continue from here. Infer the key the object has in its embedding object, preferably without introducing new state.
-    //[self.embeddingObject.changedNames addObject:property]
-    // - Propagate changes further back in the tree
-    // - Deal with MPEmbeddedObjects too
     MPManagedObject *o = ((MPManagedObject *)self.embeddingObject);
-    
-    assert(_properties);
     
     if (value) {
         _properties[property] = value;
@@ -272,7 +268,7 @@
         [_properties removeObjectForKey:property];
     }
     
-    [o cacheValue:value ofProperty:property changed:YES];
+    [o cacheValue:self ofProperty:self.embeddingKey changed:YES];
     [o markNeedsSave];
     
     return YES;
@@ -287,6 +283,15 @@
 - (NSString *)identifier
 {
     return _properties[@"_id"];
+}
+
+- (void)cacheValue:(id)value ofProperty:(NSString *)property changed:(BOOL)changed {
+    NSAssert(property, @"Attempting to set value of property with nil argument for object: %@", self);
+    NSAssert(self.embeddingObject, @"Object should have a non-nil embeddingObject: %@", self);
+    NSAssert(self.embeddingKey, @"Object should have a non-nil embeddingKey: %@", self);
+    NSAssert(_properties, @"Object should have its _properties set when setting value to a property: %@", self);
+    
+    [self.embeddingObject cacheValue:self ofProperty:self.embeddingKey changed:changed];
 }
 
 - (void)cacheEmbeddedObjectByIdentifier:(MPEmbeddedObject *)obj

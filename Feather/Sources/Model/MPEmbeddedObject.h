@@ -34,6 +34,8 @@
 
 - (void)cacheEmbeddedObjectByIdentifier:(MPEmbeddedObject *)obj;
 
+- (void)cacheValue:(id)value ofProperty:(NSString *)property changed:(BOOL)changed;
+
 @end
 
 #pragma mark -

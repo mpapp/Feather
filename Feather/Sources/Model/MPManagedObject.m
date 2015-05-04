@@ -186,9 +186,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return self;
 }
 
-- (void)didInitialize
-{
-    _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
+- (void)didInitialize {
+    if (!_embeddedObjectCache)
+        _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
     
     assert(_controller);
     if (self.document)
@@ -211,11 +211,16 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     if (!obj)
         return;
     
-    assert([obj isKindOfClass:[MPEmbeddedObject class]]);
-    assert([obj identifier]); //has non-null identifier
+    NSAssert([obj isKindOfClass:[MPEmbeddedObject class]],
+             @"Unexpected class: %@ (%@)", [obj properties], NSStringFromClass(obj.class));
     
-    if (_embeddedObjectCache[[obj identifier]])
-    {
+    NSAssert([obj identifier],
+             @"Object should have a non-null identifier: %@", [obj properties]);
+    
+    NSAssert(_embeddedObjectCache,
+             @"Object should have an embedded object cache: %@", self);
+    
+    if (_embeddedObjectCache[[obj identifier]]) {
         assert(_embeddedObjectCache[obj.identifier] == obj);
         return;
     }
@@ -223,8 +228,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     _embeddedObjectCache[obj.identifier] = obj;
 }
 
-- (void)removeEmbeddedObjectFromByIdentifierCache:(MPEmbeddedObject *)obj
-{
+- (void)removeEmbeddedObjectFromByIdentifierCache:(MPEmbeddedObject *)obj {
     if (!obj) return;
     
     assert([obj identifier]);
@@ -239,9 +243,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     }
 }
 
-- (MPEmbeddedObject *)embeddedObjectWithIdentifier:(NSString *)identifier
-{
-    assert(_embeddedObjectCache);
+- (MPEmbeddedObject *)embeddedObjectWithIdentifier:(NSString *)identifier {
+    NSParameterAssert(_embeddedObjectCache);
     return _embeddedObjectCache[identifier];
 }
 
