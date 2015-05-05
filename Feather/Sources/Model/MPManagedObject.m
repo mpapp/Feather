@@ -343,7 +343,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     NSDate *now = [NSDate date];
     if (!createdAtExists)
     {
-        NSParameterAssert(self.needsSave);
+        //NSParameterAssert(self.needsSave);
         [self setCreatedAt:now];
     }
     
