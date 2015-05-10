@@ -10,10 +10,9 @@
 #import "MPSearchIndexController.h"
 #import "MPException.h"
 
-#import "MPManagedObject.h"
-#import "MPDatabasePackageController.h"
-
-#import "MPTitledProtocol.h"
+#import <MPFoundation/MPFoundation.h>
+#import <Feather/Feather.h>
+#import <FeatherExtensions/FeatherExtensions.h>
 
 #import "NSNotificationCenter+MPExtensions.h"
 #import "NSObject+MPExtensions.h"

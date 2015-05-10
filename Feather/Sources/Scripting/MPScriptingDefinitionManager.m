@@ -9,8 +9,7 @@
 #import "MPScriptingDefinitionManager.h"
 
 #import <Feather/Feather.h>
-#import <Feather/NSString+MPExtensions.h>
-#import <Feather/NSBundle+MPExtensions.h>
+#import <FeatherExtensions/FeatherExtensions.h>
 
 @interface MPScriptingDefinitionManager ()
 @property (readonly) NSDictionary *codeMap;
@@ -23,7 +22,9 @@
 @implementation MPScriptingDefinitionManager
 
 - (instancetype)init {
-    @throw [[MPInitIsPrivateException alloc] initWithSelector:_cmd];
+    NSAssert(false, @"Please init with -initWithSDEFDocument:error: instead.");
+    self = nil;
+    return self;
 }
 
 - (instancetype)initWithSDEFDocument:(NSXMLDocument *)document error:(NSError **)error {
@@ -70,7 +71,7 @@
                     for (NSXMLElement *typeNode in typeNodes) {
                         NSString *typeAttrib = [typeNode attributeForName:@"type"].stringValue;
                         
-                        BOOL isList = [typeNode attributeForName:@"list"];
+                        BOOL isList = [[typeNode attributeForName:@"list"].stringValue isEqualToString:@"yes"];
                         NSString *t = isList ? typeAttrib : [@"list:%@" stringByAppendingString:typeAttrib];
                         
                         [typeMap[code] addObject:t];

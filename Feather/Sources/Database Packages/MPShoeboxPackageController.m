@@ -7,15 +7,14 @@
 //
 
 #import "MPShoeboxPackageController.h"
-#import <Feather/NSBundle+MPExtensions.h>
-#import <Feather/NSBundle+MPExtensions.h>
+
+#import <FeatherExtensions/FeatherExtensions.h>
+
 #import "MPShoeboxPackageController+Protected.h"
 #import "MPDatabasePackageController+Protected.h"
 #import "MPDatabase.h"
 
-#import "MPManagedObject+Protected.h"
-#import "NSObject+MPExtensions.h"
-#import "NSFileManager+MPExtensions.h"
+
 #import "NSNotificationCenter+ErrorNotification.h"
 
 #import "MPException.h"

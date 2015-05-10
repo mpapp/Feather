@@ -9,6 +9,8 @@
 #import "MPRootSection.h"
 #import "MPRootSection+Protected.h"
 
+#import <FeatherExtensions/FeatherExtensions.h>
+
 #import <Feather/MPDatabasePackageController.h>
 #import "RegexKitLite.h"
 #import "Mixin.h"

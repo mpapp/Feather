@@ -7,7 +7,7 @@
 //
 
 #import "MPDatabasePackageController.h"
-#import "NSNotificationCenter+MPExtensions.h"
+#import "NSNotificationCenter+MPManagedObjectExtensions.h"
 
 extern NSString * const MPGlobalUserDatabaseIdentifier;
 extern NSString * const MPDefaultsKeySharedPackageUDID;

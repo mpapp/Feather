@@ -7,7 +7,7 @@
 //
 
 
-#import <Feather/NSBundle+MPExtensions.h>
+#import "NSBundle+MPExtensions.h"
 
 
 @implementation NSBundle (Feather)

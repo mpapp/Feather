@@ -11,22 +11,16 @@
 #import "MPManagedObjectsController+Protected.h"
 #import "MPSnapshot+Protected.h"
 
-#import <Feather/NSBundle+MPExtensions.h>
-#import <Feather/NSNotificationCenter+ErrorNotification.h>
-#import <Feather/NSFileManager+MPExtensions.h>
+#import <FeatherExtensions/FeatherExtensions.h>
 
 #import "MPContributor.h"
 #import "MPContributorsController.h"
 #import "MPSnapshotsController.h"
 #import "MPException.h"
-#import "NSString+MPExtensions.h"
-#import "NSObject+MPExtensions.h"
 
 #import "MPRootSection.h"
 
 #import "RegexKitLite.h"
-
-#import <Feather/NSObject+MPExtensions.h>
 
 #import <CouchbaseLite/CouchbaseLite.h>
 #import <CouchbaseLiteListener/CBLListener.h>

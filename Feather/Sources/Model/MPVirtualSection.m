@@ -11,7 +11,8 @@
 
 #import "Mixin.h"
 
-#import <Feather/NSArray+MPExtensions.h>
+#import <FeatherExtensions/FeatherExtensions.h>
+
 #import <Feather/MPException.h>
 
 @implementation MPVirtualSection

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Feather/NSBundle+MPExtensions.h>
+#import <FeatherExtensions/FeatherExtensions.h>
 
 #import <Feather/MPManagedObject+Protected.h>
 #import "MPManagedObjectsController+Protected.h"
@@ -14,14 +14,8 @@
 #import "MPDatabasePackageController.h"
 #import "MPDatabasePackageController+Protected.h"
 
-#import "NSSet+MPExtensions.h"
-#import "NSObject+MPExtensions.h"
-#import "NSArray+MPExtensions.h"
-#import "NSNotificationCenter+ErrorNotification.h"
-#import "NSDictionary+MPExtensions.h"
 #import "NSDictionary+MPManagedObjectExtensions.h"
-#import "NSString+MPExtensions.h"
-#import "NSFileManager+MPExtensions.h"
+
 #import "MPException.h"
 #import "MPDatabase.h"
 

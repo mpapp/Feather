@@ -16,7 +16,7 @@
 
 #import <objc/runtime.h>
 
-#import "DiffMatchPatch.h"
+#import <DiffMatchPatch/DiffMatchPatch.h>
 
 @implementation NSObject (Feather)
 

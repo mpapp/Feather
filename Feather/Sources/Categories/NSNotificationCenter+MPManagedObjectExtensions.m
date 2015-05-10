@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import "NSNotificationCenter+MPExtensions.h"
+#import "NSNotificationCenter+MPManagedObjectExtensions.h"
 #import "MPManagedObject.h"
 #import "MPDatabasePackageController.h"
 

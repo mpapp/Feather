@@ -14,9 +14,17 @@ NSString * const MPManagedObjectDictionaryErrorDomain = @"MPManagedObjectDiction
 
 @implementation NSDictionary (MPManagedObject)
 
-- (NSString *)managedObjectType { return self[@"objectType"]; }
-- (NSString *)managedObjectDocumentID { return self[@"_id"]; }
-- (NSString *)managedObjectRevisionID { return self[@"_rev"]; }
+- (NSString *)managedObjectType {
+    return self[@"objectType"];
+}
+
+- (NSString *)managedObjectDocumentID {
+    return self[@"_id"];
+}
+
+- (NSString *)managedObjectRevisionID {
+    return self[@"_rev"];
+}
 
 - (BOOL)isManagedObjectDictionary:(NSError **)error
 {

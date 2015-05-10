@@ -6,38 +6,12 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
+#import <Feather/Feather.h>
 #import <Feather/MPManagedObject+Protected.h>
-#import <Feather/NSString+MPExtensions.h>
+#import <Feather/MPManagedObjectsController+Protected.h>
+#import <Feather/MPEmbeddedObject+Protected.h>
 
-#import "MPDatabase.h"
-#import "MPManagedObject.h"
-#import "MPManagedObjectsController.h"
-
-#import "MPManagedObjectsController+Protected.h"
-
-#import "MPDatabasePackageController.h"
-#import "MPDatabasePackageController+Protected.h"
-#import "MPShoeboxPackageController.h"
-
-#import "NSNotificationCenter+MPExtensions.h"
-
-#import "MPEmbeddedObject.h"
-#import "MPEmbeddedObject+Protected.h"
-#import "MPEmbeddedPropertyContainingMixin.h"
-
-#import "MPEmbeddedObject.h"
-
-#import "MPContributor.h"
-#import "MPContributorsController.h"
-#import "MPShoeboxPackageController.h"
-
-#import "NSObject+MPExtensions.h"
-#import "NSArray+MPExtensions.h"
-#import "NSDictionary+MPExtensions.h"
-#import "NSObject+MPExtensions.h"
-#import "NSFileManager+MPExtensions.h"
-#import "NSDictionary+MPManagedObjectExtensions.h"
-#import "NSNotificationCenter+ErrorNotification.h"
+#import <FeatherExtensions/FeatherExtensions.h>
 
 #import "NSString+MPSearchIndex.h"
 

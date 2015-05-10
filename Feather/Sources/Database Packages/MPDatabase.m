@@ -20,9 +20,7 @@
 #import "NSArray+MPExtensions.h"
 #import "MPException.h"
 
-#import <Feather/NSNotificationCenter+MPExtensions.h>
-#import <Feather/NSNotificationCenter+ErrorNotification.h>
-#import <Feather/NSBundle+MPExtensions.h>
+#import <FeatherExtensions/FeatherExtensions.h>
 
 #import <CouchbaseLite/CouchbaseLite.h>
 

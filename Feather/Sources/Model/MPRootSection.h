@@ -10,7 +10,6 @@
 
 #import <Feather/Feather.h>
 #import <Feather/MPTreeItem.h>
-#import <Feather/NSNotificationCenter+MPExtensions.h>
 #import <Feather/MPCacheable.h>
 #import <Feather/MPTitledProtocol.h>
 

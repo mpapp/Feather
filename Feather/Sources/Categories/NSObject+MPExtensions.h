@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-
 NS_INLINE id MPNilToObject(id object, id defaultObject)
 {
     return (object != nil) ? object : defaultObject;
@@ -19,6 +18,12 @@ NS_INLINE id MPNilToNSNull(id object)
     return MPNilToObject(object, NSNull.null);
 }
 
+NS_INLINE BOOL MPOptionIsOn(NSUInteger flags, NSUInteger flag)
+{
+    if (flag == 0)
+        return YES;
+    return ((flags & flag) == flag);
+}
 
 @interface NSObject (Feather)
 

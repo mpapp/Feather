@@ -7,7 +7,7 @@
 //
 
 #import "MPManagedObjectsController.h"
-#import "NSNotificationCenter+MPExtensions.h"
+#import "NSNotificationCenter+MPManagedObjectExtensions.h"
 
 extern NSString * const MPContributorRoleAuthor;
 extern NSString * const MPContributorRoleEditor;

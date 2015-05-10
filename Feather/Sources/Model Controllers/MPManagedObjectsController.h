@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import "MPCacheable.h"
-#import "NSNotificationCenter+MPExtensions.h"
+#import "NSNotificationCenter+MPManagedObjectExtensions.h"
 
 #import <CouchbaseLite/CouchbaseLite.h>
 
