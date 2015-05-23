@@ -78,6 +78,13 @@ NS_REQUIRES_PROPERTY_DEFINITIONS
 
 - (BOOL)save:(NSError *__autoreleasing *)outError;
 
+/** Saves the object, and all it’s embedded object typed properties, and managed object typed properties.
+ * Also sends -deepSave: recursively to all managed and embedded objects referenced by the object. */
+- (BOOL)deepSave:(NSError *__autoreleasing *)outError;
+
+/** Deep saves and posts an error notification on errors to the object's package controller's notification center. */
+- (BOOL)deepSave;
+
 /** Saves, and on error posts an error notification to object's embedded object's package controller's notification center. */
 - (BOOL)save;
 

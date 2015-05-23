@@ -27,6 +27,8 @@
 		5F3D380E1725D8E000D19D7C /* MPBundlableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D380C1725D8E000D19D7C /* MPBundlableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3D380F1725D8E000D19D7C /* MPBundlableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D380D1725D8E000D19D7C /* MPBundlableMixin.m */; };
 		5F3D8C0C1AAD07C900D0D4A8 /* MPJSONRepresentable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F42FC481B10C36900CD88AA /* MPDeepSaver.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F42FC461B10C36900CD88AA /* MPDeepSaver.h */; };
+		5F42FC491B10C36900CD88AA /* MPDeepSaver.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F42FC471B10C36900CD88AA /* MPDeepSaver.m */; };
 		5F6857A01727C38900FE06B0 /* MPVirtualSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579D1727C38900FE06B0 /* MPVirtualSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F68579E1727C38900FE06B0 /* MPVirtualSection.m */; };
 		5F6857A21727C38900FE06B0 /* MPVirtualSection+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579F1727C38900FE06B0 /* MPVirtualSection+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -420,6 +422,8 @@
 		5F3D380C1725D8E000D19D7C /* MPBundlableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPBundlableMixin.h; path = Sources/Model/MPBundlableMixin.h; sourceTree = "<group>"; };
 		5F3D380D1725D8E000D19D7C /* MPBundlableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPBundlableMixin.m; path = Sources/Model/MPBundlableMixin.m; sourceTree = "<group>"; };
 		5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPJSONRepresentable.h; path = Sources/Model/MPJSONRepresentable.h; sourceTree = "<group>"; };
+		5F42FC461B10C36900CD88AA /* MPDeepSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPDeepSaver.h; path = Sources/Model/MPDeepSaver.h; sourceTree = "<group>"; };
+		5F42FC471B10C36900CD88AA /* MPDeepSaver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPDeepSaver.m; path = Sources/Model/MPDeepSaver.m; sourceTree = "<group>"; };
 		5F6414BA19A2A876007E5245 /* CBLDocument+MPScriptingSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CBLDocument+MPScriptingSupport.h"; path = "../Feather/Sources/Scripting/CBLDocument+MPScriptingSupport.h"; sourceTree = "<group>"; };
 		5F6414BB19A2A876007E5245 /* CBLDocument+MPScriptingSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CBLDocument+MPScriptingSupport.m"; path = "../Feather/Sources/Scripting/CBLDocument+MPScriptingSupport.m"; sourceTree = "<group>"; };
 		5F68579D1727C38900FE06B0 /* MPVirtualSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPVirtualSection.h; path = Sources/Model/MPVirtualSection.h; sourceTree = "<group>"; };
@@ -1077,6 +1081,8 @@
 				5F68579E1727C38900FE06B0 /* MPVirtualSection.m */,
 				5F68579F1727C38900FE06B0 /* MPVirtualSection+Protected.h */,
 				5F779FF4172BE69A0011C4DD /* MPRESTFulResource.h */,
+				5F42FC461B10C36900CD88AA /* MPDeepSaver.h */,
+				5F42FC471B10C36900CD88AA /* MPDeepSaver.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1208,6 +1214,7 @@
 				5FDB3A7817079AEC0049EBB5 /* MPContributorsController.h in Headers */,
 				5FDB3A7D17079B1E0049EBB5 /* MPSnapshot.h in Headers */,
 				5FDB3A7F17079B1E0049EBB5 /* MPSnapshot+Protected.h in Headers */,
+				5F42FC481B10C36900CD88AA /* MPDeepSaver.h in Headers */,
 				5FDB3A8717079C020049EBB5 /* MPException.h in Headers */,
 				5FDB3A9217079DD10049EBB5 /* MPDatabase.h in Headers */,
 				5FDB3A9417079DD10049EBB5 /* MPDatabasePackageController.h in Headers */,
@@ -1720,6 +1727,7 @@
 				5FDB3AA017079ED80049EBB5 /* MPShoeboxPackageController.m in Sources */,
 				5F293B9C170CAD65001C2111 /* MPCacheableMixin.m in Sources */,
 				5FADC6F018FADB33006F4119 /* DiffMatchPatchCFUtilities.c in Sources */,
+				5F42FC491B10C36900CD88AA /* MPDeepSaver.m in Sources */,
 				5F293BA1170CAECC001C2111 /* MPEmbeddedObject.m in Sources */,
 				5FADC6F418FADB33006F4119 /* NSMutableDictionary+DMPExtensions.m in Sources */,
 				5FC423771AFF8943002234FB /* NSDictionary+MPManagedObjectExtensions.m in Sources */,

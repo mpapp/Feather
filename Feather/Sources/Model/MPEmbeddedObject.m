@@ -14,6 +14,8 @@
 #import "MPEmbeddedPropertyContainingMixin.h"
 #import "NSNotificationCenter+ErrorNotification.h"
 
+#import "MPDeepSaver.h"
+
 #import "Mixin.h"
 
 #import <CouchbaseLite/CouchbaseLite.h>
@@ -433,6 +435,14 @@
     }
     
     return success;
+}
+
+- (BOOL)deepSave {
+    return [MPDeepSaver deepSave:self];
+}
+
+- (BOOL)deepSave:(NSError *__autoreleasing *)outError {
+    return [MPDeepSaver deepSave:self error:outError];
 }
 
 - (void)markNeedsSave
