@@ -21,27 +21,6 @@
 
 @implementation MPDeepSaver
 
-+ (BOOL)deepSave:(id<MPEmbeddingObject>)obj {
-    NSError *err = nil;
-    BOOL success;
-    if (!(success = [self deepSave:obj error:&err])) {
-#ifdef DEBUG
-        NSAssert(false, @"Encountered an error when saving: %@", err);
-#endif
-        MPManagedObject *embeddingO = nil;
-        while ((embeddingO = (id)[(id)obj embeddingObject])) {
-            if ([embeddingO isKindOfClass:MPManagedObject.class])
-                break;
-        }
-        
-        MPDatabasePackageController *pkgc = [embeddingO.database packageController];
-        [pkgc.notificationCenter postErrorNotification:err];
-        return NO;
-    }
-    
-    return success;
-}
-
 + (BOOL)deepSave:(id<MPEmbeddingObject>)obj error:(NSError *__autoreleasing *)outError {
     
     if (![obj save:outError])
@@ -77,9 +56,9 @@
               else {
                   NSAssert(false, @"Unexpected type with key '%@': %@", key, o);
               }
-              return NO;
           }
-          return NO;
+          
+          return YES;
       }];
      
     return YES;

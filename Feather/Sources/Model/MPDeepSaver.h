@@ -13,8 +13,6 @@
 /** A utility that saves object graphs of id<MPEmbeddingObject>. */
 @interface MPDeepSaver : NSObject
 
-+ (BOOL)deepSave:(id<MPEmbeddingObject>)o;
-
 + (BOOL)deepSave:(id<MPEmbeddingObject>)o error:(NSError *__autoreleasing *)outError;
 
 @end

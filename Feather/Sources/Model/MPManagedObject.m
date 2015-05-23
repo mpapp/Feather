@@ -537,7 +537,18 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 - (BOOL)deepSave {
-    return [MPDeepSaver deepSave:self];
+    NSError *err = nil;
+    BOOL success;
+    if (!(success = [self deepSave:&err])) {
+#ifdef DEBUG
+        NSAssert(false, @"Encountered an error when saving: %@", err);
+#endif
+        MPDatabasePackageController *pkgc = [self.database packageController];
+        [pkgc.notificationCenter postErrorNotification:err];
+        return NO;
+    }
+    
+    return success;
 }
 
 - (BOOL)deepSave:(NSError *__autoreleasing *)outError {

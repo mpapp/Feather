@@ -276,6 +276,7 @@
                             && ![cls isSubclassOfClass:NSDictionary.class]
                             && ![cls isSubclassOfClass:NSSet.class];
     if (!isScalarProperty && [o isKindOfClass:MPManagedObject.class]) {
+        [o cacheValue:[o valueForKey:self.embeddingKey] ofProperty:self.embeddingKey changed:YES];
         [o markPropertyNeedsSave:self.embeddingKey];
     }
     else {
@@ -438,8 +439,26 @@
 }
 
 - (BOOL)deepSave {
-    return [MPDeepSaver deepSave:self];
+    NSError *err = nil;
+    BOOL success;
+    if (!(success = [self deepSave:&err])) {
+#ifdef DEBUG
+        NSAssert(false, @"Encountered an error when saving: %@", err);
+#endif
+        id embeddingO = self;
+        while ((embeddingO = [embeddingO embeddingObject])) {
+            if ([embeddingO isKindOfClass:MPManagedObject.class])
+                break;
+        }
+        
+        MPDatabasePackageController *pkgc = [[embeddingO database] packageController];
+        [pkgc.notificationCenter postErrorNotification:err];
+        return NO;
+    }
+    
+    return success;
 }
+
 
 - (BOOL)deepSave:(NSError *__autoreleasing *)outError {
     return [MPDeepSaver deepSave:self error:outError];
