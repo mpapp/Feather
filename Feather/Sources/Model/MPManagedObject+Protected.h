@@ -38,7 +38,7 @@
 
 #pragma mark -
 
-/* MPManagedObject & MPEmbeddedObject need some otherwise private state of CouchModel exposed. */
+/* MPManagedObject & MPEmbeddedObject need some otherwise private state of CBLModel exposed. */
 @interface CBLModel (Private) <MPEmbeddingObject>
 
 - (void)CBLDocumentChanged:(CBLDocument *)doc;
@@ -46,6 +46,8 @@
 - (void)cacheValue:(id)value ofProperty:(NSString *)property changed:(BOOL)changed;
 - (CBLModel *)getModelProperty:(NSString*)property;
 - (void)markNeedsSave;
+- (void)markPropertyNeedsSave:(NSString*)property;
+
 
 @end
 

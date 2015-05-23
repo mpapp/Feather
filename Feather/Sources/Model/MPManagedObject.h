@@ -75,6 +75,10 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 @interface MPManagedObject : CBLModel
     <NSPasteboardWriting, NSPasteboardReading, MPCacheable, MPEmbeddingObject, MPJSONRepresentable>
 
+/** Saves the object, and all it’s embedded object typed properties, and managed object typed properties. 
+  * Also sends -deepSave: recursively also to all managed and embedded objects referenced by the object. */
+- (BOOL)deepSave:(NSError *__autoreleasing *)outError;
+
 /** The managed objects controller which manages (and caches) the object. */
 @property (weak, readonly) MPManagedObjectsController *controller;
 

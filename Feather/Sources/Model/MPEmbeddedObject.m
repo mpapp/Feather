@@ -268,7 +268,18 @@
         [_properties removeObjectForKey:property];
     }
     
-    [o cacheValue:self ofProperty:self.embeddingKey changed:YES];
+    Class cls = [o.class classOfProperty:self.embeddingKey];
+    
+    BOOL isScalarProperty = ![cls isSubclassOfClass:NSArray.class]
+                            && ![cls isSubclassOfClass:NSDictionary.class]
+                            && ![cls isSubclassOfClass:NSSet.class];
+    if (!isScalarProperty && [o isKindOfClass:MPManagedObject.class]) {
+        [o markPropertyNeedsSave:self.embeddingKey];
+    }
+    else {
+        [o cacheValue:self ofProperty:self.embeddingKey changed:YES];
+    }
+    
     [o markNeedsSave];
     
     return YES;

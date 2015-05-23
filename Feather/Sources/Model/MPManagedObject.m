@@ -534,6 +534,63 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     [_controller didLoadObjectFromDocument:self];
 }
 
+- (BOOL)deepSave:(NSError *__autoreleasing *)outError {
+    
+    if (![self save:outError])
+        return NO;
+    
+    // first find objects that are dirty (needsSave = YES)
+    [[self.class propertiesOfSubclassesForClass:self.class matching:
+     ^BOOL(__unsafe_unretained Class cls, NSString *key) {
+         Class propClass = [self.class classOfProperty:key];
+        
+         id o = [self valueForKey:key];
+         if ([propClass isSubclassOfClass:MPManagedObject.class] || [propClass isSubclassOfClass:MPEmbeddedObject.class]) {
+             return [o needsSave];
+         }
+         else if ([key hasPrefix:@"embedded"]) {
+             if ([propClass isSubclassOfClass:NSArray.class] || [propClass isSubclassOfClass:NSSet.class]) {
+                 for (MPEmbeddedObject *eo in o) {
+                     if (eo.needsSave)
+                         return YES;
+                 }
+             }
+             else if ([propClass isSubclassOfClass:NSDictionary.class]) {
+                 for (id k in o) {
+                     MPManagedObject *v = o[k];
+                     if (v.needsSave)
+                         return YES;
+                 }
+             }
+             else {
+                 NSAssert(false, @"Unexpected type with key '%@': %@", key, o);
+             }
+             return NO;
+         }
+         return NO;
+    }]
+     // deep save all that needsSave = YES 
+     enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+        id o = [self valueForKey:key];
+        
+        if ([o isKindOfClass:MPManagedObject.class] || [o isKindOfClass:MPEmbeddedObject.class])
+            [o deepSave:outError];
+        
+        else if ([o isKindOfClass:NSArray.class] || [o isKindOfClass:NSSet.class]) {
+            for (id v in o)
+                [v deepSave:outError];
+        }
+        else if ([o isKindOfClass:NSDictionary.class]) {
+            for (id k in o)
+                [o[k] deepSave:outError];
+        }
+        
+        NSAssert(false, @"Unexpected type with key '%@': %@", key, obj);
+    }];
+    
+    return YES;
+}
+
 - (MPManagedObjectsController *)controller {
     return _controller;
 }
@@ -1611,6 +1668,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 - (void)setEmbeddedObjectArray:(NSArray *)value ofProperty:(NSString *)property {
+    //TODO: remove contents of previous array of embedded objects from embeddedObjectCache
+    NSParameterAssert([value isKindOfClass:NSArray.class]);
+    
     NSMutableArray *embeddedObjs = [NSMutableArray arrayWithCapacity:value.count];
     for (__strong id val in value) {
         if ([val isKindOfClass:[NSString class]]) {
@@ -1628,6 +1688,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     }
     
     //TODO: remove contents of previous array of embedded objects from embeddedObjectCache
+    NSParameterAssert([embeddedObjs isKindOfClass:NSArray.class]);
     [self setValue:[embeddedObjs copy] ofProperty:property];
 }
 
