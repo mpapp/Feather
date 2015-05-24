@@ -302,7 +302,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)setControllerWithDocument:(CBLDocument *)document {
     NSString *classStr = [document propertyForKey:@"objectType"];
-    assert(classStr);
+    NSAssert(classStr, @"Unexpected nil 'objectType': %@", document.properties);
     Class class = NSClassFromString(classStr);
     
     MPDatabasePackageController *packageController = [document.database packageController];
