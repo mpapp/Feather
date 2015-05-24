@@ -1499,10 +1499,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     _controller = controller;
 }
 
-- (void)setValue:(id)value ofProperty:(NSString *)property
+- (BOOL)setValue:(id)value ofProperty:(NSString *)property
 {
     if ([self isDeleted])
-        return;
+        return YES;
     
     #ifdef DEBUG
     if ([property isEqualToString:@"objectType"])
@@ -1520,7 +1520,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
             if (![value isEqual:existingObjectType])
                 @throw [NSException exceptionWithName:@"MPInvalidArgumentException" reason:@"Trying to reset objectType" userInfo:nil];
             
-            return; // nothing to do (value is the same)
+            return YES; // nothing to do (value is the same)
         }
     }
     
@@ -1536,12 +1536,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
             if (![value isEqual:existingID])
                 @throw [NSException exceptionWithName:@"MPInvalidArgumentException" reason:@"Trying to reset _id" userInfo:nil];
             
-            return; // nothing to do (value is the same)
+            return YES; // nothing to do (value is the same)
         }
     }
     
     NSParameterAssert(self.document);
     [super setValue:value ofProperty:property];
+    
+    return YES;
 }
 
 - (void)setEmbeddedObject:(MPEmbeddedObject *)embeddedObj ofProperty:(NSString *)property
