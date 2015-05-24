@@ -182,7 +182,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)cacheEmbeddedObjectByIdentifier:(MPEmbeddedObject *)obj
 {
-    assert(obj);
+    NSAssert(obj, @"Expecting a non-nil object to cache.");
     
     if (!obj)
         return;
@@ -197,7 +197,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
              @"Object should have an embedded object cache: %@", self);
     
     if (_embeddedObjectCache[[obj identifier]]) {
-        assert(_embeddedObjectCache[obj.identifier] == obj);
+        NSAssert(_embeddedObjectCache[obj.identifier] == obj, @"Mismatching identity: %@ != %@", _embeddedObjectCache[[obj identifier]], obj);
         return;
     }
     
@@ -1548,16 +1548,23 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)setEmbeddedObject:(MPEmbeddedObject *)embeddedObj ofProperty:(NSString *)property
 {
-    [self cacheEmbeddedObjectByIdentifier:embeddedObj];
+    id existingValue = [self valueForKey:property];
+    if (embeddedObj) { // cache the new value
+        if (existingValue != embeddedObj)
+            [self removeEmbeddedObjectFromByIdentifierCache:existingValue];
+        
+        [self cacheEmbeddedObjectByIdentifier:embeddedObj];
+    } else { // clear the cache
+        [self removeEmbeddedObjectFromByIdentifierCache:existingValue];
+    }
     
-    assert(!embeddedObj.embeddingKey
-           || [embeddedObj.embeddingKey isEqualToString:property]);
+    NSAssert(!embeddedObj.embeddingKey
+             || [embeddedObj.embeddingKey isEqualToString:property],
+             @"Unexpected embeddingKey: %@", embeddedObj.embeddingKey);
     
-    assert(!embeddedObj
-           ||[embeddedObj isKindOfClass:[MPEmbeddedObject class]]);
-    
-    if (embeddedObj.embeddingKey)
-        assert([embeddedObj.embeddingKey isEqualToString:property]);
+    NSAssert(!embeddedObj
+             ||[embeddedObj isKindOfClass:[MPEmbeddedObject class]],
+             @"Attempting to embed an object other than an MPEmbeddedObject instance: %@", embeddedObj);
     
     embeddedObj.embeddingKey = property;
     [self setValue:embeddedObj ofProperty:property];
