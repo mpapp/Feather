@@ -12,6 +12,11 @@
 
 @protocol MPWaitingOperation;
 @class MPEmbeddedObject;
+@class MPManagedObject;
+
+extern NSString *const MPPasteboardTypeEmbeddedObjectFull;
+extern NSString *const MPPasteboardTypeEmbeddedObjectID;
+extern NSString *const MPPasteboardTypeEmbeddedObjectIDArray;
 
 /** Protocol used to mark objects which can embed MPEmbeddedObject instances. */
 @protocol MPEmbeddingObject <MPEmbeddedPropertyContaining, NSObject>
@@ -43,7 +48,7 @@
 /** A model object that can be embedded as values in MPManagedObject's keys. 
   * MPEmbeddedObject itself conforms to MPEmbeddingObject because it can embed other objects. */
 NS_REQUIRES_PROPERTY_DEFINITIONS
-@interface MPEmbeddedObject : MYDynamicObject <MPEmbeddingObject>
+@interface MPEmbeddedObject : MYDynamicObject <MPEmbeddingObject, NSPasteboardWriting, NSPasteboardReading>
 
 @property (readonly, copy) NSString *identifier;
 
@@ -66,6 +71,9 @@ NS_REQUIRES_PROPERTY_DEFINITIONS
 /** Returns a JSON encodable version of the embedded object. */
 - (NSString *)externalize;
 
+/** The embedding managed object of an embedded object is the managed object found when the path is followed through 'embeddingObject' until a MPManagedObject instance is found. */
+@property (readonly) MPManagedObject *embeddingManagedObject;
+
 /** Returns an MPEmbeddedObject instance for a JSON string. 
   * The class of the object is determined by its 'objectType' property. */
 + (instancetype)embeddedObjectWithJSONString:(NSString *)string
@@ -75,6 +83,9 @@ NS_REQUIRES_PROPERTY_DEFINITIONS
 + (instancetype)embeddedObjectWithDictionary:(NSDictionary *)dictionary
                              embeddingObject:(id<MPEmbeddingObject>)embeddingObject
                                 embeddingKey:(NSString *)key;
+
+/** Get an embedded object given a dictionary representation that contains a reference to it (used by the pasteboard reader). */
++ (id)objectWithReferableDictionaryRepresentation:(NSDictionary *)referableDictionaryRep;
 
 - (BOOL)save:(NSError *__autoreleasing *)outError;
 

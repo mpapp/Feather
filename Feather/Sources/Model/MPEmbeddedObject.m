@@ -13,6 +13,7 @@
 #import "MPEmbeddedObject+Protected.h"
 #import "MPEmbeddedPropertyContainingMixin.h"
 #import "NSNotificationCenter+ErrorNotification.h"
+#import <FeatherExtensions/FeatherExtensions.h>
 
 #import "MPDeepSaver.h"
 
@@ -21,6 +22,10 @@
 #import <CouchbaseLite/CouchbaseLite.h>
 
 #import <objc/runtime.h>
+
+NSString *const MPPasteboardTypeEmbeddedObjectFull    = @"com.piipari.eo.full.plist";
+NSString *const MPPasteboardTypeEmbeddedObjectID      = @"com.piipari.eo.id.plist";
+NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.array.plist";
 
 @interface MPEmbeddedObject ()
 {
@@ -288,6 +293,17 @@
     return YES;
 }
 
+- (MPManagedObject *)embeddingManagedObject {
+    id e = self;
+    
+    while ((e = [e embeddingObject])) {
+        if ([e isKindOfClass:MPManagedObject.class])
+            return e;
+    }
+    
+    NSLog(@"Failed to recover the embedding managed object for embedded object: %@", self);
+    return nil;
+}
 
 - (void)setIdentifier:(NSString *)identifier
 {
@@ -860,6 +876,124 @@
 - (NSString *)description
 {
     return [NSString stringWithFormat:@"<%@ %@>", NSStringFromClass(self.class), self.properties];
+}
+
+#pragma mark - NSPasteboardWriting & NSPasteboardReading
+
+- (NSArray *)writableTypesForPasteboard:(NSPasteboard *)pasteboard
+{
+    return @[ MPPasteboardTypeEmbeddedObjectFull,
+              MPPasteboardTypeEmbeddedObjectID,
+              MPPasteboardTypeEmbeddedObjectIDArray ];
+}
+
+- (NSDictionary *)referableDictionaryRepresentation
+{
+    return @{
+             @"_id"                    : self.identifier,
+             @"embeddingObject"        : [self.embeddingObject isKindOfClass:MPEmbeddedObject.class] ? [(id)self.embeddingObject identifier] : [(id)self.embeddingObject documentID],
+             @"embeddingKey"           : self.embeddingKey,
+             @"embeddingManagedObject" : self.embeddingManagedObject.documentID,
+             @"databasePackageID"      : [self.embeddingManagedObject.controller.packageController fullyQualifiedIdentifier]
+        };
+}
+
+- (id)pasteboardPropertyListForType:(NSString *)type
+{
+    // Only these two types should be called directly on MPEmbeddedObject instances (ObjectID array type is for a collection of objects)
+    NSParameterAssert([type isEqual:MPPasteboardTypeEmbeddedObjectFull]
+                      || [type isEqual:MPPasteboardTypeEmbeddedObjectID]
+                      || [type isEqual:MPPasteboardTypeEmbeddedObjectIDArray]);
+    
+    NSString *errorStr = nil;
+    NSData *dataRep = nil;
+    if ([type isEqual:MPPasteboardTypeEmbeddedObjectFull])
+    {
+        NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:self.properties];
+        
+        NSParameterAssert([type isEqualToString:MPPasteboardTypeEmbeddedObjectFull]);
+        dataRep = [NSPropertyListSerialization dataFromPropertyList:dict
+                                                             format:NSPropertyListXMLFormat_v1_0
+                                                   errorDescription:&errorStr];
+    }
+    else if ([type isEqual:MPPasteboardTypeEmbeddedObjectID])
+    {
+        dataRep = [NSPropertyListSerialization dataFromPropertyList:self.referableDictionaryRepresentation
+                                                             format:NSPropertyListXMLFormat_v1_0
+                                                   errorDescription:&errorStr];
+    }
+    else if ([type isEqual:MPPasteboardTypeEmbeddedObjectIDArray])
+    {
+        dataRep = [NSPropertyListSerialization dataFromPropertyList:@[self.referableDictionaryRepresentation]
+                                                             format:NSPropertyListXMLFormat_v1_0 errorDescription:&errorStr];
+    }
+    
+    if (!dataRep && errorStr)
+    {
+        NSLog(@"ERROR! Could not paste object %@ to pasteboard: %@", self, errorStr);
+    }
+    
+    return dataRep;
+}
+
++ (NSData *)pasteboardObjectIDPropertyListForObjects:(NSArray *)objects error:(NSError **)err
+{
+    NSArray *objectIDDicts = [objects mapObjectsUsingBlock:^id(MPEmbeddedObject *mo, NSUInteger idx) {
+        NSDictionary *dict = [mo referableDictionaryRepresentation];
+        assert([NSPropertyListSerialization propertyList:dict isValidForFormat:NSPropertyListXMLFormat_v1_0]);
+        return dict;
+    }];
+    
+    NSData *data = [NSPropertyListSerialization dataWithPropertyList:objectIDDicts format:NSPropertyListXMLFormat_v1_0 options:0 error:err];
+    return data;
+}
+
++ (NSArray *)readableTypesForPasteboard:(NSPasteboard *)pasteboard
+{
+    return @[ MPPasteboardTypeEmbeddedObjectFull,
+              MPPasteboardTypeEmbeddedObjectID,
+              MPPasteboardTypeEmbeddedObjectIDArray ];
+}
+
++ (NSPasteboardReadingOptions)readingOptionsForType:(NSString *)type pasteboard:(NSPasteboard *)pasteboard
+{
+    NSParameterAssert([type isEqualToString:MPPasteboardTypeEmbeddedObjectFull]
+                      || [type isEqualToString:MPPasteboardTypeEmbeddedObjectID]
+                      || [type isEqualToString:MPPasteboardTypeEmbeddedObjectIDArray]);
+    return NSPasteboardReadingAsPropertyList;
+}
+
+- (id)initWithPasteboardPropertyList:(id)propertyList ofType:(NSString *)type {
+    NSParameterAssert([type isEqualToString:MPPasteboardTypeEmbeddedObjectFull]
+                      || [type isEqualToString:MPPasteboardTypeEmbeddedObjectID]
+                      || [type isEqualToString:MPPasteboardTypeEmbeddedObjectIDArray]);
+    
+    id obj = [self initWithPasteboardObjectIDPropertyList:propertyList ofType:MPPasteboardTypeEmbeddedObjectID];
+    if ([type isEqual:MPPasteboardTypeEmbeddedObjectFull] && obj) {
+        [obj setValuesForPropertiesWithDictionary:propertyList];
+    }
+    
+    return obj;
+}
+
+- (id)initWithPasteboardObjectIDPropertyList:(id)propertyList ofType:(NSString *)type
+{
+    NSParameterAssert([type isEqual:MPPasteboardTypeEmbeddedObjectID]);
+    NSParameterAssert([propertyList isKindOfClass:[NSDictionary class]]);
+    
+    return [self.class objectWithReferableDictionaryRepresentation:propertyList];
+}
+
++ (id)objectWithReferableDictionaryRepresentation:(NSDictionary *)referableDictionaryRep
+{
+    NSString *packageControllerID = referableDictionaryRep[@"databasePackageID"];
+    MPDatabasePackageController *pkgc = [MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:packageControllerID];
+    NSParameterAssert(pkgc);
+    
+    MPManagedObject *mo = [pkgc objectWithIdentifier:referableDictionaryRep[@"embeddingManagedObject"]];
+    
+    // FIXME: support arbitrary keypaths to get from embeddingManagedObject to the object that was actually put on the pasteboard.
+    return [mo valueForKey:referableDictionaryRep[@"embeddingKey"]];
 }
 
 #pragma mark - Scripting
