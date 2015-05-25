@@ -14,6 +14,11 @@
 
 #import <CommonCrypto/CommonDigest.h>
 
+#include <dlfcn.h>
+#include <errno.h>
+
+#include <sys/xattr.h>
+
 NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFileManagerExtensionsErrorDomain";
 
 @implementation NSFileManager (MPExtensions)
@@ -212,5 +217,67 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
     
     return YES;
 }
+
+// from https://github.com/jrmuizel/mozilla-cvs-history/blob/master/camino/sparkle/NSFileManager%2BExtendedAttributes.m
+
+- (int)removeXAttr:(const char*)name
+          fromFile:(NSString*)file
+           options:(int)options
+{
+    typedef int (*removexattr_type)(const char*, const char*, int);
+
+    // Reference removexattr directly, it's in the SDK.
+    static removexattr_type removexattr_func = removexattr;
+    
+    const char* path = NULL;
+    @try {
+        path = [file fileSystemRepresentation];
+    }
+    @catch (id exception) {
+        // -[NSString fileSystemRepresentation] throws an exception if it's
+        // unable to convert the string to something suitable.  Map that to
+        // EDOM, "argument out of domain", which sort of conveys that there
+        // was a conversion failure.
+        errno = EDOM;
+        return -1;
+    }
+    
+    return removexattr_func(path, name, options);
+}
+
+- (void)releaseFromQuarantine:(NSString*)root
+{
+    const char* quarantineAttribute = "com.apple.quarantine";
+    const int removeXAttrOptions = XATTR_NOFOLLOW;
+    
+    [self removeXAttr:quarantineAttribute
+             fromFile:root
+              options:removeXAttrOptions];
+    
+    // Only recurse if it's actually a directory.  Don't recurse into a
+    // root-level symbolic link.
+    NSError *err = nil;
+    
+    NSDictionary* rootAttributes = [self attributesOfItemAtPath:root error:&err];
+    if (!rootAttributes) {
+        NSLog(@"ERROR: %@", err);
+        return;
+    }
+    
+    NSString* rootType = [rootAttributes objectForKey:NSFileType];
+    
+    if (rootType == NSFileTypeDirectory) {
+        // The NSDirectoryEnumerator will avoid recursing into any contained
+        // symbolic links, so no further type checks are needed.
+        NSDirectoryEnumerator* directoryEnumerator = [self enumeratorAtPath:root];
+        NSString* file = nil;
+        while ((file = [directoryEnumerator nextObject])) {
+            [self removeXAttr:quarantineAttribute
+                     fromFile:[root stringByAppendingPathComponent:file]
+                      options:removeXAttrOptions];
+        }
+    }
+}
+
 
 @end
