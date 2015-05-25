@@ -39,6 +39,9 @@ extern NSString *const MPDatabasePackageListenerDidStartNotification;
  * command line tools and when the package controller has not been set to synchronize peerlessly (`-synchronizesPeerlessly`). */
 - (BOOL)packageControllerRequiresListener:(MPDatabasePackageController *)packageController;
 
+/** Return YES if you want to allow initialising the content of the */
+- (BOOL)packageControllerRequiresInitialContent:(MPDatabasePackageController *)packageController;
+
 @end
 
 extern NSString * const MPDatabasePackageControllerErrorDomain;
