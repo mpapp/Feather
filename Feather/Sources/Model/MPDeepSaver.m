@@ -31,7 +31,11 @@
       ^BOOL(__unsafe_unretained Class cls, NSString *key) {
           Class propClass = [obj.class classOfProperty:key];
           
-          if ([propClass isSubclassOfClass:MPManagedObject.class] || [propClass isSubclassOfClass:MPEmbeddedObject.class]) {
+          if (([propClass isSubclassOfClass:MPManagedObject.class]
+              || [propClass isSubclassOfClass:MPEmbeddedObject.class])
+              && ![key isEqualToString:@"evaluatedObject"]
+              && ![key hasPrefix:@"parent"]
+              && ![key hasPrefix:@"cached"]) {
               id o = [(id)obj valueForKey:key];
               
               if ([o needsSave])

@@ -1009,9 +1009,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     }
     else if ([value isKindOfClass:[NSArray class]])
     {
-        // if no objects in the array are MPEmbeddedObject instances, just return value as is.
+        // if no objects in the array are MPEmbeddedObject or MPManagedObject instances, just return value as is.
         if (![value firstObjectMatching:^BOOL(id evaluatedObject) {
-            return [evaluatedObject isKindOfClass:[MPEmbeddedObject class]];
+            return [evaluatedObject isKindOfClass:[MPEmbeddedObject class]] || [evaluatedObject isKindOfClass:[MPManagedObject class]];
         }]) return value;
         
         NSMutableArray *externalizedArray = [NSMutableArray arrayWithCapacity:[value count]];
@@ -1020,10 +1020,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         {
             if ([obj isKindOfClass:[MPEmbeddedObject class]])
             {
-                if (!externalizedArray)
-                    externalizedArray = [NSMutableArray arrayWithCapacity:[obj count]];
-                
                 [externalizedArray addObject:[obj externalize]];
+            }
+            else if ([obj isKindOfClass:[MPManagedObject class]])
+            {
+                if ([obj documentID])
+                    [externalizedArray addObject:[obj documentID]];
             }
             else
             {
@@ -1035,9 +1037,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     }
     else if ([value isKindOfClass:[NSDictionary class]])
     {
-        // if no objects in the dictionary are MPEmbeddedObject instances, just return value as is.
+        // if no objects in the dictionary are MPEmbeddedObject or MPManagedObject instances, just return value as is.
         if (![value anyObjectMatching:^BOOL(id evaluatedKey, id evaluatedObject) {
-            return [evaluatedObject isKindOfClass:[MPEmbeddedObject class]];
+            return [evaluatedObject isKindOfClass:[MPEmbeddedObject class]] || [evaluatedObject isKindOfClass:[MPManagedObject class]];
         }]) return value;
         
         NSMutableDictionary *externalizedDictionary = [NSMutableDictionary dictionaryWithCapacity:[value count]];
@@ -1048,6 +1050,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
             if ([obj isKindOfClass:[MPEmbeddedObject class]])
             {
                 externalizedDictionary[key] = [obj externalize];
+            }
+            else if ([obj isKindOfClass:[MPManagedObject class]])
+            {
+                if ([obj documentID])
+                    externalizedDictionary[key] = [obj documentID];
             }
             else
             {
