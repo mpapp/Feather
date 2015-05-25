@@ -51,6 +51,7 @@ extern NS_ENUM(NSUInteger, MPFeatherNSFileManagerExtensionsErrorCode) {
 /** Ensures that all files under the specified directory (with limitless recursion) will receive the specified permission mask (mask applied with | so including set bits are spared). */
 - (BOOL)ensurePermissionMaskIncludes:(int)grantedMask inDirectory:(NSString *)directoryPath error:(NSError **)error;
 
-- (void)releaseFromQuarantine:(NSString*)root;
+/** Release the file at the specified root path from quarantine. */
+- (void)releaseFromQuarantine:(NSString *)root;
 
 @end
