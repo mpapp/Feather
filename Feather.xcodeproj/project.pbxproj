@@ -103,8 +103,6 @@
 		5FC423751AFF87FC002234FB /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
 		5FC423761AFF893F002234FB /* NSDictionary+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3833170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC423771AFF8943002234FB /* NSDictionary+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3834170703510049EBB5 /* NSDictionary+MPManagedObjectExtensions.m */; };
-		5FC4237C1AFF8AD3002234FB /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D751418AE636500AA4007 /* CouchbaseLite.framework */; };
-		5FC4237D1AFF8AD3002234FB /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D752018AE636500AA4007 /* CouchbaseLiteListener.framework */; };
 		5FC4238E1AFF8B7B002234FB /* DiffMatchPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC423851AFF8B55002234FB /* DiffMatchPatch.framework */; };
 		5FC4238F1AFF8BDE002234FB /* NSNotificationCenter+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB383F170703EC0049EBB5 /* NSNotificationCenter+MPManagedObjectExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC423901AFF8BE3002234FB /* NSNotificationCenter+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3840170703EC0049EBB5 /* NSNotificationCenter+MPManagedObjectExtensions.m */; };
@@ -171,6 +169,8 @@
 		5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */; };
 		5FDCF34D1710CA600039DAED /* MPModelFoundationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */; };
 		5FEA8B5018A81E0100A7C14B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEA8B4F18A81E0100A7C14B /* XCTest.framework */; };
+		5FF04C7D1B15F09B00B93E33 /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D751418AE636500AA4007 /* CouchbaseLite.framework */; };
+		5FF04C7E1B15F09B00B93E33 /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D752018AE636500AA4007 /* CouchbaseLiteListener.framework */; };
 		5FFC37701AEEF7AF0041FBED /* MPCountryList.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FFC376E1AEEF7AF0041FBED /* MPCountryList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FFC37711AEEF7AF0041FBED /* MPCountryList.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFC376F1AEEF7AF0041FBED /* MPCountryList.m */; };
 		5FFD61931AFF97C600483D9C /* NSViewController+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FFD61911AFF97C600483D9C /* NSViewController+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -599,10 +599,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FC423911AFF8CCA002234FB /* libz.dylib in Frameworks */,
-				5FC4237C1AFF8AD3002234FB /* CouchbaseLite.framework in Frameworks */,
-				5FC4237D1AFF8AD3002234FB /* CouchbaseLiteListener.framework in Frameworks */,
 				5FC423751AFF87FC002234FB /* Cocoa.framework in Frameworks */,
 				5FC4238E1AFF8B7B002234FB /* DiffMatchPatch.framework in Frameworks */,
+				5FF04C7D1B15F09B00B93E33 /* CouchbaseLite.framework in Frameworks */,
+				5FF04C7E1B15F09B00B93E33 /* CouchbaseLiteListener.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
