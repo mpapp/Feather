@@ -92,6 +92,16 @@ typedef id(^MPMethodImplementationBlockProvider)(IMP originalImplementation);
  */
 + (void)runUntilDone:(void (^)(dispatch_block_t onceDoneBlock))block;
 
+/**
+ * Spins the current runloop until onceDoneBlock() is called, or a timeout period is exceeded while waiting.
+ * @warning The run loop sources will be polled every 0.05s - this is not intended for production code, only for testing!
+ *
+ *  @param block a block containing code that should be executed once run loop spinning should end.
+ *  @param timeout maximum time to wait for completion
+ *  @param timeoutBlock block to execute in the event of a timeout
+ */
++ (void)runUntilDone:(void (^)(dispatch_block_t))block withTimeout:(NSTimeInterval)timeout timeoutBlock:(void (^)(void))timeoutBlock;
+
 
 @end
 

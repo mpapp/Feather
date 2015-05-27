@@ -338,7 +338,27 @@
               done = YES;
           });
     while (!done)
-        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
+}
+
++ (void)runUntilDone:(void (^)(dispatch_block_t))block withTimeout:(NSTimeInterval)timeout timeoutBlock:(void (^)(void))timeoutBlock
+{
+    __block BOOL done = NO;
+    block(^()
+          {
+              done = YES;
+          });
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, timeout * NSEC_PER_SEC), dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+        if (!done)
+        {
+            timeoutBlock();
+            done=YES;
+        }
+    });
+    
+    while (!done)
+        [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
 }
 
 @end
