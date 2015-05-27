@@ -280,13 +280,17 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
     BOOL isScalarProperty = ![cls isSubclassOfClass:NSArray.class]
                             && ![cls isSubclassOfClass:NSDictionary.class]
                             && ![cls isSubclassOfClass:NSSet.class];
-    if (!isScalarProperty && [o isKindOfClass:MPManagedObject.class]) {
+    if (!isScalarProperty) {
+        // if self is in a collection contained by the embeddingObject,
+        // -cacheValue:ofProperty:changed: is used to communicate that something inside the collection has changed (requires rewriting the JSON).
         [o cacheValue:[o valueForKey:self.embeddingKey] ofProperty:self.embeddingKey changed:YES];
-        [o markPropertyNeedsSave:self.embeddingKey];
     }
     else {
         [o cacheValue:self ofProperty:self.embeddingKey changed:YES];
     }
+    
+    if ([o isKindOfClass:MPManagedObject.class])
+        [o markPropertyNeedsSave:self.embeddingKey];
     
     [o markNeedsSave];
     
@@ -321,7 +325,20 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
     NSAssert(self.embeddingKey, @"Object should have a non-nil embeddingKey: %@", self);
     NSAssert(_properties, @"Object should have its _properties set when setting value to a property: %@", self);
     
-    [self.embeddingObject cacheValue:self ofProperty:self.embeddingKey changed:changed];
+    Class cls = [self.embeddingObject.class classOfProperty:self.embeddingKey];
+    NSAssert(cls, @" No property declaration for '%@' in class '%@'", property, self.class);
+
+    BOOL isScalarProperty = ![cls isSubclassOfClass:NSArray.class]
+                                && ![cls isSubclassOfClass:NSDictionary.class]
+                                && ![cls isSubclassOfClass:NSSet.class];
+    if (!isScalarProperty) {
+        // if self is in a collection contained by the embeddingObject,
+        // -cacheValue:ofProperty:changed: is used to communicate that something inside the collection has changed (requires rewriting the JSON).
+        [self.embeddingObject cacheValue:[(id)self.embeddingObject valueForKey:self.embeddingKey] ofProperty:self.embeddingKey changed:YES];
+    }
+    else {
+        [self.embeddingObject cacheValue:self ofProperty:self.embeddingKey changed:YES];
+    }
 }
 
 - (void)cacheEmbeddedObjectByIdentifier:(MPEmbeddedObject *)obj
