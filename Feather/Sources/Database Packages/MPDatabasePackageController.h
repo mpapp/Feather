@@ -39,8 +39,9 @@ extern NSString *const MPDatabasePackageListenerDidStartNotification;
  * command line tools and when the package controller has not been set to synchronize peerlessly (`-synchronizesPeerlessly`). */
 - (BOOL)packageControllerRequiresListener:(MPDatabasePackageController *)packageController;
 
-/** Return YES if you want to allow initialising the content of the */
-- (BOOL)packageControllerRequiresInitialContent:(MPDatabasePackageController *)packageController;
+/** Return YES if you want to allow initialising the content of the package with some (for instance onboarding oriented) content.
+  * If set to YES, ensurePlaceholderInitialized is called on it. */
+- (BOOL)packageControllerRequiresPlaceholderContent:(MPDatabasePackageController *)packageController;
 
 @end
 
@@ -244,7 +245,7 @@ typedef enum MPDatabasePackageControllerErrorCode
 @property (strong, readonly) NSString *fullyQualifiedIdentifier;
 
 /** An optional delegate for the database package controller. */
-@property (weak) id<MPDatabasePackageControllerDelegate> delegate;
+@property (readonly, weak) id<MPDatabasePackageControllerDelegate> delegate;
 
 /** The notification center to which notifications about objects of this database package post notifications to.
   * The default implementation returns [NSNotificationCenter defaultCenter], but the subclass
@@ -287,6 +288,11 @@ typedef enum MPDatabasePackageControllerErrorCode
 
 - (void)startListenerWithCompletionHandler:(void(^)(NSError *err))completionHandler;
 - (void)stopListener;
+
+/** Called at the end of initializer on the main thread to initialize the . */
+- (id)ensureInitialStateInitialized;
+
+- (id)ensurePlaceholderInitialized;
 
 #pragma mark - 
 

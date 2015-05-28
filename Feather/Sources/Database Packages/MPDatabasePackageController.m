@@ -217,9 +217,28 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.class registerDatabasePackageController:self];
         });
+        
+        // state initialisation done on a subsequent event loop cycle such that potential assignments
+        // (such as to a singleton reference to this object) exists.
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self ensureInitialStateInitialized];
+            
+            if ([self.delegate respondsToSelector:@selector(packageControllerRequiresPlaceholderContent:)]
+                && [self.delegate packageControllerRequiresPlaceholderContent:self]) {
+                [self ensurePlaceholderInitialized];
+            }
+        });
     }
     
     return self;
+}
+
+- (id)ensureInitialStateInitialized {
+    return nil; // override in subclass
+}
+
+- (id)ensurePlaceholderInitialized {
+    return nil; // override in subclass
 }
 
 - (BOOL)bootstrapDatabaseWithName:(NSString *)dbName error:(NSError **)err {
