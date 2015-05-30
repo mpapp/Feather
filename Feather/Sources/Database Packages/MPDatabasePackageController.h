@@ -54,7 +54,8 @@ typedef enum MPDatabasePackageControllerErrorCode
     MPDatabasePackageControllerErrorCodeUnexpectedResponse = 2,
     MPDatabasePackageControllerErrorCodeFileNotDirectory = 3,
     MPDatabasePackageControllerErrorCodeDirectoryAlreadyExists = 4,
-    MPDatabasePackageControllerErrorCodeCannotInitializeSharedDatabases = 5
+    MPDatabasePackageControllerErrorCodeCannotInitializeSharedDatabases = 5,
+    MPDatabasePackageControllerErrorCodeDictionaryRepresentationInvalid = 6
 } MPDatabasePackageControllerErrorCode;
 
 

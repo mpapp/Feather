@@ -1303,7 +1303,11 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
 }
 
 - (BOOL)saveDictionaryRepresentation:(NSError **)error {
-    return [self.dictionaryRepresentation writeToURL:self.dictionaryRepresentationURL atomically:YES];
+    NSData *data = [NSJSONSerialization dataWithJSONObject:self.dictionaryRepresentation options:NSJSONWritingPrettyPrinted error:error];
+    if (!data)
+        return NO;
+    
+    return [data writeToURL:self.dictionaryRepresentationURL options:NSDataWritingAtomic error:error];
 }
 
 - (NSDictionary *)dictionaryRepresentation {
