@@ -218,6 +218,146 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
     return YES;
 }
 
+- (NSURL *)beginSecurityScopedAccessForPath:(NSString *)path bookmarkUserDefaultKey:(NSString *)bookmarkUserDefaultKey error:(NSError *__autoreleasing *)err
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSURL *securityScopedURL = nil;
+    
+    do
+    {
+        NSData *bookmarkData = [defaults objectForKey:bookmarkUserDefaultKey];
+        
+        if (bookmarkData)
+        {
+            NSError *error = nil;
+            BOOL stale = NO;
+            securityScopedURL = [NSURL URLByResolvingBookmarkData:bookmarkData
+                                                          options:NSURLBookmarkResolutionWithSecurityScope
+                                                    relativeToURL:nil
+                                              bookmarkDataIsStale:&stale
+                                                            error:&error];
+            
+            if (!securityScopedURL)
+            {
+                NSLog(@"Failed to resolve security scoped bookmark data for '%@': %@", path, error);
+                break;
+            }
+            
+            if (stale)
+                NSLog(@"Security scoped bookmark data for path '%@' is stale", path);
+        }
+        else
+        {
+            BOOL cancelled = NO;
+            
+            NSError *err = nil;
+            bookmarkData = [self promptForSecurityScopedURLWithPath:path wasCancelled:&cancelled error:&err];
+            
+            if (cancelled)
+                break;
+            
+            if (bookmarkData)
+            {
+                [defaults setObject:bookmarkData forKey:bookmarkUserDefaultKey];
+                
+                NSError *error = nil;
+                BOOL stale = NO;
+                securityScopedURL = [NSURL URLByResolvingBookmarkData:bookmarkData
+                                                              options:NSURLBookmarkResolutionWithSecurityScope
+                                                        relativeToURL:nil
+                                                  bookmarkDataIsStale:&stale
+                                                                error:&error];
+                assert(securityScopedURL);
+            }
+            
+            if (!bookmarkData)
+            {
+                NSLog(@"ERROR! %@", err);
+            }
+        }
+    }
+    while (!securityScopedURL);
+    
+    BOOL success = NO;
+    
+    if (securityScopedURL)
+    {
+        success = [securityScopedURL startAccessingSecurityScopedResource];
+        if (success)
+            NSLog(@"Started accessing security scoped path %@", securityScopedURL.path);
+    }
+    
+    if (!securityScopedURL || !success)
+        NSLog(@"WARNING: did NOT begin accessing security scoped path '%@', something (such as the editor) most likely will not work!", path);
+    
+    return securityScopedURL;
+}
+
+// Based on http://www.cocoabuilder.com/archive/cocoa/278624-path-comparison-and-case-sensitivity.html
+- (BOOL)path:(NSString *)pathA isEqualToPath:(NSString *)pathB error:(NSError **)err
+{
+    NSDictionary *propsA = [self attributesOfItemAtPath:pathA error:err];
+    if (!propsA)
+        return NO;
+    
+    NSDictionary *propsB = [self attributesOfItemAtPath:pathB error:err];
+    if (!propsB)
+        return NO;
+    
+    return [propsA[NSFileSystemFileNumber] isEqual:propsB[NSFileSystemFileNumber]];
+}
+
+- (NSData *)promptForSecurityScopedURLWithPath:(NSString *)path wasCancelled:(BOOL *)cancelled error:(NSError **)err
+{
+    if (cancelled)
+        *cancelled = NO;
+    
+    NSOpenPanel *panel = [NSOpenPanel openPanel];
+    
+    [panel setTitle:@"Editor Path Prefix"];
+    [panel setMessage:MPStringF(@"To allow editor development, please navigate to %@", path)];
+    [panel setCanChooseDirectories:YES];
+    [panel setAllowedFileTypes:@[(NSString *)kUTTypeFolder]];
+    [panel setAllowsOtherFileTypes:NO];
+    [panel setDelegate:nil];
+    [panel setCanCreateDirectories:NO];
+    panel.directoryURL = [NSURL fileURLWithPath:path];
+    
+    NSInteger result = [panel runModal];
+    
+    if (result != NSFileHandlingPanelOKButton)
+    {
+        if (cancelled)
+            *cancelled = YES;
+        return nil;
+    }
+    
+    if (panel.URLs.count != 1)
+        return nil;
+    
+    NSURL *URL = panel.URLs[0];
+    
+    if (![self path:URL.path isEqualToPath:path error:err])
+    {
+        NSError *error = err ? *err : nil;
+        NSLog(@"Failed to get security scoped bookmark data for %@: %@", URL, error);
+        NSLog(@"Paths: %@ != %@", URL.path, path);
+        //return nil;
+    }
+    NSData *data = [URL bookmarkDataWithOptions:NSURLBookmarkCreationWithSecurityScope
+                 includingResourceValuesForKeys:nil
+                                  relativeToURL:nil
+                                          error:err];
+    
+    if (!data)
+    {
+        NSError *error = err ? *err : nil;
+        NSLog(@"Failed to get security scoped bookmark data for %@: %@", URL, error);
+    }
+    return data;
+}
+
+
 // from https://github.com/jrmuizel/mozilla-cvs-history/blob/master/camino/sparkle/NSFileManager%2BExtendedAttributes.m
 
 - (int)removeXAttr:(const char*)name

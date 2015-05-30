@@ -54,4 +54,10 @@ extern NS_ENUM(NSUInteger, MPFeatherNSFileManagerExtensionsErrorCode) {
 /** Release the file at the specified root path from quarantine. */
 - (void)releaseFromQuarantine:(NSString *)root;
 
+/** Return YES if pathA and pathB point at the same file (resolves alias / link, check match to inode number), and return NO and an error if either path attributes fail to be resolved. */
+- (BOOL)path:(NSString *)pathA isEqualToPath:(NSString *)pathB error:(NSError **)err;
+
+/** Returns a security scoped URL that the application has begun accessing, if successful, and nil and an error otherwise.*/
+- (NSURL *)beginSecurityScopedAccessForPath:(NSString *)path bookmarkUserDefaultKey:(NSString *)bookmarkUserDefaultKey error:(NSError **)error;
+
 @end

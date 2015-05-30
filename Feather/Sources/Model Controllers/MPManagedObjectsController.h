@@ -187,6 +187,9 @@ typedef enum MPManagedObjectsControllerErrorCode
 
 @property (readonly) BOOL hasBundledJSONData;
 
+/** Bundled JSON data checksum key. */
+@property (readonly) NSString *bundledJSONDataChecksumKey;
+
 /** YES if hasBundledResourceDatabase or hasBundledJSONData returns YES. */
 @property (readonly) BOOL requiresBundledDataLoading;
 
