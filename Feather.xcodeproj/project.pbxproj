@@ -471,7 +471,6 @@
 		5FC4231E1AFF8719002234FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5FC4231F1AFF8719002234FB /* FeatherExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeatherExtensionsTests.m; sourceTree = "<group>"; };
 		5FC4237E1AFF8B54002234FB /* DiffMatchPatch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DiffMatchPatch.xcodeproj; path = "External/google-diff-match-patch/objectivec/DiffMatchPatch.xcodeproj"; sourceTree = "<group>"; };
-		5FC4238C1AFF8B62002234FB /* DiffMatchPatch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiffMatchPatch.framework; path = "../google-diff-match-patch/objectivec/build/Debug/DiffMatchPatch.framework"; sourceTree = "<group>"; };
 		5FC423971AFF8CF5002234FB /* FeatherScripting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeatherScripting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FC4239A1AFF8CF5002234FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5FC4239B1AFF8CF5002234FB /* FeatherScripting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeatherScripting.h; sourceTree = "<group>"; };
@@ -877,7 +876,6 @@
 		5FDB33051705CB950049EBB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5FC4238C1AFF8B62002234FB /* DiffMatchPatch.framework */,
 				5F3765EA1A1AA1AA0068DA39 /* AddressBook.framework */,
 				5FAC23BE19ABFE79000F188C /* CoreServices.framework */,
 				5FAC23BC19ABFE5C000F188C /* Carbon.framework */,
