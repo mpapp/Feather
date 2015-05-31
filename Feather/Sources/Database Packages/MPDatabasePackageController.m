@@ -957,7 +957,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [strongSelf advertiseListener];
             });
-            [self didStartManuscriptsPackageListener];
+            [self didStartPackageListener];
             completionHandler(nil);
         });
     }];
@@ -1381,7 +1381,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
     object_setIvar(self, primaryDatabaseIvar, primaryDatabase);
 }
 
-- (void)didStartManuscriptsPackageListener
+- (void)didStartPackageListener
 {
     @throw [MPAbstractMethodException exceptionWithSelector:_cmd];
 }
