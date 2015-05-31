@@ -1029,14 +1029,14 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
         }
         
         if (accessor) {
-            LogTo(MYDynamicObject, @"Creating dynamic accessor method for an effective property -[%@ %s]", declaredInClass, name);
+            MPLog(@"Creating dynamic accessor method for an effective property -[%@ %s]", declaredInClass, name);
             class_addMethod(declaredInClass, sel, accessor, signature);
             return YES;
         }
         
         if (propertyType &&! strncmp(propertyType, "\"@Protocol\"", 12) != 0) {
-            Warn(@"Dynamic effective property %@.%@ has type '%s' unsupported by %@",
-                 self, key, propertyType, self);
+            MPLog(@"Dynamic effective property %@.%@ has type '%s' unsupported by %@",
+                  self, key, propertyType, self);
         }
     }
     
