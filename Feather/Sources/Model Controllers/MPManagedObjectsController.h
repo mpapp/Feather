@@ -99,7 +99,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 
 /** A utility for view functions which emit only for documents corresponding to this controller's managed object subclasses.
   * See -managesDocumentWithDictionary: for more detail. */
-- (BOOL)managesDocumentWithIdentifier:(NSString *)documentID;
+- (BOOL)managesDocumentWithIdentifier:(NSString *)documentID __attribute__((nonnull));
 
 - (BOOL)managesObjectsOfClass:(Class)class;
 

@@ -404,6 +404,9 @@
 		5F3765EA1A1AA1AA0068DA39 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		5F3765FE1A1AA2850068DA39 /* ABRecord+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ABRecord+MPExtensions.h"; path = "Sources/Categories/ABRecord+MPExtensions.h"; sourceTree = "<group>"; };
 		5F3765FF1A1AA2850068DA39 /* ABRecord+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ABRecord+MPExtensions.m"; path = "Sources/Categories/ABRecord+MPExtensions.m"; sourceTree = "<group>"; };
+		5F37CE0A1B1CA4EE0022D865 /* icon-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-512.png"; path = "Resources/icon-512.png"; sourceTree = SOURCE_ROOT; };
+		5F37CE0B1B1CA4EE0022D865 /* icon-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-1024.png"; path = "Resources/icon-1024.png"; sourceTree = SOURCE_ROOT; };
+		5F37CE0C1B1CA4EE0022D865 /* icon.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = icon.pdf; path = Resources/icon.pdf; sourceTree = SOURCE_ROOT; };
 		5F3D38081725D8A600D19D7C /* MPCategorizableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCategorizableMixin.h; path = Sources/Model/MPCategorizableMixin.h; sourceTree = "<group>"; };
 		5F3D38091725D8A600D19D7C /* MPCategorizableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCategorizableMixin.m; path = Sources/Model/MPCategorizableMixin.m; sourceTree = "<group>"; };
 		5F3D380C1725D8E000D19D7C /* MPBundlableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPBundlableMixin.h; path = Sources/Model/MPBundlableMixin.h; sourceTree = "<group>"; };
@@ -644,6 +647,16 @@
 			name = UICKeyChainStore;
 			sourceTree = "<group>";
 		};
+		5F37CDF91B1CA4DF0022D865 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				5F37CE0A1B1CA4EE0022D865 /* icon-512.png */,
+				5F37CE0B1B1CA4EE0022D865 /* icon-1024.png */,
+				5F37CE0C1B1CA4EE0022D865 /* icon.pdf */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
 		5F8D750318AE636400AA4007 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -858,6 +871,7 @@
 		5FDB330C1705CB950049EBB5 /* Feather */ = {
 			isa = PBXGroup;
 			children = (
+				5F37CDF91B1CA4DF0022D865 /* Resources */,
 				5FDB33131705CB950049EBB5 /* Feather.h */,
 				5FDB3A8217079B810049EBB5 /* Database Packages */,
 				5FDB3A8117079B280049EBB5 /* Model Controllers */,

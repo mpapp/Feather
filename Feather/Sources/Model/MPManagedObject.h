@@ -187,7 +187,7 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 
 + (BOOL)shouldTrackSessionID;
 
-+ (Class)managedObjectClassFromDocumentID:(NSString *)documentID;
++ (Class)managedObjectClassFromDocumentID:(NSString *)documentID __attribute__((nonnull));
 
 /** Canonicalization removes a http://, https:// scheme, 
   * as well as replacing  ':', '/' and '.' characters with a '-'. */

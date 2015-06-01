@@ -251,7 +251,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID
 {
-    NSParameterAssert(documentID);
+    NSAssert(documentID, @"Expecting a documentID (%@)", self.class);
     NSParameterAssert([documentID isKindOfClass:[NSString class]]);
     NSAssert(documentID.length >= 10, @"documentID should be of at least 10 characters long: %@", documentID);
     NSString *className = [documentID componentsSeparatedByString:@":"][0];
