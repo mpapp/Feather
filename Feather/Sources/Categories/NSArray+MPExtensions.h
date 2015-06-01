@@ -71,9 +71,3 @@ typedef enum MPValueToggleResult
 
 
 extern NSArray *MPNilToEmptyArray(NSArray *array);
-
-extern NSArray *MPArrayFromTwoArrays(NSArray *a1, NSArray *a2);
-extern NSArray *MPArrayFromArrays(NSInteger n, ...);
-extern NSMutableArray *MPMutableArrayForArray(NSArray *a);
-extern NSMutableArray *MPMutableArrayFromTwoArrays(NSArray *a1, NSArray *a2);
-extern NSMutableArray *MPMutableArrayFromArrays(NSInteger n, ...);
