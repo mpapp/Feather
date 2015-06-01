@@ -144,6 +144,11 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 /** The object can form a prototype when shared. NO for MPManagedObject -- overload in subclasses which should form prototypes when object is marked shared. */
 @property (readonly) BOOL formsPrototypeWhenShared;
 
+/** Indicates this object should currently not be allowed to be edited by the user. Useful, for example, for document-local copies of shared/bundled objects. */
+@property (readonly, getter=isLocked) BOOL locked;
+- (void)lock;
+- (void)unlock;
+
 /** Saves and posts an error notification on errors to the object's package controller's notification center. */
 - (BOOL)save;
 
