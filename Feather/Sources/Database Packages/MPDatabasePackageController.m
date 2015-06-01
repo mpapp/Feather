@@ -473,7 +473,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 }
 
 - (id)objectWithIdentifier:(NSString *)identifier {
-    NSParameterAssert(identifier);
+    NSAssert(identifier, @"Expecting identifier (%@)", self.class);
     
     Class moClass = [MPManagedObject managedObjectClassFromDocumentID:identifier];
     MPManagedObjectsController *moc = [self controllerForManagedObjectClass:moClass];
