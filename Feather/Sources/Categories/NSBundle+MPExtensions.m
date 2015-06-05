@@ -20,6 +20,10 @@
     return bundleName;
 }
 
+- (NSString *)bundleShortVersionString {
+    return self.infoDictionary[@"CFBundleShortVersionString"];
+}
+
 - (NSString *)bundleVersionString
 {
     NSString *version = self.infoDictionary[(__bridge NSString *)kCFBundleVersionKey];

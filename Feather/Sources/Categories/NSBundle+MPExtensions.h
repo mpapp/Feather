@@ -11,6 +11,8 @@
 @interface NSBundle (Feather)
 
 @property (readonly, copy) NSString *bundleNameString;
+
+@property (readonly, copy) NSString *bundleShortVersionString;
 @property (readonly, copy) NSString *bundleVersionString;
 
 /** Returns the main bundle for non-unit test targets, and the unit test bundle for the unit tests. */
