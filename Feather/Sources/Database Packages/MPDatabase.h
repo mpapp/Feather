@@ -37,7 +37,7 @@ typedef enum MPDatabaseErrorCode
 @property (readonly, copy) NSString *name;
 
 /** The CBLManager instance which owns this database (the server can have multiple databases and is itself managed by MPDatabasePackageController). */
-@property (readonly, strong) CBLManager *server;
+@property (readonly, weak) CBLManager *server;
 
 /** The CBLDatabase instance wrapped by the MPDatabase instance.  */
 @property (readonly, strong) CBLDatabase *database;
