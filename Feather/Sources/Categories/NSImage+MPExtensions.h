@@ -8,6 +8,13 @@
 
 #import <Cocoa/Cocoa.h>
 
+extern NSString *const MPImageExtensionsErrorDomain;
+
+typedef NS_ENUM(NSUInteger, MPImageExtensionsErrorCode) {
+    MPImageExtensionsErrorCodeUnknown = 0,
+    MPImageExtensionsErrorCodeFailedToCreateRepresentation = 1
+};
+
 static const NSUInteger MPEMUsPerInch = 914400;
 
 
@@ -28,8 +35,25 @@ typedef struct MPEMUSize
 - (NSUInteger)DPI;
 - (MPEMUSize)EMUSize;
 
+/** Return the detected bitmap image type for given data as a NSBitmapImageFileType value, 
+  * or **NSNotFound** if none applies. */
++ (NSUInteger)bitmapImageTypeForData:(NSData *)data __attribute__((nonnull));
+
+/** Return the detected bitmap image type for pasteboard type as a NSBitmapImageFileType value,
+  * or **NSNotFound** if none applies. */
++ (NSUInteger)bitmapImageFileTypeForPasteboardType:(NSString *)pasteboardType;
+
+/** Returns an NSImage object read from the given pasteboard, and passes by reference the type of the image.
+  * Image type is selected in priority, preferring PDF first, then bitmap only formats (PNG, JPEG, TIFF, BMP, JPEG2000). */
++ (NSImage *)imageFromPasteboard:(NSPasteboard *)pasteboard pasteboardType:(NSString **)type;
+
 /** A framed version of the image */
 - (NSImage *)framedWithSize:(NSSize)size;
+
+- (BOOL)writeToFile:(NSString *)path
+            options:(NSDataWritingOptions)options
+               type:(NSBitmapImageFileType)type
+              error:(NSError **)error;
 
 @end
 

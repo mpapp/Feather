@@ -141,6 +141,28 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     return imageRef;
 }
 
+- (BOOL)writeToFile:(NSString *)path
+            options:(NSDataWritingOptions)options
+               type:(NSBitmapImageFileType)type
+              error:(NSError **)error {
+    
+    CGImageRef cgRef = [self CGImageForProposedRect:NULL context:nil hints:nil];
+    NSBitmapImageRep *newRep = [[NSBitmapImageRep alloc] initWithCGImage:cgRef];
+    
+    if (!newRep) {
+        if (error)
+            *error = [NSError errorWithDomain:@"MPExtensionsErrorDomain"
+                                         code:MPImageExtensionsErrorCodeFailedToCreateRepresentation
+                                     userInfo:@{NSLocalizedDescriptionKey : @"Failed to create bitmap image representation"}];
+        return NO;
+    }
+    
+    newRep.size = self.size;   // if you want the same resolution
+    
+    NSData *pngData = [newRep representationUsingType:NSPNGFileType properties:nil];
+    return [pngData writeToFile:path options:options error:error];
+}
+
 @end
 
 @implementation NSImage (FDImageDiff)
@@ -231,6 +253,72 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     }
     
     return size;
+}
+
++ (NSUInteger)bitmapImageTypeForData:(NSData *)data {
+    CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
+    NSString *type = (__bridge NSString *)CGImageSourceGetType(source);
+    
+    if ([type isEqualToString:(__bridge NSString *)kUTTypePNG])
+        return NSPNGFileType;
+    
+    if ([type isEqualToString:(__bridge NSString *)kUTTypeTIFF])
+        return NSTIFFFileType;
+    
+    if ([type isEqualToString:(__bridge NSString *)kUTTypeJPEG])
+        return NSJPEGFileType;
+    
+    if ([type isEqualToString:(__bridge NSString *)kUTTypeJPEG2000])
+        return NSJPEG2000FileType;
+    
+    if ([type isEqualToString:(__bridge NSString *)kUTTypeBMP])
+        return NSBMPFileType;
+    
+    CFRelease(source);
+    return NSNotFound;
+}
+
++ (NSArray *)prioritizedImageDataPasteboardTypes {
+    return @[(__bridge NSString *)kUTTypePDF,
+             (__bridge NSString *)kUTTypePNG,
+             (__bridge NSString *)kUTTypeJPEG,
+             (__bridge NSString *)kUTTypeTIFF,
+             (__bridge NSString *)kUTTypeBMP,
+             (__bridge NSString *)kUTTypeJPEG2000];
+}
+
++ (NSImage *)imageFromPasteboard:(NSPasteboard *)pasteboard pasteboardType:(NSString **)type {
+    for (NSString *t in [self prioritizedImageDataPasteboardTypes]) {
+        NSData *data = [pasteboard dataForType:t];
+        if (data) {
+            if (type)
+                *type = t;
+            
+            return [[NSImage alloc] initWithData:data];
+        }
+    }
+    
+    return nil;
+}
+
++ (NSUInteger)bitmapImageFileTypeForPasteboardType:(NSString *)pasteboardType {
+    if ([pasteboardType isEqualToString:(__bridge NSString *)kUTTypePNG] || [pasteboardType isEqualToString:@"Apple PNG pasteboard type"]) {
+        return NSPNGFileType;
+    }
+    if ([pasteboardType isEqualToString:(__bridge NSString *)kUTTypeTIFF] || [pasteboardType isEqualToString:@"NeXT TIFF v4.0 pasteboard type"]) {
+        return NSPNGFileType;
+    }
+    if ([pasteboardType isEqualToString:(__bridge NSString *)kUTTypeJPEG]) {
+        return NSJPEGFileType;
+    }
+    if ([pasteboardType isEqualToString:(__bridge NSString *)kUTTypeJPEG2000]) {
+        return NSJPEG2000FileType;
+    }
+    if ([pasteboardType isEqualToString:(__bridge NSString *)kUTTypeBMP]) {
+        return NSBMPFileType;
+    }
+    
+    return NSNotFound;
 }
 
 @end
