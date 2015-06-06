@@ -43,6 +43,9 @@ typedef struct MPEMUSize
   * or **NSNotFound** if none applies. */
 + (NSUInteger)bitmapImageFileTypeForPasteboardType:(NSString *)pasteboardType;
 
+/** An array of UTTs for image data formats used on the pasteboard. */
++ (NSArray *)prioritizedImageDataPasteboardTypes;
+
 /** Returns an NSImage object read from the given pasteboard, and passes by reference the type of the image.
   * Image type is selected in priority, preferring PDF first, then bitmap only formats (PNG, JPEG, TIFF, BMP, JPEG2000). */
 + (NSImage *)imageFromPasteboard:(NSPasteboard *)pasteboard pasteboardType:(NSString **)type;

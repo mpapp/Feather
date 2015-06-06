@@ -298,13 +298,6 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         }
     }
     
-    // if we failed to find image data, let's see if we can find a URL.
-    if ([pasteboard dataForType:(__bridge NSString *)kUTTypeURL]) {
-        
-    }
-    
-    // if we failed to find image data from an image or URL type, let's try bookmark data.
-    
     return nil;
 }
 
