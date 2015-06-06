@@ -97,7 +97,8 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
     BOOL createIntermediates = (subdirectoryName.length > 0);
     NSURL *URL = createIntermediates ? [applicationCachesDirectoryURL URLByAppendingPathComponent:subdirectoryName] : applicationCachesDirectoryURL;
     
-    BOOL isDirectory, exists = [self fileExistsAtPath:URL.path isDirectory:&isDirectory];
+    BOOL isDirectory = NO;
+    BOOL exists = [self fileExistsAtPath:URL.path isDirectory:&isDirectory];
     
     if (exists && !isDirectory)
     {
