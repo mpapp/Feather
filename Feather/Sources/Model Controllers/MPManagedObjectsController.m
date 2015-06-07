@@ -343,7 +343,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 }
 
 // Overloadable in MPManagedObjectsController subclasses
-- (BOOL)resolveConflictingRevisionsForObject:(MPManagedObject *)obj error:(NSError **)err
+- (BOOL)resolveConflictingRevisionsForObject:(MPManagedObject *)obj
+                                       error:(NSError **)err
 {
     assert(obj != nil);
     assert([obj isKindOfClass:[self managedObjectClass]]);
@@ -442,7 +443,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
             // this should only be necessary for deletions, otherwise data is malformed (lacks 'objectType').
             managesBasedOnID = [strongSelf managesDocumentWithIdentifier:revision.properties[@"_id"]];
             if (managesBasedOnID) {
-                NSCAssert(revision.properties[@"_deleted"],
+                NSCAssert(revision.properties[@"_deleted"] || [revision isDeletion],
                           @"Expecting revision to be a deletion:\n%@", revision.properties);
             }
         }
