@@ -210,6 +210,10 @@ typedef enum MPManagedObjectsControllerErrorCode
   * from the shared package controller's database from its corresponding managed objects controller if one exists. */
 - (id)objectWithIdentifier:(NSString *)identifier __attribute__((nonnull));
 
+/** Gets the document */
+- (CBLDocument *)documentWithIdentifier:(NSString *)identifier
+                            allDocsMode:(CBLAllDocsMode)allDocsMode;
+
 /** Whether the controller relays a search for an object to the shared package controller
   * if no match was found in an identifier search. 
   * Default NO, can be implemented in subclasses. */

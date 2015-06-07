@@ -517,6 +517,23 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return [self objectWithIdentifier:uniqueID];
 }
 
+- (CBLDocument *)documentWithIdentifier:(NSString *)identifier
+                            allDocsMode:(CBLAllDocsMode)allDocsMode {
+    NSParameterAssert(identifier);
+    
+    CBLQuery *allObjectsQ = [self.db.database createAllDocumentsQuery];
+    allObjectsQ.keys = @[identifier];
+    allObjectsQ.prefetch = YES;
+    allObjectsQ.allDocsMode = allDocsMode;
+    
+    NSMutableArray *docs = [NSMutableArray new];
+    for (CBLQueryRow *row in allObjectsQ.run) {
+        [docs addObject:row.document];
+    }
+    
+    return docs.firstObject;
+}
+
 - (id)objectWithIdentifier:(NSString *)identifier
 {
     NSParameterAssert(identifier);
