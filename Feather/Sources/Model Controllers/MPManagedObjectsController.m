@@ -781,7 +781,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                 modelObj.document = row.document;
 
                 if (!modelObj) {
-                    modelObj = [[row.document managedObjectClass] modelForDocument:row.document];
+                    if (![row.document isDeleted]) {
+                        modelObj = [[row.document managedObjectClass] modelForDocument:row.document];
+                    }
                 }
             }
             else {
@@ -790,10 +792,13 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                          modelObj.document, row.document,
                          modelObj.propertiesToSave, row.document.properties);
             }
-
-            NSAssert([modelObj isKindOfClass:[MPManagedObject class]], @"Model object is of unexpected class: %@", modelObj);
-
-            [entries addObject:modelObj];
+            
+            if (modelObj) {
+                NSAssert([modelObj isKindOfClass:[MPManagedObject class]],
+                         @"Model object is of unexpected class: %@", modelObj);
+                
+                [entries addObject:modelObj];
+            }
         });
     }
 
