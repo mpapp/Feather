@@ -387,6 +387,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 - (BOOL)save:(NSError *__autoreleasing *)outError {
+    if (!self.needsSave
+        && (![self valueForKey:@"changedNames"] && ![self valueForKey:@"changedAttachments"]))
+        return YES;
+    
     NSParameterAssert(_controller);
     NSParameterAssert(self.document);
     [_controller willSaveObject:self];
@@ -785,12 +789,6 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)refreshCachedValues
 {
-}
-
-// this + property declaration in CBLModel (PrivateExtensions) are there to make the compiler happy.
-- (NSMutableSet *)changedNames
-{
-    return [super changedNames];
 }
 
 - (id)prototypeTransformedValueForPropertiesDictionaryKey:(NSString *)key forCopyManagedByController:(MPManagedObjectsController *)cc

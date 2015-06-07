@@ -139,6 +139,14 @@
             self.fullName, self.documentID, self.document.currentRevisionID];
 }
 
+- (BOOL)isFirstContributor {
+    return [[[self.controller.packageController contributorsController] allContributors].firstObject isEqual:self];
+}
+
+- (BOOL)isLastContributor {
+    return [[[self.controller.packageController contributorsController] allContributors].lastObject isEqual:self];
+}
+
 @end
 
 

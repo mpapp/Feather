@@ -31,8 +31,6 @@ extern NSString *const MPPasteboardTypeEmbeddedObjectIDArray;
 
 - (BOOL)save:(NSError **)err;
 
-@property (readonly, strong) NSMutableSet *changedNames;
-
 @optional
 /** Returns an embedded object with the specified identifier */
 - (MPEmbeddedObject *)embeddedObjectWithIdentifier:(NSString *)identifier;

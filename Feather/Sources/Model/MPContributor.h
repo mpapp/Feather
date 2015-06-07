@@ -41,6 +41,15 @@
 /** Date when the contributor in question has been last invited to use the app. */
 @property (readwrite) NSDate *appInvitationDate;
 
+/** YES if the contributor is first amongst sorted contributors to the manuscript.
+  * Only ever applies to one contributor, even if there are joint authorships. */
+@property (readonly) BOOL isFirstContributor;
+
+/** YES if the contributor is last amongst sorted contributors to the manuscript.
+ * Only ever applies to one contributor, even if there are joint authorships. */
+@property (readonly) BOOL isLastContributor;
+
+
 - (NSComparisonResult)compare:(MPContributor *)contributor;
 
 #ifndef MPAPP
