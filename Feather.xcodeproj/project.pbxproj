@@ -155,6 +155,8 @@
 		5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */; };
 		5FDCF34D1710CA600039DAED /* MPModelFoundationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */; };
+		5FE2C0EB1B256B4C001DB163 /* MPTreeItemUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FE2C0E91B256B4C001DB163 /* MPTreeItemUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5FE2C0EC1B256B4C001DB163 /* MPTreeItemUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FE2C0EA1B256B4C001DB163 /* MPTreeItemUtility.m */; };
 		5FEA8B5018A81E0100A7C14B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEA8B4F18A81E0100A7C14B /* XCTest.framework */; };
 		5FF04C7D1B15F09B00B93E33 /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D751418AE636500AA4007 /* CouchbaseLite.framework */; };
 		5FF04C7E1B15F09B00B93E33 /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D752018AE636500AA4007 /* CouchbaseLiteListener.framework */; };
@@ -549,6 +551,8 @@
 		5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPEmbeddedPropertyContainingMixin.m; path = Sources/Model/MPEmbeddedPropertyContainingMixin.m; sourceTree = "<group>"; };
 		5FDCF34B1710CA600039DAED /* MPModelFoundationTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPModelFoundationTests.h; sourceTree = "<group>"; };
 		5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPModelFoundationTests.m; sourceTree = "<group>"; };
+		5FE2C0E91B256B4C001DB163 /* MPTreeItemUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPTreeItemUtility.h; path = Sources/Utilities/MPTreeItemUtility.h; sourceTree = "<group>"; };
+		5FE2C0EA1B256B4C001DB163 /* MPTreeItemUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPTreeItemUtility.m; path = Sources/Utilities/MPTreeItemUtility.m; sourceTree = "<group>"; };
 		5FEA8B4F18A81E0100A7C14B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		5FFC376E1AEEF7AF0041FBED /* MPCountryList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCountryList.h; path = Sources/Utilities/MPCountryList.h; sourceTree = "<group>"; };
 		5FFC376F1AEEF7AF0041FBED /* MPCountryList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCountryList.m; path = Sources/Utilities/MPCountryList.m; sourceTree = "<group>"; };
@@ -1088,6 +1092,8 @@
 				5FDB3A8617079C020049EBB5 /* MPException.m */,
 				5FFC376E1AEEF7AF0041FBED /* MPCountryList.h */,
 				5FFC376F1AEEF7AF0041FBED /* MPCountryList.m */,
+				5FE2C0E91B256B4C001DB163 /* MPTreeItemUtility.h */,
+				5FE2C0EA1B256B4C001DB163 /* MPTreeItemUtility.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1205,6 +1211,7 @@
 				5F6857A01727C38900FE06B0 /* MPVirtualSection.h in Headers */,
 				5F6857A21727C38900FE06B0 /* MPVirtualSection+Protected.h in Headers */,
 				5F6857B71727C40300FE06B0 /* MPTitledProtocol.h in Headers */,
+				5FE2C0EB1B256B4C001DB163 /* MPTreeItemUtility.h in Headers */,
 				5F6857DA17287F0800FE06B0 /* MPRootSection.h in Headers */,
 				5F6857F017287F3100FE06B0 /* MPRootSection+Protected.h in Headers */,
 				5F779FCC172BDC3C0011C4DD /* MPThumbnailable.h in Headers */,
@@ -1688,6 +1695,7 @@
 				5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */,
 				5F3D380F1725D8E000D19D7C /* MPBundlableMixin.m in Sources */,
 				5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */,
+				5FE2C0EC1B256B4C001DB163 /* MPTreeItemUtility.m in Sources */,
 				5F6857DB17287F0800FE06B0 /* MPRootSection.m in Sources */,
 				5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */,
 				5FC753001746E294007818A0 /* NSString+MPSearchIndex.m in Sources */,

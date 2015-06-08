@@ -14,6 +14,7 @@
 #import "MPEmbeddedObject.h"
 
 #import "MPTreeItem.h"
+#import "MPTreeItemUtility.h"
 
 #import "MPContributor.h"
 #import "MPContributorsController.h"

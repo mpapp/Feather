@@ -275,9 +275,6 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** The active draft is the draft user is presently viewing and editing. */
 @property (strong, readwrite) MPDraft *activeDraft;
 
-@property (strong, readonly) NSArray *nonEmptyRootSections __attribute__((deprecated));
-@property (strong, readonly) NSArray *outlinerRootSections __attribute__((deprecated));
-
 /** Returns a managed object given the identifier. */
 - (id)objectWithIdentifier:(NSString *)identifier __attribute__((nonnull));
 
