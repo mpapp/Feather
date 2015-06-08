@@ -49,6 +49,12 @@
  * Only ever applies to one contributor, even if there are joint authorships. */
 @property (readonly) BOOL isLastContributor;
 
+/** Previous contributor according to the priorities set for the contributors. */
+@property (readonly) MPContributor *previousContributor;
+
+/** Next contributor according to the priorities set for the contributors. */
+@property (readonly) MPContributor *nextContributor;
+
 
 - (NSComparisonResult)compare:(MPContributor *)contributor;
 

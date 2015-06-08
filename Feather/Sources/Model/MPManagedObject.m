@@ -386,9 +386,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return success;
 }
 
+- (BOOL)isClean {
+    return !self.needsSave && (![self valueForKey:@"changedNames"] && ![self valueForKey:@"changedAttachments"]);
+}
+
 - (BOOL)save:(NSError *__autoreleasing *)outError {
-    if (!self.needsSave
-        && (![self valueForKey:@"changedNames"] && ![self valueForKey:@"changedAttachments"]))
+    if (self.isClean)
         return YES;
     
     NSParameterAssert(_controller);

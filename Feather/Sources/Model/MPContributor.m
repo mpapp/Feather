@@ -147,6 +147,35 @@
     return [[[self.controller.packageController contributorsController] allContributors].lastObject isEqual:self];
 }
 
+
+- (MPContributor *)previousContributor {
+    MPContributorsController *cc = [self.controller.packageController contributorsController];
+    NSUInteger index = [cc.allContributors indexOfObject:self];
+    
+    // if contributor is first, there is no previous.
+    if (index == 0)
+        return nil;
+    
+    if (index == NSNotFound)
+        return nil;
+    
+    return cc.allContributors[index - 1];
+}
+
+- (MPContributor *)nextContributor {
+    MPContributorsController *cc = [self.controller.packageController contributorsController];
+    NSUInteger index = [cc.allContributors indexOfObject:self];
+    
+    // if contributor is last, there is no next.
+    if (index == ([cc.allContributors count] - 1))
+        return nil;
+    
+    if (index == NSNotFound)
+        return nil;
+    
+    return cc.allContributors[index + 1];
+}
+
 @end
 
 
