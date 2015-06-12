@@ -57,19 +57,29 @@ typedef NS_ENUM(NSUInteger, MPViewDimension)
     [self addEdgeConstraint:edge constantOffset:0 subview:subview];
 }
 
-- (void)addEdgeConstraint:(NSLayoutAttribute)edge constantOffset:(CGFloat)value subview:(NSView *)subview
+- (NSLayoutConstraint *)addEdgeConstraint:(NSLayoutAttribute)edge
+                           constantOffset:(CGFloat)value
+                                  subview:(NSView *)subview
 {
-    [self addConstraint:
-     [NSLayoutConstraint constraintWithItem:subview attribute:edge
-                                  relatedBy:NSLayoutRelationEqual
-                                     toItem:self attribute:edge
-                                 multiplier:1 constant:value]];
+    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:subview
+                                                                  attribute:edge
+                                                                  relatedBy:NSLayoutRelationEqual
+                                                                     toItem:self
+                                                                  attribute:edge
+                                                                 multiplier:1
+                                                                   constant:value];
+    [self addConstraint:constraint];
+    
+    return constraint;
 }
 
 - (void)addSubviewConstrainedToSuperViewEdges:(NSView *)aView
 {
-    return [self addSubviewConstrainedToSuperViewEdges:aView
-                                             topOffset:0 rightOffset:0 bottomOffset:0 leftOffset:0];
+    [self addSubviewConstrainedToSuperViewEdges:aView
+                                      topOffset:0
+                                    rightOffset:0
+                                   bottomOffset:0
+                                     leftOffset:0];
 }
 
 - (void)replaceSubviewsWithSubviewConstrainedToSuperViewEdges:(NSView *)subview

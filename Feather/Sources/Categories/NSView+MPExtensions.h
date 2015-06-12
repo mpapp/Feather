@@ -18,8 +18,10 @@ extern BOOL MPStateToBoolean(NSInteger state);
 
 @interface NSView (MPExtensions)
 
-- (void)addEdgeConstraint:(NSLayoutAttribute)edge subview:(NSView *)subview;
-- (void)addEdgeConstraint:(NSLayoutAttribute)edge constantOffset:(CGFloat)value subview:(NSView *)subview;
+- (NSLayoutConstraint *)addEdgeConstraint:(NSLayoutAttribute)edge
+                                  subview:(NSView *)subview;
+- (NSLayoutConstraint *)addEdgeConstraint:(NSLayoutAttribute)edge
+                           constantOffset:(CGFloat)value subview:(NSView *)subview;
 
 - (void)addSubviewConstrainedToSuperViewEdges:(NSView *)aView;
 - (void)addSubviewConstrainedToSuperViewEdges:(NSView *)aView
