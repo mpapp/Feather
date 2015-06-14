@@ -12,6 +12,7 @@
 
 #import "MPDatabasePackageController.h"
 #import "MPDatabasePackageController+Protected.h"
+#import "MPManagedObjectsController+Protected.h"
 
 #import <Feather/Feather.h>
 #import <Feather/MPManagedObject+Protected.h>
@@ -440,27 +441,43 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     if (!_packageController)
         return;
     
-    assert(_packageController);
+    NSAssert(_packageController, @"Expecting a non-nil package controller for database '%@'",
+                      self.name);
     
     CBLDatabase *db = (CBLDatabase *)notification.object;
-    NSLog(@"Database changed: %@", db);
+    NSLog(@"Database changed: %@", self.name);
     
-    assert(db == self.database);
-    if (db != self.database)
-        return;
+    NSAssert(db == self.database, @"Expecting %@ (%@) == %@ (%@)", db, db.name, self.database, self.database.name);
     
     BOOL isExternalChange = [notification.userInfo[@"external"] boolValue];
     for (CBLDatabaseChange *change in notification.userInfo[@"changes"])
     {
         __block CBLDocument *doc = nil;
-        mp_dispatch_sync(self.database.manager.dispatchQueue, [self.packageController serverQueueToken],
+        mp_dispatch_sync(self.database.manager.dispatchQueue,
+                         [self.packageController serverQueueToken],
         ^{
             doc = [self.database existingDocumentWithID:change.documentID];
         });
-        [_packageController didChangeDocument:doc source:isExternalChange
-         ? MPManagedObjectChangeSourceExternal
-         : MPManagedObjectChangeSourceAPI];
+        
+        MPManagedObjectChangeSource src = isExternalChange
+                                            ? MPManagedObjectChangeSourceExternal
+                                            : MPManagedObjectChangeSourceAPI;
+        
+        if (!doc) {
+            Class cls = [MPManagedObject managedObjectClassFromDocumentID:change.documentID];
+            MPManagedObjectsController *moc = [self.packageController controllerForManagedObjectClass:cls];
             
+            CBLDocument *doc = [moc documentWithIdentifier:change.documentID allDocsMode:kCBLIncludeDeleted];
+            if ([doc.currentRevisionID isEqualToString:change.revisionID]) {
+                MPManagedObject *mo = [moc objectWithIdentifier:doc.documentID];
+                if (mo) {
+                    [moc didDeleteObject:mo];
+                }
+            }
+        }
+        else {
+            [_packageController didChangeDocument:doc source:src];
+        }
     }
 }
 
