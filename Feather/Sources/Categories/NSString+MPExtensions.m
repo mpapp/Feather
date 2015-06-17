@@ -208,6 +208,7 @@
     
     // any chars found while parsing are the stripped content
     NSString *strippedString = [parsee getCharsFound];
+    strippedString = [strippedString stringByReplacingOccurrencesOfString:@"&amp;" withString:@"&"];
     
     // get the raw text out of the parsee after parsing, and return it
     return strippedString;

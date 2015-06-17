@@ -23,17 +23,16 @@
     NSString *cachedPropertiesKey
         = [NSString stringWithFormat:@"cachedPropertiesFor%@", NSStringFromClass(self)];
     
-    NSDictionary *cachedProperties = objc_getAssociatedObject(self, [cachedPropertiesKey UTF8String]);
+    NSDictionary *cachedProperties = objc_getAssociatedObject(self, NSSelectorFromString(cachedPropertiesKey));
     
-    if (!cachedProperties)
-    {
+    if (!cachedProperties) {
         cachedProperties
-            = [self propertiesOfSubclassesForClass:self matching:^BOOL(Class cls, NSString *key)
-        {
+            = [self propertiesOfSubclassesForClass:self matching:
+               ^BOOL(Class cls, NSString *key) {
             return [key isMatchedByRegex:@"^cached\\w{1,}"] && [cls propertyWithKeyIsReadWrite:key];
         }];
 
-        objc_setAssociatedObject(self, [cachedPropertiesKey UTF8String],
+        objc_setAssociatedObject(self, NSSelectorFromString(cachedPropertiesKey),
                                  cachedProperties, OBJC_ASSOCIATION_RETAIN);
     }
     
