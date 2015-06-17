@@ -1165,12 +1165,6 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     assert(object.controller == self);
     assert(self.db);
     
-    #ifdef DEBUG
-    mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.packageController serverQueueToken], ^{
-        MPLog(@"Did save object %@ in %@", object, self.db.database.internalURL);
-    });
-    #endif
-
     NSNotificationCenter *nc = [_packageController notificationCenter]; assert(nc);
 
     NSString *recentChange = [NSNotificationCenter notificationNameForRecentChangeOfType:MPChangeTypeAdd
