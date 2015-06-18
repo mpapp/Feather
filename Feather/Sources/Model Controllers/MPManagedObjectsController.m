@@ -1165,7 +1165,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     assert(object.controller == self);
     assert(self.db);
     
-    NSNotificationCenter *nc = [_packageController notificationCenter]; assert(nc);
+    NSNotificationCenter *nc = [_packageController notificationCenter];
+    NSAssert(nc, @"Expecting to have a package controller + notification center for object: %@ (%@)",
+             object, _packageController);
 
     NSString *recentChange = [NSNotificationCenter notificationNameForRecentChangeOfType:MPChangeTypeAdd
                                                                    forManagedObjectClass:[object class]];
