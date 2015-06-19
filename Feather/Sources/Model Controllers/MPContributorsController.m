@@ -225,11 +225,15 @@ NSString * const MPContributorRoleTranslator = @"translator";
 
 - (void)hasAddedContributor:(NSNotification *)notification
 {
-    [self refreshCachedContributors];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshCachedContributors];
+    });
 }
 
 - (void)hasUpdatedContributor:(NSNotification *)notification {
-    [self refreshCachedContributors];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self refreshCachedContributors];
+    });
 }
 
 - (void)hasRemovedContributor:(NSNotification *)notification
