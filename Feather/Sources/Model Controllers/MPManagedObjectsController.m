@@ -502,6 +502,16 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return [self managedObjectsForQueryEnumerator:q.run];
 }
 
+- (NSArray *)allObjects:(NSError **)error
+{
+    CBLQuery *q = [self allObjectsQuery];
+    
+    __block NSArray *objs;
+    objs = [self managedObjectsForQueryEnumerator:[q run:error]];
+    
+    return objs;
+}
+
 - (NSArray *)allObjects
 {
     CBLQuery *q = [self allObjectsQuery];

@@ -17,6 +17,10 @@
 #import "NSBundle+MPExtensions.h"
 #import "NSNotificationCenter+ErrorNotification.h"
 
+#import "MPDatabasePackageController.h"
+
+#import <FeatherExtensions/FeatherExtensions.h>
+
 #import <CouchbaseLite/CouchbaseLite.h>
 
 @interface MPContributor ()
@@ -142,7 +146,6 @@ NSString * const MPContributorRoleTranslator = @"translator";
     if (!_cachedContributors)
     {
         [self refreshCachedContributors];
-        assert(_cachedContributors);
     }
     
     return _cachedContributors;
