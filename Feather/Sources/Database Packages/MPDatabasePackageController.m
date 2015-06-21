@@ -220,14 +220,17 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         
         // state initialisation done on a subsequent event loop cycle such that potential assignments
         // (such as to a singleton reference to this object) exists.
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self ensureInitialStateInitialized];
-            
-            if ([self.delegate respondsToSelector:@selector(packageControllerRequiresPlaceholderContent:)]
-                && [self.delegate packageControllerRequiresPlaceholderContent:self]) {
-                [self ensurePlaceholderInitialized];
-            }
-        });
+        
+        if (![NSBundle inTestSuite]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self ensureInitialStateInitialized];
+                
+                if ([self.delegate respondsToSelector:@selector(packageControllerRequiresPlaceholderContent:)]
+                    && [self.delegate packageControllerRequiresPlaceholderContent:self]) {
+                    [self ensurePlaceholderInitialized];
+                }
+            });
+        }
     }
     
     return self;
