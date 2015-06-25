@@ -106,8 +106,8 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
         {
             *outError = [NSError errorWithDomain:MPFeatherNSFileManagerExtensionsErrorDomain
                                             code:MPFeatherNSFileManagerExtensionsErrorCodeCachesExistsButNotDirectory
-                                     description:MPStringF(@"Cannot use application caches directory at %@", applicationCachesDirectoryURL.path)
-                                          reason:MPStringF(@"File at %@ exists but is not a directory", applicationCachesDirectoryURL.path)];
+                                     description:MPStringF(@"Cannot use application caches subdirectory at %@", URL.path)
+                                          reason:MPStringF(@"File at %@ exists but is not a directory", URL.path)];
         }
         return nil;
     }
