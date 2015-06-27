@@ -904,9 +904,6 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     if (db)
         return db;
     
-    if (!db)
-        NSParameterAssert([cls conformsToProtocol:@protocol(MPReferencableObject)]);
-    
     MPShoeboxPackageController *spkg = [MPShoeboxPackageController sharedShoeboxController];
     db = [spkg controllerForManagedObjectClass:cls].db.database;
     NSParameterAssert(db);

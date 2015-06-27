@@ -502,6 +502,16 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return [self managedObjectsForQueryEnumerator:q.run];
 }
 
+- (NSArray *)allObjects:(NSError **)error
+{
+    CBLQuery *q = [self allObjectsQuery];
+    
+    __block NSArray *objs;
+    objs = [self managedObjectsForQueryEnumerator:[q run:error]];
+    
+    return objs;
+}
+
 - (NSArray *)allObjects
 {
     CBLQuery *q = [self allObjectsQuery];
@@ -1165,13 +1175,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     assert(object.controller == self);
     assert(self.db);
     
-    #ifdef DEBUG
-    mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.packageController serverQueueToken], ^{
-        MPLog(@"Did save object %@ in %@", object, self.db.database.internalURL);
-    });
-    #endif
-
-    NSNotificationCenter *nc = [_packageController notificationCenter]; assert(nc);
+    NSNotificationCenter *nc = [_packageController notificationCenter];
+    NSAssert(nc, @"Expecting to have a package controller + notification center for object: %@ (%@)",
+             object, _packageController);
 
     NSString *recentChange = [NSNotificationCenter notificationNameForRecentChangeOfType:MPChangeTypeAdd
                                                                    forManagedObjectClass:[object class]];

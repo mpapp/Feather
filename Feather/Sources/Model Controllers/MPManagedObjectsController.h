@@ -178,6 +178,9 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** All objects managed by this controller. */
 @property (readonly, strong) NSArray *allObjects;
 
+/** All objects managed by this controller, queried without wrapping to mp_dispatch_sync, and allowing for an error pointer. */
+- (NSArray *)allObjects:(NSError **)error;
+
 @property (readonly, strong) NSArray *objects;
 
 /** An optional resource name for a touchdb typed file in the app's Contents/Resources directory. If overridden with a non-nil value, the resource is loaded upon initialisation. */
