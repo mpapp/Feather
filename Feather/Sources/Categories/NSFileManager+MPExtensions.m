@@ -52,13 +52,22 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
     return (__bridge_transfer NSString *)mimeType;
 }
 
+- (NSURL *)sharedApplicationGroupSupportDirectoryURL {
+    NSString *groupIdentifier = [[NSBundle appBundle] objectForInfoDictionaryKey:@"MPSharedApplicationSecurityGroupIdentifier"];
+    NSAssert(groupIdentifier, @"Must set key 'MPSharedApplicationSecurityGroupIdentifier' in Info.plist (even if not sandboxed)"); // Shared security group identifier must be set in Info.plist
+    
+    NSURL *groupContainerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupIdentifier];
+    NSURL *applicationSupportURL = [groupContainerURL URLByAppendingPathComponent:@"Library/Application Support"]; // FIXME: this is not a future proof way to find an Application Support folder.
+    return applicationSupportURL;
+}
+
 - (NSURL *)sharedApplicationGroupCachesDirectoryURL
 {
     NSString *groupIdentifier = [[NSBundle appBundle] objectForInfoDictionaryKey:@"MPSharedApplicationSecurityGroupIdentifier"];
     NSAssert(groupIdentifier, @"Must set key 'MPSharedApplicationSecurityGroupIdentifier' in Info.plist (even if not sandboxed)"); // Shared security group identifier must be set in Info.plist
     
     NSURL *groupContainerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupIdentifier];
-    NSURL *cachesDirectoryURL = [groupContainerURL URLByAppendingPathComponent:@"Library/Caches"];
+    NSURL *cachesDirectoryURL = [groupContainerURL URLByAppendingPathComponent:@"Library/Caches"]; // FIXME: this is not a future proof way to find a Caches folder.
     return cachesDirectoryURL;
 }
 

@@ -43,6 +43,8 @@ extern NS_ENUM(NSUInteger, MPFeatherNSFileManagerExtensionsErrorCode) {
 
 - (NSURL *)sharedApplicationGroupCachesDirectoryURL;
 
+- (NSURL *)sharedApplicationGroupSupportDirectoryURL;
+
 - (NSURL *)URLForApplicationSupportDirectoryNamed:(NSString *)subpath;
 
 /** Returns absolute paths to paths for resources of given type inside directory. If type is nil, all files are listed. */

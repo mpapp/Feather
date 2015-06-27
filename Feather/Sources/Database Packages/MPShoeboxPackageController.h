@@ -49,6 +49,9 @@ extern NSString * const MPDefaultsKeySharedPackageUDID;
 /** The currently registered shared shoebox package controller class. */
 + (Class)sharedShoeboxPackageControllerClass;
 
+/** An optional name given for the shoebox, used to place the shoebox data under Application Support under this name instead of the default behaviour of placing it under a directory named after app bundle. */
++ (NSString *)name;
+
 /** The base directory for the shoebox's data. */
 + (NSString *)sharedDatabasesPath;
 
