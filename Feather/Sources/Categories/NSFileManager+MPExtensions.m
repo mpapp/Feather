@@ -16,6 +16,8 @@
 
 #include <dlfcn.h>
 #include <errno.h>
+#include <stdio.h>
+#include <string.h>
 
 #include <sys/xattr.h>
 
@@ -395,23 +397,22 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
     return removexattr_func(path, name, options);
 }
 
-- (void)releaseFromQuarantine:(NSString*)root
+- (BOOL)releaseFromQuarantine:(NSString*)root error:(NSError **)err
 {
     const char* quarantineAttribute = "com.apple.quarantine";
     const int removeXAttrOptions = XATTR_NOFOLLOW;
     
-    [self removeXAttr:quarantineAttribute
-             fromFile:root
-              options:removeXAttrOptions];
+    BOOL nonzeroEncountered = [self removeXAttr:quarantineAttribute
+                                       fromFile:root
+                                        options:removeXAttrOptions] != 0;
     
-    // Only recurse if it's actually a directory.  Don't recurse into a
-    // root-level symbolic link.
-    NSError *err = nil;
+    if (nonzeroEncountered) {
+        perror([NSString stringWithFormat:@"Failed to remove xattr from '%@'", root].UTF8String);
+    }
     
-    NSDictionary* rootAttributes = [self attributesOfItemAtPath:root error:&err];
+    NSDictionary* rootAttributes = [self attributesOfItemAtPath:root error:err];
     if (!rootAttributes) {
-        NSLog(@"ERROR: %@", err);
-        return;
+        return NO;
     }
     
     NSString* rootType = [rootAttributes objectForKey:NSFileType];
@@ -421,12 +422,25 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
         // symbolic links, so no further type checks are needed.
         NSDirectoryEnumerator* directoryEnumerator = [self enumeratorAtPath:root];
         NSString* file = nil;
+        
         while ((file = [directoryEnumerator nextObject])) {
-            [self removeXAttr:quarantineAttribute
-                     fromFile:[root stringByAppendingPathComponent:file]
-                      options:removeXAttrOptions];
+            NSString *path = [root stringByAppendingPathComponent:file];
+            if ([self removeXAttr:quarantineAttribute fromFile:path options:removeXAttrOptions] != 0) {
+                perror([NSString stringWithFormat:@"Failed to remove xattr from '%@'", path].UTF8String);
+                
+                if (!nonzeroEncountered) {
+                    nonzeroEncountered = YES;
+                }
+            }
         }
     }
+    
+    if (nonzeroEncountered && err)
+        *err = [NSError errorWithDomain:MPFeatherNSFileManagerExtensionsErrorDomain
+                                   code:MPFeatherNSFileManagerExtensionsErrorCodeXAttrRemovalFailed
+                               userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Failed to remove quarantine extended attribute from file '%@' or a file under it.", root]}];
+    
+    return !nonzeroEncountered;
 }
 
 

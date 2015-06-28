@@ -22,7 +22,8 @@ extern NS_ENUM(NSUInteger, MPFeatherNSFileManagerExtensionsErrorCode) {
     MPFeatherNSFileManagerExtensionsErrorCodeCannotDetermineCachesDirectory = 1,
     MPFeatherNSFileManagerExtensionsErrorCodeCachesExistsButNotDirectory = 2,
     MPFeatherNSFileManagerExtensionsErrorCodeFailedToCreateCachesDirectory = 3,
-    MPFeatherNSFileManagerExtensionsErrorCodeFailedToCreateTempDirectory = 4
+    MPFeatherNSFileManagerExtensionsErrorCodeFailedToCreateTempDirectory = 4,
+    MPFeatherNSFileManagerExtensionsErrorCodeXAttrRemovalFailed = 5
 };
 
 @interface NSFileManager (MPExtensions)
@@ -53,8 +54,9 @@ extern NS_ENUM(NSUInteger, MPFeatherNSFileManagerExtensionsErrorCode) {
 /** Ensures that all files under the specified directory (with limitless recursion) will receive the specified permission mask (mask applied with | so including set bits are spared). */
 - (BOOL)ensurePermissionMaskIncludes:(int)grantedMask inDirectory:(NSString *)directoryPath error:(NSError **)error;
 
-/** Release the file at the specified root path from quarantine. */
-- (void)releaseFromQuarantine:(NSString *)root;
+/** Release the file at the specified root path from quarantine.
+  * In case of a directory, un-quarantines also any contained files and subdirectories (recursively). */
+- (BOOL)releaseFromQuarantine:(NSString *)root error:(NSError **)error;
 
 /** Return YES if pathA and pathB point at the same file (resolves alias / link, check match to inode number), and return NO and an error if either path attributes fail to be resolved. */
 - (BOOL)path:(NSString *)pathA isEqualToPath:(NSString *)pathB error:(NSError **)err;
