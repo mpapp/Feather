@@ -533,9 +533,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     {
         NSLog(@"Conflicting revisions: %@", conflictingRevs);
         NSError *err = nil;
-        if (![_controller resolveConflictingRevisionsForObject:self error:&err])
-        {
-            [self.controller.packageController postErrorNotification:err];
+        // it appears this can sometimes fail with err not being populated?
+        if (![_controller resolveConflictingRevisionsForObject:self error:&err] && err) {
+            [[self.controller.packageController notificationCenter] postErrorNotification:err];
+        }
+        else {
+            MPLog(@"WARNING! Failed to resolve conflict for %@, but no error information was given.", self);
         }
     }
     assert(_controller);
