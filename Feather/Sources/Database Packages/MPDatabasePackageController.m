@@ -236,6 +236,24 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return self;
 }
 
+- (NSString *)pathForDatabase:(MPDatabase *)db {
+    NSString *dbPath = [[self.path stringByAppendingPathComponent:db.database.name] stringByAppendingPathExtension:@"cblite"];
+    
+    BOOL isDir = NO;
+    if (![[NSFileManager defaultManager] fileExistsAtPath:dbPath isDirectory:&isDir]) {
+        MPLog(@"WARNING! Failed to find path for database %@ for package controller at %@.", db.name, self.path);
+        return nil;
+    }
+    
+    if (isDir) {
+        MPLog(@"WARNING! Expecting to find a non-directory file at path %@ for database %@ of package controller %@.",
+              dbPath, db.name, self.path);
+        return nil;
+    }
+    
+    return dbPath;
+}
+
 - (id)ensureInitialStateInitialized {
     return nil; // override in subclass
 }

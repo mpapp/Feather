@@ -70,6 +70,8 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** The filesystem base path (= path to the the root) of the database package. */
 @property (strong, readonly) NSString *path;
 
+- (NSString *)pathForDatabase:(MPDatabase *)database;
+
 /** A file URL to the root of the database package. */
 @property (strong, readonly) NSURL *URL;
 

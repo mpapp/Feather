@@ -968,8 +968,11 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     MPMetadata *metadata = [self.db metadata];
 
     // this version already loaded
-    if ([[metadata getValueOfProperty:checksumKey] isEqualToString:md5])
-    {
+    
+    NSString *previousChecksumValue = [metadata getValueOfProperty:checksumKey];
+    BOOL previousValueExists = previousChecksumValue != nil;
+    BOOL previousValueMatchesCurrentChecksum = [previousChecksumValue isEqualToString:md5];
+    if (previousValueMatchesCurrentChecksum) {
         return YES;
     }
     
@@ -980,7 +983,24 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         if (![fm copyItemAtPath:bundledAttachmentsPath toPath:tempAttachmentsPath error:error])
             return NO;
     
-    //__block BOOL shouldRun = YES;
+    // if a previous version was loaded, purge the current version and then proceed with the pull below.
+    // NOTE! This may fail, but failure will be communicated downstream.
+    if (previousValueExists && !previousValueMatchesCurrentChecksum) {
+        NSError *__block e = nil;
+        __block BOOL purgingFailed = NO;
+        [self.allObjects enumerateObjectsUsingBlock:^(MPManagedObject *mo, NSUInteger idx, BOOL *stop) {
+            if (![mo.document purgeDocument:&e]) {
+                purgingFailed = YES;
+                *stop = YES;
+            }
+        }];
+        
+        if (purgingFailed) {
+            if (error)
+                *error = e;
+            return NO;
+        }
+    }
     
     CBLReplication *replication = nil;
     
