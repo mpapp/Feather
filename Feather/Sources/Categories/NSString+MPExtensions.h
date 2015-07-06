@@ -45,6 +45,9 @@ NS_INLINE  NSMutableString *MPMutableStringForString(NSString *s)
 @interface NSString (Feather)
 
 - (BOOL)containsSubstring:(NSString *)substring;
+
+- (NSString *)substringUpToEndOfFirstOccurrenceOfString:(NSString *)s;
+
 - (NSString *)stringByTranslatingPresentToPastTense;
 
 - (NSString *)stringByMakingSentenceCase;

@@ -121,10 +121,19 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
     return nil; // override in subclass.
 }
 
++ (NSString *)containingAppBundleBaseName {
+    NSString *executablePath = [[[[NSProcessInfo processInfo] arguments][0] stringByStandardizingPath] stringByResolvingSymlinksInPath];
+    NSString *bundlePath = [executablePath substringUpToEndOfFirstOccurrenceOfString:@".app"];
+    NSParameterAssert(bundlePath);
+    
+    return [[bundlePath lastPathComponent] stringByDeletingPathExtension];
+}
+
 + (NSString *)sharedDatabasesPath
 {
     NSFileManager *fm = [NSFileManager defaultManager];
-    NSString *path = [[fm sharedApplicationGroupSupportDirectoryURL] URLByAppendingPathComponent:self.name ?: NSBundle.appBundle.bundleNameString].path;
+    NSString *path = [fm.sharedApplicationGroupSupportDirectoryURL URLByAppendingPathComponent:self.name
+                      ?: self.containingAppBundleBaseName].path;
     
     return path;
 }

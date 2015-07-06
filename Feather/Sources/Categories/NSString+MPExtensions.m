@@ -63,6 +63,15 @@
     return ([self rangeOfString:substring].location != NSNotFound);
 }
 
+- (NSString *)substringUpToEndOfFirstOccurrenceOfString:(NSString *)s
+{
+    NSRange r = [self rangeOfString:s];
+    if (r.location == NSNotFound)
+        return nil;
+    NSString *substring = [self substringToIndex:(r.location + r.length)];
+    return substring;
+}
+
 - (NSString *)stringByTranslatingPresentToPastTense
 {
     return [[self stringByReplacingOccurrencesOfRegex:@"e$" withString:@""] stringByAppendingString:@"ed"];
