@@ -107,6 +107,8 @@
 		5FC752FF1746E294007818A0 /* NSString+MPSearchIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752FD1746E294007818A0 /* NSString+MPSearchIndex.h */; };
 		5FC753001746E294007818A0 /* NSString+MPSearchIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752FE1746E294007818A0 /* NSString+MPSearchIndex.m */; };
 		5FC753031746E2AA007818A0 /* MPSearchIndexController.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC753011746E2AA007818A0 /* MPSearchIndexController.h */; };
+		5FC802271B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC802251B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5FC802281B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC802261B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.m */; };
 		5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
 		5FDB33111705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB330F1705CB950049EBB5 /* InfoPlist.strings */; };
 		5FDB331E1705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
@@ -464,6 +466,8 @@
 		5FC752FE1746E294007818A0 /* NSString+MPSearchIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+MPSearchIndex.m"; path = "Sources/Categories/NSString+MPSearchIndex.m"; sourceTree = "<group>"; };
 		5FC753011746E2AA007818A0 /* MPSearchIndexController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPSearchIndexController.h; path = "Sources/Model Controllers/MPSearchIndexController.h"; sourceTree = "<group>"; };
 		5FC753021746E2AA007818A0 /* MPSearchIndexController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPSearchIndexController.m; path = "Sources/Model Controllers/MPSearchIndexController.m"; sourceTree = "<group>"; };
+		5FC802251B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPDatabasePackageBackedDocument.h; path = "Sources/Model Controllers/MPDatabasePackageBackedDocument.h"; sourceTree = "<group>"; };
+		5FC802261B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPDatabasePackageBackedDocument.m; path = "Sources/Model Controllers/MPDatabasePackageBackedDocument.m"; sourceTree = "<group>"; };
 		5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+MPManagedObjectExtensions.h"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.h"; sourceTree = "<group>"; };
 		5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MPManagedObjectExtensions.m"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.m"; sourceTree = "<group>"; };
 		5FD0E13118F082BD00789CC9 /* NSUUID+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUUID+MPExtensions.h"; sourceTree = "<group>"; };
@@ -812,6 +816,15 @@
 			name = "Model Cocoa Categories";
 			sourceTree = "<group>";
 		};
+		5FC802141B4FB90B00AEEFE5 /* Document Classes */ = {
+			isa = PBXGroup;
+			children = (
+				5FC802251B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.h */,
+				5FC802261B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.m */,
+			);
+			name = "Document Classes";
+			sourceTree = "<group>";
+		};
 		5FDB32F71705CB950049EBB5 = {
 			isa = PBXGroup;
 			children = (
@@ -875,6 +888,7 @@
 		5FDB330C1705CB950049EBB5 /* Feather */ = {
 			isa = PBXGroup;
 			children = (
+				5FC802141B4FB90B00AEEFE5 /* Document Classes */,
 				5F37CDF91B1CA4DF0022D865 /* Resources */,
 				5FDB33131705CB950049EBB5 /* Feather.h */,
 				5FDB3A8217079B810049EBB5 /* Database Packages */,
@@ -1173,6 +1187,7 @@
 				5FC423761AFF893F002234FB /* NSDictionary+MPManagedObjectExtensions.h in Headers */,
 				5F3D8C0C1AAD07C900D0D4A8 /* MPJSONRepresentable.h in Headers */,
 				5FDB3A3F1707992B0049EBB5 /* MPManagedObject.h in Headers */,
+				5FC802271B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.h in Headers */,
 				5FDB3A411707992B0049EBB5 /* MPManagedObject+Mixin.h in Headers */,
 				5FDB3A431707992B0049EBB5 /* MPManagedObject+Protected.h in Headers */,
 				5FDB3A5B170799B30049EBB5 /* MPManagedObjectsController.h in Headers */,
@@ -1693,6 +1708,7 @@
 				5F293BF6170DFD4E001C2111 /* UICKeyChainStore.m in Sources */,
 				5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */,
 				5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */,
+				5FC802281B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.m in Sources */,
 				5F3D380F1725D8E000D19D7C /* MPBundlableMixin.m in Sources */,
 				5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */,
 				5FE2C0EC1B256B4C001DB163 /* MPTreeItemUtility.m in Sources */,

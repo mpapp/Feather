@@ -27,6 +27,7 @@
 #import "MPTreeItem.h"
 #import "MPTitledProtocol.h"
 
+#import "MPDatabasePackageBackedDocument.h"
 
 #import <Feather/MPVirtualSection.h>
 
