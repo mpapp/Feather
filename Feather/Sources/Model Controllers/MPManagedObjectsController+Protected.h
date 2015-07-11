@@ -14,6 +14,7 @@
 
 @interface MPManagedObjectsController (Protected)
 
+
 - (void)willSaveObject:(MPManagedObject *)object;
 - (void)didSaveObject:(MPManagedObject *)object;
 
