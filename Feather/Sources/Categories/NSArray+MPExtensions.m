@@ -81,6 +81,28 @@
     return [NSSet setWithArray:[self valueForKey:@"class"]];
 }
 
+- (BOOL)allObjectsAreSubclassesOfClasses:(NSArray *)classes {
+    NSParameterAssert(classes.count > 0);
+    
+    if (self.count == 0)
+        return NO;
+    
+    for (id o in self) {
+        BOOL isOneOf = NO;
+        for (Class c in classes) {
+            if ([o isKindOfClass:c]) {
+                isOneOf = YES;
+                continue;
+            }
+        }
+        if (!isOneOf) {
+            return NO;
+        }
+    }
+
+    return YES;
+}
+
 - (BOOL)allObjectsAreSubclassesOf:(Class)class
 {
     if (self.count == 0) return NO;

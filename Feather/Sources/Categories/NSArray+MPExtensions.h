@@ -30,6 +30,11 @@ typedef enum MPValueToggleResult
 - (NSMutableArray *)mutableDeepContainerCopy;
 
 - (NSSet *)allObjectSubclasses;
+
+/** If all objects are subclasses of one or more of the classes given as an argument, returns YES, otherwise NO.
+  * Returns NO for an empty array.
+  * The classes array must not be empty. */
+- (BOOL)allObjectsAreSubclassesOfClasses:(NSArray *)classes;
 - (BOOL)allObjectsAreSubclassesOf:(Class)class;
 
 - (NSArray *)arrayByRemovingObject:(id)obj;
