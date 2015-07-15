@@ -21,6 +21,8 @@
 		5F293C00170E1935001C2111 /* MPExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293BFD170E191F001C2111 /* MPExtensionTests.m */; };
 		5F293C07170E2980001C2111 /* MPEmbeddedObjectsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */; };
 		5F293C1F170E3B62001C2111 /* MPPlaceHolding.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F2CC7751B56E58900D9C714 /* MPFileObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F2CC7731B56E58900D9C714 /* MPFileObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F2CC7761B56E58900D9C714 /* MPFileObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CC7741B56E58900D9C714 /* MPFileObserver.m */; };
 		5F3765EB1A1AA1AA0068DA39 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F3765EA1A1AA1AA0068DA39 /* AddressBook.framework */; };
 		5F3D380A1725D8A600D19D7C /* MPCategorizableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D38081725D8A600D19D7C /* MPCategorizableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D38091725D8A600D19D7C /* MPCategorizableMixin.m */; };
@@ -403,6 +405,8 @@
 		5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPEmbeddedObjectsTests.m; sourceTree = "<group>"; };
 		5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPPlaceHolding.h; path = Sources/Model/MPPlaceHolding.h; sourceTree = "<group>"; };
 		5F293C20170E45D4001C2111 /* MPEmbeddedObject+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPEmbeddedObject+Protected.h"; path = "Sources/Model/MPEmbeddedObject+Protected.h"; sourceTree = "<group>"; };
+		5F2CC7731B56E58900D9C714 /* MPFileObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPFileObserver.h; path = Sources/Utilities/MPFileObserver.h; sourceTree = "<group>"; };
+		5F2CC7741B56E58900D9C714 /* MPFileObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPFileObserver.m; path = Sources/Utilities/MPFileObserver.m; sourceTree = "<group>"; };
 		5F2EBAAC1780AA4E00BF3298 /* NSApplication+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSApplication+MPExtensions.h"; path = "Sources/Categories/NSApplication+MPExtensions.h"; sourceTree = "<group>"; };
 		5F2EBAAD1780AA4E00BF3298 /* NSApplication+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSApplication+MPExtensions.m"; path = "Sources/Categories/NSApplication+MPExtensions.m"; sourceTree = "<group>"; };
 		5F3765EA1A1AA1AA0068DA39 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -1108,6 +1112,8 @@
 				5FFC376F1AEEF7AF0041FBED /* MPCountryList.m */,
 				5FE2C0E91B256B4C001DB163 /* MPTreeItemUtility.h */,
 				5FE2C0EA1B256B4C001DB163 /* MPTreeItemUtility.m */,
+				5F2CC7731B56E58900D9C714 /* MPFileObserver.h */,
+				5F2CC7741B56E58900D9C714 /* MPFileObserver.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1191,6 +1197,7 @@
 				5FDB3A411707992B0049EBB5 /* MPManagedObject+Mixin.h in Headers */,
 				5FDB3A431707992B0049EBB5 /* MPManagedObject+Protected.h in Headers */,
 				5FDB3A5B170799B30049EBB5 /* MPManagedObjectsController.h in Headers */,
+				5F2CC7751B56E58900D9C714 /* MPFileObserver.h in Headers */,
 				5FDB3A5D170799B30049EBB5 /* MPManagedObjectsController+Protected.h in Headers */,
 				5FDB3A6A17079A750049EBB5 /* MPContributor.h in Headers */,
 				5FDB3A7317079ABB0049EBB5 /* MPSnapshotsController.h in Headers */,
@@ -1700,6 +1707,7 @@
 				5FDB3A8817079C020049EBB5 /* MPException.m in Sources */,
 				5FDB3A9317079DD10049EBB5 /* MPDatabase.m in Sources */,
 				5FDB3A9517079DD10049EBB5 /* MPDatabasePackageController.m in Sources */,
+				5F2CC7761B56E58900D9C714 /* MPFileObserver.m in Sources */,
 				5FDB3AA017079ED80049EBB5 /* MPShoeboxPackageController.m in Sources */,
 				5F293B9C170CAD65001C2111 /* MPCacheableMixin.m in Sources */,
 				5F42FC491B10C36900CD88AA /* MPDeepSaver.m in Sources */,
