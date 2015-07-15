@@ -41,3 +41,5 @@
 #import "MPJSONRepresentable.h"
 
 #import "MPCountryList.h"
+
+#import "MPFileObserver.h"
