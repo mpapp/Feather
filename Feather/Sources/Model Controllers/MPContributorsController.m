@@ -282,16 +282,13 @@ NSString * const MPContributorRoleTranslator = @"translator";
         
         NSAssert(doc[@"contributor"], @"Expecting 'contributor' field in a contributor identity document: %@", doc);
         emit(doc[@"contributor"], nil);
-    } version:@"1.0"];
+    } version:@"1.1"];
     
     [[self.db.database viewNamed:self.allObjectsViewName] setMapBlock:self.allObjectsBlock version:@"1.0"];
 }
 
 - (NSArray *)contributorIdentitiesForContributor:(MPContributor *)contributor {
-    return [[self objectsMatchingQueriedView:@"contributor-identities-by-contributor" keys:@[contributor.documentID]]
-     mapObjectsUsingBlock:^id(MPContributorIdentity *c, NSUInteger idx) {
-         return c.contributor;
-    }];
+    return [self objectsMatchingQueriedView:@"contributor-identities-by-contributor" keys:@[contributor.documentID]];
 }
 
 - (NSArray *)contributorIdentitiesWithIdentifier:(NSString *)identifier {

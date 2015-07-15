@@ -68,6 +68,7 @@
         myIdentity.contributor = self;
         myIdentity.identifier = identifier;
         myIdentity.namespace = @"com.manuscriptsapp.shared.package.identity";
+        [myIdentity save];
         
         ((MPContributorsController *)self.controller).me = self;
     }
