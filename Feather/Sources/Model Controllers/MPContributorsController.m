@@ -238,10 +238,9 @@ NSString * const MPContributorRoleTranslator = @"translator";
 
 - (void)hasRemovedContributor:(NSNotification *)notification
 {
-    if (_cachedContributors)
-        { assert([_cachedContributors containsObject:notification.object]); }
-    
-    _cachedContributors = [_cachedContributors arrayByRemovingObject:notification.object];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        _cachedContributors = [_cachedContributors arrayByRemovingObject:notification.object];
+    });
 }
 
 #pragma mark - Deletion handling
