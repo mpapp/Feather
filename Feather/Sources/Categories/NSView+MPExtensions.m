@@ -52,9 +52,9 @@ typedef NS_ENUM(NSUInteger, MPViewDimension)
 // From
 // http://stackoverflow.com/questions/8156799/how-to-make-a-custom-view-resize-with-the-window-with-cocoa-auto-layout
 
-- (void)addEdgeConstraint:(NSLayoutAttribute)edge subview:(NSView *)subview
+- (NSLayoutConstraint *)addEdgeConstraint:(NSLayoutAttribute)edge subview:(NSView *)subview
 {
-    [self addEdgeConstraint:edge constantOffset:0 subview:subview];
+    return [self addEdgeConstraint:edge constantOffset:0 subview:subview];
 }
 
 - (NSLayoutConstraint *)addEdgeConstraint:(NSLayoutAttribute)edge
