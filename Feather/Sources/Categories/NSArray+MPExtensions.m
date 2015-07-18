@@ -122,6 +122,10 @@
     return array;
 }
 
+- (NSArray *)reversedArray {
+    return self.reverseObjectEnumerator.allObjects;
+}
+
 - (void)matchingValueForKey:(NSString *)key value:(void(^)(const BOOL valueMatches, const id value))valueBlock
 {
     NSArray *values = [self valueForKey:key];
