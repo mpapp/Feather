@@ -336,7 +336,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     [self.databasePackageControllerRegistry removeObjectForKey:packageController.identifier];
 }
 
-+ (MPDatabasePackageController *)databasePackageControllerWithFullyQualifiedIdentifier:(NSString *)identifier
++ (instancetype)databasePackageControllerWithFullyQualifiedIdentifier:(NSString *)identifier
 {
     NSAssert([identifier containsString:@"::"],
              @"Identifier '%@' does not look like a fully qualified identifier.", identifier);

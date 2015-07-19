@@ -13,8 +13,10 @@
 #import <Feather/MPCacheable.h>
 #import <Feather/MPTitledProtocol.h>
 
+extern NSString *const MPPasteboardTypeRootSection;
+
 /** MPRootSection is an abstract base class for the root section objects (Sections, Authors, etc) in the application source list. */
-@interface MPRootSection : NSObject <MPTreeItem, MPManagedObjectRecentChangeObserver, MPCacheable, MPTitledProtocol>
+@interface MPRootSection : NSObject <MPTreeItem, MPManagedObjectRecentChangeObserver, MPCacheable, MPTitledProtocol, NSPasteboardWriting, NSPasteboardReading>
 
 /** The database controller which this MPRootSection is associated with. */
 @property (readonly, weak) MPDatabasePackageController *packageController;
@@ -34,5 +36,8 @@
 
 /** The type of objects this root section represents, e.g. MPFigureRootSection => MPFigure */
 @property (readonly, strong) Class representedObjectClass;
+
+/** Returns a root section given its referable dictionary representation (for instance created onto the pasteboard). */
++ (id)objectWithReferableDictionaryRepresentation:(NSDictionary *)referableDictionaryRep;
 
 @end

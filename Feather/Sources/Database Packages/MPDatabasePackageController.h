@@ -269,7 +269,7 @@ typedef enum MPDatabasePackageControllerErrorCode
 - (BOOL)restoreFromSnapshotWithName:(NSString *)name error:(NSError **)err;
 
 /** Returns a database package controller with the specified identifier, if one happens to be currently open. */
-+ (MPDatabasePackageController *)databasePackageControllerWithFullyQualifiedIdentifier:(NSString *)identifier;
++ (instancetype)databasePackageControllerWithFullyQualifiedIdentifier:(NSString *)identifier;
 
 /** Root sections represent are 'virtual' model objects intended to present views to objects in the database package. */
 @property (strong, readonly) NSArray *rootSections;

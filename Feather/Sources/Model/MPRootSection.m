@@ -10,13 +10,14 @@
 #import "MPRootSection+Protected.h"
 
 #import <FeatherExtensions/FeatherExtensions.h>
-
 #import <Feather/MPDatabasePackageController.h>
 #import "RegexKitLite.h"
 #import "Mixin.h"
 
 #import <Feather/MPVirtualSection.h>
 #import <Feather/MPCacheableMixin.h>
+
+NSString *const MPPasteboardTypeRootSection = @"com.piipari.root-section.id.plist";
 
 @implementation MPRootSection
 
@@ -202,5 +203,96 @@
 }
 
 - (void)refreshCachedValues {}
+
+#pragma mark - Pasteboard
+
+- (NSArray *)writableTypesForPasteboard:(NSPasteboard *)pasteboard {
+    return @[MPPasteboardTypeRootSection];
+}
+
+- (id)pasteboardPropertyListForType:(NSString *)type {
+    NSDictionary *dict = @{
+                           @"databasePackageID":self.packageController.fullyQualifiedIdentifier,
+                           @"objectType":NSStringFromClass(self.class)
+                        };
+    
+    NSString *errorStr = nil;
+    NSData *data = [NSPropertyListSerialization dataFromPropertyList:dict
+                                                              format:NSPropertyListXMLFormat_v1_0
+                                                    errorDescription:&errorStr];
+    NSAssert(data, @"Failed to create plist representation of a root section: %@", errorStr);
+    
+    return data;
+}
+
++ (NSArray *)readableTypesForPasteboard:(NSPasteboard *)pasteboard {
+    return @[MPPasteboardTypeRootSection];
+}
+
+- (id)initWithPasteboardPropertyList:(id)propertyList ofType:(NSString *)type {
+    self = [super init];
+    
+    if (self) {
+        if (![type isEqualToString:MPPasteboardTypeRootSection]) {
+            self = nil;
+            return self;
+        }
+        
+        NSPropertyListFormat format;
+        NSError *err = nil;
+        NSDictionary *dict = [NSPropertyListSerialization propertyListWithData:propertyList
+                                                                       options:0
+                                                                        format:&format
+                                                                         error:&err];
+        if (!dict) {
+            self = nil;
+            return self;
+        }
+        
+        NSString *databasePackageID = dict[@"databasePackageID"];
+        
+        MPDatabasePackageController *pkgc = (id)[MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:databasePackageID];
+        
+        NSSet *rootSectionClasses = [NSSet setWithArray:[pkgc.rootSections valueForKey:@"class"]];
+        NSAssert(rootSectionClasses.count == pkgc.rootSections.count,
+                 @"Expecting for root sections to be unique by their class, but they're not: %@", rootSectionClasses);
+        
+        MPRootSection *rs = [pkgc.rootSections firstObjectMatching:^BOOL(MPRootSection *s) {
+            return [s isKindOfClass:self.class];
+        }];
+        
+        if (!rs) {
+            self = nil;
+            return self;
+        }
+        
+        return rs;
+    }
+    
+    return self;
+}
+
++ (id)objectWithReferableDictionaryRepresentation:(NSDictionary *)referableDictionaryRep {
+    NSString *packageID = referableDictionaryRep[@"databasePackageID"];
+    
+    if (!packageID)
+        return nil;
+    
+    NSString *objectType = referableDictionaryRep[@"objectType"];
+    
+    if (!objectType)
+        return nil;
+    
+    MPDatabasePackageController *pkgc
+        = [MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:packageID];
+    
+    Class class = NSClassFromString(objectType);
+    
+    MPRootSection *rs = [pkgc.rootSections firstObjectMatching:^BOOL(MPRootSection *rootSection) {
+        return [rootSection.class isSubclassOfClass:class];
+    }];
+    
+    return rs;
+}
 
 @end
