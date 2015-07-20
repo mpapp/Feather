@@ -29,7 +29,7 @@
 
 #import "MPDatabasePackageBackedDocument.h"
 
-#import <Feather/MPVirtualSection.h>
+#import "MPVirtualSection.h"
 
 #import "NSNotificationCenter+MPManagedObjectExtensions.h"
 #import "NSDictionary+MPManagedObjectExtensions.h"
