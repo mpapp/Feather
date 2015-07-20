@@ -255,6 +255,17 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     return size;
 }
 
+- (NSData *)PNGRepresentation {
+    [self lockFocus];
+    NSBitmapImageRep *bitmapRep = [[NSBitmapImageRep alloc] initWithFocusedViewRect:NSMakeRect(0,
+                                                                                               0,
+                                                                                               self.size.width,
+                                                                                               self.size.height)];
+    [self unlockFocus];
+    
+    return [bitmapRep representationUsingType:NSPNGFileType properties:0];
+}
+
 + (NSUInteger)bitmapImageTypeForData:(NSData *)data {
     CGImageSourceRef source = CGImageSourceCreateWithData((__bridge CFDataRef)data, NULL);
     NSString *type = (__bridge NSString *)CGImageSourceGetType(source);

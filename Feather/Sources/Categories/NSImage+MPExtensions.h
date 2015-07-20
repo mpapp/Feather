@@ -35,6 +35,8 @@ typedef struct MPEMUSize
 - (NSUInteger)DPI;
 - (MPEMUSize)EMUSize;
 
+@property (readonly) NSData *PNGRepresentation;
+
 /** Return the detected bitmap image type for given data as a NSBitmapImageFileType value, 
   * or **NSNotFound** if none applies. */
 + (NSUInteger)bitmapImageTypeForData:(NSData *)data __attribute__((nonnull));
