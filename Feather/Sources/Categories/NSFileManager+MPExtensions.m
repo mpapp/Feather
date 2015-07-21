@@ -145,14 +145,12 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
     
     do
     {
-        NSString *s = [[[NSProcessInfo processInfo] globallyUniqueString] substringToIndex:8];
+        NSString *s = [NSUUID.UUID.UUIDString substringToIndex:8];
         
-        if (i == 0)
-        {
+        if (i == 0) {
             temporaryURL = [URL URLByAppendingPathComponent:MPStringF(@"%@%@", s, ext)];
         }
-        else
-        {
+        else {
             temporaryURL = [URL URLByAppendingPathComponent:MPStringF(@"%@_%li%@", s, i, ext)];
         }
     }

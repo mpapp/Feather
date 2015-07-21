@@ -336,10 +336,10 @@ typedef void (^MPDatabasePackageControllerUpdateChangeCountHandler)(NSDocumentCh
 
 - (instancetype)initWithPackageController:(MPDatabasePackageController *)pkgc
                            rootURLHandler:(MPDatabasePackageControllerRootURLHandler)handler
-                        updateChangeCountHandler:(MPDatabasePackageControllerUpdateChangeCountHandler)changeType;
+                 updateChangeCountHandler:(MPDatabasePackageControllerUpdateChangeCountHandler)changeType;
 
 @property (readwrite, weak) MPDatabasePackageController *packageController;
 @property (readonly) MPDatabasePackageControllerRootURLHandler rootURLHandler;
-@property (readonly)MPDatabasePackageControllerUpdateChangeCountHandler updateChangeCountHandler;
+@property (readonly) MPDatabasePackageControllerUpdateChangeCountHandler updateChangeCountHandler;
 
 @end
