@@ -83,12 +83,32 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
     return [self temporaryURLInApplicationCachesSubdirectoryNamed:subdirectoryName createDirectory:NO extension:pathExtension error:outError];
 }
 
+- (NSURL *)temporaryDirectoryURLInGroupCachesSubdirectoryNamed:(NSString *)subdirectoryName error:(NSError *__autoreleasing *)outError {
+    return [self temporaryURLInSubdirectoryNamed:subdirectoryName
+                                           atURL:self.sharedApplicationGroupCachesDirectoryURL
+                                 createDirectory:YES
+                             createIntermediates:YES
+                                       extension:@""
+                                           error:outError];
+}
+
+- (NSURL *)temporaryFileURLInGroupCachesSubdirectoryNamed:(NSString *)subdirectoryName
+                                            withExtension:(NSString *)pathExtension
+                                                    error:(NSError *__autoreleasing *)outError {
+    return [self temporaryURLInSubdirectoryNamed:subdirectoryName
+                                           atURL:self.sharedApplicationGroupCachesDirectoryURL
+                                 createDirectory:NO
+                             createIntermediates:YES
+                                       extension:pathExtension
+                                           error:outError];
+}
+
 - (NSURL *)temporaryURLInApplicationCachesSubdirectoryNamed:(NSString *)subdirectoryName
                                             createDirectory:(BOOL)createDirectory
                                                   extension:(NSString *)pathExtension
-                                                      error:(NSError *__autoreleasing *)outError
-{
+                                                      error:(NSError *__autoreleasing *)outError {
     NSError *error;
+    
     NSURL *cachesRootDirectoryURL = [self URLForDirectory:NSCachesDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:YES error:&error];
     
     if (cachesRootDirectoryURL == nil)
@@ -103,16 +123,30 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
         return nil;
     }
     
-    NSURL *applicationCachesDirectoryURL
-        = [cachesRootDirectoryURL URLByAppendingPathComponent:NSBundle.appBundle.bundleIdentifier];
+    NSURL *applicationCachesDirectoryURL = [cachesRootDirectoryURL URLByAppendingPathComponent:NSBundle.appBundle.bundleIdentifier];
     BOOL createIntermediates = (subdirectoryName.length > 0);
     NSURL *URL = createIntermediates ? [applicationCachesDirectoryURL URLByAppendingPathComponent:subdirectoryName] : applicationCachesDirectoryURL;
-    
+
+    return [self temporaryURLInSubdirectoryNamed:subdirectoryName
+                                           atURL:URL
+                                 createDirectory:createDirectory
+                             createIntermediates:createIntermediates
+                                       extension:pathExtension
+                                           error:outError];
+}
+
+
+- (NSURL *)temporaryURLInSubdirectoryNamed:(NSString *)subdirectoryName
+                                     atURL:(NSURL *)URL
+                           createDirectory:(BOOL)createDirectory
+                       createIntermediates:(BOOL)createIntermediates
+                                 extension:(NSString *)pathExtension
+                                     error:(NSError *__autoreleasing *)outError
+{
     BOOL isDirectory = NO;
     BOOL exists = [self fileExistsAtPath:URL.path isDirectory:&isDirectory];
     
-    if (exists && !isDirectory)
-    {
+    if (exists && !isDirectory) {
         if (outError != NULL)
         {
             *outError = [NSError errorWithDomain:MPFeatherNSFileManagerExtensionsErrorDomain
@@ -122,9 +156,8 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
         }
         return nil;
     }
-    else if (!exists)
-    {
-        
+    else if (!exists) {
+        NSError *error = nil;
         BOOL success = [self createDirectoryAtURL:URL withIntermediateDirectories:createIntermediates attributes:nil error:&error];
         
         if (!success) {
@@ -143,8 +176,7 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
     NSUInteger i = 0;
     NSString *ext = (pathExtension.length > 0) ? MPStringF(@".%@", pathExtension) : @"";
     
-    do
-    {
+    do {
         NSString *s = [NSUUID.UUID.UUIDString substringToIndex:8];
         
         if (i == 0) {
@@ -156,14 +188,15 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
     }
     while ([self fileExistsAtPath:temporaryURL.path]);
     
-    if (createDirectory)
-    {
-        BOOL success = [self createDirectoryAtURL:temporaryURL withIntermediateDirectories:NO attributes:nil error:&error];
+    if (createDirectory) {
+        NSError *error = nil;
+        BOOL success = [self createDirectoryAtURL:temporaryURL
+                      withIntermediateDirectories:NO
+                                       attributes:nil
+                                            error:&error];
         
-        if (!success)
-        {
-            if (outError != nil)
-            {
+        if (!success) {
+            if (outError != nil) {
                 *outError = [NSError errorWithDomain:MPFeatherNSFileManagerExtensionsErrorDomain
                                                 code:MPFeatherNSFileManagerExtensionsErrorCodeFailedToCreateTempDirectory
                                          description:MPStringF(@"Failed to create temporary directory at %@", temporaryURL)

@@ -42,6 +42,9 @@ extern NS_ENUM(NSUInteger, MPFeatherNSFileManagerExtensionsErrorCode) {
                                                   withExtension:(NSString *)pathExtension
                                                           error:(NSError *__autoreleasing *)outError;
 
+- (NSURL *)temporaryDirectoryURLInGroupCachesSubdirectoryNamed:(NSString *)subdirectoryName error:(NSError *__autoreleasing *)outError;
+- (NSURL *)temporaryFileURLInGroupCachesSubdirectoryNamed:(NSString *)subdirectoryName withExtension:(NSString *)pathExtension error:(NSError *__autoreleasing *)err;
+
 - (NSURL *)sharedApplicationGroupCachesDirectoryURL;
 
 - (NSURL *)sharedApplicationGroupSupportDirectoryURL;
