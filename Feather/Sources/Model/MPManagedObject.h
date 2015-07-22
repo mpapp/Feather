@@ -212,6 +212,9 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
  */
 + (NSData *)pasteboardObjectIDPropertyListForObjects:(NSArray *)objectIDDictionaries error:(NSError **)err;
 
+/** These pasteboard types should be returned as promises. */
++ (NSSet *)promisedPasteboardTypes;
+
 /** String representation of a JSON encodable dictionary representation of the object. By default the representation does not contain referenced objects, but subclasses can override to embed ("denormalise") referenced objects. */
 - (NSString *)JSONStringRepresentation:(NSError **)err;
 
