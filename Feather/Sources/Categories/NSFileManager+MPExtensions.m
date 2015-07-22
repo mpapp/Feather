@@ -474,5 +474,10 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
     return !nonzeroEncountered;
 }
 
++ (NSString *)UTIForPathExtension:(NSString *)extension
+{
+    NSString *UTI = CFBridgingRelease(UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)extension, NULL));
+    return UTI;
+}
 
 @end

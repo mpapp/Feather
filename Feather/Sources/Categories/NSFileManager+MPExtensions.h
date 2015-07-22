@@ -67,4 +67,6 @@ extern NS_ENUM(NSUInteger, MPFeatherNSFileManagerExtensionsErrorCode) {
 /** Returns a security scoped URL that the application has begun accessing, if successful, and nil and an error otherwise.*/
 - (NSURL *)beginSecurityScopedAccessForPath:(NSString *)path bookmarkUserDefaultKey:(NSString *)bookmarkUserDefaultKey error:(NSError **)error;
 
++ (NSString *)UTIForPathExtension:(NSString *)extension;
+
 @end
