@@ -920,7 +920,7 @@ static NSUInteger packagesOpened = 0;
     });
 }
 
-static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 10;
+static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
 
 - (void)startListenerWithCompletionHandler:(void(^)(NSError *err))completionHandler
 {
