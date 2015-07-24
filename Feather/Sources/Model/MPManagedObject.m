@@ -1331,6 +1331,22 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     return dataRep;
 }
 
++ (NSSet *)promisedPasteboardTypes {
+    NSArray *types = @[NSPasteboardTypeString,
+                       NSStringPboardType,
+                       NSPasteboardTypeRTF,
+                       NSPasteboardTypeRTFD];
+    return [NSSet setWithArray:types];
+}
+
+- (NSPasteboardWritingOptions)writingOptionsForType:(NSString *)type pasteboard:(NSPasteboard *)pasteboard {
+    if ([self.class.promisedPasteboardTypes containsObject:type]) {
+        return NSPasteboardWritingPromised;
+    }
+    
+    return 0;
+}
+
 + (NSData *)pasteboardObjectIDPropertyListForObjects:(NSArray *)objects error:(NSError **)err
 {
     NSArray *objectIDDicts = [objects mapObjectsUsingBlock:^id(MPManagedObject *mo, NSUInteger idx) {
