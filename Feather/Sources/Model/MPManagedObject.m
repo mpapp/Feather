@@ -257,7 +257,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     NSString *className = [documentID componentsSeparatedByString:@":"][0];
     Class moClass = NSClassFromString(className);
     assert(moClass);
-    assert([moClass isSubclassOfClass:[MPManagedObject class]]);
+    NSAssert([moClass isSubclassOfClass:[MPManagedObject class]]
+             || [moClass isSubclassOfClass:MPMetadata.class]
+             || [moClass isSubclassOfClass:MPLocalMetadata.class],
+             @"Unexpected managed object class: %@", moClass);
     return moClass;
 }
 
