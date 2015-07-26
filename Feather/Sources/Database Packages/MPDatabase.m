@@ -148,23 +148,33 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
      {
          if (!idHasValidPrefix)
          {
-             NSLog(@"Attempting to save a managed object '%@' without object type as a prefix in _id -- this will fail: %@", newRevision.document.documentID, [newRevision properties]);
+             NSString *msg = [NSString stringWithFormat:@"Attempting to save a managed object '%@' without object type as a prefix in _id -- this will fail: %@", newRevision.document.documentID, [newRevision properties]];
+             MPLog(@"%@", msg);
+             [context rejectWithMessage:msg];
+             
              return NO;
          }
          
          Class cls = NSClassFromString(newRevision.properties.managedObjectType);
          if (!cls)
          {
-             NSLog(@"Attempting to save a managed object '%@' with an unexpected object type '%@' -- this will fail.",
-                   newRevision.document.documentID, newRevision.properties.managedObjectType);
+             NSString *msg = [NSString stringWithFormat:
+                              @"Attempting to save a managed object '%@' with an unexpected object type '%@' -- this will fail.",
+                              newRevision.document.documentID, newRevision.properties.managedObjectType];
+             MPLog(@"%@", msg);
+             [context rejectWithMessage:msg];
+             
              return NO;
          }
          else
          {
              if (![cls validateRevision:newRevision])
              {
-                 NSLog(@"Attempting to save a managed object '%@' which does not validate as %@ -- this will fail.",
-                       newRevision.document.documentID, NSStringFromClass(cls));
+                 NSString *msg = [NSString stringWithFormat:@"Attempting to save a managed object '%@' which does not validate as %@ -- this will fail.",
+                                  newRevision.document.documentID, NSStringFromClass(cls)];
+                 MPLog(@"%@", msg);
+                 [context rejectWithMessage:msg];
+                 
                  return NO;
              }
          }
