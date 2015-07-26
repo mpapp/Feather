@@ -205,6 +205,8 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
  * The dictionary can be resolved to an existing object with +objectWithReferableDictionaryRepresentation. */
 @property (readonly) NSDictionary *referableDictionaryRepresentation;
 
+/** Constructs a MPManagedObject instance of the type specified in the given referable dictionary representation.
+  * Intended for creating managed objects from their pasteboard property list representations. */
 + (id)objectWithReferableDictionaryRepresentation:(NSDictionary *)referableDictionaryRep;
 
 /**

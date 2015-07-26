@@ -645,6 +645,17 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                                                                   forCopyManagedByController:self];
         [obj setValue:transformedValue ofProperty:key];
     }
+    
+    // need to save before attaching, otherwise attaching will fail (as there's nothing to attach to).
+    if (prototype.attachmentNames) {
+        [obj save];
+    }
+    
+    [prototype.attachmentNames enumerateObjectsUsingBlock:^(NSString *attachmentName, NSUInteger idx, BOOL *stop) {
+        CBLAttachment *attachment = [prototype attachmentNamed:attachmentName];
+        [obj setAttachmentNamed:attachment.name withContentType:attachment.contentType content:attachment.content];
+        [obj save];
+    }];
 
     return obj;
 }
