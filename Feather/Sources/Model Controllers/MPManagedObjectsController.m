@@ -631,12 +631,12 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     assert([prototype canFormPrototype]);
     assert(prototype.document.documentID);
 
-    // TODO: might need also -prototypeInstanceClassForPrototype: if this appers insufficient.
+    // TODO: might need also -prototypeInstanceClassForPrototype: if this appears insufficient.
     Class instantiableClass = self.prototypeClass == self.managedObjectClass
                                 ? prototype.class
                                 : self.managedObjectClass;
     
-    MPManagedObject *obj = [[instantiableClass alloc] initWithNewDocumentForController:self];
+    MPManagedObject *obj = [[instantiableClass alloc] initWithNewDocumentForController:self prototype:prototype];
     obj.prototype = prototype;
 
     for (NSString *key in prototype.document.userProperties)

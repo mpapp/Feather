@@ -143,6 +143,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return [self initWithNewDocumentForController:controller properties:nil documentID:nil];
 }
 
+// override in subclass if initialising when copying with a prototype should go a different route.
+- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller prototype:(id)prototype {
+    return [self initWithNewDocumentForController:controller];
+}
+
 - (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller properties:(NSDictionary *)properties {
     return [self initWithNewDocumentForController:controller properties:properties documentID:nil];
 }
@@ -310,9 +315,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     
     MPDatabasePackageController *packageController = [document.database packageController];
     MPManagedObjectsController *moc = [packageController controllerForManagedObjectClass:class];
-    assert(moc);
+    NSAssert(moc, @"Class %@ should have a controller", class);
     
-    assert(!_controller);
+    NSAssert(!_controller, @"Controller should have been set for %@", self);
     self.controller = moc;
 }
 
