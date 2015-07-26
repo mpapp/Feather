@@ -641,8 +641,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
     for (NSString *key in prototype.document.userProperties)
     {
-        id transformedValue = [prototype prototypeTransformedValueForPropertiesDictionaryKey:key
-                                                                  forCopyManagedByController:self];
+        id transformedValue = [prototype prototypeTransformedValueForPropertiesDictionaryKey:key forCopyOfPrototypeObject:obj];
         [obj setValue:transformedValue ofProperty:key];
     }
     

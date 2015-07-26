@@ -124,7 +124,7 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 - (void)reject;
 
 /** Returns a value transformed from the prototype object to the prototyped object. Can be for instance the original value, a placeholder value, a copy of the original value, or nil. For instance the property 'title' might be transformed to hide the user's set value for a title to just "Document title". */
-- (id)prototypeTransformedValueForPropertiesDictionaryKey:(NSString *)key forCopyManagedByController:(MPManagedObjectsController *)cc;
+- (id)prototypeTransformedValueForPropertiesDictionaryKey:(NSString *)key forCopyOfPrototypeObject:(MPManagedObject *)mo;
 
 /** A human readable name for a property key. Default implementation returns simply the key, capitalized. */
 - (NSString *)humanReadableNameForPropertyKey:(NSString *)key;

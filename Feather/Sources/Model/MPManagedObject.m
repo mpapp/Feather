@@ -805,7 +805,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 {
 }
 
-- (id)prototypeTransformedValueForPropertiesDictionaryKey:(NSString *)key forCopyManagedByController:(MPManagedObjectsController *)cc
+- (id)prototypeTransformedValueForPropertiesDictionaryKey:(NSString *)key
+                                   forCopyOfPrototypeObject:(MPManagedObject *)mo
 {
     return [self getValueOfProperty:key];
 }
