@@ -190,6 +190,9 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
   * Default implementation returns NO to all properties, and at the time of writing is not used by MPManagedObject validateRevision: but is used by some subclasses. */
 + (BOOL)requiresProperty:(NSString *)property;
 
+/** Return YES if instances of this class should track a session ID, NO otherwise. Default implementation returns NO.
+  * Session ID tracking can be helpful when you want to make behaviour conditional on whether your client on the present session made a change, or 
+  * whether it was another client or the same app on a previous time it was run. */
 + (BOOL)shouldTrackSessionID;
 
 + (Class)managedObjectClassFromDocumentID:(NSString *)documentID __attribute__((nonnull));
