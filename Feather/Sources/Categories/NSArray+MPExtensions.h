@@ -41,8 +41,10 @@ typedef enum MPValueToggleResult
 
 - (NSArray *)subarrayFromIndex:(NSUInteger)i;
 
+/** Returns a flattened array (where objects contained inside arrays in the array are made top level objects). */
 @property (readonly, copy) NSArray *arrayByFlatteningArray;
 
+/** Returns a copy of the array iterated from end to beginning. */
 @property (readonly, copy) NSArray *reversedArray;
 
 - (void)matchingValueForKey:(NSString *)key value:(void(^)(BOOL valueMatches, id value))valueBlock;
