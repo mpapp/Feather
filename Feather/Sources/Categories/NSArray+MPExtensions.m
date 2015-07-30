@@ -19,7 +19,7 @@
     
     [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         id mappedVal = mapBlock(obj, idx);
-        assert(mappedVal); // not sure if this needs to be non-nil?
+        NSParameterAssert(mappedVal); // not sure if this needs to be non-nil?
         [map addObject:mappedVal ? mappedVal : [NSNull null]];
     }];
     
