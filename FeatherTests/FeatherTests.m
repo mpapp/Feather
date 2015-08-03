@@ -28,7 +28,7 @@
 {
     [super setUp];
     
-    NSString *sharedPackagePath = [MPShoeboxPackageController sharedDatabasesPath];
+    NSString *sharedPackagePath = [MPShoeboxPackageController.sharedShoeboxPackageControllerClass sharedDatabasesPath];
     
     BOOL sharedPackageIsForTestBundle = [[sharedPackagePath lastPathComponent] isEqualToString:
                                          [[NSBundle appBundle] bundleNameString]];
