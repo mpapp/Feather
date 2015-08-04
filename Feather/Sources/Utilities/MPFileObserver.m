@@ -8,8 +8,6 @@
 
 #import "MPFileObserver.h"
 
-#import <FeatherExtensions/FeatherExtensions.h>
-
 @interface MPFileObserver () <NSFilePresenter>
 @property (readwrite) NSURL *URL;
 @property (readwrite, strong) MPFileObservationChangeHandler changeHandler;
@@ -29,6 +27,10 @@
     }
     
     return self;
+}
+
+- (void)dealloc {
+    [NSFileCoordinator removeFilePresenter:self];
 }
 
 - (NSURL *)presentedItemURL {
