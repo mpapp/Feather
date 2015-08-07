@@ -527,6 +527,13 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return [self objectWithIdentifier:uniqueID];
 }
 
+#if DEBUG
+- (CBLDocument *)possiblyDeletedDocumentWithIdentifier:(NSString *)identifier
+{
+    return [self documentWithIdentifier:identifier allDocsMode:kCBLIncludeDeleted];
+}
+#endif
+
 - (CBLDocument *)documentWithIdentifier:(NSString *)identifier
                             allDocsMode:(CBLAllDocsMode)allDocsMode {
     NSParameterAssert(identifier);

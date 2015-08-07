@@ -189,4 +189,10 @@
     return nil;
 }
 
+- (NSString *)stringByDecodingAsUTF8Data
+{
+    NSString *s = [[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding];
+    return s;
+}
+
 @end

@@ -30,6 +30,9 @@
 
 - (NSUInteger)crc32Checksum;
 
+/** Construct and return a string by decoding this data object as UTF-8 characters, or `nil` if that isn't possible. */
+- (NSString *)stringByDecodingAsUTF8Data;
+
 @end
 
 @interface NSData (AESAdditions)
