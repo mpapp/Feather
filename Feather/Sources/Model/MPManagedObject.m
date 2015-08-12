@@ -1028,10 +1028,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 #pragma mark - Effective property support
 
 NS_INLINE BOOL isEffectiveGetter(const char* name) {
-    return strncmp("effective", name, 9) == 0 && name[strlen(name)-1] == ':';
+    // has prefix 'effective' and doesn't have suffix ':' (i.e. doesn't take arguments)
+    return strncmp("effective", name, 9) == 0 && name[strlen(name) - 1] != ':';
 }
 
 + (BOOL)resolveInstanceMethod:(SEL)sel {
+    
     const char *name = sel_getName(sel);
     
     if (isEffectiveGetter(name)) {
@@ -1044,7 +1046,7 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
         
         Class declaredInClass;
         const char *propertyType;
-        NSString* key;
+        NSString* key = [NSString stringWithUTF8String:name];
         char signature[5];
         IMP accessor = NULL;
         
@@ -1075,8 +1077,11 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 
 + (id)receiverForEffectivePropertyAccessorReceiver:(id)effectiveReceiver property:(NSString *)property
 {
+    NSAssert(self.class == [effectiveReceiver class], @"Unexpected class: %@ != %@",
+             self.class, [effectiveReceiver class]);
+    
     id p = self;
-    while ((p = [[effectiveReceiver class] parentPropertyName]))
+    while ((p = [p valueForKey:[[effectiveReceiver class] parentPropertyName]]))
         if ([p getValueOfProperty:property] != nil)
             return p;
     
@@ -1109,54 +1114,59 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
                                         ofType:(const char*)propertyType {
     switch (propertyType[0]) {
         case _C_ID:
-            return [self impForGetterOfProperty: property ofClass: MYClassFromType(propertyType)];
+            return imp_implementationWithBlock(^id(MPManagedObject *receiver) {
+                id effectiveReceiver = [self receiverForEffectivePropertyAccessorReceiver:receiver property:property];
+                IMP imp = [self impForGetterOfProperty:property ofClass:MYClassFromType(propertyType)];
+                id o = imp(effectiveReceiver, @selector(property));
+                return o;
+            });
         case _C_INT:
         case _C_SHT:
         case _C_USHT:
         case _C_CHR:
         case _C_UCHR:
-            return imp_implementationWithBlock(^int(MYDynamicObject* receiver) {
+            return imp_implementationWithBlock(^int(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver
                                                                    property:property]
                          getValueOfProperty: property] intValue];
             });
         case _C_UINT:
-            return imp_implementationWithBlock(^unsigned int(MYDynamicObject* receiver) {
+            return imp_implementationWithBlock(^unsigned int(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver
                                                                    property:property] getValueOfProperty: property] unsignedIntValue];
             });
         case _C_LNG:
-            return imp_implementationWithBlock(^long(MYDynamicObject* receiver) {
+            return imp_implementationWithBlock(^long(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver property:property] getValueOfProperty: property] longValue];
             });
         case _C_ULNG:
-            return imp_implementationWithBlock(^unsigned long(MYDynamicObject* receiver) {
+            return imp_implementationWithBlock(^unsigned long(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver property:property]
                          getValueOfProperty: property] unsignedLongValue];
             });
         case _C_LNG_LNG:
-            return imp_implementationWithBlock(^long long(MYDynamicObject* receiver) {
+            return imp_implementationWithBlock(^long long(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver property:property]
                          getValueOfProperty: property] longLongValue];
             });
         case _C_ULNG_LNG:
-            return imp_implementationWithBlock(^unsigned long long(MYDynamicObject* receiver) {
+            return imp_implementationWithBlock(^unsigned long long(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver
                                                                    property:property]
                          getValueOfProperty: property] unsignedLongLongValue];
             });
         case _C_BOOL:
-            return imp_implementationWithBlock(^bool(MYDynamicObject* receiver) {
+            return imp_implementationWithBlock(^bool(MPManagedObject *receiver) {
                 return [[self receiverForEffectivePropertyAccessorReceiver:receiver property:property]
                         boolValue];
             });
         case _C_FLT:
-            return imp_implementationWithBlock(^float(MYDynamicObject* receiver) {
+            return imp_implementationWithBlock(^float(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver property:property]
                          getValueOfProperty: property] floatValue];
             });
         case _C_DBL:
-            return imp_implementationWithBlock(^double(MYDynamicObject* receiver) {
+            return imp_implementationWithBlock(^double(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver property:property]
                          getValueOfProperty: property] doubleValue];
             });
