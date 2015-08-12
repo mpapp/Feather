@@ -1077,15 +1077,20 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 
 + (id)receiverForEffectivePropertyAccessorReceiver:(id)effectiveReceiver property:(NSString *)property
 {
-    NSAssert(self.class == [effectiveReceiver class], @"Unexpected class: %@ != %@",
-             self.class, [effectiveReceiver class]);
+    NSAssert(self == [effectiveReceiver class], @"Unexpected class: %@ != %@",
+             self, [effectiveReceiver class]);
     
-    id p = self;
-    while ((p = [p valueForKey:[[effectiveReceiver class] parentPropertyName]]))
+    NSString *parentPropertyName = [[effectiveReceiver class] parentPropertyName];
+    id p = effectiveReceiver;
+    
+    // follow parent relation as long as there is a parent (as long as you reach the root).
+    do {
+        NSAssert(self == [p class], @"Unexpected parent class %@ != %@", self, [p class]);
         if ([p getValueOfProperty:property] != nil)
             return p;
+    } while ((p = [p valueForKey:parentPropertyName]));
     
-    return self; // if no object was found with a non-nil property value, then self is considered the receiver.
+    return effectiveReceiver; // if no object was found with a non-nil property value, then self is considered the receiver.
 }
 
 + (IMP)impForEffectiveGetterOfProperty:(NSString *)property ofClass:(Class)propertyClass
@@ -1112,12 +1117,15 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 
 + (IMP)impForEffectivePropertyGetterOfProperty:(NSString*)property
                                         ofType:(const char*)propertyType {
+    
+    NSString *adjustedProperty = [[property stringByReplacingOccurrencesOfString:@"effective" withString:@""] camelCasedString];
+    
     switch (propertyType[0]) {
         case _C_ID:
             return imp_implementationWithBlock(^id(MPManagedObject *receiver) {
                 id effectiveReceiver = [self receiverForEffectivePropertyAccessorReceiver:receiver property:property];
-                IMP imp = [self impForGetterOfProperty:property ofClass:MYClassFromType(propertyType)];
-                id o = imp(effectiveReceiver, @selector(property));
+                IMP imp = [self impForGetterOfProperty:adjustedProperty ofClass:MYClassFromType(propertyType)];
+                id o = imp(effectiveReceiver, NSSelectorFromString(adjustedProperty));
                 return o;
             });
         case _C_INT:
@@ -1128,47 +1136,46 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
             return imp_implementationWithBlock(^int(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver
                                                                    property:property]
-                         getValueOfProperty: property] intValue];
+                         getValueOfProperty:adjustedProperty] intValue];
             });
         case _C_UINT:
             return imp_implementationWithBlock(^unsigned int(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver
-                                                                   property:property] getValueOfProperty: property] unsignedIntValue];
+                                                                   property:property] getValueOfProperty:adjustedProperty] unsignedIntValue];
             });
         case _C_LNG:
             return imp_implementationWithBlock(^long(MPManagedObject *receiver) {
-                return [[[self receiverForEffectivePropertyAccessorReceiver:receiver property:property] getValueOfProperty: property] longValue];
+                return [[[self receiverForEffectivePropertyAccessorReceiver:receiver property:property] getValueOfProperty: adjustedProperty] longValue];
             });
         case _C_ULNG:
             return imp_implementationWithBlock(^unsigned long(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver property:property]
-                         getValueOfProperty: property] unsignedLongValue];
+                         getValueOfProperty:adjustedProperty] unsignedLongValue];
             });
         case _C_LNG_LNG:
             return imp_implementationWithBlock(^long long(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver property:property]
-                         getValueOfProperty: property] longLongValue];
+                         getValueOfProperty:adjustedProperty] longLongValue];
             });
         case _C_ULNG_LNG:
             return imp_implementationWithBlock(^unsigned long long(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver
                                                                    property:property]
-                         getValueOfProperty: property] unsignedLongLongValue];
+                         getValueOfProperty:adjustedProperty] unsignedLongLongValue];
             });
         case _C_BOOL:
             return imp_implementationWithBlock(^bool(MPManagedObject *receiver) {
-                return [[self receiverForEffectivePropertyAccessorReceiver:receiver property:property]
-                        boolValue];
+                return [[[self receiverForEffectivePropertyAccessorReceiver:receiver property:property] getValueOfProperty:adjustedProperty] boolValue];
             });
         case _C_FLT:
             return imp_implementationWithBlock(^float(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver property:property]
-                         getValueOfProperty: property] floatValue];
+                         getValueOfProperty:adjustedProperty] floatValue];
             });
         case _C_DBL:
             return imp_implementationWithBlock(^double(MPManagedObject *receiver) {
                 return [[[self receiverForEffectivePropertyAccessorReceiver:receiver property:property]
-                         getValueOfProperty: property] doubleValue];
+                         getValueOfProperty:adjustedProperty] doubleValue];
             });
         default:
             return NULL;
