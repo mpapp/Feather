@@ -1083,10 +1083,14 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     NSString *parentPropertyName = [[effectiveReceiver class] parentPropertyName];
     id p = effectiveReceiver;
     
+    // TODO: assert if you find two consecutive capital letters.
+    NSString *adjustedProperty = [[property stringByReplacingOccurrencesOfRegex:@"^effective"
+                                                                     withString:@""] camelCasedString];
+    
     // follow parent relation as long as there is a parent (as long as you reach the root).
     do {
         NSAssert(self == [p class], @"Unexpected parent class %@ != %@", self, [p class]);
-        if ([p getValueOfProperty:property] != nil)
+        if ([p getValueOfProperty:adjustedProperty] != nil)
             return p;
     } while ((p = [p valueForKey:parentPropertyName]));
     
@@ -1118,7 +1122,8 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 + (IMP)impForEffectivePropertyGetterOfProperty:(NSString*)property
                                         ofType:(const char*)propertyType {
     
-    NSString *adjustedProperty = [[property stringByReplacingOccurrencesOfString:@"effective" withString:@""] camelCasedString];
+    NSString *adjustedProperty = [[property stringByReplacingOccurrencesOfString:@"effective"
+                                                                      withString:@""] camelCasedString];
     
     switch (propertyType[0]) {
         case _C_ID:
