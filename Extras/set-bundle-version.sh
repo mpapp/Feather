@@ -6,8 +6,6 @@ then
     exit 0
 fi
 
-"${SRCROOT}/Script/is-dirty.rb" # fail release build if tag is not clean.
-
 if [ $? -ne 0 ]; then
     echo "Aborting release build because repository has uncommitted changes."
     exit -1
