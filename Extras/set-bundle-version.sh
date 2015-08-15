@@ -6,6 +6,13 @@ then
     exit 0
 fi
 
+"${SRCROOT}/Script/is-dirty.rb" # fail release build if tag is not clean.
+
+if [ $? -ne 0 ]; then
+    echo "Aborting release build because repository has uncommitted changes."
+    exit -1
+fi
+
 # This script sets version information in the Info.plist of a target to the version
 # as returned by 'git describe'.
 # Info: http://zargony.com/2014/08/10/automatic-versioning-in-xcode-with-git-describe
@@ -20,6 +27,5 @@ echo "Updating Info.plist version to: ${VERSION}"
 
 # DSYMs only output when creating an archive.
 if [[ ${DWARF_DSYM_FILE_SHOULD_ACCOMPANY_PRODUCT} == 'NO' && ${MP_RELEASE} == 'true' ]]; then
-echo ${VERSION} | "${SRCROOT}/Script/is-dirty.rb" # fail release build if tag is not clean.
 /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${VERSION}" -c "Set :CFBundleShortVersionString ${SHORT_VERSION}" "${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist"
 fi
