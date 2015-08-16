@@ -239,23 +239,41 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
     return filePaths.copy;
 }
 
+- (BOOL)ensurePermissionMaskIncludes:(int)grantedMask forFileAtPath:(NSString *)path error:(NSError *__autoreleasing *)error {
+    NSDictionary *attribs = [self attributesOfItemAtPath:path error:error];
+    
+    if (!attribs) {
+        return NO;
+    }
+    
+    int permissions = [attribs[NSFilePosixPermissions] intValue];
+    permissions |= grantedMask;
+    
+    NSMutableDictionary *newAttribs = [attribs mutableCopy];
+    newAttribs[NSFilePosixPermissions] = @(permissions);
+    
+    if (![self setAttributes:newAttribs.copy ofItemAtPath:path error:error]) {
+        return NO;
+    }
+    
+    #ifdef DEBUG
+    NSDictionary *modifiedAttribs = [self attributesOfItemAtPath:path error:error];
+    NSAssert([modifiedAttribs[NSFilePosixPermissions] intValue] == permissions, @"Unexpected permissions mask: %@ != %@", modifiedAttribs[NSFilePosixPermissions], @(permissions));
+    #endif
+    
+    return permissions;
+}
+
 - (BOOL)ensurePermissionMaskIncludes:(int)grantedMask inDirectory:(NSString *)directoryPath error:(NSError **)error {
+    
+    // the containing directory itself.
+    if (![self ensurePermissionMaskIncludes:grantedMask forFileAtPath:directoryPath error:error])
+        return NO;
+    
+    // it's contents.
     for (NSString *path in [self recursivePathsForResourcesOfType:nil inDirectory:directoryPath]) {
-        NSDictionary *attribs = [self attributesOfItemAtPath:path error:error];
-        
-        if (!attribs) {
+        if (![self ensurePermissionMaskIncludes:grantedMask forFileAtPath:path error:error])
             return NO;
-        }
-        
-        int permissions = [attribs[NSFilePosixPermissions] intValue];
-        permissions |= grantedMask;
-        
-        NSMutableDictionary *newAttribs = [attribs mutableCopy];
-        newAttribs[NSFilePosixPermissions] = @(permissions);
-        
-        if (![self setAttributes:newAttribs.copy ofItemAtPath:path error:error]) {
-            return NO;
-        }
     }
     
     return YES;

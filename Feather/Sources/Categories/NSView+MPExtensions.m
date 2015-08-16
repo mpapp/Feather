@@ -94,7 +94,7 @@ typedef NS_ENUM(NSUInteger, MPViewDimension)
                                  bottomOffset:(CGFloat)bottomOffset
                                    leftOffset:(CGFloat)leftOffset
 {
-    assert(aView);
+    NSParameterAssert(aView);
     
     [aView setTranslatesAutoresizingMaskIntoConstraints:NO];
     
