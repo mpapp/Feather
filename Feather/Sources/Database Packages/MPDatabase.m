@@ -120,7 +120,8 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
          [self.database setValidationNamed:@"validate-managed-object"
          asBlock:^(CBLRevision *newRevision, id<CBLValidationContext> context) {
              MPDatabase *strongSelf = slf;
-             assert(![newRevision.properties[@"objectType"] isEqualToString:@"MPElement"]);
+             NSCAssert(![newRevision.properties[@"objectType"] isEqualToString:@"MPElement"],
+                      @"Unexpected objectType: %@", newRevision.properties[@"objectType"]);
              [strongSelf validateRevision:newRevision validationContext:context];
          }];
          
