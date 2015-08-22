@@ -52,6 +52,12 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 @implementation MPDatabase
 
++ (void)initialize {
+    if (self == [MPDatabase class]) {
+        srand48(arc4random());
+    }
+}
+
 - (instancetype)initWithServer:(CBLManager *)server
              packageController:(MPDatabasePackageController *)packageController
                           name:(NSString *)name
@@ -114,7 +120,8 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
          [self.database setValidationNamed:@"validate-managed-object"
          asBlock:^(CBLRevision *newRevision, id<CBLValidationContext> context) {
              MPDatabase *strongSelf = slf;
-             assert(![newRevision.properties[@"objectType"] isEqualToString:@"MPElement"]);
+             NSCAssert(![newRevision.properties[@"objectType"] isEqualToString:@"MPElement"],
+                      @"Unexpected objectType: %@", newRevision.properties[@"objectType"]);
              [strongSelf validateRevision:newRevision validationContext:context];
          }];
          
@@ -135,6 +142,23 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
          
  - (BOOL)validateRevision:(CBLRevision *)newRevision validationContext:(id<CBLValidationContext>)context
  {
+#ifdef DEBUG
+     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"MPFailAllSaves"]) {
+         [context rejectWithMessage:@"All saves set to fail. Please toggle off MPFaillAllSaves to successfully save"];
+         return NO;
+     }
+     else if ([[NSUserDefaults standardUserDefaults] objectForKey:@"MPFailSavesWithProbability"]) {
+         CGFloat p = [[NSUserDefaults standardUserDefaults] floatForKey:@"MPFailSavesWithProbability"];
+         
+         double val = (CGFloat)drand48();
+         
+         if (p > val) {
+             [context rejectWithMessage:@"Failing saving because MPFailSavesWithProbability is set to a nonzero value"];
+             return NO;
+         }
+     }
+#endif
+     
      if (newRevision.isDeletion)
          return YES;
      

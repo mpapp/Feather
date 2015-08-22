@@ -6,11 +6,6 @@ then
     exit 0
 fi
 
-if [ $? -ne 0 ]; then
-    echo "Aborting release build because repository has uncommitted changes."
-    exit -1
-fi
-
 # This script sets version information in the Info.plist of a target to the version
 # as returned by 'git describe'.
 # Info: http://zargony.com/2014/08/10/automatic-versioning-in-xcode-with-git-describe
