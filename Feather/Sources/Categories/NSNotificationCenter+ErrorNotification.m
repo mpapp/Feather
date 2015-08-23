@@ -16,7 +16,7 @@ NSString *const MPErrorNotification = @"MPErrorNotification";
 
 - (void)postErrorNotification:(NSError *)error
 {
-    assert(error);
+    NSAssert(error, @"Attempting to post a nil error notification.");
     NSLog(@"ERROR: %@", error);
     [self postNotificationName:MPErrorNotification object:error];
 }
