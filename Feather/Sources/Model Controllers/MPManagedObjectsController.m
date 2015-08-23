@@ -633,10 +633,10 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (id)newObjectWithPrototype:(MPManagedObject *)prototype
 {
-    assert(prototype);
-    assert([prototype isKindOfClass:self.prototypeClass]);
-    assert([prototype canFormPrototype]);
-    assert(prototype.document.documentID);
+    NSAssert(prototype, @"Expecting a non-nil prototype for object of class %@", self.class);
+    NSAssert([prototype isKindOfClass:self.prototypeClass], @"Unexpected prototype class %@. Expected: %@", prototype.class, self.prototypeClass);
+    NSAssert(prototype.canFormPrototype, @"Object of class %@cannot form prototype: %@", prototype.class, prototype.propertiesToSave);
+    NSAssert(prototype.document.documentID, @"Prototype should have a documentID: %@ (%@)", prototype, prototype.document);
 
     // TODO: might need also -prototypeInstanceClassForPrototype: if this appears insufficient.
     Class instantiableClass = self.prototypeClass == self.managedObjectClass
