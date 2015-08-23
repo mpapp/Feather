@@ -1330,10 +1330,11 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (void)deregisterObject:(MPManagedObject *)mo
 {
-    assert([mo isKindOfClass:[self managedObjectClass]]);
-    assert(mo.document.documentID);
-    assert(_objectCache);
-    [_objectCache removeObjectForKey:mo.document.documentID];
+    NSParameterAssert([mo isKindOfClass:[self managedObjectClass]]);
+    NSParameterAssert(_objectCache);
+    if (mo.document.documentID && _objectCache[mo.document.documentID] == mo) {
+        [_objectCache removeObjectForKey:mo.document.documentID];
+    }
 }
 
 #pragma mark - Scripting support
