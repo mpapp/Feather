@@ -17,8 +17,3 @@ SHORT_VERSION=`git describe --abbrev=0 | sed -e "s/^[^0-9]*//"`
 
 echo "Updating Info.plist version to: ${VERSION}"
 /usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${VERSION}" -c "Set :CFBundleShortVersionString ${SHORT_VERSION}" "${TARGET_BUILD_DIR}/${INFOPLIST_PATH}"
-
-# DSYMs only output when creating an archive.
-if [[ ${DWARF_DSYM_FILE_SHOULD_ACCOMPANY_PRODUCT} == 'NO' && ${MP_RELEASE} == 'true' ]]; then
-/usr/libexec/PlistBuddy -c "Set :CFBundleVersion ${VERSION}" -c "Set :CFBundleShortVersionString ${SHORT_VERSION}" "${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist"
-fi
