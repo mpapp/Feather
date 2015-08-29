@@ -398,17 +398,17 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
     NSURL *fileURL = self.fileURL;
     
     _reverted = YES;
-    [self close];
     
-    if (fileURL) {
-        [NSObject performInMainQueueAfterDelay:.1 block:^{
-            [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:self.fileURL
-                                                                                   display:YES
-                                                                         completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
-                                                                             
-                                                                         }];
-        }];
-    }
+    [NSObject performInMainQueueAfterDelay:.0 block:^{
+        [self close];
+        [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:fileURL
+                                                                               display:YES
+                                                                     completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
+                                                                         
+                                                                     }];
+
+    }];
+    
     
     return revert;
 }
