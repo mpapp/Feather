@@ -403,9 +403,10 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
         [self close];
         [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:fileURL
                                                                                display:YES
-                                                                     completionHandler:^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
-                                                                         
-                                                                     }];
+                                                                     completionHandler:
+         ^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
+             NSLog(@"Opened reverted document %@ at URL %@", document, url);
+         }];
 
     }];
     
