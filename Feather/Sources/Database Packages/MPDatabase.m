@@ -16,7 +16,7 @@
 
 #import <Feather/Feather.h>
 #import <Feather/MPManagedObject+Protected.h>
-#import "RegexKitLite.h"
+#import <RegexKitLite/RegexKitLiteFramework.h>
 
 #import "NSArray+MPExtensions.h"
 #import "MPException.h"

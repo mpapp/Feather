@@ -1,0 +1,6 @@
+framework module RegexKitLite {
+    umbrella header "RegexKitLiteFramework.h"
+
+    export *
+    module * { export * }
+}

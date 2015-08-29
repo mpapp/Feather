@@ -10,7 +10,8 @@
 #import "MPManagedObject.h"
 #import "MPDatabasePackageController.h"
 
-#import "RegexKitLite.h"
+#import <RegexKitLite/RegexKitLiteFramework.h>
+
 #import "NSString+MPExtensions.h"
 #import "NSObject+MPExtensions.h"
 
@@ -83,7 +84,7 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
                 NSString *closestModelClassName = NSStringFromClass(closestModelClass);
                 
                 NSString *unprefixedSubclassName =
-                    [closestModelClassName  stringByReplacingOccurrencesOfRegex:
+                    [closestModelClassName stringByReplacingOccurrencesOfRegex:
                         [NSString stringWithFormat:@"^%@", MPManagedObjectClassPrefix] withString:@""];
                 
                 changeTypesForClass[NSStringFromClass(subclass)] =

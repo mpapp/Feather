@@ -21,7 +21,7 @@
 
 #import "MPShoeboxPackageController.h"
 
-#import "RegexKitLite.h"
+#import <RegexKitLite/RegexKitLiteFramework.h>
 #import <CouchbaseLite/CouchbaseLite.h>
 
 #import "Mixin.h"

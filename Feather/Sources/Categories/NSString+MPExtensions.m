@@ -9,8 +9,7 @@
 
 #import "NSString+MPExtensions.h"
 
-#import "RegexKitLite.h"
-
+#import <RegexKitLite/RegexKitLiteFramework.h>
 #import <CoreServices/CoreServices.h>
 
 @interface NSStringHTMLStripParser : NSObject<NSXMLParserDelegate> {

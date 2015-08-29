@@ -20,7 +20,7 @@
 
 #import "MPRootSection.h"
 
-#import "RegexKitLite.h"
+#import <RegexKitLite/RegexKitLiteFramework.h>
 
 #import <CouchbaseLite/CouchbaseLite.h>
 #import <CouchbaseLiteListener/CBLListener.h>

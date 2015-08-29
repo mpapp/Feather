@@ -20,7 +20,7 @@
 #import "Mixin.h"
 #import "MPCacheableMixin.h"
 
-#import "RegexKitLite.h"
+#import <RegexKitLite/RegexKitLiteFramework.h>
 
 #import <CouchbaseLite/CouchbaseLite.h>
 

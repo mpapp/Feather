@@ -13,11 +13,12 @@
 #import "MPManagedObjectsController+Protected.h"
 
 #import "Mixin.h"
-#import "RegexKitLite.h"
 #import "MPDatabase.h"
 #import "MPException.h"
 
 #import "NSString+MPExtensions.h"
+
+#import <RegexKitLite/RegexKitLiteFramework.h>
 
 #import <objc/message.h>
 #import <objc/runtime.h>

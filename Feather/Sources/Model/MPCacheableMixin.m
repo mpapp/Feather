@@ -7,7 +7,7 @@
 //
 
 #import "MPCacheableMixin.h"
-#import "RegexKitLite.h"
+#import <RegexKitLite/RegexKitLiteFramework.h>
 #import "MPException.h"
 #import <FeatherExtensions/FeatherExtensions.h>
 

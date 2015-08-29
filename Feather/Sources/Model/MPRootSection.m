@@ -11,7 +11,7 @@
 
 #import <FeatherExtensions/FeatherExtensions.h>
 #import <Feather/MPDatabasePackageController.h>
-#import "RegexKitLite.h"
+#import <RegexKitLite/RegexKitLiteFramework.h>
 #import "Mixin.h"
 
 #import <Feather/MPVirtualSection.h>
