@@ -414,6 +414,20 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
     return revert;
 }
 
+#pragma mark - Window controller
+
+- (Class)mainWindowControllerClass {
+    @throw [[MPAbstractMethodException alloc] initWithSelector:_cmd];
+}
+
+- (void)makeWindowControllers {
+    [self addWindowController:[[[self mainWindowControllerClass] alloc] initWithWindowNibName:@"MPDocument"]];
+}
+
+- (id)mainWindowController {
+    return self.windowControllers.firstObject;
+}
+
 #pragma mark - MPDatabasePackageControllerDelegate
 
 - (NSURL *)packageRootURL {

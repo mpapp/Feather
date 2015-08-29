@@ -308,8 +308,8 @@
     
     if (!class_addMethod(self, selector, newImpl, typeEncoding))
     {
-        BOOL replacementSuccessful = class_replaceMethod(self, selector, newImpl, typeEncoding);
-        assert(replacementSuccessful);
+        IMP replacement = class_replaceMethod(self, selector, newImpl, typeEncoding);
+        NSAssert(replacement != nil, @"Replacement of %@ failed", NSStringFromSelector(selector));
     }
 }
 

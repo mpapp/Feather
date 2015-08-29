@@ -76,6 +76,9 @@ typedef NS_ENUM(NSUInteger, MPDatabasePackageBackedDocumentErrorCode) {
 /** Document state has been reverted */
 @property (readonly) BOOL reverted;
 
+/** A shorthand for getting the document's primary window controller. */
+@property (readonly) id mainWindowController;
+
 @end
 
 #pragma mark -

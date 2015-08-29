@@ -14,18 +14,9 @@
 
 - (void)beginSheet:(NSWindow *)sheet modalForWindow:(NSWindow *)docWindow didEndBlock:(void (^)(NSInteger returnCode))block
 {
-    [self beginSheet:sheet
-      modalForWindow:docWindow
-       modalDelegate:self
-      didEndSelector:@selector(my_blockSheetDidEnd:returnCode:contextInfo:)
-         contextInfo:(__bridge_retained void *)(block)];
-}
-
-- (void)my_blockSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(void *)contextInfo
-{
-    void (^block)(NSInteger returnCode) = (__bridge void (^)(NSInteger))(contextInfo);
-    block(returnCode);
-    Block_release(contextInfo);
+    [docWindow beginSheet:sheet completionHandler:^(NSModalResponse returnCode) {
+        block(returnCode);
+    }];
 }
 
 @end
