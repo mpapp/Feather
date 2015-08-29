@@ -154,7 +154,6 @@
 		5FDB3AA017079ED80049EBB5 /* MPShoeboxPackageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A9E17079ED70049EBB5 /* MPShoeboxPackageController.m */; };
 		5FDB3AA81707A36D0049EBB5 /* Feather.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33131705CB950049EBB5 /* Feather.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3AA91707ABBE0049EBB5 /* MPTreeItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5FDCF2D8171043A80039DAED /* FeatherTests.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33281705CB950049EBB5 /* FeatherTests.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2EE171045990039DAED /* MPFeatherTestClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2ED171045990039DAED /* MPFeatherTestClasses.m */; };
 		5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */; };
@@ -1233,7 +1232,6 @@
 				5F293BF5170DFD4E001C2111 /* UICKeyChainStore.h in Headers */,
 				5FC4238F1AFF8BDE002234FB /* NSNotificationCenter+MPManagedObjectExtensions.h in Headers */,
 				5F293C1F170E3B62001C2111 /* MPPlaceHolding.h in Headers */,
-				5FDCF2D8171043A80039DAED /* FeatherTests.h in Headers */,
 				5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */,
 				5F18505E1711B13900079040 /* MPEmbeddedObject+Protected.h in Headers */,
 				5F3D380A1725D8A600D19D7C /* MPCategorizableMixin.h in Headers */,
@@ -1873,7 +1871,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = NO;
+				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -1891,6 +1889,7 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MODULEMAP_FILE = "${SRCROOT}/Modules/Feather.modulemap";
 				MODULE_NAME = com.manuscripts.Feather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1952,7 +1951,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = NO;
+				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -1970,6 +1969,7 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MODULEMAP_FILE = "${SRCROOT}/Modules/Feather.modulemap";
 				MODULE_NAME = com.manuscripts.Feather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1995,6 +1995,7 @@
 		5FC423211AFF8719002234FB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -2035,6 +2036,7 @@
 		5FC423221AFF8719002234FB /* Internal */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -2072,6 +2074,7 @@
 		5FC423231AFF8719002234FB /* Testing */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -2109,6 +2112,7 @@
 		5FC423241AFF8719002234FB /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
@@ -2592,7 +2596,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = NO;
+				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2610,6 +2614,7 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MODULEMAP_FILE = "${SRCROOT}/Modules/Feather.modulemap";
 				MODULE_NAME = com.manuscripts.Feather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -2623,7 +2628,7 @@
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				DEFINES_MODULE = NO;
+				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
@@ -2641,6 +2646,7 @@
 					"\"$(SDKROOT)/usr/lib/system\"",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MODULEMAP_FILE = "${SRCROOT}/Modules/Feather.modulemap";
 				MODULE_NAME = com.manuscripts.Feather;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

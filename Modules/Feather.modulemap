@@ -1,0 +1,36 @@
+framework module Feather {
+    umbrella header "Feather.h"
+
+    export *
+    module * { export * }
+
+    explicit module MPDatabasePackageController_Protected {
+        header "MPDatabasePackageController+Protected.h"
+        export *
+    }
+    
+    explicit module MPEmbeddedObject_Protected {
+        header "MPEmbeddedObject+Protected.h"
+        export *
+    }
+    
+    explicit module MPManagedObject_Protected {
+        header "MPManagedObject+Protected.h"
+        export *
+    }
+    
+    explicit module MPSnapshot_Protected {
+        header "MPSnapshot+Protected.h"
+        export *
+    }
+    
+    explicit module MPRootSection_Protected {
+        header "MPRootSection+Protected.h"
+        export *
+    }
+    
+    explicit module MPVirtualSection_Protected {
+        header "MPVirtualSection+Protected.h"
+        export *
+    }
+}

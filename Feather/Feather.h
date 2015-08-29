@@ -43,3 +43,13 @@
 #import "MPCountryList.h"
 
 #import "MPFileObserver.h"
+
+#import "MPBundlableMixin.h"
+#import "MPCategorizableMixin.h"
+
+#import "MPIndexableMixin.h"
+#import "MPRESTFulResource.h"
+#import "MPRootSection.h"
+
+#import "MPSnapshot.h"
+#import "MPSnapshotsController.h"
