@@ -9,6 +9,16 @@ framework module Feather {
         export *
     }
     
+    explicit module MPShoeboxPackageController_Protected {
+        header "MPShoeboxPackageController+Protected.h"
+        export *
+    }
+    
+    explicit module MPManagedObjectsController_Protected {
+        header "MPManagedObjectsController+Protected.h"
+        export *
+    }
+    
     explicit module MPEmbeddedObject_Protected {
         header "MPEmbeddedObject+Protected.h"
         export *
@@ -19,6 +29,11 @@ framework module Feather {
         export *
     }
     
+    explicit module MPSnapshotsController_Protected {
+        header "MPSnapshotsController+Protected.h"
+        export *
+    }
+
     explicit module MPSnapshot_Protected {
         header "MPSnapshot+Protected.h"
         export *
