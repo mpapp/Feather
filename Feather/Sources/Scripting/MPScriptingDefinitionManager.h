@@ -14,7 +14,7 @@
 /** A type string formatted name for a code. */
 - (NSSet *)propertyTypesForCode:(FourCharCode)code;
 
-- (NSString *)propertyNameForCode:(NSString *)code;
+- (NSString *)propertyNameForCode:(FourCharCode)code;
 
 - (NSString *)cocoaPropertyNameForCode:(FourCharCode)code;
 

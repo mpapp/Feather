@@ -159,7 +159,7 @@
     return self.propertyTypeMap[[NSString stringWithOSType:code]];
 }
 
-- (NSString *)propertyNameForCode:(NSString *)code {
+- (NSString *)propertyNameForCode:(FourCharCode)code {
     return self.propertyNameMap[[NSString stringWithOSType:code]];
 }
 
