@@ -904,11 +904,15 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
               MPPasteboardTypeEmbeddedObjectIDArray ];
 }
 
-- (NSDictionary *)referableDictionaryRepresentation
-{
+- (NSDictionary *)referableDictionaryRepresentation {
+    id embeddingObjectID = [self.embeddingObject isKindOfClass:MPEmbeddedObject.class] ? [(id)self.embeddingObject identifier] : [(id)self.embeddingObject documentID];
+    if (!embeddingObjectID) {
+        return nil;
+    }
+    
     return @{
              @"_id"                    : self.identifier,
-             @"embeddingObject"        : [self.embeddingObject isKindOfClass:MPEmbeddedObject.class] ? [(id)self.embeddingObject identifier] : [(id)self.embeddingObject documentID],
+             @"embeddingObject"        : embeddingObjectID,
              @"embeddingKey"           : self.embeddingKey,
              @"embeddingManagedObject" : self.embeddingManagedObject.documentID,
              @"databasePackageID"      : [self.embeddingManagedObject.controller.packageController fullyQualifiedIdentifier]
