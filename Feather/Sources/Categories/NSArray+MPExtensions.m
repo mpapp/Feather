@@ -204,6 +204,11 @@ NSInteger *pc_next_permutation(NSInteger *p, const NSInteger size) {
 - (NSArray *)allPermutations
 {
     NSInteger size = [self count];
+    
+    if (size == 0) {
+        return @[];
+    }
+    
     NSInteger *perm = malloc(size * sizeof(NSInteger));
     
     for (NSInteger idx = 0; idx < size; ++idx)

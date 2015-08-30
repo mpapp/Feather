@@ -910,11 +910,16 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
         return nil;
     }
     
+    id embeddingManagedObjectID = self.embeddingManagedObject.documentID;
+    if (!embeddingObjectID) {
+        return nil;
+    }
+    
     return @{
              @"_id"                    : self.identifier,
              @"embeddingObject"        : embeddingObjectID,
              @"embeddingKey"           : self.embeddingKey,
-             @"embeddingManagedObject" : self.embeddingManagedObject.documentID,
+             @"embeddingManagedObject" : embeddingManagedObjectID,
              @"databasePackageID"      : [self.embeddingManagedObject.controller.packageController fullyQualifiedIdentifier]
         };
 }
@@ -943,7 +948,7 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
                                                              format:NSPropertyListXMLFormat_v1_0
                                                    errorDescription:&errorStr];
     }
-    else if ([type isEqual:MPPasteboardTypeEmbeddedObjectIDArray])
+    else if ([type isEqual:MPPasteboardTypeEmbeddedObjectIDArray] && self.referableDictionaryRepresentation)
     {
         dataRep = [NSPropertyListSerialization dataFromPropertyList:@[self.referableDictionaryRepresentation]
                                                              format:NSPropertyListXMLFormat_v1_0 errorDescription:&errorStr];
