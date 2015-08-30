@@ -216,18 +216,21 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
                  tempManuscriptContainingDirPath);
     }
     
-    BOOL copyingOriginalSuccessful = [fm copyItemAtPath:_originalBundleFileURL.path toPath:_temporaryManuscriptPath error:&error];
-    if (_originalBundleFileURL && !copyingOriginalSuccessful) {
-        NSLog(@"ERROR: Failed to copy document bundle from %@ to %@: %@",
-              _originalBundleFileURL, _temporaryManuscriptPath, error);
-        self.packageAccessError = error;
-        return nil;
+    if (_originalBundleFileURL) {
+        BOOL copyingOriginalSuccessful = [fm copyItemAtPath:_originalBundleFileURL.path toPath:_temporaryManuscriptPath error:&error];
+        if (_originalBundleFileURL && !copyingOriginalSuccessful) {
+            NSLog(@"ERROR: Failed to copy document bundle from %@ to %@: %@",
+                  _originalBundleFileURL, _temporaryManuscriptPath, error);
+            self.packageAccessError = error;
+            return nil;
+        }
+
+        // if the document didn't yet contain the metadata directory, now's a good time to create it.
+        if (copyingOriginalSuccessful) {
+            [self initializeManuscriptMetadataDirectoryCreatingDirectory:YES error:&error];
+        }
     }
     
-    // if the document didn't yet contain the metadata directory, now's a good time to create it.
-    if (copyingOriginalSuccessful) {
-        [self initializeManuscriptMetadataDirectoryCreatingDirectory:YES error:&error];
-    }
     
     BOOL requiredInitialization = _bundleRequiresInitialization;
     if (_bundleRequiresInitialization) {
