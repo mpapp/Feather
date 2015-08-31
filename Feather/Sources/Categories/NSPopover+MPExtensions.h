@@ -10,11 +10,6 @@
 #import <Cocoa/Cocoa.h>
 
 
-@protocol MPPopoverAwareViewController <NSObject>
-@property (strong, nonatomic) IBOutlet NSPopover *popover;
-@end
-
-
 @interface NSPopover (MPExtensions)
 
 + (NSPopover *) popoverWithContentViewController:(NSViewController *)contentViewController;

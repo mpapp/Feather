@@ -9,12 +9,18 @@
 #import "NSPopover+MPExtensions.h"
 #import <FeatherExtensions/FeatherExtensions.h>
 
+
+/** This is here just for allowing a respondsToSelector check below. */
+@protocol MPPopoverViewController <NSObject>
+@property NSPopover *popover;
+@end
+
+
 static inline void MPLinkPopoverAndContentViewController(NSPopover *popover, NSViewController *vc)
 {
     popover.contentViewController = vc;
     
-    if ([vc conformsToProtocol:@protocol(MPPopoverAwareViewController)])
-    {
+    if ([vc respondsToSelector:@selector(setPopover:)]) {
         [(id)vc setPopover:popover];
     }    
 }
