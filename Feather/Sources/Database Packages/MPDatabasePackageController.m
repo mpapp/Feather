@@ -215,7 +215,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         
         [[self class] didOpenPackage];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self.class registerDatabasePackageController:self];
+            if (self.isIdentifiable) {
+                [self.class registerDatabasePackageController:self];
+            }
         });
         
         // state initialisation done on a subsequent event loop cycle such that potential assignments
@@ -327,13 +329,17 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 {
     // there should not be two or more database package controllers that are identical in memory at the same time.
     // for instance, if a package controller is duplicated, its identifier should be modified.
+    
+    NSParameterAssert(packageController.isIdentifiable);
     NSParameterAssert(![[self databasePackageControllerRegistry] objectForKey:packageController.fullyQualifiedIdentifier]);
     [self.databasePackageControllerRegistry setObject:packageController forKey:packageController.fullyQualifiedIdentifier];
 }
 
 + (void)deregisterDatabasePackageController:(MPDatabasePackageController *)packageController
 {
-    [self.databasePackageControllerRegistry removeObjectForKey:packageController.identifier];
+    if ([packageController isIdentifiable]) {
+        [self.databasePackageControllerRegistry removeObjectForKey:packageController.fullyQualifiedIdentifier];
+    }
 }
 
 + (instancetype)databasePackageControllerWithFullyQualifiedIdentifier:(NSString *)identifier
@@ -597,7 +603,6 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (NSSet *)databases
 {
     NSParameterAssert(_managedObjectsControllers);
-    NSParameterAssert(_managedObjectsControllers.count);
     
     NSMutableSet *set = [NSMutableSet setWithCapacity:_managedObjectsControllers.count];
     
@@ -741,8 +746,15 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (NSString *)identifier {
     @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return nil;
 }
+
+- (BOOL)isIdentifiable {
+    return self.identifier != nil;
+}
                                           
 - (NSString *)fullyQualifiedIdentifier {
+    if (!self.isIdentifiable) {
+        return nil;
+    }
     return [self.path stringByAppendingFormat:@"::%@", self.identifier];
 }
 

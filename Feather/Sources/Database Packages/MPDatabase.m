@@ -100,6 +100,9 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
             NSParameterAssert(err);
             if (err)
                 *err = e;
+            
+            self = nil;
+            return self;
         }
         
         objc_setAssociatedObject(_database, "dbp", self, OBJC_ASSOCIATION_ASSIGN);

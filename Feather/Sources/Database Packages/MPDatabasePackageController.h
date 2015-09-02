@@ -243,6 +243,10 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** A globally unique identifier for the database controller. Must be overloaded by a subclass. */
 @property (strong, readonly) NSString *identifier;
 
+/** Signifies whether the package controller is identifiable. 
+  * Base class implementation simply returns self.identifier != nil but you may want to override this for lazily populated identifiers (for instance if the identifier itself is based on the database state, the package controller may not always be identifiable). */
+@property (readonly) BOOL isIdentifiable;
+
 /** A fully qualified identifier is like the identifier but better. 
   * It includes the full path to the file, meaning that if multiple databases of the same identifier are presently open from different paths on disk, they will also be unique. */
 @property (strong, readonly) NSString *fullyQualifiedIdentifier;
