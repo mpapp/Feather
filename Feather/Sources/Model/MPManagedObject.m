@@ -1461,8 +1461,12 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 
 - (NSString *)JSONStringRepresentation:(NSError **)err
 {
+    if (self.isDeleted) {
+        return nil;
+    }
+    
     NSDictionary *props = self.JSONEncodableDictionaryRepresentation;
-    assert(props);
+    NSAssert(props, @"Expecting non-nil properties dictionary for %@", self);
     
     NSData *data = [CBLJSON dataWithJSONObject:props options:NSJSONWritingPrettyPrinted error:err];
 

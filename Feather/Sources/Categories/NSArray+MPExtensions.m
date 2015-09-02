@@ -159,6 +159,9 @@
             id rep = requiresJSONStringRep ? [o JSONStringRepresentation:err] : o;
             
             // TODO: don't de/reserialise just to get objects into a JSON encodable state.
+            if (!rep)
+                return [NSNull null];
+            
             rep = [NSJSONSerialization JSONObjectWithData:[rep dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
             return rep ? rep : [NSNull null];
         }
