@@ -70,8 +70,15 @@ typedef NS_ENUM(NSUInteger, MPDatabasePackageBackedDocumentErrorCode) {
   * Set this to YES in a subclass if you implement document reading lazily, where for instance -readFromURL: only marks the URL that needs to be read later. */
 @property (readwrite, nonatomic) BOOL bundleRequiresInitialization;
 
+/** YES if the specified type requires a copy of the original file read with -readFromURL:error: to be copied into a temporary working directory, 
+  * NO if the type instead requires importing. */
++ (BOOL)requiresCopyingDocumentOfType:(NSString *)type atOriginalURL:(NSURL *)URL;
+
 /** File URL given to the document when it was read originally from disk. */
 @property (readwrite) NSURL *originalBundleFileURL;
+
+/** The type of data that was read into the document. */
+@property (readwrite) NSString *originalType;
 
 /** Document state has been reverted */
 @property (readonly) BOOL reverted;

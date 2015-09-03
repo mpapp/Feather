@@ -174,6 +174,10 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
     return YES;
 }
 
++ (BOOL)requiresCopyingDocumentOfType:(NSString *)type atOriginalURL:(NSURL *)URL {
+    return YES;
+}
+
 - (MPDatabasePackageController *)packageController {
     if (_packageController) {
         return _packageController;
@@ -216,7 +220,8 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
                  tempManuscriptContainingDirPath);
     }
     
-    if (_originalBundleFileURL) {
+    if (_originalBundleFileURL && [self.class requiresCopyingDocumentOfType:self.originalType
+                                                              atOriginalURL:_originalBundleFileURL]) {
         BOOL copyingOriginalSuccessful = [fm copyItemAtPath:_originalBundleFileURL.path toPath:_temporaryManuscriptPath error:&error];
         if (_originalBundleFileURL && !copyingOriginalSuccessful) {
             NSLog(@"ERROR: Failed to copy document bundle from %@ to %@: %@",
