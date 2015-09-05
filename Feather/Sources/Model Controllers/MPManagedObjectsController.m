@@ -702,11 +702,13 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         BOOL isExisting = NO;
         MPManagedObject *mo = [self objectFromJSONDictionary:d isExisting:&isExisting error:err];
         
-        if (!mo)
+        if (!mo) {
             return nil;
+        }
         
-        if (mo.needsSave || !isExisting)
+        if (mo.needsSave || !isExisting) {
             [mos addObject:mo];
+        }
     }
     
     if (mos.count > 0) {
@@ -732,8 +734,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         }
         
         if (![MPManagedObject saveModels:mos error:&e]) {
-            if (err)
+            if (err) {
                 *err = e;
+            }
             
             return nil;
         }
