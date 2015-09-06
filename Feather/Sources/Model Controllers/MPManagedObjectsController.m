@@ -688,8 +688,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 - (NSArray *)objectsFromArrayJSONData:(NSData *)objData error:(NSError *__autoreleasing *)err
 {
     NSArray *objs = [NSJSONSerialization JSONObjectWithData:objData options:0 error:err];
-    if (!objs)
+    if (!objs) {
         return nil;
+    }
     
     return [self objectsFromJSONEncodableObjectArray:objs error:err];
 }
@@ -749,15 +750,14 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 {
     if (![d isManagedObjectDictionary:err]) {
         NSLog(@"ERROR: %@", *err);
-        assert(false);
         return nil;
     }
     
     NSString *docID = [d managedObjectDocumentID];
-    assert(docID);
+    NSAssert(docID, @"Expecting document ID in dictionary: %@", d);
     
     Class moClass = NSClassFromString([d managedObjectType]);
-    assert(moClass);
+    NSAssert(moClass, @"Expecting object type in dictionary: %@", d);
     
     __block CBLDocument *doc = nil;
     mp_dispatch_sync([(CBLManager *)[self.packageController server] dispatchQueue],
@@ -767,14 +767,12 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     
     MPManagedObject *mo = doc ? [moClass modelForDocument:doc] : nil;
     
-    if (mo)
-    {
+    if (mo) {
         [mo setValuesForPropertiesWithDictionary:d];
         if (mo.needsSave && isExisting)
             *isExisting = YES;
     }
-    else
-    {
+    else {
         Class moc = NSClassFromString([d managedObjectType]);
         assert(moc);
         mo = [[moc alloc] initWithNewDocumentForController:self properties:d documentID:docID];
