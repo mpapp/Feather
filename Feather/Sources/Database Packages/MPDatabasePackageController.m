@@ -91,11 +91,11 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     // off-main thread access of MPDatabasePackageController is safe,
     // but initialisation is needed on main thread in order to call -didInitialize safely
     // after full initialization has finished
-    assert([NSThread isMainThread]);
+    NSParameterAssert([NSThread isMainThread]);
     
     if (self = [super init])
     {
-        assert(path);
+        NSAssert(path, @"Expectig a non-nil path");
         
         _path = path;
         

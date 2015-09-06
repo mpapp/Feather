@@ -111,7 +111,7 @@ typedef enum MPDatabasePackageControllerErrorCode
 - (BOOL)makeTemporaryCopyIntoRootDirectoryWithURL:(NSURL *)rootURL
                                 overwriteIfExists:(BOOL)overwrite
                                      failIfExists:(BOOL)failIfExists
-                                            error:(NSError **)error;
+                                            error:(NSError **)error __attribute__((nonnull(1)));
 
 /** 
  * Initializes a database package controller at a given path, with an optional delegate and error pointer.
@@ -122,7 +122,7 @@ typedef enum MPDatabasePackageControllerErrorCode
 - (instancetype)initWithPath:(NSString *)path
                     readOnly:(BOOL)readOnly
                     delegate:(id<MPDatabasePackageControllerDelegate>)delegate
-                       error:(NSError *__autoreleasing *)err;
+                       error:(NSError *__autoreleasing *)err __attribute__((nonnull(1)));
 
 /** Closes all the database package's databases. */
 - (void)close;
@@ -273,7 +273,7 @@ typedef enum MPDatabasePackageControllerErrorCode
 - (BOOL)restoreFromSnapshotWithName:(NSString *)name error:(NSError **)err;
 
 /** Returns a database package controller with the specified identifier, if one happens to be currently open. */
-+ (instancetype)databasePackageControllerWithFullyQualifiedIdentifier:(NSString *)identifier;
++ (instancetype)databasePackageControllerWithFullyQualifiedIdentifier:(NSString *)identifier __attribute__((nonnull));
 
 /** Root sections represent are 'virtual' model objects intended to present views to objects in the database package. */
 @property (strong, readonly) NSArray *rootSections;
