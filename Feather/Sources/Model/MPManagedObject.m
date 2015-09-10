@@ -1851,6 +1851,12 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     assert(!value
            || [value isKindOfClass:[MPEmbeddedObject class]]);
     
+    Class cls = [self.class classOfProperty:property];
+    
+    if (cls && value) {
+        NSParameterAssert([value isKindOfClass:cls]);
+    }
+    
     return value;
 }
 

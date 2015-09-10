@@ -455,6 +455,11 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
 
 - (BOOL)save:(NSError **)err
 {
+    if (self.identifier) {
+        NSAssert([[self.identifier componentsSeparatedByString:@":"].firstObject isEqualToString:NSStringFromClass(self.class)],
+                 @"Unexpected identifier for object of class %@", self.class);
+    }
+    
     return [_embeddingObject save:err];
 }
 
@@ -499,7 +504,7 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
 
 - (void)markNeedsSave
 {
-    assert(_embeddingObject);
+    NSAssert(_embeddingObject, @"Expecting an embedding object for %@ (%@)", self, self.class);
     self.needsSave = true;
     [_embeddingObject markNeedsSave];
 }
@@ -508,9 +513,10 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
 {
     self.needsSave = false;
     
-    assert(_embeddingObject);
-    for (NSString *propertyKey in [self.class embeddedProperties])
+    NSAssert(_embeddingObject, @"Expecting an embedding object for %@ (%@)", self, self.class);
+    for (NSString *propertyKey in [self.class embeddedProperties]) {
          [[self valueForKey:propertyKey] markNeedsNoSave];
+    }
 }
 
 #pragma mark - Accessor implementations
@@ -518,9 +524,10 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
 - (CBLDatabase *)databaseForModelProperty:(NSString *)property {
     id<MPEmbeddingObject> embedder = nil;
     while (![(embedder = self.embeddingObject) isKindOfClass:[MPManagedObject class]]) {
-        NSParameterAssert(embedder);
+        NSAssert(embedder, @"Expecting an embedding object for %@ (%@), %@", self, self.class, self.embeddingObject);
     }
-    NSParameterAssert([embedder isKindOfClass:[MPManagedObject class]]);
+    NSAssert([embedder isKindOfClass:[MPManagedObject class]],
+             @"Expecting embedding object to be a managed object: %@ (%@)", embedder, embedder.class);
     
     MPManagedObject *mo = (MPManagedObject *)embedder;
     
