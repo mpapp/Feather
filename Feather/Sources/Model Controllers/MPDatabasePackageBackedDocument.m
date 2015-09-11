@@ -220,8 +220,10 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
                  tempManuscriptContainingDirPath);
     }
     
-    if (_originalBundleFileURL && [self.class requiresCopyingDocumentOfType:self.originalType
-                                                              atOriginalURL:_originalBundleFileURL]) {
+    // the file may have already been placed to the temporary path, for instance in case of compressed document bundles.
+    if (_originalBundleFileURL
+        && [self.class requiresCopyingDocumentOfType:self.originalType atOriginalURL:_originalBundleFileURL]
+        && ![fm fileExistsAtPath:_temporaryManuscriptPath]) {
         BOOL copyingOriginalSuccessful = [fm copyItemAtPath:_originalBundleFileURL.path toPath:_temporaryManuscriptPath error:&error];
         if (_originalBundleFileURL && !copyingOriginalSuccessful) {
             NSLog(@"ERROR: Failed to copy document bundle from %@ to %@: %@",
