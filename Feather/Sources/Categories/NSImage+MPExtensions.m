@@ -141,11 +141,9 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     return imageRef;
 }
 
-- (BOOL)writeToFile:(NSString *)path
-            options:(NSDataWritingOptions)options
-               type:(NSBitmapImageFileType)type
-              error:(NSError **)error {
-    
+- (NSData *)imageDataWithOptions:(NSDataWritingOptions)options
+                            type:(NSBitmapImageFileType)type
+                           error:(NSError **)error {
     CGImageRef cgRef = [self CGImageForProposedRect:NULL context:nil hints:nil];
     NSBitmapImageRep *newRep = [[NSBitmapImageRep alloc] initWithCGImage:cgRef];
     
@@ -153,14 +151,27 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
         if (error)
             *error = [NSError errorWithDomain:@"MPExtensionsErrorDomain"
                                          code:MPImageExtensionsErrorCodeFailedToCreateRepresentation
-                                     userInfo:@{NSLocalizedDescriptionKey : @"Failed to create bitmap image representation"}];
-        return NO;
+                                     userInfo:@{NSLocalizedDescriptionKey :
+                                                    @"Failed to create bitmap image representation"}];
+        return nil;
     }
     
     newRep.size = self.size;   // if you want the same resolution
     
-    NSData *pngData = [newRep representationUsingType:NSPNGFileType properties:nil];
-    return [pngData writeToFile:path options:options error:error];
+    NSData *data = [newRep representationUsingType:type properties:nil];
+    
+    return data;
+}
+
+- (BOOL)writeToFile:(NSString *)path
+            options:(NSDataWritingOptions)options
+               type:(NSBitmapImageFileType)type
+              error:(NSError **)error {
+    NSData *data = [self imageDataWithOptions:options type:type error:error];
+    if (!data) {
+        return NO;
+    }
+    return [data writeToFile:path options:options error:error];
 }
 
 @end
@@ -330,6 +341,56 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     }
     
     return NSNotFound;
+}
+
++ (NSUInteger)bitmapImageFileTypeForPathExtension:(NSString *)fileExtension {
+    NSString *extension = fileExtension.lowercaseString;
+    
+    if ([@[@"jpg",@"jpeg"] containsObject:extension]) {
+        return NSJPEGFileType;
+    }
+    else if ([@[@"jpg2000",@"jpeg2000"] containsObject:extension]) {
+        return NSJPEG2000FileType;
+    }
+    else if ([@[@"bmp"] containsObject:extension]) {
+        return NSBMPFileType;
+    }
+    else if ([@[@"gif", @"giff"] containsObject:extension]) {
+        return NSGIFFileType;
+    }
+    else if ([@[@"tif",@"tiff"] containsObject:extension]) {
+        return NSTIFFFileType;
+    }
+    else if ([@[@"png"] containsObject:extension]) {
+        return NSPNGFileType;
+    }
+    
+    NSAssert(false, @"Unexpected file extension '%@'", fileExtension);
+    return NSPNGFileType;
+}
+
++ (NSString *)canonicalPathExtensionForBitmapImageFileType:(NSBitmapImageFileType)fileType {
+    switch (fileType) {
+        case NSPNGFileType:
+            return @"png";
+            
+        case NSTIFFFileType:
+            return @"tiff";
+            
+        case NSGIFFileType:
+            return @"gif";
+            
+        case NSBMPFileType:
+            return @"bmp";
+            
+        case NSJPEG2000FileType:
+            return @"jpeg2000";
+            
+        case NSJPEGFileType:
+            return @"jpeg";
+    }
+    
+    NSAssert(false, @"Unexpected file type: %@", @(fileType));
 }
 
 @end

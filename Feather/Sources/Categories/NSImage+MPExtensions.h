@@ -45,6 +45,10 @@ typedef struct MPEMUSize
   * or **NSNotFound** if none applies. */
 + (NSUInteger)bitmapImageFileTypeForPasteboardType:(NSString *)pasteboardType;
 
++ (NSUInteger)bitmapImageFileTypeForPathExtension:(NSString *)fileExtension;
+
++ (NSString *)canonicalPathExtensionForBitmapImageFileType:(NSBitmapImageFileType)fileType;
+
 /** An array of UTTs for image data formats used on the pasteboard. */
 + (NSArray *)prioritizedImageDataPasteboardTypes;
 
@@ -55,6 +59,12 @@ typedef struct MPEMUSize
 /** A framed version of the image */
 - (NSImage *)framedWithSize:(NSSize)size;
 
+/** Copy a representation of the image as data with data writing and bitmap type options. */
+- (NSData *)imageDataWithOptions:(NSDataWritingOptions)options
+                            type:(NSBitmapImageFileType)type
+                           error:(NSError **)error;
+
+/** Write the image to file at the given path in a format of your choice. */
 - (BOOL)writeToFile:(NSString *)path
             options:(NSDataWritingOptions)options
                type:(NSBitmapImageFileType)type
