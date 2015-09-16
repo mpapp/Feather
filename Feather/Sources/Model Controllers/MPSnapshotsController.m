@@ -205,7 +205,7 @@
 {
     CBLQuery *q = [[self.db.database viewNamed:@"snapshottedAttachmentsBySHA"] createQuery];
     q.prefetch = YES;
-    q.key = sha;
+    q.keys = @[sha];
     return q;
 }
 

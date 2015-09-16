@@ -964,12 +964,12 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
             NSDictionary *txtDict = [strongSelf.databaseListener.TXTRecordDictionary mutableCopy];
             [txtDict setValue:@(port) forKey:@"port"];
             
-            NSLog(@"Serving %@ at '%@:%@'", _path, _server.internalURL, @(port));
+            NSLog(@"Serving %@ at '%@:%@'", strongSelf.path, strongSelf.server.internalURL, @(port));
             
             strongSelf.databaseListener.TXTRecordDictionary = txtDict;
             
             if (![strongSelf.databaseListener start:&e]) {
-                assert(e);
+                NSParameterAssert(e);
                 retries++;
                 continue;
             }
@@ -980,7 +980,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
         } while (e && retries < MPDatabasePackageListenerMaxRetryCount);
         
         if (e) {
-            [self.notificationCenter postErrorNotification:e];
+            [strongSelf.notificationCenter postErrorNotification:e];
             completionHandler(e);
             return;
         }
@@ -990,7 +990,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 [strongSelf advertiseListener];
             });
-            [self didStartPackageListener];
+            [strongSelf didStartPackageListener];
             completionHandler(nil);
         });
     }];
@@ -998,7 +998,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
 
 - (void)stopListener
 {
-    assert(_databaseListener);
+    NSAssert(_databaseListener, @"Expecting there to be a listener for database package ", self.path);
     [_databaseListener stop];
 }
 
