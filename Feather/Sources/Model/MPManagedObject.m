@@ -1330,7 +1330,7 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
                    || [type isEqual:MPPasteboardTypeManagedObjectID]
                    || [type isEqual:MPPasteboardTypeManagedObjectIDArray]);
     
-    NSString *errorStr = nil;
+    NSError *error = nil;
     NSData *dataRep = nil;
     if ([type isEqual:MPPasteboardTypeManagedObjectFull])
     {
@@ -1338,25 +1338,28 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
         dict[@"databasePackageID"] = ((MPDatabasePackageController *)(self.controller.packageController)).fullyQualifiedIdentifier;
         
         NSParameterAssert([type isEqualToString:MPPasteboardTypeManagedObjectFull]);
-        dataRep = [NSPropertyListSerialization dataFromPropertyList:dict
+        dataRep = [NSPropertyListSerialization dataWithPropertyList:dict
                                                              format:NSPropertyListXMLFormat_v1_0
-                                                   errorDescription:&errorStr];
+                                                            options:0
+                                                              error:&error];
     }
     else if ([type isEqual:MPPasteboardTypeManagedObjectID])
     {
-        dataRep = [NSPropertyListSerialization dataFromPropertyList:self.referableDictionaryRepresentation
+        dataRep = [NSPropertyListSerialization dataWithPropertyList:self.referableDictionaryRepresentation
                                                              format:NSPropertyListXMLFormat_v1_0
-                                                   errorDescription:&errorStr];
+                                                            options:0
+                                                              error:&error];
     }
     else if ([type isEqual:MPPasteboardTypeManagedObjectIDArray])
     {
-        dataRep = [NSPropertyListSerialization dataFromPropertyList:@[self.referableDictionaryRepresentation]
-                                                             format:NSPropertyListXMLFormat_v1_0 errorDescription:&errorStr];
+        dataRep = [NSPropertyListSerialization dataWithPropertyList:@[self.referableDictionaryRepresentation]
+                                                             format:NSPropertyListXMLFormat_v1_0
+                                                            options:0
+                                                              error:&error];
     }
     
-    if (!dataRep && errorStr)
-    {
-        NSLog(@"ERROR! Could not paste object %@ to pasteboard: %@", self, errorStr);
+    if (!dataRep && error) {
+        NSLog(@"ERROR! Could not paste object %@ to pasteboard: %@", self, error);
     }
     
     return dataRep;

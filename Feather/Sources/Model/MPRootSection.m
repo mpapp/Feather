@@ -216,11 +216,12 @@ NSString *const MPPasteboardTypeRootSection = @"com.piipari.root-section.id.plis
                            @"objectType":NSStringFromClass(self.class)
                         };
     
-    NSString *errorStr = nil;
-    NSData *data = [NSPropertyListSerialization dataFromPropertyList:dict
+    NSError *error = nil;
+    NSData *data = [NSPropertyListSerialization dataWithPropertyList:dict
                                                               format:NSPropertyListXMLFormat_v1_0
-                                                    errorDescription:&errorStr];
-    NSAssert(data, @"Failed to create plist representation of a root section: %@", errorStr);
+                                                             options:0
+                                                               error:&error];
+    NSAssert(data, @"Failed to create plist representation of a root section: %@", error);
     
     return data;
 }
