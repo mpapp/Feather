@@ -249,7 +249,11 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
 
 - (NSUInteger)DPI
 {
-    return (72.0 * self.rep.pixelsWide) / self.size.width;
+    NSInteger pixelWidth = self.rep.pixelsWide;
+    if (pixelWidth > 0) {
+        return (72.0 * pixelWidth) / self.size.width;
+    }
+    return 72; // PDF images, for example, have zero pixel width
 }
 
 - (MPEMUSize)EMUSize
