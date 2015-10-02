@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $CONFIGURATION != "Release" ]
+if [ $CONFIGURATION != "Release" ] && [ $CONFIGURATION != "AppStoreRelease" ]
 then
     echo "Setting version skipped."
     exit 0
