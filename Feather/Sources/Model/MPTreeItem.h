@@ -11,7 +11,7 @@
 extern NSString *const MPTreeItemDoubleClickedNotification;
 
 /** A protocol for items in a tree hierarchy (e.g. source list items). */
-@protocol MPTreeItem < NSObject>
+@protocol MPTreeItem <NSObject>
 @property (readwrite, copy) NSString *title;
 @property (readonly, weak) id<MPTreeItem> parent;
 @property (readonly, strong) NSArray *children;
