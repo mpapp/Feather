@@ -30,6 +30,8 @@
 
 - (NSUInteger)crc32Checksum;
 
+- (NSString *)stringByDecodingAsUTF8;
+
 @end
 
 @interface NSData (AESAdditions)
