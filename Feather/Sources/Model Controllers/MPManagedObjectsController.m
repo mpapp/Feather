@@ -1144,7 +1144,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     if ([md5 isEqualToString:[metadata getValueOfProperty:dataChecksumKey]])
     {
         returnedObjects = preloadedObjects;
-        assert(returnedObjects);
+        NSAssert(returnedObjects, @"Expecting non-nil objects for resource name %@", resourceName);
     }
     else
     {
