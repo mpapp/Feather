@@ -38,6 +38,10 @@
     return [[self.controller.packageController contributorIdentitiesController] contributorIdentitiesForContributor:self];
 }
 
+- (BOOL)isEditable {
+    return NO; // required by the contributor being a tree item.
+}
+
 - (BOOL)isMe {
     NSString *identifier = MPShoeboxPackageController.sharedShoeboxController.identifier;
     return [[self.identities valueForKey:@"identifier"] containsObject:identifier];
