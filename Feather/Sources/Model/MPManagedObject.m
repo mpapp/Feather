@@ -1759,6 +1759,29 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     }
     
     NSParameterAssert(self.document);
+    
+    if ([self.class.embeddedProperties containsObject:property] &&
+        [value isKindOfClass:NSDictionary.class])
+    {
+        id object = [self valueForKey:property];
+        
+        if ([object isKindOfClass:MPEmbeddedObject.class])
+        {
+            NSDictionary *properties = value;
+            if (properties[@"_id"] || properties[@"objectType"])
+            {
+                NSMutableDictionary *md = [NSMutableDictionary dictionaryWithDictionary:properties];
+                [md removeObjectForKey:@"_id"];
+                [md removeObjectForKey:@"objectType"];
+                properties = [md copy];
+            }
+            
+            MPEmbeddedObject *eo = [[[object class] alloc] initWithDictionary:properties embeddingObject:[object embeddingObject] embeddingKey:[object embeddingKey]];
+            BOOL success = [super setValue:eo ofProperty:property];
+            return success;
+        }
+    }
+    
     [super setValue:value ofProperty:property];
     
     return YES;
