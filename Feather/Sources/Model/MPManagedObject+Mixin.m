@@ -298,7 +298,7 @@
     objc_property_t prop = class_getProperty(self, propName);
     if (!prop)
     {
-        NSLog(@"No property %@.%@", NSStringFromClass(self), propertyNameStr);
+        //NSLog(@"No property %@.%@", NSStringFromClass(self), propertyNameStr);
         return;
     }
     assert(prop);

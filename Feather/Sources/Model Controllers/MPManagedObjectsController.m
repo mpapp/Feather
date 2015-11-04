@@ -131,7 +131,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
             return [self allObjects];
         };
         
-        NSLog(@"Implementing '%@'", allObjectsSpecifierKey);
+        //NSLog(@"Implementing '%@'", allObjectsSpecifierKey);
         
         BOOL success = class_addMethod(self.class,
                                        allObjectsForObjectSpecifierKeySel,
@@ -264,7 +264,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         NSMutableSet *subclassSet = [NSMutableSet setWithCapacity:20];
         NSMutableArray *subclasses = [cls.subclasses mutableCopy];
 
-        NSLog(@"Subclasses of %@: %@", NSStringFromClass(cls), subclasses);
+        //NSLog(@"Subclasses of %@: %@", NSStringFromClass(cls), subclasses);
 
         [subclassSet addObject:cls];
         [subclassSet addObjectsFromArray:subclasses];

@@ -45,7 +45,7 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
         dispatch_sync(self.server.dispatchQueue, ^{
             identifier = [_sharedDatabase.metadata getValueOfProperty:@"identifier"];
         });
-        NSLog(@"%@", identifier);
+        //NSLog(@"%@", identifier);
         assert(_sharedDatabase.metadata);
         
         if (!identifier)
