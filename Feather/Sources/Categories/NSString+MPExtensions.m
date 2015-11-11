@@ -219,6 +219,10 @@
     strippedString = [strippedString stringByReplacingOccurrencesOfString:@"&amp;" withString:@"&"];
     
     // get the raw text out of the parsee after parsing, and return it
+    
+    strippedString = [strippedString stringByReplacingOccurrencesOfString:@"&lt;" withString:@"<"];
+    strippedString = [strippedString stringByReplacingOccurrencesOfString:@"&gt;" withString:@">"];
+    
     return strippedString;
 }
 
