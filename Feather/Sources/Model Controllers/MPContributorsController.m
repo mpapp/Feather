@@ -296,10 +296,11 @@ NSString * const MPContributorRoleTranslator = @"translator";
 }
 
 - (NSArray *)contributorsWithContributorIdentifier:(NSString *)identifier {
-    return [[self contributorIdentitiesWithIdentifier:identifier] mapObjectsUsingBlock:
-            ^id(MPContributorIdentity *identity, NSUInteger idx)
-            {
-                return identity.contributor;
+    return [[[self contributorIdentitiesWithIdentifier:identifier] mapObjectsUsingBlock:
+            ^id(MPContributorIdentity *identity, NSUInteger idx) {
+                return identity.contributor ?: [NSNull null];
+            }] filteredArrayMatching:^BOOL(id evalutedObject) {
+                return ![evalutedObject isEqual:[NSNull null]];
             }];
 }
 
