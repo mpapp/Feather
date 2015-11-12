@@ -23,4 +23,8 @@
                  description:(NSString *)description
              underlyingError:(NSError *)originalError;
 
+- (NSError *)errorByMarkingAsShouldPresent;
+
+- (BOOL)shouldPresent;
+
 @end
