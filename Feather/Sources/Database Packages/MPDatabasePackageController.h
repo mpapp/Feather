@@ -185,6 +185,9 @@ typedef enum MPDatabasePackageControllerErrorCode
    * @param errorDict A dictionary of errors for *starting* replications (i.e. there can be errors during the asynchronous replication that are not captured here), keys being database names. */
 - (BOOL)syncWithRemote:(NSDictionary **)errorDict;
 
+/** Compacts the manuscript's all databases. */
+- (BOOL)compact:(NSError **)error;
+
 /** Name for the push filter function used for the given database. Nil return value means that no push filter is to be used. Default implementation uses no push filter. If this method returns nil for a given db, the subclass must implement -create */
 - (NSString *)pushFilterNameForDatabaseNamed:(NSString *)db;
 

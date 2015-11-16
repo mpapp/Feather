@@ -892,6 +892,16 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return errDict.count == 0;
 }
 
+- (BOOL)compact:(NSError **)error {
+    for (MPDatabase *db in self.orderedDatabases) {
+        if (![db.database compact:error]) {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
 - (NSArray *)allObjects {
     NSMutableArray *objs = [NSMutableArray new];
     
