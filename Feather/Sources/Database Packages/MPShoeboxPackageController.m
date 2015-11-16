@@ -251,10 +251,19 @@ static dispatch_once_t onceToken;
         {
             NSLog(@"ERROR! Could not initialize shared package controller:\n%@", err);
         }
-        assert(_sharedInstance);
+        
+        if (!_sharedInstance) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_shoeboxPackageControllerClass sharedShoeboxControllerFailedToInitialize];
+            });
+        }
     });
     
     return _sharedInstance;
+}
+
++ (void)sharedShoeboxControllerFailedToInitialize {
+    // override in subclass to act in this (quite likely critical) scenario.
 }
 
 + (BOOL)sharedShoeboxControllerInitialized { return _sharedInstance != nil; }

@@ -16,7 +16,12 @@ extern NSString * const MPDefaultsKeySharedPackageUDID;
 @interface MPShoeboxPackageController : MPDatabasePackageController <MPManagedObjectSharingObserver>
 
 // used for unit testing
+
+/** override in subclass to act in this (quite likely critical) scenario. */
++ (void)sharedShoeboxControllerFailedToInitialize;
+
 + (BOOL)sharedShoeboxControllerInitialized;
+
 + (void)finalizeSharedShoeboxController;
 
 + (BOOL)createSharedDatabasesPathWithError:(NSError **)err;
