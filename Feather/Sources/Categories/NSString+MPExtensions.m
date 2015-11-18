@@ -317,6 +317,34 @@
     return [emailTest evaluateWithObject:self];
 }
 
+// from https://gist.github.com/programmingthomas/6856295
+-(void)enumerateCharacters:(MPCharacterEvaluationBlock)enumerationBlock
+{
+    const unichar * chars = CFStringGetCharactersPtr((__bridge CFStringRef)self);
+    //Function will return NULL if internal storage of string doesn't allow for easy iteration
+    if (chars != NULL)
+    {
+        NSUInteger index = 0;
+        while (*chars) {
+            enumerationBlock(*chars, index);
+            chars++;
+            index++;
+        }
+    }
+    else
+    {
+        //Use IMP/SEL if the other enumeration is unavailable
+        SEL sel = @selector(characterAtIndex:);
+        unichar (*charAtIndex)(id, SEL, NSUInteger) = (typeof(charAtIndex)) [self methodForSelector:sel];
+        
+        for (NSUInteger i = 0; i < self.length; i++)
+        {
+            const unichar c = charAtIndex(self, sel, i);
+            enumerationBlock(c, i);
+        }
+    }
+}
+
 @end
 
 // Extracted from papers-shared NSString_Extensions

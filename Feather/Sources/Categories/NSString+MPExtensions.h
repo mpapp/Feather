@@ -92,6 +92,9 @@ NS_INLINE  NSMutableString *MPMutableStringForString(NSString *s)
 /** OSType (FourLetterCode, DescType, ResType) representation of a string. */
 @property (readonly) OSType OSType;
 
+typedef void (^MPCharacterEvaluationBlock)(const unichar currentChar, NSUInteger i);
+-(void)enumerateCharacters:(MPCharacterEvaluationBlock)enumerationBlock;
+
 @end
 
 @interface NSMutableString (Feather)
