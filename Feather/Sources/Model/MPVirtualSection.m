@@ -233,6 +233,17 @@
     return nil;
 }
 
+- (BOOL)isEqual:(id)object {
+    if (![self isKindOfClass:object]) {
+        return NO;
+    }
+    return [self.wrappedObject isEqual:[object wrappedObject]];
+}
+
+- (NSUInteger)hash {
+    return self.wrappedObject.hash;
+}
+
 - (NSArray *)children {
     return self.wrappedChildren;
 }
@@ -244,9 +255,9 @@
         [[wrappedObjects valueForKey:@"controller"] matchingValueForKey:@"packageController"
                                                                   value:^(BOOL valueMatches, id value)
         {
-            assert(valueMatches);
-            assert(value != nil);
-            assert(value == parent.packageController);
+            NSParameterAssert(valueMatches);
+            NSParameterAssert(value != nil);
+            NSParameterAssert(value == parent.packageController);
         }];
     
     return [wrappedObjects mapObjectsUsingBlock:^id(MPManagedObject<MPTitledProtocol, MPPlaceHolding> *o, NSUInteger idx)
