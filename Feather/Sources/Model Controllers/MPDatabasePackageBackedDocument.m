@@ -273,7 +273,23 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
         return nil;
     }
     
-    NSParameterAssert(!self.isLocked);
+    // this appears too stringent? document may be marked 'locked' also in situations where user does have rights to it
+    
+    /*
+    if (self.isLocked) {
+        if (error) {
+            *error = [NSError errorWithDomain:MPDatabasePackageBackedDocumentErrorDomain
+                                         code:MPDatabasePackageBackedDocumentErrorCodePackageAccessFailed
+                                     userInfo:@{NSLocalizedDescriptionKey:@"Failed to open manuscript",
+                                                NSLocalizedFailureReasonErrorKey:@"Failed to open manuscript because it is locked",
+                                                NSLocalizedRecoverySuggestionErrorKey:@"Please contact support@manuscriptsapp.com if you continue to see this."}];
+        }
+        return NO;
+    }*/
+    
+    if (self.isLocked) {
+        MPLog(@"Manuscript with file path %@ is unexpectedly locked (temporary path: %@)", self.fileURL.path, self.temporaryManuscriptPath);
+    }
     
     // can't open in readonly mode because view indices (which to update require write access)
     // may be out of date.
