@@ -44,6 +44,7 @@
 		5F75748D1B92659E00BD4BC6 /* RegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F75747F1B925E9A00BD4BC6 /* RegexKitLite.framework */; };
 		5F779FCC172BDC3C0011C4DD /* MPThumbnailable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F779FB8172BDC180011C4DD /* MPThumbnailable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F779FF6172BE69A0011C4DD /* MPRESTFulResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F779FF4172BE69A0011C4DD /* MPRESTFulResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F7EB6C41C048E1000D6FB4E /* FeatherTests.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33281705CB950049EBB5 /* FeatherTests.h */; settings = {ASSET_TAGS = (); }; };
 		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
 		5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
@@ -1261,6 +1262,7 @@
 				5FC4238F1AFF8BDE002234FB /* NSNotificationCenter+MPManagedObjectExtensions.h in Headers */,
 				5F293C1F170E3B62001C2111 /* MPPlaceHolding.h in Headers */,
 				5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */,
+				5F7EB6C41C048E1000D6FB4E /* FeatherTests.h in Headers */,
 				5F18505E1711B13900079040 /* MPEmbeddedObject+Protected.h in Headers */,
 				5F3D380A1725D8A600D19D7C /* MPCategorizableMixin.h in Headers */,
 				5F3D380E1725D8E000D19D7C /* MPBundlableMixin.h in Headers */,
