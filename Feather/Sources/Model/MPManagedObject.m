@@ -1077,7 +1077,7 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 
 + (id)receiverForEffectivePropertyAccessorReceiver:(id)effectiveReceiver property:(NSString *)property
 {
-    NSAssert(self == [effectiveReceiver class], @"Unexpected class: %@ != %@",
+    NSAssert([self isKindOfClass:[effectiveReceiver class]], @"Unexpected class: %@ != %@",
              self, [effectiveReceiver class]);
     
     NSString *parentPropertyName = [[effectiveReceiver class] parentPropertyName];
