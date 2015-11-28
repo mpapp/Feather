@@ -14,6 +14,9 @@
 @property (readwrite, strong) NSArray *cachedChildren;
 @property (readwrite, strong) NSArray *cachedRepresentedObjects;
 
+@property (readwrite) BOOL childrenCacheIsStale;
+@property (readwrite) BOOL representedObjectsCacheIsStale;
+
 - (void)observeManagedObjectChanges;
 
 @end
