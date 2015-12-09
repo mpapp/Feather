@@ -1181,11 +1181,17 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     NSParameterAssert(view);
     
     CBLQuery *q = [self.db.database existingViewNamed:view].createQuery;
+#ifdef DEBUG
     NSParameterAssert(q);
+#endif
+    
+    if (!q) {
+        MPLog(@"WARNING! No view with name '%@' in database %@ (%@)", view, self.db.name, self.db.database);
+        return nil;
+    }
     
     q.keys = keys;
     q.prefetch = YES;
-        
     return [self managedObjectsForQueryEnumerator:q.run];
 }
 
