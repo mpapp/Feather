@@ -1077,8 +1077,8 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 
 + (id)receiverForEffectivePropertyAccessorReceiver:(id)effectiveReceiver property:(NSString *)property
 {
-    NSAssert(self == [effectiveReceiver class], @"Unexpected class: %@ != %@",
-             self, [effectiveReceiver class]);
+    //NSAssert([self isKindOfClass:[effectiveReceiver class]], @"Unexpected class: %@ != %@",
+    //         self, [effectiveReceiver class]);
     
     NSString *parentPropertyName = [[effectiveReceiver class] parentPropertyName];
     id p = effectiveReceiver;
@@ -1620,8 +1620,8 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 
 + (instancetype)modelForDocument:(CBLDocument *)document
 {
-    assert(document);
-    assert(document.database);
+    NSParameterAssert(document);
+    NSParameterAssert(document.database);
     
     if (document.modelObject)
     {
@@ -1637,8 +1637,8 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     if (!mo.controller)
         [mo setControllerWithDocument:document];
     
-    assert(mo.controller);
-    assert([document.properties[@"objectType"] isEqualToString:NSStringFromClass(self)]);
+    NSParameterAssert(mo.controller);
+    NSParameterAssert([document.properties[@"objectType"] isEqualToString:NSStringFromClass(self)]);
     
     return mo;
 }

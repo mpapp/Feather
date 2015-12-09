@@ -565,9 +565,10 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         return mo;
     }
     
-    assert(identifier);
+    NSAssert(identifier, @"Expecting identifier: %@", identifier);
     Class cls = [MPManagedObject managedObjectClassFromDocumentID:identifier];
-    assert(cls);
+    NSAssert(cls, @"Class unexpectedly missing from document ID: %@", identifier);
+    
     __block CBLDocument *doc = nil;
     
     mp_dispatch_sync(self.db.database.manager.dispatchQueue,
@@ -609,8 +610,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     });
     
     if (mo) {
-        NSAssert(mo.controller == self, @"Object has unexpected controller: %@", mo.controller);
-        NSAssert([mo isKindOfClass:self.managedObjectClass], @"Object is of unexpected kind: %@", mo);        
+        NSAssert(mo.controller == self, @"Object %@ has unexpected controller: %@", mo, mo.controller);
+        NSAssert([mo isKindOfClass:self.managedObjectClass], @"Object is of unexpected kind: %@, (%@)", mo, mo.class);
     }
     return mo;
 }
