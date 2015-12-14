@@ -581,7 +581,7 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
     
     // Ask factory to get/create model; if it doesn't know, use the declared class:
     CBLModel *value = [doc.database.modelFactory modelForDocument: doc];
-    if (!value)
+    if (!value && ![doc isDeleted])
     {
         Class declaredClass = [[self class] classOfProperty: property];
         value = [declaredClass modelForDocument: doc];

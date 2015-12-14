@@ -152,6 +152,8 @@ typedef enum MPManagedObjectsControllerErrorCode
 - (instancetype)initWithPackageController:(MPDatabasePackageController *)packageController
                                  database:(MPDatabase *)db error:(NSError **)err;
 
+- (instancetype)init NS_UNAVAILABLE;
+
 /** A callback fired after the hosting MPDatabasePackageController for a MPManagedObjectsController has finished initialising all its managed objects controller
   * (you can run code dependent on other managed objects controller here). */
 - (BOOL)didInitialize:(NSError **)err;
