@@ -13,3 +13,6 @@
 [submodule "External/google-diff-match-patch-Objective-C"]
 	path = External/google-diff-match-patch-Objective-C
 	url = git@github.com:mpapp/google-diff-match-patch-Objective-C.git
+[submodule "Carthage/Checkouts/couchbase-lite-ios"]
+	path = Carthage/Checkouts/couchbase-lite-ios
+	url = ssh://git@github.com/mz2/couchbase-lite-ios.git

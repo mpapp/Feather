@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		5F18505E1711B13900079040 /* MPEmbeddedObject+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293C20170E45D4001C2111 /* MPEmbeddedObject+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5F27166318AE641900C154DB /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D751418AE636500AA4007 /* CouchbaseLite.framework */; };
-		5F27166418AE641C00C154DB /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D752018AE636500AA4007 /* CouchbaseLiteListener.framework */; };
 		5F293B9B170CAD65001C2111 /* MPCacheableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293B99170CAD65001C2111 /* MPCacheableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F293B9C170CAD65001C2111 /* MPCacheableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293B9A170CAD65001C2111 /* MPCacheableMixin.m */; };
 		5F293B9D170CAD8C001C2111 /* MPCacheable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293B85170CAD53001C2111 /* MPCacheable.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -32,6 +30,10 @@
 		5F3D8C0C1AAD07C900D0D4A8 /* MPJSONRepresentable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F42FC481B10C36900CD88AA /* MPDeepSaver.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F42FC461B10C36900CD88AA /* MPDeepSaver.h */; };
 		5F42FC491B10C36900CD88AA /* MPDeepSaver.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F42FC471B10C36900CD88AA /* MPDeepSaver.m */; };
+		5F4A48BE1C34079C0029DB3E /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
+		5F4A48BF1C34079C0029DB3E /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; };
+		5F4A48C01C3407AD0029DB3E /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
+		5F4A48C21C3407C30029DB3E /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
 		5F6857A01727C38900FE06B0 /* MPVirtualSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579D1727C38900FE06B0 /* MPVirtualSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F68579E1727C38900FE06B0 /* MPVirtualSection.m */; };
 		5F6857A21727C38900FE06B0 /* MPVirtualSection+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579F1727C38900FE06B0 /* MPVirtualSection+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -44,7 +46,7 @@
 		5F75748D1B92659E00BD4BC6 /* RegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F75747F1B925E9A00BD4BC6 /* RegexKitLite.framework */; };
 		5F779FCC172BDC3C0011C4DD /* MPThumbnailable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F779FB8172BDC180011C4DD /* MPThumbnailable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F779FF6172BE69A0011C4DD /* MPRESTFulResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F779FF4172BE69A0011C4DD /* MPRESTFulResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5F7EB6C41C048E1000D6FB4E /* FeatherTests.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33281705CB950049EBB5 /* FeatherTests.h */; settings = {ASSET_TAGS = (); }; };
+		5F7EB6C41C048E1000D6FB4E /* FeatherTests.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33281705CB950049EBB5 /* FeatherTests.h */; };
 		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
 		5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
@@ -162,8 +164,6 @@
 		5FE2C0EB1B256B4C001DB163 /* MPTreeItemUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FE2C0E91B256B4C001DB163 /* MPTreeItemUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FE2C0EC1B256B4C001DB163 /* MPTreeItemUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FE2C0EA1B256B4C001DB163 /* MPTreeItemUtility.m */; };
 		5FEA8B5018A81E0100A7C14B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEA8B4F18A81E0100A7C14B /* XCTest.framework */; };
-		5FF04C7D1B15F09B00B93E33 /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D751418AE636500AA4007 /* CouchbaseLite.framework */; };
-		5FF04C7E1B15F09B00B93E33 /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D752018AE636500AA4007 /* CouchbaseLiteListener.framework */; };
 		5FFC37701AEEF7AF0041FBED /* MPCountryList.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FFC376E1AEEF7AF0041FBED /* MPCountryList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FFC37711AEEF7AF0041FBED /* MPCountryList.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFC376F1AEEF7AF0041FBED /* MPCountryList.m */; };
 		5FFD61931AFF97C600483D9C /* NSViewController+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FFD61911AFF97C600483D9C /* NSViewController+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -174,8 +174,6 @@
 		5FFD619C1AFF984C00483D9C /* NSEvent+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFD619A1AFF984C00483D9C /* NSEvent+MPExtensions.m */; };
 		5FFD61A41AFFA8DB00483D9C /* NSPopover+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FFD61A21AFFA8DB00483D9C /* NSPopover+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FFD61A51AFFA8DB00483D9C /* NSPopover+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFD61A31AFFA8DB00483D9C /* NSPopover+MPExtensions.m */; };
-		5FFD61A61AFFAA3C00483D9C /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D751418AE636500AA4007 /* CouchbaseLite.framework */; };
-		5FFD61A71AFFAA3C00483D9C /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F8D752018AE636500AA4007 /* CouchbaseLiteListener.framework */; };
 		5FFD61AE1AFFAAAA00483D9C /* NSTextView+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FFD61AC1AFFAAAA00483D9C /* NSTextView+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FFD61AF1AFFAAAA00483D9C /* NSTextView+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFD61AD1AFFAAAA00483D9C /* NSTextView+MPExtensions.m */; };
 		5FFD61B31AFFAF4000483D9C /* NSArray+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */; };
@@ -185,13 +183,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		5F2716D118AFA27300C154DB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 275315D414ACF0A10065964D;
-			remoteInfo = "CBL Listener Mac";
-		};
 		5F32841D1B7E30D4008630ED /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5F3284161B7E30D4008630ED /* DiffMatchPatch.xcodeproj */;
@@ -255,111 +246,6 @@
 			remoteGlobalIDString = 5F292BAE1B92387100317449;
 			remoteInfo = RegexKitLite;
 		};
-		5F8D751318AE636500AA4007 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 270B3DEA1489359000E0A926;
-			remoteInfo = "CBL Mac";
-		};
-		5F8D751518AE636500AA4007 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 27B0B7E71492BB6B00A817AD;
-			remoteInfo = "CBL iOS";
-		};
-		5F8D751718AE636500AA4007 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 27B0B7A91492B83B00A817AD;
-			remoteInfo = "CBL iOS library";
-		};
-		5F8D751918AE636500AA4007 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 27C70694148864BA00F0F099;
-			remoteInfo = "CBL Mac Demo";
-		};
-		5F8D751B18AE636500AA4007 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 27B0B80B1492C16300A817AD;
-			remoteInfo = "Grocery Sync iOS Demo";
-		};
-		5F8D751D18AE636500AA4007 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 27731F2A1495CFEF00815D67;
-			remoteInfo = "CBL iOS Empty App";
-		};
-		5F8D751F18AE636500AA4007 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 275315D514ACF0A10065964D;
-			remoteInfo = "CBL Listener Mac";
-		};
-		5F8D752118AE636500AA4007 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DA147C3614BCAC3B0052DA4D;
-			remoteInfo = "CBL Listener iOS";
-		};
-		5F8D752318AE636500AA4007 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = DA023B6414BCA94C008184BB;
-			remoteInfo = "Listener iOS Library";
-		};
-		5F8D752518AE636500AA4007 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 270FE0C814C5008C005FF647;
-			remoteInfo = LiteServ;
-		};
-		5F8D752718AE636500AA4007 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 27538F5017F13B03004C3BFD;
-			remoteInfo = "LiteServ App";
-		};
-		5F8D752918AE636500AA4007 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 792867BF178DE01900248AF0;
-			remoteInfo = CBLJSViewCompiler;
-		};
-		5F8D753F18AE637A00AA4007 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 270B3DE91489359000E0A926;
-			remoteInfo = "CBL Mac";
-		};
-		5FBC5DAF18AFBF33000A2AD1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FBC5D9E18AFBF33000A2AD1 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8DD76FA10486AA7600D96B5E;
-			remoteInfo = fmdb;
-		};
-		5FBC5DB118AFBF33000A2AD1 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FBC5D9E18AFBF33000A2AD1 /* fmdb.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = EE4290EF12B42F870088BD94;
-			remoteInfo = FMDB;
-		};
 		5FC4231A1AFF8719002234FB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5FDB32F91705CB950049EBB5 /* Project object */;
@@ -373,20 +259,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 5FC4230D1AFF8719002234FB;
 			remoteInfo = FeatherExtensions;
-		};
-		5FC423781AFF8ACA002234FB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 270B3DE91489359000E0A926;
-			remoteInfo = "CBL Mac";
-		};
-		5FC4237A1AFF8ACA002234FB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 275315D414ACF0A10065964D;
-			remoteInfo = "CBL Listener Mac";
 		};
 		5FC423A31AFF8CF5002234FB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -408,20 +280,6 @@
 			proxyType = 1;
 			remoteGlobalIDString = 5FDB33021705CB950049EBB5;
 			remoteInfo = Feather;
-		};
-		5FFD61A81AFFAA4900483D9C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 270B3DE91489359000E0A926;
-			remoteInfo = "CBL Mac";
-		};
-		5FFD61AA1AFFAA4900483D9C /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 275315D414ACF0A10065964D;
-			remoteInfo = "CBL Listener Mac";
 		};
 /* End PBXContainerItemProxy section */
 
@@ -458,6 +316,8 @@
 		5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPJSONRepresentable.h; path = Sources/Model/MPJSONRepresentable.h; sourceTree = "<group>"; };
 		5F42FC461B10C36900CD88AA /* MPDeepSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPDeepSaver.h; path = Sources/Model/MPDeepSaver.h; sourceTree = "<group>"; };
 		5F42FC471B10C36900CD88AA /* MPDeepSaver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPDeepSaver.m; path = Sources/Model/MPDeepSaver.m; sourceTree = "<group>"; };
+		5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLite.framework; path = Carthage/Build/Mac/CouchbaseLite.framework; sourceTree = "<group>"; };
+		5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteListener.framework; path = Carthage/Build/Mac/CouchbaseLiteListener.framework; sourceTree = "<group>"; };
 		5F6414BA19A2A876007E5245 /* CBLDocument+MPScriptingSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CBLDocument+MPScriptingSupport.h"; path = "../Feather/Sources/Scripting/CBLDocument+MPScriptingSupport.h"; sourceTree = "<group>"; };
 		5F6414BB19A2A876007E5245 /* CBLDocument+MPScriptingSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CBLDocument+MPScriptingSupport.m"; path = "../Feather/Sources/Scripting/CBLDocument+MPScriptingSupport.m"; sourceTree = "<group>"; };
 		5F68579D1727C38900FE06B0 /* MPVirtualSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPVirtualSection.h; path = Sources/Model/MPVirtualSection.h; sourceTree = "<group>"; };
@@ -473,7 +333,6 @@
 		5F779F9B172BD3D20011C4DD /* NSView+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSView+MPExtensions.m"; path = "Sources/Categories/NSView+MPExtensions.m"; sourceTree = "<group>"; };
 		5F779FB8172BDC180011C4DD /* MPThumbnailable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MPThumbnailable.h; path = Sources/Model/MPThumbnailable.h; sourceTree = "<group>"; };
 		5F779FF4172BE69A0011C4DD /* MPRESTFulResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPRESTFulResource.h; path = Sources/Model/MPRESTFulResource.h; sourceTree = "<group>"; };
-		5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CouchbaseLite.xcodeproj; path = "External/couchbase-lite-ios/CouchbaseLite.xcodeproj"; sourceTree = "<group>"; };
 		5F95F2D71739A94300E8C845 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPIndexableMixin.h; path = Sources/Model/MPIndexableMixin.h; sourceTree = "<group>"; };
 		5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPIndexableMixin.m; path = Sources/Model/MPIndexableMixin.m; sourceTree = "<group>"; };
@@ -485,7 +344,6 @@
 		5FAC23BE19ABFE79000F188C /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		5FADC70018FAFBAD006F4119 /* NSImage+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+MPExtensions.h"; path = "Sources/Categories/NSImage+MPExtensions.h"; sourceTree = "<group>"; };
 		5FADC70118FAFBAD006F4119 /* NSImage+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+MPExtensions.m"; path = "Sources/Categories/NSImage+MPExtensions.m"; sourceTree = "<group>"; };
-		5FBC5D9E18AFBF33000A2AD1 /* fmdb.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = fmdb.xcodeproj; path = "External/couchbase-lite-ios/vendor/fmdb/fmdb.xcodeproj"; sourceTree = "<group>"; };
 		5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeatherExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FC423111AFF8719002234FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5FC423121AFF8719002234FB /* FeatherExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeatherExtensions.h; sourceTree = "<group>"; };
@@ -621,11 +479,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FC423911AFF8CCA002234FB /* libz.dylib in Frameworks */,
+				5F4A48C01C3407AD0029DB3E /* CouchbaseLite.framework in Frameworks */,
 				5F75748D1B92659E00BD4BC6 /* RegexKitLite.framework in Frameworks */,
 				5F3284271B7E30E6008630ED /* DiffMatchPatch.framework in Frameworks */,
 				5FC423751AFF87FC002234FB /* Cocoa.framework in Frameworks */,
-				5FF04C7D1B15F09B00B93E33 /* CouchbaseLite.framework in Frameworks */,
-				5FF04C7E1B15F09B00B93E33 /* CouchbaseLiteListener.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -641,9 +498,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FFD61A61AFFAA3C00483D9C /* CouchbaseLite.framework in Frameworks */,
-				5FFD61A71AFFAA3C00483D9C /* CouchbaseLiteListener.framework in Frameworks */,
 				5FC423B91AFF8D1B002234FB /* FeatherExtensions.framework in Frameworks */,
+				5F4A48C21C3407C30029DB3E /* CouchbaseLite.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -659,15 +515,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F4A48BE1C34079C0029DB3E /* CouchbaseLite.framework in Frameworks */,
 				5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */,
 				5FDB3A08170793B30049EBB5 /* libz.dylib in Frameworks */,
 				5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */,
 				5F7574821B925EA400BD4BC6 /* RegexKitLite.framework in Frameworks */,
+				5F4A48BF1C34079C0029DB3E /* CouchbaseLiteListener.framework in Frameworks */,
 				5FC4236A1AFF8775002234FB /* FeatherExtensions.framework in Frameworks */,
 				5F3765EB1A1AA1AA0068DA39 /* AddressBook.framework in Frameworks */,
 				5FAC23BF19ABFE79000F188C /* CoreServices.framework in Frameworks */,
-				5F27166418AE641C00C154DB /* CouchbaseLiteListener.framework in Frameworks */,
-				5F27166318AE641900C154DB /* CouchbaseLite.framework in Frameworks */,
 				5F293BF8170DFD77001C2111 /* Security.framework in Frameworks */,
 				5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */,
 			);
@@ -725,25 +581,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5F8D750318AE636400AA4007 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5F8D751418AE636500AA4007 /* CouchbaseLite.framework */,
-				5F8D751618AE636500AA4007 /* CouchbaseLite.framework */,
-				5F8D751818AE636500AA4007 /* libCouchbaseLite.a */,
-				5F8D751A18AE636500AA4007 /* Couchbase Lite Demo.app */,
-				5F8D751C18AE636500AA4007 /* CBL Test.app */,
-				5F8D751E18AE636500AA4007 /* Couchbase Lite Empty App.app */,
-				5F8D752018AE636500AA4007 /* CouchbaseLiteListener.framework */,
-				5F8D752218AE636500AA4007 /* CouchbaseLiteListener.framework */,
-				5F8D752418AE636500AA4007 /* libCouchbaseLiteListener.a */,
-				5F8D752618AE636500AA4007 /* LiteServ */,
-				5F8D752818AE636500AA4007 /* LiteServ.app */,
-				5F8D752A18AE636500AA4007 /* libCBLJSViewCompiler.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		5F95F2AF17397F2900E8C845 /* Full Text Search */ = {
 			isa = PBXGroup;
 			children = (
@@ -767,15 +604,6 @@
 			children = (
 			);
 			path = Bindings;
-			sourceTree = "<group>";
-		};
-		5FBC5D9F18AFBF33000A2AD1 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5FBC5DB018AFBF33000A2AD1 /* fmdb */,
-				5FBC5DB218AFBF33000A2AD1 /* libFMDB.a */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		5FC4230F1AFF8719002234FB /* FeatherExtensions */ = {
@@ -888,8 +716,6 @@
 				5FC423A51AFF8CF6002234FB /* FeatherScriptingTests */,
 				5FDB33051705CB950049EBB5 /* Frameworks */,
 				5FDB33041705CB950049EBB5 /* Products */,
-				5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */,
-				5FBC5D9E18AFBF33000A2AD1 /* fmdb.xcodeproj */,
 			);
 			sourceTree = "<group>";
 		};
@@ -911,6 +737,8 @@
 			children = (
 				5F7574681B925E9A00BD4BC6 /* RegexKitLite.xcodeproj */,
 				5F3284161B7E30D4008630ED /* DiffMatchPatch.xcodeproj */,
+				5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */,
+				5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */,
 				5F3765EA1A1AA1AA0068DA39 /* AddressBook.framework */,
 				5FAC23BE19ABFE79000F188C /* CoreServices.framework */,
 				5FAC23BC19ABFE5C000F188C /* Carbon.framework */,
@@ -1298,8 +1126,6 @@
 			dependencies = (
 				5F75748C1B92659900BD4BC6 /* PBXTargetDependency */,
 				5F3284261B7E30E2008630ED /* PBXTargetDependency */,
-				5FC423791AFF8ACA002234FB /* PBXTargetDependency */,
-				5FC4237B1AFF8ACA002234FB /* PBXTargetDependency */,
 			);
 			name = FeatherExtensions;
 			productName = FeatherExtensions;
@@ -1336,8 +1162,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				5FFD61A91AFFAA4900483D9C /* PBXTargetDependency */,
-				5FFD61AB1AFFAA4900483D9C /* PBXTargetDependency */,
 				5FC423B81AFF8D15002234FB /* PBXTargetDependency */,
 			);
 			name = FeatherScripting;
@@ -1378,8 +1202,6 @@
 			dependencies = (
 				5F7574841B925EAB00BD4BC6 /* PBXTargetDependency */,
 				5FC423691AFF8768002234FB /* PBXTargetDependency */,
-				5F2716D218AFA27300C154DB /* PBXTargetDependency */,
-				5F8D754018AE637A00AA4007 /* PBXTargetDependency */,
 			);
 			name = Feather;
 			productName = Feather;
@@ -1443,16 +1265,8 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 5F8D750318AE636400AA4007 /* Products */;
-					ProjectRef = 5F8D750218AE636400AA4007 /* CouchbaseLite.xcodeproj */;
-				},
-				{
 					ProductGroup = 5F3284171B7E30D4008630ED /* Products */;
 					ProjectRef = 5F3284161B7E30D4008630ED /* DiffMatchPatch.xcodeproj */;
-				},
-				{
-					ProductGroup = 5FBC5D9F18AFBF33000A2AD1 /* Products */;
-					ProjectRef = 5FBC5D9E18AFBF33000A2AD1 /* fmdb.xcodeproj */;
 				},
 				{
 					ProductGroup = 5F7574691B925E9A00BD4BC6 /* Products */;
@@ -1512,104 +1326,6 @@
 			fileType = wrapper.cfbundle;
 			path = RegexKitLiteTests.xctest;
 			remoteRef = 5F7574801B925E9A00BD4BC6 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F8D751418AE636500AA4007 /* CouchbaseLite.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = CouchbaseLite.framework;
-			remoteRef = 5F8D751318AE636500AA4007 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F8D751618AE636500AA4007 /* CouchbaseLite.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = CouchbaseLite.framework;
-			remoteRef = 5F8D751518AE636500AA4007 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F8D751818AE636500AA4007 /* libCouchbaseLite.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libCouchbaseLite.a;
-			remoteRef = 5F8D751718AE636500AA4007 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F8D751A18AE636500AA4007 /* Couchbase Lite Demo.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "Couchbase Lite Demo.app";
-			remoteRef = 5F8D751918AE636500AA4007 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F8D751C18AE636500AA4007 /* CBL Test.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "CBL Test.app";
-			remoteRef = 5F8D751B18AE636500AA4007 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F8D751E18AE636500AA4007 /* Couchbase Lite Empty App.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = "Couchbase Lite Empty App.app";
-			remoteRef = 5F8D751D18AE636500AA4007 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F8D752018AE636500AA4007 /* CouchbaseLiteListener.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = CouchbaseLiteListener.framework;
-			remoteRef = 5F8D751F18AE636500AA4007 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F8D752218AE636500AA4007 /* CouchbaseLiteListener.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = CouchbaseLiteListener.framework;
-			remoteRef = 5F8D752118AE636500AA4007 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F8D752418AE636500AA4007 /* libCouchbaseLiteListener.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libCouchbaseLiteListener.a;
-			remoteRef = 5F8D752318AE636500AA4007 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F8D752618AE636500AA4007 /* LiteServ */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = LiteServ;
-			remoteRef = 5F8D752518AE636500AA4007 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F8D752818AE636500AA4007 /* LiteServ.app */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.application;
-			path = LiteServ.app;
-			remoteRef = 5F8D752718AE636500AA4007 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F8D752A18AE636500AA4007 /* libCBLJSViewCompiler.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libCBLJSViewCompiler.a;
-			remoteRef = 5F8D752918AE636500AA4007 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5FBC5DB018AFBF33000A2AD1 /* fmdb */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = fmdb;
-			remoteRef = 5FBC5DAF18AFBF33000A2AD1 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5FBC5DB218AFBF33000A2AD1 /* libFMDB.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libFMDB.a;
-			remoteRef = 5FBC5DB118AFBF33000A2AD1 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -1804,11 +1520,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		5F2716D218AFA27300C154DB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "CBL Listener Mac";
-			targetProxy = 5F2716D118AFA27300C154DB /* PBXContainerItemProxy */;
-		};
 		5F3284261B7E30E2008630ED /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = DiffMatchPatch;
@@ -1824,11 +1535,6 @@
 			name = RegexKitLite;
 			targetProxy = 5F75748B1B92659900BD4BC6 /* PBXContainerItemProxy */;
 		};
-		5F8D754018AE637A00AA4007 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "CBL Mac";
-			targetProxy = 5F8D753F18AE637A00AA4007 /* PBXContainerItemProxy */;
-		};
 		5FC4231B1AFF8719002234FB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5FC4230D1AFF8719002234FB /* FeatherExtensions */;
@@ -1838,16 +1544,6 @@
 			isa = PBXTargetDependency;
 			target = 5FC4230D1AFF8719002234FB /* FeatherExtensions */;
 			targetProxy = 5FC423681AFF8768002234FB /* PBXContainerItemProxy */;
-		};
-		5FC423791AFF8ACA002234FB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "CBL Mac";
-			targetProxy = 5FC423781AFF8ACA002234FB /* PBXContainerItemProxy */;
-		};
-		5FC4237B1AFF8ACA002234FB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "CBL Listener Mac";
-			targetProxy = 5FC4237A1AFF8ACA002234FB /* PBXContainerItemProxy */;
 		};
 		5FC423A41AFF8CF5002234FB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1863,16 +1559,6 @@
 			isa = PBXTargetDependency;
 			target = 5FDB33021705CB950049EBB5 /* Feather */;
 			targetProxy = 5FDB331F1705CB950049EBB5 /* PBXContainerItemProxy */;
-		};
-		5FFD61A91AFFAA4900483D9C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "CBL Mac";
-			targetProxy = 5FFD61A81AFFAA4900483D9C /* PBXContainerItemProxy */;
-		};
-		5FFD61AB1AFFAA4900483D9C /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = "CBL Listener Mac";
-			targetProxy = 5FFD61AA1AFFAA4900483D9C /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1935,7 +1621,10 @@
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
@@ -2020,7 +1709,10 @@
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
@@ -2082,6 +1774,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(CONFIGURATION_BUILD_DIR)",
 					"$(BUILT_PRODUCTS_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2160,6 +1853,10 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -2248,7 +1945,10 @@
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
@@ -2311,6 +2011,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(CONFIGURATION_BUILD_DIR)",
 					"$(BUILT_PRODUCTS_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -2383,6 +2084,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -2471,7 +2176,10 @@
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
@@ -2533,6 +2241,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(CONFIGURATION_BUILD_DIR)",
 					"$(BUILT_PRODUCTS_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2582,6 +2291,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(CONFIGURATION_BUILD_DIR)",
 					"$(BUILT_PRODUCTS_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -2627,6 +2337,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(CONFIGURATION_BUILD_DIR)",
 					"$(BUILT_PRODUCTS_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -2672,6 +2383,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(CONFIGURATION_BUILD_DIR)",
 					"$(BUILT_PRODUCTS_DIR)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -2839,6 +2551,10 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -2880,6 +2596,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -2917,6 +2637,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -2954,6 +2678,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
@@ -3162,7 +2890,10 @@
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
@@ -3196,7 +2927,10 @@
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
