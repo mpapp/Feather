@@ -486,15 +486,15 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (MPManagedObjectsController *)controllerForDocument:(CBLDocument *)document
 {
     NSString *objType = [document propertyForKey:@"objectType"];
-    assert(objType);
+    NSParameterAssert(objType);
     
     Class moClass = NSClassFromString(objType);
-    assert(moClass);
-    assert([moClass isSubclassOfClass:[MPManagedObject class]] && moClass != [MPManagedObject class]);
+    NSParameterAssert(moClass);
+    NSAssert([moClass isSubclassOfClass:[MPManagedObject class]] && moClass != [MPManagedObject class], @"Managed object class must be a subclass of MPManagedObject");
     
     MPManagedObjectsController *moc = [self controllerForManagedObjectClass:moClass];
-    assert(moc);
-    assert(moc.db.database == document.database);
+    NSParameterAssert(moc);
+    NSAssert(moc.db.database == document.database, @"Managed object must belong to this database package controller's database");
     
     return moc;
 }
