@@ -114,6 +114,12 @@
 	return (NSUInteger)crcFromZlib;
 }
 
+- (NSString *)stringByDecodingAsUTF8
+{
+    NSString *s = [[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding];
+    return s;
+}
+
 @end
 
 
@@ -186,12 +192,6 @@
     
     free(buffer); //free the buffer;
     return nil;
-}
-
-- (NSString *)stringByDecodingAsUTF8
-{
-    NSString *s = [[NSString alloc] initWithData:self encoding:NSUTF8StringEncoding];
-    return s;
 }
 
 @end

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SchemeUserState</key>
+	<dict>
+		<key>Bindings OSX Framework.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>88</integer>
+		</dict>
+		<key>Bindings-CLI.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>90</integer>
+		</dict>
+		<key>Bindings.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>89</integer>
+		</dict>
+	</dict>
+	<key>SuppressBuildableAutocreation</key>
+	<dict>
+		<key>5F3A435319E8AF3100105889</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5FA8591719E894FE00161A21</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5FA8592119E894FF00161A21</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5FA8597619E8A57400161A21</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5FA8598819E8A57400161A21</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+	</dict>
+</dict>
+</plist>
