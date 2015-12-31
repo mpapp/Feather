@@ -76,10 +76,10 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
                 
                 Class closestControllerClass = [MPDatabasePackageController controllerClassForManagedObjectClass:subclass];
                 Class closestModelClass = [closestControllerClass managedObjectClass];
-                assert(closestControllerClass);
-                assert(closestModelClass);
-                assert(closestModelClass != [MPManagedObject class]);
-                assert([subclass isSubclassOfClass:closestModelClass]);
+                NSParameterAssert(closestControllerClass);
+                NSParameterAssert(closestModelClass);
+                NSParameterAssert(closestModelClass != [MPManagedObject class]);
+                NSParameterAssert([subclass isSubclassOfClass:closestModelClass]);
                 
                 NSString *closestModelClassName = NSStringFromClass(closestModelClass);
                 

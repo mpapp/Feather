@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		28526FB41C3511D600966551 /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; };
+		287CB46E1C348D77007D78DE /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; };
 		5F18505E1711B13900079040 /* MPEmbeddedObject+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293C20170E45D4001C2111 /* MPEmbeddedObject+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F293B9B170CAD65001C2111 /* MPCacheableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293B99170CAD65001C2111 /* MPCacheableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F293B9C170CAD65001C2111 /* MPCacheableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293B9A170CAD65001C2111 /* MPCacheableMixin.m */; };
@@ -478,6 +480,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				287CB46E1C348D77007D78DE /* CouchbaseLiteListener.framework in Frameworks */,
 				5FC423911AFF8CCA002234FB /* libz.dylib in Frameworks */,
 				5F4A48C01C3407AD0029DB3E /* CouchbaseLite.framework in Frameworks */,
 				5F75748D1B92659E00BD4BC6 /* RegexKitLite.framework in Frameworks */,
@@ -498,6 +501,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28526FB41C3511D600966551 /* CouchbaseLiteListener.framework in Frameworks */,
 				5FC423B91AFF8D1B002234FB /* FeatherExtensions.framework in Frameworks */,
 				5F4A48C21C3407C30029DB3E /* CouchbaseLite.framework in Frameworks */,
 			);
