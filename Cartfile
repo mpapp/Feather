@@ -1,1 +1,2 @@
 github "mz2/couchbase-lite-ios" "master"
+github "mpapp/google-diff-match-patch-Objective-C" "master"
