@@ -10,3 +10,6 @@
 [submodule "Carthage/Checkouts/couchbase-lite-ios"]
 	path = Carthage/Checkouts/couchbase-lite-ios
 	url = ssh://git@github.com/mz2/couchbase-lite-ios.git
+[submodule "Carthage/Checkouts/google-diff-match-patch-Objective-C"]
+	path = Carthage/Checkouts/google-diff-match-patch-Objective-C
+	url = ssh://git@github.com/mpapp/google-diff-match-patch-Objective-C.git
