@@ -21,9 +21,10 @@
 		5F293C00170E1935001C2111 /* MPExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293BFD170E191F001C2111 /* MPExtensionTests.m */; };
 		5F293C07170E2980001C2111 /* MPEmbeddedObjectsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */; };
 		5F293C1F170E3B62001C2111 /* MPPlaceHolding.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F2AFA691C3DE8C900B37435 /* DiffMatchPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */; };
+		5F2AFA6A1C3DE8E000B37435 /* DiffMatchPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */; };
 		5F2CC7751B56E58900D9C714 /* MPFileObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F2CC7731B56E58900D9C714 /* MPFileObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F2CC7761B56E58900D9C714 /* MPFileObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CC7741B56E58900D9C714 /* MPFileObserver.m */; };
-		5F3284271B7E30E6008630ED /* DiffMatchPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F32841E1B7E30D4008630ED /* DiffMatchPatch.framework */; };
 		5F3765EB1A1AA1AA0068DA39 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F3765EA1A1AA1AA0068DA39 /* AddressBook.framework */; };
 		5F3D380A1725D8A600D19D7C /* MPCategorizableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D38081725D8A600D19D7C /* MPCategorizableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D38091725D8A600D19D7C /* MPCategorizableMixin.m */; };
@@ -185,41 +186,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		5F32841D1B7E30D4008630ED /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F3284161B7E30D4008630ED /* DiffMatchPatch.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 8DC2EF5B0486A6940098B216;
-			remoteInfo = DiffMatchPatch;
-		};
-		5F32841F1B7E30D4008630ED /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F3284161B7E30D4008630ED /* DiffMatchPatch.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3D5BC0AF128CA8E200B8F5FF;
-			remoteInfo = DiffMatchPatchTest;
-		};
-		5F3284211B7E30D4008630ED /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F3284161B7E30D4008630ED /* DiffMatchPatch.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3D96F3A212AFC68900C3E5C0;
-			remoteInfo = speedtest;
-		};
-		5F3284231B7E30D4008630ED /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F3284161B7E30D4008630ED /* DiffMatchPatch.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 3D03488E135F75460051FE16;
-			remoteInfo = "mode-test";
-		};
-		5F3284251B7E30E2008630ED /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5F3284161B7E30D4008630ED /* DiffMatchPatch.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 8DC2EF4F0486A6940098B216;
-			remoteInfo = DiffMatchPatch;
-		};
 		5F75747E1B925E9A00BD4BC6 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5F7574681B925E9A00BD4BC6 /* RegexKitLite.xcodeproj */;
@@ -300,11 +266,11 @@
 		5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPEmbeddedObjectsTests.m; sourceTree = "<group>"; };
 		5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPPlaceHolding.h; path = Sources/Model/MPPlaceHolding.h; sourceTree = "<group>"; };
 		5F293C20170E45D4001C2111 /* MPEmbeddedObject+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPEmbeddedObject+Protected.h"; path = "Sources/Model/MPEmbeddedObject+Protected.h"; sourceTree = "<group>"; };
+		5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiffMatchPatch.framework; path = ../../Carthage/Build/Mac/DiffMatchPatch.framework; sourceTree = "<group>"; };
 		5F2CC7731B56E58900D9C714 /* MPFileObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPFileObserver.h; path = Sources/Utilities/MPFileObserver.h; sourceTree = "<group>"; };
 		5F2CC7741B56E58900D9C714 /* MPFileObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPFileObserver.m; path = Sources/Utilities/MPFileObserver.m; sourceTree = "<group>"; };
 		5F2EBAAC1780AA4E00BF3298 /* NSApplication+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSApplication+MPExtensions.h"; path = "Sources/Categories/NSApplication+MPExtensions.h"; sourceTree = "<group>"; };
 		5F2EBAAD1780AA4E00BF3298 /* NSApplication+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSApplication+MPExtensions.m"; path = "Sources/Categories/NSApplication+MPExtensions.m"; sourceTree = "<group>"; };
-		5F3284161B7E30D4008630ED /* DiffMatchPatch.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = DiffMatchPatch.xcodeproj; path = "External/google-diff-match-patch-Objective-C/DiffMatchPatch.xcodeproj"; sourceTree = "<group>"; };
 		5F3765EA1A1AA1AA0068DA39 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		5F3765FE1A1AA2850068DA39 /* ABRecord+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "ABRecord+MPExtensions.h"; path = "Sources/Categories/ABRecord+MPExtensions.h"; sourceTree = "<group>"; };
 		5F3765FF1A1AA2850068DA39 /* ABRecord+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "ABRecord+MPExtensions.m"; path = "Sources/Categories/ABRecord+MPExtensions.m"; sourceTree = "<group>"; };
@@ -483,8 +449,8 @@
 				287CB46E1C348D77007D78DE /* CouchbaseLiteListener.framework in Frameworks */,
 				5FC423911AFF8CCA002234FB /* libz.dylib in Frameworks */,
 				5F4A48C01C3407AD0029DB3E /* CouchbaseLite.framework in Frameworks */,
+				5F2AFA6A1C3DE8E000B37435 /* DiffMatchPatch.framework in Frameworks */,
 				5F75748D1B92659E00BD4BC6 /* RegexKitLite.framework in Frameworks */,
-				5F3284271B7E30E6008630ED /* DiffMatchPatch.framework in Frameworks */,
 				5FC423751AFF87FC002234FB /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -529,6 +495,7 @@
 				5F3765EB1A1AA1AA0068DA39 /* AddressBook.framework in Frameworks */,
 				5FAC23BF19ABFE79000F188C /* CoreServices.framework in Frameworks */,
 				5F293BF8170DFD77001C2111 /* Security.framework in Frameworks */,
+				5F2AFA691C3DE8C900B37435 /* DiffMatchPatch.framework in Frameworks */,
 				5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -553,17 +520,6 @@
 				5F293BF4170DFD4E001C2111 /* UICKeyChainStore.m */,
 			);
 			name = UICKeyChainStore;
-			sourceTree = "<group>";
-		};
-		5F3284171B7E30D4008630ED /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				5F32841E1B7E30D4008630ED /* DiffMatchPatch.framework */,
-				5F3284201B7E30D4008630ED /* DiffMatchPatchTest.xctest */,
-				5F3284221B7E30D4008630ED /* speedtest */,
-				5F3284241B7E30D4008630ED /* mode-test */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 		5F37CDF91B1CA4DF0022D865 /* Resources */ = {
@@ -739,8 +695,8 @@
 		5FDB33051705CB950049EBB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */,
 				5F7574681B925E9A00BD4BC6 /* RegexKitLite.xcodeproj */,
-				5F3284161B7E30D4008630ED /* DiffMatchPatch.xcodeproj */,
 				5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */,
 				5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */,
 				5F3765EA1A1AA1AA0068DA39 /* AddressBook.framework */,
@@ -1129,7 +1085,6 @@
 			);
 			dependencies = (
 				5F75748C1B92659900BD4BC6 /* PBXTargetDependency */,
-				5F3284261B7E30E2008630ED /* PBXTargetDependency */,
 			);
 			name = FeatherExtensions;
 			productName = FeatherExtensions;
@@ -1269,10 +1224,6 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 5F3284171B7E30D4008630ED /* Products */;
-					ProjectRef = 5F3284161B7E30D4008630ED /* DiffMatchPatch.xcodeproj */;
-				},
-				{
 					ProductGroup = 5F7574691B925E9A00BD4BC6 /* Products */;
 					ProjectRef = 5F7574681B925E9A00BD4BC6 /* RegexKitLite.xcodeproj */;
 				},
@@ -1290,34 +1241,6 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		5F32841E1B7E30D4008630ED /* DiffMatchPatch.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = DiffMatchPatch.framework;
-			remoteRef = 5F32841D1B7E30D4008630ED /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F3284201B7E30D4008630ED /* DiffMatchPatchTest.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = DiffMatchPatchTest.xctest;
-			remoteRef = 5F32841F1B7E30D4008630ED /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F3284221B7E30D4008630ED /* speedtest */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = speedtest;
-			remoteRef = 5F3284211B7E30D4008630ED /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5F3284241B7E30D4008630ED /* mode-test */ = {
-			isa = PBXReferenceProxy;
-			fileType = "compiled.mach-o.executable";
-			path = "mode-test";
-			remoteRef = 5F3284231B7E30D4008630ED /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		5F75747F1B925E9A00BD4BC6 /* RegexKitLite.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -1524,11 +1447,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		5F3284261B7E30E2008630ED /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = DiffMatchPatch;
-			targetProxy = 5F3284251B7E30E2008630ED /* PBXContainerItemProxy */;
-		};
 		5F7574841B925EAB00BD4BC6 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = RegexKitLite;
