@@ -167,15 +167,17 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
      
      BOOL managedObjectTypeIncluded = newRevision.properties.managedObjectType != nil;
      
+     NSString *documentID = newRevision.document.documentID ?: newRevision.properties[@"_id"];
      BOOL idHasValidPrefix = NO;
+     
      if (managedObjectTypeIncluded)
-         idHasValidPrefix = [newRevision.document.documentID hasPrefix:newRevision.properties.managedObjectType];
+         idHasValidPrefix = [documentID hasPrefix:newRevision.properties.managedObjectType];
      
      if (managedObjectTypeIncluded)
      {
          if (!idHasValidPrefix)
          {
-             NSString *msg = [NSString stringWithFormat:@"Attempting to save a managed object '%@' without object type as a prefix in _id -- this will fail: %@", newRevision.document.documentID, [newRevision properties]];
+             NSString *msg = [NSString stringWithFormat:@"Attempting to save a managed object '%@' without object type as a prefix in _id -- this will fail: %@", documentID, [newRevision properties]];
              MPLog(@"%@", msg);
              [context rejectWithMessage:msg];
              
@@ -187,7 +189,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
          {
              NSString *msg = [NSString stringWithFormat:
                               @"Attempting to save a managed object '%@' with an unexpected object type '%@' -- this will fail.",
-                              newRevision.document.documentID, newRevision.properties.managedObjectType];
+                              documentID, newRevision.properties.managedObjectType];
              MPLog(@"%@", msg);
              [context rejectWithMessage:msg];
              
@@ -198,7 +200,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
              if (![cls validateRevision:newRevision])
              {
                  NSString *msg = [NSString stringWithFormat:@"Attempting to save a managed object '%@' which does not validate as %@ -- this will fail.",
-                                  newRevision.document.documentID, NSStringFromClass(cls)];
+                                  documentID, NSStringFromClass(cls)];
                  MPLog(@"%@", msg);
                  [context rejectWithMessage:msg];
                  
@@ -210,14 +212,14 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
      }
      
      if (!idHasValidPrefix)
-         idHasValidPrefix = [newRevision.document.documentID hasPrefix:@"MPMetadata"];
+         idHasValidPrefix = [documentID hasPrefix:@"MPMetadata"];
      
      if (!idHasValidPrefix)
-         idHasValidPrefix = [newRevision.document.documentID hasPrefix:@"MPLocalMetadata"];
+         idHasValidPrefix = [documentID hasPrefix:@"MPLocalMetadata"];
      
      if (!idHasValidPrefix)
          NSLog(@"Attempting to save an object '%@' without the expected _id prefix -- this will fail: %@",
-               newRevision.document.documentID, newRevision.properties);
+               documentID, newRevision.properties);
      
      return idHasValidPrefix;
  }
