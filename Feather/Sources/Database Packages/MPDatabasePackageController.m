@@ -141,7 +141,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
                 return nil;
             }
             
-            [self setValue:db forKey:[NSString stringWithFormat:@"%@Database", db.name]];
+            [self setValue:db forKey:[NSString stringWithFormat:@"%@Database", [self databasePropertyPrefixForDatabaseName:db.name]]];
             
             if (pushFilterName) {
                 CBLFilterBlock filterBlock
@@ -153,7 +153,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 #ifdef DEBUG
         for (NSString *dbName in [[self class] databaseNames])
         {
-            id dbObj = [self valueForKey:[NSString stringWithFormat:@"%@Database", dbName]];
+            id dbObj = [self valueForKey:[NSString stringWithFormat:@"%@Database", [self databasePropertyPrefixForDatabaseName:dbName]]];
             assert([dbObj isKindOfClass:[MPDatabase class]]);
         }
 #endif
@@ -236,6 +236,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     }
     
     return self;
+}
+
+- (NSString *)databasePropertyPrefixForDatabaseName:(NSString *)name {
+    return name;
 }
 
 - (NSString *)pathForDatabase:(MPDatabase *)db {
