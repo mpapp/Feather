@@ -261,7 +261,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     NSAssert(documentID.length >= 10, @"documentID should be of at least 10 characters long: %@", documentID);
     NSString *className = [documentID componentsSeparatedByString:@":"][0];
     Class moClass = NSClassFromString(className);
-    assert(moClass);
+    NSParameterAssert(moClass);
     NSAssert([moClass isSubclassOfClass:[MPManagedObject class]]
              || [moClass isSubclassOfClass:MPMetadata.class]
              || [moClass isSubclassOfClass:MPLocalMetadata.class],
