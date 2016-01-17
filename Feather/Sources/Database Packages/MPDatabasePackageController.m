@@ -1280,9 +1280,9 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
 
 #pragma mark - Dictionary representations
 
-- (BOOL)checkpointDatabases:(NSError **)err
+- (BOOL)checkpointDatabases:(NSArray *)databases error:(NSError **)err
 {
-    for (MPDatabase *db in self.databases) {
+    for (MPDatabase *db in databases) {
         BOOL success = [db.database checkpoint:err];
         
         if (!success)
@@ -1292,6 +1292,19 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
 }
 
 - (BOOL)saveToURL:(NSURL *)URL error:(NSError *__autoreleasing *)error {
+    NSArray <MPDatabase *> *databases = self.orderedDatabases;
+    
+    if (databases.count == 0) {
+        if (error) {
+            *error = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
+                                         code:MPDatabasePackageControllerErrorCodeNoDatabases
+                                     userInfo:@{NSLocalizedDescriptionKey:@"Failed to save manuscript because its contents are currently not open",
+                                                NSLocalizedFailureReasonErrorKey:@"Failed to save manuscript because its contents are currently not open",
+                                                NSLocalizedRecoverySuggestionErrorKey:@"Failed to save manuscript because its contents are currently not open.\n\nIf this happens again, please report the issue to support@manuscriptsapp.com."}];
+        }
+        return NO;
+    }
+    
     NSFileManager *fm = [NSFileManager defaultManager];
     if (![self saveManifestDictionary:error])
         return NO;
@@ -1299,15 +1312,16 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
     if (![self saveDictionaryRepresentation:error])
         return NO;
     
-    if (![self checkpointDatabases:error])
+    
+    if (![self checkpointDatabases:databases error:error])
         return NO;
     
-    for (MPDatabase *db in self.databases)
+    for (MPDatabase *db in databases)
         dispatch_suspend(db.database.manager.dispatchQueue);
     
     BOOL success = [fm copyItemAtURL:[NSURL fileURLWithPath:self.path] toURL:URL error:error];
     
-    for (MPDatabase *db in self.databases)
+    for (MPDatabase *db in databases)
         dispatch_resume(db.database.manager.dispatchQueue);
     
     return success;

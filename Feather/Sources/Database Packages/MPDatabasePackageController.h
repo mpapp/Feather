@@ -47,15 +47,15 @@ extern NSString *const MPDatabasePackageListenerDidStartNotification;
 
 extern NSString * const MPDatabasePackageControllerErrorDomain;
 
-typedef enum MPDatabasePackageControllerErrorCode
-{
+typedef enum MPDatabasePackageControllerErrorCode {
     MPDatabasePackageControllerErrorCodeUnknown = 0,
     MPDatabasePackageControllerErrorCodeNoSuchSnapshot = 1,
     MPDatabasePackageControllerErrorCodeUnexpectedResponse = 2,
     MPDatabasePackageControllerErrorCodeFileNotDirectory = 3,
     MPDatabasePackageControllerErrorCodeDirectoryAlreadyExists = 4,
     MPDatabasePackageControllerErrorCodeCannotInitializeSharedDatabases = 5,
-    MPDatabasePackageControllerErrorCodeDictionaryRepresentationInvalid = 6
+    MPDatabasePackageControllerErrorCodeDictionaryRepresentationInvalid = 6,
+    MPDatabasePackageControllerErrorCodeNoDatabases = 7
 } MPDatabasePackageControllerErrorCode;
 
 
@@ -287,8 +287,8 @@ typedef enum MPDatabasePackageControllerErrorCode
 /** Returns a managed object given the identifier. */
 - (id)objectWithIdentifier:(NSString *)identifier __attribute__((nonnull));
 
-/** WAL Checkpoints the document databases. */
-- (BOOL)checkpointDatabases:(NSError **)err;
+/** WAL Checkpoints the specified databases. */
+- (BOOL)checkpointDatabases:(NSArray *)databases error:(NSError **)err;
 
 /** Root section class names ordered in the priority order needed. */
 + (NSArray *)orderedRootSectionClassNames;
