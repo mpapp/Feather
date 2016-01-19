@@ -135,6 +135,20 @@
     else if (valueSet.count == 1) { valueBlock(YES, [valueSet anyObject]); return; }
 }
 
+- (NSArray *)subarrayUpToIncludingIndex:(NSUInteger)i
+{
+    if (self.count < 1) {
+        return self;
+    }
+    
+    if (i > (self.count - 1)) {
+        i = self.count - 1;
+    }
+    
+    NSArray *a = [self subarrayWithRange:NSMakeRange(0, i + 1)];
+    return a;
+}
+
 - (NSArray *)subarrayFromIndex:(NSUInteger)i
 {
     assert(i < self.count);
