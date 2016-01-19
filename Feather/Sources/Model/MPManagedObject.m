@@ -1089,7 +1089,7 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     
     // follow parent relation as long as there is a parent (as long as you reach the root).
     do {
-        NSAssert(self == [p class], @"Unexpected parent class %@ != %@", self, [p class]);
+        //NSAssert(self == [p class], @"Unexpected parent class %@ != %@", self, [p class]);
         if ([p getValueOfProperty:adjustedProperty] != nil)
             return p;
     } while ((p = [p valueForKey:parentPropertyName]));
@@ -1257,7 +1257,7 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
         return [super externalizePropertyValue:value];
     }
     
-    assert(false);
+    NSAssert(false, @"Value %@ could not be externalized.", value);
     return nil;
 }
 
@@ -1385,7 +1385,7 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 {
     NSArray *objectIDDicts = [objects mapObjectsUsingBlock:^id(MPManagedObject *mo, NSUInteger idx) {
         NSDictionary *dict = [mo referableDictionaryRepresentation];
-        assert([NSPropertyListSerialization propertyList:dict isValidForFormat:NSPropertyListXMLFormat_v1_0]);
+        NSAssert([NSPropertyListSerialization propertyList:dict isValidForFormat:NSPropertyListXMLFormat_v1_0], @"Objects do not form a valid property list: %@", objects);
         return dict;
     }];
     
@@ -1435,7 +1435,7 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 {
     NSString *objectTypeStr = [referableDictionaryRep objectForKey:@"objectType"];
     Class objectType = NSClassFromString(objectTypeStr);
-    assert(objectType);
+    NSAssert(objectType, @"Missing object type: %@", referableDictionaryRep);
     
     NSString *packageControllerID = [referableDictionaryRep objectForKey:@"databasePackageID"];
     MPDatabasePackageController *pkgc = [MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:packageControllerID];
@@ -1498,10 +1498,10 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 
 - (NSScriptObjectSpecifier *)objectSpecifier
 {
-    assert(self.documentID);
-    assert(self.controller);
+    NSAssert(self.documentID, @"Missing documentID: %@", self.propertiesToSave);
+    NSAssert(self.controller, @"Missing controller: %@", self);
     NSScriptObjectSpecifier *containerRef = self.controller.objectSpecifier;
-    assert(containerRef);
+    NSAssert(containerRef, @"Missing container reference: %@ (%@)", self, self.controller);
     //assert(containerRef.keyClassDescription);
     
     NSScriptClassDescription *classDesc = [NSScriptClassDescription classDescriptionForClass:self.controller.class];
