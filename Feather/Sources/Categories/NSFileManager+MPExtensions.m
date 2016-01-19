@@ -21,7 +21,7 @@
 
 #include <sys/xattr.h>
 
-NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFileManagerExtensionsErrorDomain";
+NSString * __nonnull const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFileManagerExtensionsErrorDomain";
 
 @implementation NSFileManager (MPExtensions)
 
@@ -35,8 +35,9 @@ NSString * const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFeatherNSFile
 
 - (NSString *)md5DigestStringAtPath:(NSString *)path
 {
+    NSParameterAssert(path);
 	BOOL isDir;
-	if (path && [[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && !isDir)
+	if ([[NSFileManager defaultManager] fileExistsAtPath:path isDirectory:&isDir] && !isDir)
 	{
 		NSError *err = nil;
 		NSData *data = [NSData dataWithContentsOfFile:path options:NSMappedRead error:&err];
