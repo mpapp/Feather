@@ -582,11 +582,11 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         [self setControllerWithDocument:document];
     
     [super setDocument:document];
-    assert(document.modelObject == self);
+    NSAssert(document.modelObject == self, @"Unexpected model object: %@", document.modelObject, self);
     
     if (self.document)
     {
-        assert(_controller);
+        NSAssert(_controller, @"Controller is unexpectedly nil: %@", self);
         [_controller registerObject:self];
     }
 }
