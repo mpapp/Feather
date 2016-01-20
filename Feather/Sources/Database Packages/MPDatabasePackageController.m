@@ -87,7 +87,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (instancetype)initWithPath:(NSString *)path
                     readOnly:(BOOL)readOnly
                     delegate:(id<MPDatabasePackageControllerDelegate>)delegate
-             error:(NSError *__autoreleasing *)err {
+                       error:(NSError *__autoreleasing *)err {
     // off-main thread access of MPDatabasePackageController is safe,
     // but initialisation is needed on main thread in order to call -didInitialize safely
     // after full initialization has finished
@@ -123,31 +123,56 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         [_server.customHTTPHeaders addEntriesFromDictionary:[self databaseListenerHTTPHeaders]];
         
         _managedObjectsControllers = [NSMutableSet setWithCapacity:20];
+        NSMutableArray *didResetDatabases = [NSMutableArray new];
         
         for (NSString *dbName in self.class.databaseNames)
         {
             if (![self bootstrapDatabaseWithName:dbName error:err])
                 return nil;
             
-            NSString *pushFilterName = [self pushFilterNameForDatabaseNamed:dbName];
-            MPDatabase *db = [[MPDatabase alloc] initWithServer:_server
-                                             packageController:self
-                                                           name:dbName
-                                                  ensureCreated:YES
-                                                 pushFilterName:pushFilterName
-                                                 pullFilterName:[self pullFilterNameForDatabaseNamed:dbName]
-                                                          error:err];
-            if (!db) {
+            NSError *dbError = nil;
+            MPDatabase *db = [self initializeDatabaseNamed:dbName error:&dbError];
+            
+            // If database file has been corrupted, replace it with a new one
+            if (!db && dbError && [dbError.domain isEqualToString:@"SQLite"] && dbError.code == 26)
+            {
+                NSURL *databaseURL = [NSURL fileURLWithPath:[_server.directory stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.cblite", dbName]]];
+                NSFileManager *fm = [NSFileManager defaultManager];
+                
+                if ([fm fileExistsAtPath:databaseURL.path])
+                {
+                    if (![fm removeItemAtURL:databaseURL error:err]) {
+                        return nil;
+                    }
+                }
+                
+                db = [self initializeDatabaseNamed:dbName error:&dbError];
+                
+                if (db) {
+                    [didResetDatabases addObject:db];
+                }
+            }
+            
+            if (!db)
+            {
+                if (err) {
+                    *err = dbError;
+                }
                 return nil;
             }
             
             [self setValue:db forKey:[NSString stringWithFormat:@"%@Database", [self databasePropertyPrefixForDatabaseName:db.name]]];
             
+            NSString *pushFilterName = [self pushFilterNameForDatabaseNamed:dbName];
             if (pushFilterName) {
                 CBLFilterBlock filterBlock
                     = [self pushFilterBlockWithName:pushFilterName forDatabase:db];
                 [db defineFilterNamed:pushFilterName block:filterBlock];
             }
+        }
+        
+        if (didResetDatabases.count > 0) {
+            _databasesResetDuringInitialization = [didResetDatabases copy];
         }
         
 #ifdef DEBUG
@@ -236,6 +261,19 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     }
     
     return self;
+}
+
+- (MPDatabase *)initializeDatabaseNamed:(NSString *)dbName error:(NSError **)error
+{
+    NSString *pushFilterName = [self pushFilterNameForDatabaseNamed:dbName];
+    MPDatabase *db = [[MPDatabase alloc] initWithServer:_server
+                                      packageController:self
+                                                   name:dbName
+                                          ensureCreated:YES
+                                         pushFilterName:pushFilterName
+                                         pullFilterName:[self pullFilterNameForDatabaseNamed:dbName]
+                                                  error:error];
+    return db;
 }
 
 - (NSString *)databasePropertyPrefixForDatabaseName:(NSString *)name {

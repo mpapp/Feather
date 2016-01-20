@@ -107,6 +107,11 @@ typedef enum MPDatabasePackageControllerErrorCode {
   * Default implementation returns NO, overload to toggle on full-text indexing (see also MPManagedObject FTS indexing related properties and methods.) */
 @property (readonly) BOOL indexesObjectFullTextContents;
 
+/** List databases within the package that were determined to be corrupted during initialization, and hence were reset to an empty state.
+    This is intended to give the owner of this database package controller the chance to restore database contents from a backup that is external to the database files.
+ */
+@property (readonly) NSArray *databasesResetDuringInitialization;
+
 /** @return A file URL to the root directory of a temporary copy of the package. */
 - (BOOL)makeTemporaryCopyIntoRootDirectoryWithURL:(NSURL *)rootURL
                                 overwriteIfExists:(BOOL)overwrite
