@@ -15,7 +15,7 @@ typedef NS_ENUM(NSUInteger, MPFileTargetErrorCode)
 };
 
 
-extern NSString * const MPFeatherNSFileManagerExtensionsErrorDomain;
+extern NSString * __nonnull const MPFeatherNSFileManagerExtensionsErrorDomain;
 
 extern NS_ENUM(NSUInteger, MPFeatherNSFileManagerExtensionsErrorCode) {
     MPFeatherNSFileManagerExtensionsErrorCodeUnknown = 0,
@@ -28,48 +28,48 @@ extern NS_ENUM(NSUInteger, MPFeatherNSFileManagerExtensionsErrorCode) {
 
 @interface NSFileManager (MPExtensions)
 
-@property (readonly, copy) NSString *applicationSupportFolder;
+@property (readonly, copy, nullable) NSString *applicationSupportFolder;
 
-- (NSString *)md5DigestStringAtPath:(NSString *)path;
+- (nullable NSString *)md5DigestStringAtPath:(nonnull NSString *)path;
 
-- (NSString *)mimeTypeForFileAtURL:(NSURL *)url error:(NSError **)err;
+- (nullable NSString *)mimeTypeForFileAtURL:(nonnull NSURL *)url error:(NSError *_Nullable *_Nullable)err;
 
-- (NSURL *)temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:(NSString *)subdirectoryName
-                                                               error:(NSError *__autoreleasing *)outError;
+- (nullable NSURL *)temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:(nullable NSString *)subdirectoryName
+                                                                        error:(NSError *_Nullable *_Nullable)outError;
 
 
-- (NSURL *)temporaryFileURLInApplicationCachesSubdirectoryNamed:(NSString *)subdirectoryName
-                                                  withExtension:(NSString *)pathExtension
-                                                          error:(NSError *__autoreleasing *)outError;
+- (nullable NSURL *)temporaryFileURLInApplicationCachesSubdirectoryNamed:(nullable NSString *)subdirectoryName
+                                                           withExtension:(nonnull NSString *)pathExtension
+                                                                   error:(NSError *_Nullable *_Nullable)outError;
 
-- (NSURL *)temporaryDirectoryURLInGroupCachesSubdirectoryNamed:(NSString *)subdirectoryName error:(NSError *__autoreleasing *)outError;
-- (NSURL *)temporaryFileURLInGroupCachesSubdirectoryNamed:(NSString *)subdirectoryName withExtension:(NSString *)pathExtension error:(NSError *__autoreleasing *)err;
+- (nullable NSURL *)temporaryDirectoryURLInGroupCachesSubdirectoryNamed:(nonnull NSString *)subdirectoryName error:(NSError *_Nonnull *_Nonnull)outError;
+- (nullable NSURL *)temporaryFileURLInGroupCachesSubdirectoryNamed:(nonnull NSString *)subdirectoryName withExtension:(nonnull NSString *)pathExtension error:(NSError *_Nonnull *_Nonnull)err;
 
-- (NSURL *)sharedApplicationGroupCachesDirectoryURL;
+- (nullable NSURL *)sharedApplicationGroupCachesDirectoryURL;
 
-- (NSURL *)sharedApplicationGroupSupportDirectoryURL;
+- (nullable NSURL *)sharedApplicationGroupSupportDirectoryURL;
 
-- (NSURL *)URLForApplicationSupportDirectoryNamed:(NSString *)subpath;
+- (nullable NSURL *)URLForApplicationSupportDirectoryNamed:(nonnull NSString *)subpath;
 
 /** Returns absolute paths to paths for resources of given type inside directory. If type is nil, all files are listed. */
-- (NSArray *)recursivePathsForResourcesOfType:(NSString *)type inDirectory:(NSString *)directoryPath;
+- (nonnull NSArray *)recursivePathsForResourcesOfType:(nullable NSString *)type inDirectory:(nonnull NSString *)directoryPath;
 
 /** Ensures that all files under the specified directory (with limitless recursion) will receive the specified permission mask (mask applied with | so including set bits are spared). */
-- (BOOL)ensurePermissionMaskIncludes:(int)grantedMask inDirectory:(NSString *)directoryPath error:(NSError **)error;
+- (BOOL)ensurePermissionMaskIncludes:(int)grantedMask inDirectory:(nonnull NSString *)directoryPath error:(NSError *_Nullable *_Nullable)error;
 
 /** Ensures that the file at the specified path will receive the specified permission mask (mask applied with | so including set bits are spared). */
-- (BOOL)ensurePermissionMaskIncludes:(int)grantedMask forFileAtPath:(NSString *)path error:(NSError *__autoreleasing *)error;
+- (BOOL)ensurePermissionMaskIncludes:(int)grantedMask forFileAtPath:(nonnull NSString *)path error:(NSError *_Nullable *_Nullable)error;
 
 /** Release the file at the specified root path from quarantine.
   * In case of a directory, un-quarantines also any contained files and subdirectories (recursively). */
-- (BOOL)releaseFromQuarantine:(NSString *)root error:(NSError **)error;
+- (BOOL)releaseFromQuarantine:(nonnull NSString *)root error:(NSError *_Nullable *_Nullable)error;
 
 /** Return YES if pathA and pathB point at the same file (resolves alias / link, check match to inode number), and return NO and an error if either path attributes fail to be resolved. */
-- (BOOL)path:(NSString *)pathA isEqualToPath:(NSString *)pathB error:(NSError **)err;
+- (BOOL)path:(nonnull NSString *)pathA isEqualToPath:(nonnull NSString *)pathB error:(NSError *_Nullable *_Nullable)err;
 
 /** Returns a security scoped URL that the application has begun accessing, if successful, and nil and an error otherwise.*/
-- (NSURL *)beginSecurityScopedAccessForPath:(NSString *)path bookmarkUserDefaultKey:(NSString *)bookmarkUserDefaultKey error:(NSError **)error;
+- (nullable NSURL *)beginSecurityScopedAccessForPath:(nonnull NSString *)path bookmarkUserDefaultKey:(nonnull NSString *)bookmarkUserDefaultKey error:(NSError *_Nullable *_Nullable)error;
 
-+ (NSString *)UTIForPathExtension:(NSString *)extension;
++ (nullable NSString *)UTIForPathExtension:(nonnull NSString *)extension;
 
 @end
