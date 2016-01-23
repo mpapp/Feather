@@ -91,5 +91,19 @@
     return relativeString;
 }
 
++ (NSTimeInterval)startMeasuring:(NSString *)message
+{
+    if (message) {
+        NSLog(@"[Start measurement] %@", message);
+    }
+    return [NSDate timeIntervalSinceReferenceDate];
+}
+
++ (NSTimeInterval)logDurationSince:(NSTimeInterval)startTime message:(NSString *)message
+{
+    NSTimeInterval duration = [NSDate timeIntervalSinceReferenceDate] - startTime;
+    NSLog(@"[Note measurement] %@ took %@ seconds", message, @(duration));
+    return duration;
+}
 
 @end
