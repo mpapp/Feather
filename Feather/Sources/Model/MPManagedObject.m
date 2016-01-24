@@ -373,6 +373,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return success;
 }
 
+- (BOOL)saveObject {
+    return [self save]; // this is just a Swift compatibility related synonymous method (-save and -saveWithError: are ambiguous in Swift).
+}
+
 + (BOOL)saveModels:(NSArray *)models {
     if (!models || models.count == 0)
         return YES;
