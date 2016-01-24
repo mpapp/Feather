@@ -7,9 +7,10 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <Foundation/Foundation.h>
-#import <CouchbaseLite/CouchbaseLite.h>
-#import <Feather/MPJSONRepresentable.h>
+
+@import Foundation;
+@import CouchbaseLite;
+#import "MPJSONRepresentable.h"
 
 #import "MPCacheable.h"
 

@@ -10,18 +10,14 @@
 #import "MPShoeboxPackageController.h"
 
 #import "MPManagedObject+MixIn.h"
-#import "MPManagedObjectsController+Protected.h"
-
 #import "Mixin.h"
-#import "MPDatabase.h"
+
+#import "MPManagedObjectsController+Protected.h"
 #import "MPException.h"
 
-#import "NSString+MPExtensions.h"
-
-#import <RegexKitLite/RegexKitLiteFramework.h>
-
-#import <objc/message.h>
-#import <objc/runtime.h>
+@import FeatherExtensions;
+@import RegexKitLite;
+@import ObjectiveC;
 
 @implementation MPManagedObject (MPManagedObjectMixIn)
 

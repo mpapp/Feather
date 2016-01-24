@@ -10,12 +10,9 @@
 #import "MPManagedObject.h"
 #import "MPDatabasePackageController.h"
 
-#import <RegexKitLite/RegexKitLiteFramework.h>
-
-#import "NSString+MPExtensions.h"
-#import "NSObject+MPExtensions.h"
-
-#import <objc/runtime.h>
+@import RegexKitLite;
+@import ObjectiveC;
+@import FeatherExtensions;
 
 static NSString * const MPManagedObjectClassPrefix = @"MP";
 
@@ -270,7 +267,7 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
 
 @end
 
-#pragma mark - MPDatabaseExtensions
+// MARK: - MPDatabaseExtensions
 
 @implementation NSNotificationCenter (MPDatabaseExtensions)
 

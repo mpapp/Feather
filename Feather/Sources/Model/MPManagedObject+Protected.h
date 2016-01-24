@@ -7,7 +7,8 @@
 //
 
 #import "MPManagedObject.h"
-#import <CouchbaseLite/CouchbaseLite.h>
+
+@import CouchbaseLite;
 
 @interface MPManagedObject (Protected)
 
@@ -36,7 +37,7 @@
 
 @end
 
-#pragma mark -
+// MARK: -
 
 /* MPManagedObject & MPEmbeddedObject need some otherwise private state of CBLModel exposed. */
 @interface CBLModel (Private) <MPEmbeddingObject>

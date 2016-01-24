@@ -37,6 +37,16 @@
 		5F4A48BF1C34079C0029DB3E /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; };
 		5F4A48C01C3407AD0029DB3E /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
 		5F4A48C21C3407C30029DB3E /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
+		5F5084411C55119A009D7211 /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
+		5F5084421C55119D009D7211 /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; };
+		5F5084441C551500009D7211 /* RegexKitLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F75747F1B925E9A00BD4BC6 /* RegexKitLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5F5084451C551503009D7211 /* CouchbaseLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5F5084461C551504009D7211 /* CouchbaseLiteListener.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5F5084481C551804009D7211 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5084471C551804009D7211 /* CocoaLumberjack.framework */; };
+		5F5084491C551810009D7211 /* CocoaLumberjack.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5084471C551804009D7211 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5F50844A1C5518A0009D7211 /* DiffMatchPatch.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5F50844B1C5518A7009D7211 /* DiffMatchPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */; };
+		5F50844C1C5518AA009D7211 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5084471C551804009D7211 /* CocoaLumberjack.framework */; };
 		5F6857A01727C38900FE06B0 /* MPVirtualSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579D1727C38900FE06B0 /* MPVirtualSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F68579E1727C38900FE06B0 /* MPVirtualSection.m */; };
 		5F6857A21727C38900FE06B0 /* MPVirtualSection+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579F1727C38900FE06B0 /* MPVirtualSection+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -251,6 +261,24 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		5F5084431C5514F8009D7211 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				5F50844A1C5518A0009D7211 /* DiffMatchPatch.framework in Copy Frameworks */,
+				5F5084491C551810009D7211 /* CocoaLumberjack.framework in Copy Frameworks */,
+				5F5084441C551500009D7211 /* RegexKitLite.framework in Copy Frameworks */,
+				5F5084451C551503009D7211 /* CouchbaseLite.framework in Copy Frameworks */,
+				5F5084461C551504009D7211 /* CouchbaseLiteListener.framework in Copy Frameworks */,
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		5F293B85170CAD53001C2111 /* MPCacheable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MPCacheable.h; path = Sources/Model/MPCacheable.h; sourceTree = "<group>"; };
 		5F293B99170CAD65001C2111 /* MPCacheableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCacheableMixin.h; path = Sources/Model/MPCacheableMixin.h; sourceTree = "<group>"; };
@@ -286,6 +314,7 @@
 		5F42FC471B10C36900CD88AA /* MPDeepSaver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPDeepSaver.m; path = Sources/Model/MPDeepSaver.m; sourceTree = "<group>"; };
 		5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLite.framework; path = Carthage/Build/Mac/CouchbaseLite.framework; sourceTree = "<group>"; };
 		5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteListener.framework; path = Carthage/Build/Mac/CouchbaseLiteListener.framework; sourceTree = "<group>"; };
+		5F5084471C551804009D7211 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac/CocoaLumberjack.framework"; sourceTree = "<group>"; };
 		5F6414BA19A2A876007E5245 /* CBLDocument+MPScriptingSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CBLDocument+MPScriptingSupport.h"; path = "../Feather/Sources/Scripting/CBLDocument+MPScriptingSupport.h"; sourceTree = "<group>"; };
 		5F6414BB19A2A876007E5245 /* CBLDocument+MPScriptingSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CBLDocument+MPScriptingSupport.m"; path = "../Feather/Sources/Scripting/CBLDocument+MPScriptingSupport.m"; sourceTree = "<group>"; };
 		5F68579D1727C38900FE06B0 /* MPVirtualSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPVirtualSection.h; path = Sources/Model/MPVirtualSection.h; sourceTree = "<group>"; };
@@ -446,11 +475,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F75748D1B92659E00BD4BC6 /* RegexKitLite.framework in Frameworks */,
 				287CB46E1C348D77007D78DE /* CouchbaseLiteListener.framework in Frameworks */,
 				5FC423911AFF8CCA002234FB /* libz.dylib in Frameworks */,
 				5F4A48C01C3407AD0029DB3E /* CouchbaseLite.framework in Frameworks */,
 				5F2AFA6A1C3DE8E000B37435 /* DiffMatchPatch.framework in Frameworks */,
-				5F75748D1B92659E00BD4BC6 /* RegexKitLite.framework in Frameworks */,
 				5FC423751AFF87FC002234FB /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -486,6 +515,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F4A48BE1C34079C0029DB3E /* CouchbaseLite.framework in Frameworks */,
+				5F5084481C551804009D7211 /* CocoaLumberjack.framework in Frameworks */,
 				5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */,
 				5FDB3A08170793B30049EBB5 /* libz.dylib in Frameworks */,
 				5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */,
@@ -504,9 +534,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F5084411C55119A009D7211 /* CouchbaseLite.framework in Frameworks */,
+				5F5084421C55119D009D7211 /* CouchbaseLiteListener.framework in Frameworks */,
 				5FEA8B5018A81E0100A7C14B /* XCTest.framework in Frameworks */,
 				5FDB331E1705CB950049EBB5 /* Cocoa.framework in Frameworks */,
 				5FDB33211705CB950049EBB5 /* Feather.framework in Frameworks */,
+				5F50844B1C5518A7009D7211 /* DiffMatchPatch.framework in Frameworks */,
+				5F50844C1C5518AA009D7211 /* CocoaLumberjack.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -695,6 +729,7 @@
 		5FDB33051705CB950049EBB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5F5084471C551804009D7211 /* CocoaLumberjack.framework */,
 				5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */,
 				5F7574681B925E9A00BD4BC6 /* RegexKitLite.xcodeproj */,
 				5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */,
@@ -1175,6 +1210,7 @@
 				5FDB33171705CB950049EBB5 /* Frameworks */,
 				5FDB33181705CB950049EBB5 /* Resources */,
 				5FDB33191705CB950049EBB5 /* ShellScript */,
+				5F5084431C5514F8009D7211 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1538,6 +1574,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -1546,6 +1583,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1574,8 +1612,13 @@
 		5F4DF37B18E7834800E7D65A /* Testing */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"${DEVELOPER_FRAMEWORKS_DIR}\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"${DEVELOPER_FRAMEWORKS_DIR}",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -1584,7 +1627,9 @@
 					"MP_UNIT_TEST=1",
 				);
 				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.piipari.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
@@ -1626,6 +1671,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -1634,6 +1680,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1662,12 +1709,19 @@
 		5F51199F1BB7448E005E4A2E /* AppStoreDebug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"${DEVELOPER_FRAMEWORKS_DIR}\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"${DEVELOPER_FRAMEWORKS_DIR}",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.piipari.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
@@ -1862,6 +1916,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -1870,6 +1925,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -1898,12 +1954,19 @@
 		5F5119A61BB74495005E4A2E /* AppStoreRelease */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"${DEVELOPER_FRAMEWORKS_DIR}\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"${DEVELOPER_FRAMEWORKS_DIR}",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.piipari.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
@@ -2093,6 +2156,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -2101,6 +2165,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2129,12 +2194,19 @@
 		5F5865831AC86417000DC9D4 /* Internal */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"${DEVELOPER_FRAMEWORKS_DIR}\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"${DEVELOPER_FRAMEWORKS_DIR}",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.piipari.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
@@ -2807,6 +2879,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -2815,6 +2888,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2844,6 +2918,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = NO;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEFINES_MODULE = YES;
@@ -2852,6 +2927,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -2880,12 +2956,19 @@
 		5FDB33311705CB950049EBB5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"${DEVELOPER_FRAMEWORKS_DIR}\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"${DEVELOPER_FRAMEWORKS_DIR}",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.piipari.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;
@@ -2895,12 +2978,19 @@
 		5FDB33321705CB950049EBB5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				FRAMEWORK_SEARCH_PATHS = "\"${DEVELOPER_FRAMEWORKS_DIR}\"";
+				FRAMEWORK_SEARCH_PATHS = (
+					"${DEVELOPER_FRAMEWORKS_DIR}",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
 				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.piipari.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = xctest;

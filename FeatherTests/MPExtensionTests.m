@@ -8,15 +8,8 @@
 
 #import "MPExtensionTests.h"
 
-#import <Feather/MPContributorsController.h>
-#import <Feather/MPContributor.h>
-#import <Feather/MPSnapshot.h>
-#import <Feather/MPCacheable.h>
-
-#import <Feather/MPManagedObject.h>
-#import <Feather/MPException.h>
-#import <Feather/NSObject+MPExtensions.h>
-#import <Feather/NSBundle+MPExtensions.h>
+@import Feather;
+@import FeatherExtensions;
 
 #import <objc/runtime.h>
 

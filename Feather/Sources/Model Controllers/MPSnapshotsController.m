@@ -8,14 +8,13 @@
 
 #import "MPSnapshotsController.h"
 #import "MPSnapshot+Protected.h"
-#import "MPSnapshotsController+Protected.h"
-#import "MPManagedObjectsController+Protected.h"
-#import "NSNotificationCenter+ErrorNotification.h"
 #import "MPDatabase.h"
 
-#import "NSArray+MPExtensions.h"
+#import <MPSnapshotsController+Protected.h>
+#import <MPManagedObjectsController+Protected.h>
 
-#import <CouchbaseLite/CouchbaseLite.h>
+@import FeatherExtensions;
+@import CouchbaseLite;
 
 @class MPSnapshottedObjectsController;
 @class MPSnapshottedAttachment, MPSnapshottedAttachmentsController;

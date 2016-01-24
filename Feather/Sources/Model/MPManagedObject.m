@@ -23,6 +23,8 @@
 #import <RegexKitLite/RegexKitLiteFramework.h>
 
 #import <CouchbaseLite/CouchbaseLite.h>
+#import <Feather/MPCacheableMixin.h>
+#import <Feather/MPEmbeddedPropertyContainingMixin.h>
 
 #import <objc/runtime.h>
 #import <objc/message.h>

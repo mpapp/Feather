@@ -95,7 +95,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     
     if (self = [super init])
     {
-        NSAssert(path, @"Expectig a non-nil path");
+        NSAssert(path, @"Expecting a non-nil path");
         
         _path = path;
         
