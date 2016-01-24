@@ -158,7 +158,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     
     newRep.size = self.size;   // if you want the same resolution
     
-    NSData *data = [newRep representationUsingType:type properties:nil];
+    NSData *data = [newRep representationUsingType:type properties:@{}];
     
     return data;
 }
@@ -278,7 +278,7 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
                                                                                                self.size.height)];
     [self unlockFocus];
     
-    return [bitmapRep representationUsingType:NSPNGFileType properties:0];
+    return [bitmapRep representationUsingType:NSPNGFileType properties:@{}];
 }
 
 + (NSUInteger)bitmapImageTypeForData:(NSData *)data {
