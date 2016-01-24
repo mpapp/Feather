@@ -8,7 +8,7 @@
 
 #import "MPShoeboxPackageController.h"
 
-#import <FeatherExtensions/FeatherExtensions.h>
+@import FeatherExtensions;
 
 #import "MPShoeboxPackageController+Protected.h"
 #import "MPDatabasePackageController+Protected.h"

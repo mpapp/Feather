@@ -9,7 +9,7 @@
 #import "MPCacheableMixin.h"
 #import <RegexKitLite/RegexKitLiteFramework.h>
 #import "MPException.h"
-#import <FeatherExtensions/FeatherExtensions.h>
+@import FeatherExtensions;
 
 #import <objc/runtime.h>
 

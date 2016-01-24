@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <FeatherExtensions/FeatherExtensions.h>
+@import FeatherExtensions;
 
 #import <Feather/MPManagedObject+Protected.h>
 #import "MPManagedObjectsController+Protected.h"

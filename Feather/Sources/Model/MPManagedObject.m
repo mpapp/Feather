@@ -6,28 +6,25 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Feather/Feather.h>
+#import "MPManagedObject.h"
+
 #import <Feather/MPManagedObject+Protected.h>
 #import <Feather/MPManagedObjectsController+Protected.h>
 #import <Feather/MPEmbeddedObject+Protected.h>
-
-#import <FeatherExtensions/FeatherExtensions.h>
-
-#import "NSString+MPSearchIndex.h"
-
-#import "MPDeepSaver.h"
-
-#import "Mixin.h"
-#import "MPCacheableMixin.h"
-
-#import <RegexKitLite/RegexKitLiteFramework.h>
-
-#import <CouchbaseLite/CouchbaseLite.h>
 #import <Feather/MPCacheableMixin.h>
 #import <Feather/MPEmbeddedPropertyContainingMixin.h>
 
-#import <objc/runtime.h>
-#import <objc/message.h>
+#import "NSString+MPSearchIndex.h"
+#import "MPDeepSaver.h"
+#import "Mixin.h"
+#import "MPCacheableMixin.h"
+
+@import FeatherExtensions;
+@import RegexKitLite;
+@import CouchbaseLite;
+@import ObjectiveC;
+
+
 
 NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 

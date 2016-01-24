@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Matias Piipari. All rights reserved.
 //
 
-#import <FeatherExtensions/FeatherExtensions.h>
+@import FeatherExtensions;
 #import "MPScriptingDefinitionManager.h"
 #import "NSDictionary+MPScriptingSupport.h"
 

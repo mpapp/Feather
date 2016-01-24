@@ -19,7 +19,7 @@
 
 #import "MPDatabasePackageController.h"
 
-#import <FeatherExtensions/FeatherExtensions.h>
+@import FeatherExtensions;
 
 #import <CouchbaseLite/CouchbaseLite.h>
 

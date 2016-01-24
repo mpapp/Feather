@@ -14,19 +14,15 @@
 #import "MPDatabasePackageController+Protected.h"
 #import "MPManagedObjectsController+Protected.h"
 
-#import <Feather/Feather.h>
 #import <Feather/MPManagedObject+Protected.h>
-#import <RegexKitLite/RegexKitLiteFramework.h>
 
 #import "NSArray+MPExtensions.h"
 #import "MPException.h"
 
-#import <FeatherExtensions/FeatherExtensions.h>
-
-#import <CouchbaseLite/CouchbaseLite.h>
-
-#import <objc/runtime.h>
-#import <objc/message.h>
+@import FeatherExtensions;
+@import RegexKitLite;
+@import CouchbaseLite;
+@import ObjectiveC;
 
 #import <CouchbaseLite/Logging.h>
 

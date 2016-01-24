@@ -13,7 +13,7 @@
 #import "MPEmbeddedObject+Protected.h"
 #import "MPEmbeddedPropertyContainingMixin.h"
 #import "NSNotificationCenter+ErrorNotification.h"
-#import <FeatherExtensions/FeatherExtensions.h>
+@import FeatherExtensions;
 
 #import "MPDeepSaver.h"
 

@@ -8,8 +8,8 @@
 
 #import "MPScriptingDefinitionManager.h"
 
-#import <Feather/Feather.h>
-#import <FeatherExtensions/FeatherExtensions.h>
+@import Feather;
+@import FeatherExtensions;
 
 @interface MPScriptingDefinitionManager ()
 @property (readonly) NSDictionary *codeMap;

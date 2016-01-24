@@ -8,9 +8,7 @@
 
 
 #import "NSWindowController+MPExtensions.h"
-
-#import <FeatherExtensions/FeatherExtensions.h>
-
+#import "NSView+MPExtensions.h"
 
 static inline void MPLinkWindowControllerAndContentViewController(NSWindowController *wc, NSViewController *vc)
 {

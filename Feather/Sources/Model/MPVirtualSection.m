@@ -11,7 +11,7 @@
 
 #import "Mixin.h"
 
-#import <FeatherExtensions/FeatherExtensions.h>
+@import FeatherExtensions;
 
 #import <Feather/MPException.h>
 

@@ -7,8 +7,7 @@
 //
 
 #import "NSPopover+MPExtensions.h"
-#import <FeatherExtensions/FeatherExtensions.h>
-
+#import "NSViewController+MPExtensions.h"
 
 /** This is here just for allowing a respondsToSelector check below. */
 @protocol MPPopoverViewController <NSObject>

@@ -7,9 +7,9 @@
 //
 
 #import "MPDatabasePackageBackedDocument.h"
-
 #import <Feather/Feather.h>
-#import <FeatherExtensions/FeatherExtensions.h>
+
+@import FeatherExtensions;
 
 NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackageBackedDocumentErrorDomain";
 

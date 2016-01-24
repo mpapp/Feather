@@ -11,7 +11,7 @@
 #import "MPManagedObjectsController+Protected.h"
 #import "MPSnapshot+Protected.h"
 
-#import <FeatherExtensions/FeatherExtensions.h>
+@import FeatherExtensions;
 
 #import "MPContributor.h"
 #import "MPContributorsController.h"

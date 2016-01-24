@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Feather/Feather.h>
+@import Feather;
 #import <Feather/MPManagedObject.h>
 
 #import "FeatherTests.h"
