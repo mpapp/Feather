@@ -18,14 +18,28 @@ typedef enum MPValueToggleResult
 } MPValueToggleResult;
 
 
+@interface NSArray <T> (FeatherTypeParameterized)
+
+/** Returns a copy of the array iterated from end to beginning. */
+@property (readonly, copy) NSArray<T> *reversedArray;
+
+/** Array of the same length, with order of items randomized with arc4random. */
+@property (readonly, copy) NSArray<T> *arrayByRandomizingOrder;
+
+- (NSArray<T> *)mapObjectsUsingBlock:(id(^)(T o, NSUInteger idx))mapBlock;
+
+- (T)firstObjectMatching:(BOOL(^)(T evaluatedObject))patternBlock;
+- (T)firstObjectMatching:(BOOL(^)(T evaluatedObject))patternBlock index:(NSUInteger *)index;
+- (NSArray<T> *)filteredArrayMatching:(BOOL(^)(T evaluatedObject))patternBlock;
+
+- (NSArray<T> *)arrayByRemovingObject:(T)obj;
+
+- (NSArray<T> *)subarrayUpToIncludingIndex:(NSUInteger)i;
+- (NSArray<T> *)subarrayFromIndex:(NSUInteger)i;
+
+@end
+
 @interface NSArray (Feather)
-
-- (NSArray *)mapObjectsUsingBlock:(id(^)(id o, NSUInteger idx))mapBlock;
-
-- (id)firstObject;
-- (id)firstObjectMatching:(BOOL(^)(id evalutedObject))patternBlock;
-- (id)firstObjectMatching:(BOOL(^)(id evalutedObject))patternBlock index:(NSUInteger *)index;
-- (NSArray *)filteredArrayMatching:(BOOL(^)(id evalutedObject))patternBlock;
 
 - (NSMutableArray *)mutableDeepContainerCopy;
 
@@ -37,16 +51,10 @@ typedef enum MPValueToggleResult
 - (BOOL)allObjectsAreSubclassesOfClasses:(NSArray *)classes;
 - (BOOL)allObjectsAreSubclassesOf:(Class)class;
 
-- (NSArray *)arrayByRemovingObject:(id)obj;
-
-- (NSArray *)subarrayUpToIncludingIndex:(NSUInteger)i;
-- (NSArray *)subarrayFromIndex:(NSUInteger)i;
 
 /** Returns a flattened array (where objects contained inside arrays in the array are made top level objects). */
 @property (readonly, copy) NSArray *arrayByFlatteningArray;
 
-/** Returns a copy of the array iterated from end to beginning. */
-@property (readonly, copy) NSArray *reversedArray;
 
 - (void)matchingValueForKey:(NSString *)key value:(void(^)(BOOL valueMatches, id value))valueBlock;
 
@@ -54,8 +62,6 @@ typedef enum MPValueToggleResult
 - (NSString *)JSONStringRepresentation:(NSError **)err;
 
 - (NSArray *)allPermutations;
-
-- (NSArray *)arrayByRandomizingOrder;
 
 @end
 

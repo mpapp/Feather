@@ -9,12 +9,9 @@
 #import "NSArray+MPExtensions.h"
 #import "MPJSONRepresentable.h"
 
-@implementation NSArray (Feather)
+@implementation NSArray (FeatherTypeParameterized)
 
-- (id)firstObject { return self.count > 0 ? self[0] : nil; }
-
-- (NSArray *)mapObjectsUsingBlock:(id(^)(id o, NSUInteger idx))mapBlock
-{
+- (NSArray *)mapObjectsUsingBlock:(id(^)(id o, NSUInteger idx))mapBlock {
     NSMutableArray *map = [NSMutableArray arrayWithCapacity:self.count];
     
     [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -26,14 +23,12 @@
     return [map copy];
 }
 
-- (id)firstObjectMatching:(BOOL(^)(id evalutedObject))patternBlock
-{
+- (id)firstObjectMatching:(BOOL(^)(id evalutedObject))patternBlock {
     NSUInteger i;
     return [self firstObjectMatching:patternBlock index:&i];
 }
 
-- (id)firstObjectMatching:(BOOL(^)(id evalutedObject))patternBlock index:(NSUInteger *)index
-{
+- (id)firstObjectMatching:(BOOL(^)(id evalutedObject))patternBlock index:(NSUInteger *)index {
     __block id matchingObj = nil;
     [self enumerateObjectsUsingBlock:^(id evaluatedObj, NSUInteger idx, BOOL *stop) {
         
@@ -47,14 +42,64 @@
     return matchingObj;
 }
 
-- (NSArray *)filteredArrayMatching:(BOOL(^)(id evalutedObject))patternBlock
-{
+- (NSArray *)filteredArrayMatching:(BOOL(^)(id evalutedObject))patternBlock {
     // FIXME: Implement without requiring a temporary NSPredicate object
     return [self filteredArrayUsingPredicate:
-    [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
+            [NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         return patternBlock(evaluatedObject);
     }]];
 }
+
+- (NSArray *)subarrayUpToIncludingIndex:(NSUInteger)i
+{
+    if (self.count < 1) {
+        return self;
+    }
+    
+    if (i > (self.count - 1)) {
+        i = self.count - 1;
+    }
+    
+    NSArray *a = [self subarrayWithRange:NSMakeRange(0, i + 1)];
+    return a;
+}
+
+- (NSArray *)subarrayFromIndex:(NSUInteger)i
+{
+    assert(i < self.count);
+    return [self subarrayWithRange:NSMakeRange(i, self.count - i)];
+}
+
+- (NSArray *)arrayByRemovingObject:(id)obj
+{
+    NSMutableArray *array = [self mutableCopy];
+    [array removeObject:obj];
+    return array;
+}
+
+- (NSArray *)reversedArray {
+    return self.reverseObjectEnumerator.allObjects;
+}
+
+- (NSArray *)arrayByRandomizingOrder
+{
+    NSMutableArray *randomised = [NSMutableArray arrayWithArray:self];
+    
+    NSUInteger count = [randomised count];
+    for (NSUInteger i = 0; i < count; ++i)
+    {
+        // Select a random element between i and end of array to swap with.
+        NSInteger nElements = count - i;
+        NSInteger n = (arc4random() % nElements) + i;
+        [randomised exchangeObjectAtIndex:i withObjectAtIndex:n];
+    }
+    
+    return randomised.copy;
+}
+
+@end
+
+@implementation NSArray (Feather)
 
 - (NSMutableArray *)mutableDeepContainerCopy
 {
@@ -115,17 +160,6 @@
     return allAreSubclassesOf;
 }
 
-- (NSArray *)arrayByRemovingObject:(id)obj
-{
-    NSMutableArray *array = [self mutableCopy];
-    [array removeObject:obj];
-    return array;
-}
-
-- (NSArray *)reversedArray {
-    return self.reverseObjectEnumerator.allObjects;
-}
-
 - (void)matchingValueForKey:(NSString *)key value:(void(^)(const BOOL valueMatches, const id value))valueBlock
 {
     NSArray *values = [self valueForKey:key];
@@ -133,26 +167,6 @@
     
     if (valueSet.count == 0 || valueSet.count > 1) { valueBlock(NO, nil); return; }
     else if (valueSet.count == 1) { valueBlock(YES, [valueSet anyObject]); return; }
-}
-
-- (NSArray *)subarrayUpToIncludingIndex:(NSUInteger)i
-{
-    if (self.count < 1) {
-        return self;
-    }
-    
-    if (i > (self.count - 1)) {
-        i = self.count - 1;
-    }
-    
-    NSArray *a = [self subarrayWithRange:NSMakeRange(0, i + 1)];
-    return a;
-}
-
-- (NSArray *)subarrayFromIndex:(NSUInteger)i
-{
-    assert(i < self.count);
-	return [self subarrayWithRange:NSMakeRange(i, self.count - i)];
 }
 
 // http://stackoverflow.com/questions/8569388/nsarray-of-united-arrays
@@ -247,22 +261,6 @@ NSInteger *pc_next_permutation(NSInteger *p, const NSInteger size) {
     } while ((perm = pc_next_permutation(perm, size)) && ++j);
     
     return perms;
-}
-
-- (NSArray *)arrayByRandomizingOrder
-{
-    NSMutableArray *randomised = [NSMutableArray arrayWithArray:self];
-    
-    NSUInteger count = [randomised count];
-    for (NSUInteger i = 0; i < count; ++i)
-    {
-        // Select a random element between i and end of array to swap with.
-        NSInteger nElements = count - i;
-        NSInteger n = (arc4random() % nElements) + i;
-        [randomised exchangeObjectAtIndex:i withObjectAtIndex:n];
-    }
-    
-    return randomised.copy;
 }
 
 @end
