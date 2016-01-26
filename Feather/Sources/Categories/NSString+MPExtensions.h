@@ -67,6 +67,9 @@ NS_INLINE  NSMutableString *MPMutableStringForString(NSString *s)
 /** Unescape XML entities in the input. */
 @property (copy, readonly) NSString *stringByUnescapingXMLEntities;
 
+/** Escape XML entities in the input. */
+@property (copy, readonly) NSString *stringByEscapingXMLEntities;
+
 /** Removes instances of characters in the whitespace character set from the string. */
 @property (copy,readonly) NSString *stringByTrimmingLeadingWhitespace;
 
