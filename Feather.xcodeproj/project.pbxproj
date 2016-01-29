@@ -54,6 +54,7 @@
 		5F6857DA17287F0800FE06B0 /* MPRootSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857D817287F0800FE06B0 /* MPRootSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857DB17287F0800FE06B0 /* MPRootSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6857D917287F0800FE06B0 /* MPRootSection.m */; };
 		5F6857F017287F3100FE06B0 /* MPRootSection+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F6C563C1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6C563B1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift */; };
 		5F73DEA7170C6BA300DC411A /* MPShoeboxPackageController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F7574821B925EA400BD4BC6 /* RegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F75747F1B925E9A00BD4BC6 /* RegexKitLite.framework */; };
 		5F75748D1B92659E00BD4BC6 /* RegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F75747F1B925E9A00BD4BC6 /* RegexKitLite.framework */; };
@@ -324,6 +325,7 @@
 		5F6857D817287F0800FE06B0 /* MPRootSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPRootSection.h; path = Sources/Model/MPRootSection.h; sourceTree = "<group>"; };
 		5F6857D917287F0800FE06B0 /* MPRootSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPRootSection.m; path = Sources/Model/MPRootSection.m; sourceTree = "<group>"; };
 		5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MPRootSection+Protected.h"; path = "Sources/Model/MPRootSection+Protected.h"; sourceTree = "<group>"; };
+		5F6C563B1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+MPExtensions.swift"; sourceTree = "<group>"; };
 		5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPShoeboxPackageController+Protected.h"; path = "Sources/Database Packages/MPShoeboxPackageController+Protected.h"; sourceTree = "<group>"; };
 		5F7574681B925E9A00BD4BC6 /* RegexKitLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RegexKitLite.xcodeproj; path = "External/RegexKitLite-4.0/RegexKitLite.xcodeproj"; sourceTree = "<group>"; };
 		5F779F9A172BD3D20011C4DD /* NSView+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSView+MPExtensions.h"; path = "Sources/Categories/NSView+MPExtensions.h"; sourceTree = "<group>"; };
@@ -845,6 +847,7 @@
 				5FDB3818170702470049EBB5 /* NSError+MPExtensions.m */,
 				5FDB381B170702650049EBB5 /* NSString+MPExtensions.h */,
 				5FDB381C170702650049EBB5 /* NSString+MPExtensions.m */,
+				5F6C563B1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift */,
 				5FDB381F1707027E0049EBB5 /* NSSet+MPExtensions.h */,
 				5FDB38201707027E0049EBB5 /* NSSet+MPExtensions.m */,
 				5FDB3823170702990049EBB5 /* NSBundle+MPExtensions.h */,
@@ -1228,6 +1231,7 @@
 		5FDB32F91705CB950049EBB5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0720;
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Matias Piipari";
 				TargetAttributes = {
@@ -1393,6 +1397,7 @@
 				5FC4233D1AFF872E002234FB /* NSArray+MPExtensions.m in Sources */,
 				5FC4234F1AFF872E002234FB /* NSBundle+MPExtensions.m in Sources */,
 				5FC423631AFF872E002234FB /* NSImage+MPExtensions.m in Sources */,
+				5F6C563C1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift in Sources */,
 				5FC423511AFF872E002234FB /* NSObject+MPExtensions.m in Sources */,
 				5FFD61A51AFFA8DB00483D9C /* NSPopover+MPExtensions.m in Sources */,
 				5FFD61AF1AFFAAAA00483D9C /* NSTextView+MPExtensions.m in Sources */,
@@ -1772,6 +1777,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -2257,6 +2263,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -2303,6 +2310,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -2349,6 +2357,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
