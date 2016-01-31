@@ -660,8 +660,10 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     
     [prototype.attachmentNames enumerateObjectsUsingBlock:^(NSString *attachmentName, NSUInteger idx, BOOL *stop) {
         CBLAttachment *attachment = [prototype attachmentNamed:attachmentName];
-        [obj setAttachmentNamed:attachment.name withContentType:attachment.contentType content:attachment.content];
-        [obj save];
+        if (attachment.contentType && attachment.content) {
+            [obj setAttachmentNamed:attachment.name withContentType:attachment.contentType content:attachment.content];
+            [obj save];
+        }
     }];
 
     return obj;

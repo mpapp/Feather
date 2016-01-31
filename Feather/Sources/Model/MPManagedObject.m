@@ -362,7 +362,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     BOOL success;
     if (!(success = [self save:&err])) {
 #ifdef DEBUG
-        NSAssert(false, @"Encountered an error when saving: %@", err);
+        //NSAssert(false, @"Encountered an error when saving: %@", err);
 #endif
         MPDatabasePackageController *pkgc = [self.database packageController];
         [pkgc.notificationCenter postErrorNotification:err];
