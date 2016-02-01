@@ -13,10 +13,10 @@
 
 #import <CouchbaseLite/CouchbaseLite.h>
 
-extern NSString * const MPManagedObjectsControllerErrorDomain;
+extern NSString *_Nonnull const MPManagedObjectsControllerErrorDomain;
 
 /** A notification that is posted with the objects controller as the object whenever bundled resources have been finished loading. */
-extern NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification;
+extern NSString *_Nonnull const MPManagedObjectsControllerLoadedBundledResourcesNotification;
 
 typedef enum MPManagedObjectsControllerErrorCode
 {
@@ -55,10 +55,10 @@ typedef enum MPManagedObjectsControllerErrorCode
  * -objectWith<Property>:
  * -objectBy<Property>:
  * */
-@interface MPManagedObjectsController : NSObject <MPCacheable, MPManagedObjectRecentChangeObserver>
+@interface MPManagedObjectsController<__covariant T:MPManagedObject *> : NSObject <MPCacheable, MPManagedObjectRecentChangeObserver>
 
 /** The MPDatabase whose objects this controller manages (not necessarily all of the objects in the database, just those with a matching class / objectType field).  */
-@property (readonly, strong) MPDatabase *db;
+@property (readonly, strong, nonnull) MPDatabase *db;
 
 /** A weak backpointer to the database package controller of this object (the database controller is a subclass of MPDatabasePackageController). */
 @property (readonly, weak) id packageController;
@@ -71,22 +71,22 @@ typedef enum MPManagedObjectsControllerErrorCode
 
 /** Returns the MPManagedObject subclass of which instances in this controller's MPDatabase are managed by this controller. The method can be overloaded in MPManagedObject subclasses (for instance for performance reasons), but does not have to be for MPManagedObjectsController subclasses whose managed object class [X] and the controller class name follow the convention where the controller's class name is [X]sController (e.g. MPFeatherController and MPManuscript). 
  * @return The MPManagedObject subclass of which instances in this controller's MPDatabase are managed by this controller. */
-+ (Class)managedObjectClass;
++ (nonnull Class)managedObjectClass;
 
 /** A utility method which returns the class name string for this controller's +managedObjectClass. */
-+ (NSString *)managedObjectClassName;
++ (nonnull NSString *)managedObjectClassName;
 
 /** Camel cased singular form of the managed object type, used for property naming. */
-+ (NSString *)managedObjectSingular;
++ (nonnull NSString *)managedObjectSingular;
 
 /** Camel cased plural form of the managed object type, used for property naming. */
-+ (NSString *)managedObjectPlural;
++ (nonnull NSString *)managedObjectPlural;
 
 /** A utility instance method which returns the same value as +managedObjectClass. Not to be overloaded. */
-- (Class)managedObjectClass;
+- (nonnull Class)managedObjectClass;
 
 /** The set of managed object subclasses this managed objects controller can control. */
-- (NSSet *)managedObjectSubclasses;
+- (nonnull NSSet<NSString *> *)managedObjectSubclasses;
 
 /** A utility for view functions which emit only for document dictionaries corresponding to
   * this controller's managed object subclasses. Subclasses can overload this method to filter objects 
@@ -95,128 +95,127 @@ typedef enum MPManagedObjectsControllerErrorCode
   * base class implementation would return `NO` (results in undefined behaviour).
   * @return YES if document is managed by self, NO if not. 
   * There should not be multiple MPManagedObjectsControllers returning YES for any given document dictionary. */
-- (BOOL)managesDocumentWithDictionary:(NSDictionary *)CBLDocumentDict;
+- (BOOL)managesDocumentWithDictionary:(nonnull NSDictionary *)CBLDocumentDict;
 
 /** A utility for view functions which emit only for documents corresponding to this controller's managed object subclasses.
   * See -managesDocumentWithDictionary: for more detail. */
-- (BOOL)managesDocumentWithIdentifier:(NSString *)documentID __attribute__((nonnull));
+- (BOOL)managesDocumentWithIdentifier:(nonnull NSString *)documentID;
 
-- (BOOL)managesObjectsOfClass:(Class)class;
+- (BOOL)managesObjectsOfClass:(nonnull Class)class;
 
 /** @return A map block emitting [_id, nil] for all documents managed by the controller. */
-- (CBLMapBlock)allObjectsBlock;
+- (nonnull CBLMapBlock)allObjectsBlock;
 
 /** @return a TDMapBlock emitting [_id, nil]
   * for all documents managed by the controller with bundled = YES. */
-- (CBLMapBlock)bundledObjectsBlock;
+- (nonnull CBLMapBlock)bundledObjectsBlock;
 
 /** A utility instance method which returns the same value as +managedObjectClassName. Not to be overloaded. */
-- (NSString *)managedObjectClassName;
+- (nonnull NSString *)managedObjectClassName;
 
 /** An array of managed object subclasses (array of Class objects). Loaded lazily, once during the application runtime. Can be called manually but should not be overloaded. */
-+ (NSArray *)managedObjectClasses;
++ (nonnull NSArray<Class> *)managedObjectClasses;
 
 /** An array of managed object subclass names (array of class name strings). Loaded lazily, once during the application runtime. Can be called manually but should not be overloaded. */
-+ (NSArray *)managedObjectClassNames;
++ (nonnull NSArray<NSString *>*)managedObjectClassNames;
 
 /** A dictionary of managed object Class objects with the managed object controller class as the key. Loaded lazily, once during the application runtime. Can be called manually but should not be overloaded. */
-+ (NSDictionary *)managedObjectClassByControllerClassNameDictionary;
++ (nonnull NSDictionary *)managedObjectClassByControllerClassNameDictionary;
 
 /** Resolve conflicts for all managed objects managed by this controller. Calls -resolveConflictingRevisionsForObject: for all objects managed by this controller. */
-- (BOOL)resolveConflictingRevisions:(NSError **)err;
+- (BOOL)resolveConflictingRevisions:(out NSError *__autoreleasing __nonnull *__nonnull)err;
 
 /** Resolve conflicts for the specified object
  * @param obj the MPManagedObject for which to resolve conflicts. Must be non-nil. */
-- (BOOL)resolveConflictingRevisionsForObject:(MPManagedObject *)obj
-                                       error:(NSError **)err;
+- (BOOL)resolveConflictingRevisionsForObject:(nonnull MPManagedObject *)obj
+                                       error:(out NSError *__autoreleasing __nonnull *__nonnull)err;
 
 /** The base class of objects that are acceptable as a prototype. By default forwards to managedObjectClass. */
-- (Class)prototypeClass;
+- (nonnull Class)prototypeClass;
 
 #pragma mark -
 #pragma mark Managed Object CRUD
 
 /** Returns a new managed object. */
-- (id)newObject;
+- (nonnull T)newObject;
 
 /** Returns a new managed object with the specified prototype. */
-- (id)newObjectWithPrototype:(MPManagedObject *)prototype;
+- (nonnull T)newObjectWithPrototype:(nonnull MPManagedObject *)prototype;
 
 /** Objects derived from the specified prototype ID */
-- (NSArray *)objectsWithPrototypeID:(NSString *)prototypeID;
+- (nonnull NSArray<T> *)objectsWithPrototypeID:(nonnull NSString *)prototypeID;
 
 /** Initializes a MPManagedObjectsController. Not to be called directly on MPManagedObjectsController (an abstract class). Initialization calls -registerManagedObjectsController: on the database controller with self given as the argument.
  * @param packageController The database controller which is to own this managed objects controller.
  * @param db The database of whose objects this controller manages. Must be one of the databases of the database controller given as the first argument.
  * @param err An optional error pointer. */
-- (instancetype)initWithPackageController:(MPDatabasePackageController *)packageController
-                                 database:(MPDatabase *)db error:(NSError **)err;
+- (nonnull instancetype)initWithPackageController:(nonnull MPDatabasePackageController *)packageController database:(nonnull MPDatabase *)db error:(NSError *__autoreleasing __nonnull *__nonnull)err;
 
-- (instancetype)init NS_UNAVAILABLE;
+- (nonnull instancetype)init NS_UNAVAILABLE;
 
 /** A callback fired after the hosting MPDatabasePackageController for a MPManagedObjectsController has finished initialising all its managed objects controller
   * (you can run code dependent on other managed objects controller here). */
-- (BOOL)didInitialize:(NSError **)err;
+- (BOOL)didInitialize:(NSError *__autoreleasing __nonnull *__nonnull)err;
 
 /** Configure the design document of this controller. Can (and commonly is) overloaded by subclasses, but not to be called manually. */
 - (void)configureViews __attribute__((objc_requires_super));
 
 /** The name of the view which returns all objects managed by this controller. */
-- (NSString *)allObjectsViewName;
+- (nonnull NSString *)allObjectsViewName;
 
 /** A query which returns all objects managed by this controller. */
-- (CBLQuery *)allObjectsQuery;
+- (nonnull CBLQuery *)allObjectsQuery;
 
 /** @return a map of managed objects by the keys they are values of in the query enumerator given as argument. */
-- (NSDictionary *)managedObjectByKeyMapForQueryEnumerator:(CBLQueryEnumerator *)rows;
+- (nonnull NSDictionary<id, MPManagedObject *>*)managedObjectByKeyMapForQueryEnumerator:(nonnull CBLQueryEnumerator *)rows;
 
 /** @return an array of managed objects contained in the query enumerator given as argument. */
-- (NSArray *)managedObjectsForQueryEnumerator:(CBLQueryEnumerator *)rows;
+- (nonnull NSArray *)managedObjectsForQueryEnumerator:(nonnull CBLQueryEnumerator *)rows;
 
-- (void)viewNamed:(NSString *)name setMapBlock:(CBLMapBlock)block setReduceBlock:(CBLReduceBlock)reduceBlock version:(NSString *)version;
+- (void)viewNamed:(nonnull NSString *)name setMapBlock:(nonnull CBLMapBlock)block setReduceBlock:(nullable CBLReduceBlock)reduceBlock version:(nonnull NSString *)version;
 
-- (void)viewNamed:(NSString *)name setMapBlock:(CBLMapBlock)block version:(NSString *)version;
+- (void)viewNamed:(nonnull NSString *)name setMapBlock:(nonnull CBLMapBlock)block version:(nonnull NSString *)version;
 
 /** All objects managed by this controller. */
-@property (readonly, strong) NSArray *allObjects;
+@property (readonly, strong, nonnull) NSArray<T> *allObjects;
 
 /** All objects managed by this controller, queried without wrapping to mp_dispatch_sync, and allowing for an error pointer. */
-- (NSArray *)allObjects:(NSError **)error;
+- (nonnull NSArray<T> *)allObjects:(NSError *__nonnull *__nonnull)error;
 
-@property (readonly, strong) NSArray *objects;
+@property (readonly, strong, nonnull) NSArray<T> *objects;
 
 /** An optional resource name for a touchdb typed file in the app's Contents/Resources directory. If overridden with a non-nil value, the resource is loaded upon initialisation. */
-@property (readonly, copy) NSString *bundledResourceDatabaseName;
+@property (readonly, copy, nonnull) NSString *bundledResourceDatabaseName;
 
 @property (readonly) BOOL hasBundledResourceDatabase;
 
 @property (readonly) BOOL hasBundledJSONData;
 
 /** Bundled JSON data checksum key. */
-@property (readonly) NSString *bundledJSONDataChecksumKey;
+@property (readonly, nullable) NSString *bundledJSONDataChecksumKey;
 
 /** YES if hasBundledResourceDatabase or hasBundledJSONData returns YES. */
 @property (readonly) BOOL requiresBundledDataLoading;
 
 /** A query that should find all the bundled data that applies for this controller. */
-@property (readonly, strong) CBLQuery *bundledJSONDataQuery;
+@property (readonly, strong, nullable) CBLQuery *bundledJSONDataQuery;
 
 /** Filename for a bundled JSON datafile that is loaded by the controller upon initialization. */
-@property (readonly, strong) NSString *bundledJSONDataFilename;
+@property (readonly, strong, nullable) NSString *bundledJSONDataFilename;
 
 /** The bundled resource file extension. By default ".json", can be overridden in subclasses. */
-@property (readonly, strong) NSString *bundledResourceExtension;
+@property (readonly, strong, nullable) NSString *bundledResourceExtension;
 
 /** Bundled JSON data derived objects. */
-@property (readonly) NSArray *bundledJSONDerivedData;
+@property (readonly, nullable) NSArray<T> *bundledJSONDerivedData;
 
 /** Gets an object managed by this managed objects controller from its cache, or from database, 
   * or in case it's not part of the shared package, 
   * from the shared package controller's database from its corresponding managed objects controller if one exists. */
-- (id)objectWithIdentifier:(NSString *)identifier __attribute__((nonnull));
+- (nullable T)objectWithIdentifier:(nonnull NSString *)identifier;
 
 /** Gets a document by documentID, allowing for depending on the allDocsMode argument for already deleted objects to be returned. */
-- (CBLDocument *)documentWithIdentifier:(NSString *)identifier allDocsMode:(CBLAllDocsMode)allDocsMode;
+- (nullable CBLDocument *)documentWithIdentifier:(nonnull NSString *)identifier allDocsMode:(CBLAllDocsMode)allDocsMode;
 
 /** Whether the controller relays a search for an object to the shared package controller
   * if no match was found in an identifier search. 
@@ -224,35 +223,35 @@ typedef enum MPManagedObjectsControllerErrorCode
 @property (readonly) BOOL relaysFetchingByIdentifier;
 
 /** Objects with the given 'title' field value (meaningless for objects with no title field) */
-- (NSArray *)objectsWithTitle:(NSString *)title;
+- (nonnull NSArray<T> *)objectsWithTitle:(nonnull NSString *)title;
 
 /** Loads objects from the contents of an array JSON field. Each record in this array is validated to be a serialized MPManagedObject.
   * @param url The URL to load the objects from.
   * @param err An error pointer. */
-- (NSArray *)objectsFromContentsOfArrayJSONAtURL:(NSURL *)url error:(NSError **)err;
+- (nullable NSArray<T> *)objectsFromContentsOfArrayJSONAtURL:(nonnull NSURL *)url error:(NSError *__nullable *__nullable)err;
 
 /** Loads objects from JSON data. Each record in the array is validated to be a serialized MPManagedObject. */
-- (NSArray *)objectsFromArrayJSONData:(NSData *)objData error:(NSError *__autoreleasing *)err;
+- (nullable NSArray<T> *)objectsFromArrayJSONData:(nonnull NSData *)objData error:(NSError *__autoreleasing __nullable * __nullable)err;
 
 /** Objects from JSON encodable object array. */
-- (NSArray *)objectsFromJSONEncodableObjectArray:(NSArray *)objs error:(NSError **)err;
+- (nullable NSArray<T> *)objectsFromJSONEncodableObjectArray:(nonnull NSArray *)objs error:(NSError *__nonnull *__nonnull)err;
 
 /** Loads a managed object from a JSON dictionary. Record is validated to be a serialized MPManagedObject. */
-- (MPManagedObject *)objectFromJSONDictionary:(NSDictionary *)d isExisting:(BOOL *)isExisting error:(NSError **)err;
+- (nullable T)objectFromJSONDictionary:(nonnull NSDictionary *)d isExisting:(BOOL *__nullable)isExisting error:(NSError *__nullable *__nullable)err;
 
 /** Load bundled objects from resource with specified name and extension from inside the application main bundle. If resource checksum matches already saved checksum, return preloadedObjects, otherwise save the objects from the file into DB and return them. */
-- (NSArray *)loadBundledObjectsFromResource:(NSString *)resourceName
-                              withExtension:(NSString *)extension
-                           matchedToObjects:(NSArray *)preloadedObjects
-                    dataChecksumMetadataKey:(NSString *)dataChecksumKey
-                                      error:(NSError **)err;
+- (nullable NSArray<T> *)loadBundledObjectsFromResource:(nonnull NSString *)resourceName
+                                withExtension:(nonnull NSString *)extension
+                           matchedToObjects:(nonnull NSArray *)preloadedObjects
+                    dataChecksumMetadataKey:(nonnull NSString *)dataChecksumKey
+                                      error:(NSError *__nullable *__nullable)err;
 
 /** Query the given view with the given keys, with object prefetching enabled, and return managed object representations. */
-- (NSArray *)objectsMatchingQueriedView:(NSString *)view keys:(NSArray *)keys;
+- (nonnull NSArray<T> *)objectsMatchingQueriedView:(nonnull NSString *)view keys:(nullable NSArray *)keys;
 
 @end
 
 @interface CBLDocument (MPManagedObjectExtensions)
-- (Class) managedObjectClass;
-- (NSURL *)URL;
+- (nonnull Class) managedObjectClass;
+- (nullable NSURL *)URL;
 @end

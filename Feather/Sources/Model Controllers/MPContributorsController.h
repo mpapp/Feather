@@ -33,6 +33,7 @@ extern NSString *_Nonnull const MPContributorRoleTranslator;
 - (void)hasRemovedContributor:(nonnull NSNotification *)notification;
 @end
 
+@class MPContributor;
 
 /** Controller for MPContributor objects. */
 @interface MPContributorsController : MPManagedObjectsController <MPContributorRecentChangeObserver, MPCacheable>

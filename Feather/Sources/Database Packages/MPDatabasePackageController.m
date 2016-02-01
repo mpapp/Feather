@@ -506,7 +506,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 + (NSDictionary *)controllerClassForManagedObjectClass:(Class)class
 {
-    assert([class isSubclassOfClass:[MPManagedObject class]]);
+    NSAssert([class isSubclassOfClass:[MPManagedObject class]], @"Unexpected type: %@", class);
     
     static NSDictionary *controllerDictionary = nil;
     static dispatch_once_t onceToken;
@@ -681,9 +681,11 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 - (MPDatabase *)databaseWithName:(NSString *)name
 {
-    assert([self.databaseNames containsObject:name]);
-    MPDatabase *db = [self valueForKey:[NSString stringWithFormat:@"%@Database", name]];
-    assert(db);
+    NSAssert([self.databaseNames containsObject:name], @"Unexpected name (%@)", name, self.databaseNames);
+    NSString *dbKey = [NSString stringWithFormat:@"%@Database", name];
+    MPDatabase *db = [self valueForKey:dbKey];
+    NSAssert(db, @"Unexpected db key: %@", dbKey);
+    
     return db;
 }
 
@@ -737,7 +739,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 - (CBLFilterBlock)createPushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db
 {
-    assert(!filterName);
+    NSAssert(!filterName, @"Expecting filterName (%@, %@)", self, self.class);
     return nil;
 }
 
@@ -834,7 +836,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return errDict.count == 0;
 }
 
-- (void)pullFromRemoteWithErrorDictionary:(NSDictionary **)errorDict
+- (void)pullFromRemoteWithErrorDictionary:(NSDictionary<NSString *, NSError *> *__nullable *__nullable)errorDict
 {
     NSSet *databases = [self databases];
     
@@ -847,8 +849,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
             errDict[db.name] = err;
     }
     
-    if (errorDict)
+    if (errorDict) {
         *errorDict = errDict;
+    }
 }
 
 - (BOOL)pullFromPackageFileURL:(NSURL *)versionURL error:(NSError *__autoreleasing *)err {
@@ -911,7 +914,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return YES;
 }
 
-- (BOOL)syncWithRemote:(NSDictionary **)errorDict
+- (BOOL)syncWithRemote:(NSDictionary<NSString *, NSError *> *__nullable *__nullable)errorDict
 {
     NSSet *databases = [self databases];
     

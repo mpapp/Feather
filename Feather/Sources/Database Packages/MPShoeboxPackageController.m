@@ -312,10 +312,10 @@ static dispatch_once_t onceToken;
 }
 
 - (CBLFilterBlock)createPushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db{
-    assert(filterName);
-    assert([filterName isEqualToString:[self pushFilterNameForDatabaseNamed:db.name]]);
-    assert(db);
-    assert(db == [self primaryDatabase]);
+    NSAssert(filterName, @"Expecting filterName (%@, %@)", self, self.class);
+    NSAssert([filterName isEqualToString:[self pushFilterNameForDatabaseNamed:db.name]], @"Unexpected filterName:%@", filterName);
+    NSAssert(db, @"Expecting a non-nil db (%@, %@)", self, self.class);
+    NSAssert(db == [self primaryDatabase], @"Unexpected db: %@ != %@", db, self.primaryDatabase);
     
     if ([filterName isEqualToString:[self pushFilterNameForDatabaseNamed:db.name]])
     {
