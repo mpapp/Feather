@@ -79,6 +79,8 @@ NS_INLINE  NSMutableString *MPMutableStringForString(NSString *s)
 
 @property (copy, readonly) NSString *stringByRemovingHTMLTags;
 
+@property (copy, readonly) NSString *slugString;
+
 /** A best effort to return the top level domain part of a host name. 
   * For instance returns 'twitter.com' for 'dev.twitter.com'. */
 + (NSString *)rootDomainForHostName:(NSString *)hostName;

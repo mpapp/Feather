@@ -234,6 +234,49 @@
     return strippedString;
 }
 
+// from https://gist.github.com/RobertAudi/5926772
+- (NSString *)slugString {
+    NSString        *separator        = @"-";
+    NSMutableString *slugalizedString = [NSMutableString string];
+    NSRange         replaceRange      = NSMakeRange(0, self.length);
+    
+    // Remove all non ASCII characters
+    NSError *nonASCIICharsRegexError = nil;
+    NSRegularExpression *nonASCIICharsRegex = [NSRegularExpression regularExpressionWithPattern:@"[^\\x00-\\x7F]+"
+                                                                                        options:0
+                                                                                          error:&nonASCIICharsRegexError];
+    slugalizedString = [[nonASCIICharsRegex stringByReplacingMatchesInString:self
+                                                                     options:0
+                                                                       range:replaceRange
+                                                                withTemplate:@""] mutableCopy];
+    
+    // Turn non-slug characters into separators
+    NSError *nonSlugCharactersError = nil;
+    NSRegularExpression *nonSlugCharactersRegex = [NSRegularExpression regularExpressionWithPattern:@"[^a-z0-9\\-_\\+]+"
+                                                                                            options:NSRegularExpressionCaseInsensitive
+                                                                                              error:&nonSlugCharactersError];
+    slugalizedString = [[nonSlugCharactersRegex stringByReplacingMatchesInString:slugalizedString
+                                                                         options:0
+                                                                           range:replaceRange
+                                                                    withTemplate:separator] mutableCopy];
+    
+    // No more than one of the separator in a row
+    NSError *repeatingSeparatorsError = nil;
+    NSRegularExpression *repeatingSeparatorsRegex = [NSRegularExpression regularExpressionWithPattern:[NSString stringWithFormat:@"%@{2,}", separator]
+                                                                                              options:0
+                                                                                                error:&repeatingSeparatorsError];
+    
+    slugalizedString = [[repeatingSeparatorsRegex stringByReplacingMatchesInString:slugalizedString
+                                                                           options:0
+                                                                             range:replaceRange
+                                                                      withTemplate:separator] mutableCopy];
+    
+    // Remove leading/trailing separator
+    slugalizedString = [[slugalizedString stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:separator]] mutableCopy];
+    
+    return [slugalizedString lowercaseString];
+}
+
 // Extracted from papers-shared NSString_Extensions
 - (NSString *)stringByRemovingCharactersFromSet:(NSCharacterSet *)set
 {
