@@ -7,12 +7,11 @@
 //
 
 @import Feather;
-#import <Feather/MPManagedObject.h>
 
 #import "FeatherTests.h"
 #import "MPFeatherTestClasses.h"
 
-#import <Feather/MPDatabasePackageController+Protected.h>
+@import Feather.MPDatabasePackageController_Protected;
 @import FeatherExtensions;
 @import RegexKitLite;
 
