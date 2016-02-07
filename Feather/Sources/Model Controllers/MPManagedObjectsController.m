@@ -21,14 +21,12 @@
 
 #import "MPShoeboxPackageController.h"
 
-#import <RegexKitLite/RegexKitLiteFramework.h>
-#import <CouchbaseLite/CouchbaseLite.h>
+@import RegexKitLite;
+@import CouchbaseLite;
+@import ObjectiveC;
 
 #import "Mixin.h"
 #import "MPCacheableMixin.h"
-
-#import <objc/runtime.h>
-#import <objc/message.h>
 
 extern NSComparisonResult CBLCompareRevIDs(NSString* revID1, NSString* revID2);
 
