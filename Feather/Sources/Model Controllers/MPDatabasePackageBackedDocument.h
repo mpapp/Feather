@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, MPDatabasePackageBackedDocumentErrorCode) {
     MPDatabasePackageBackedDocumentErrorCodePackageAccessFailed = 2
 };
 
-@interface MPDatabasePackageBackedDocument : NSDocument <MPDatabasePackageControllerDelegate> 
+@interface MPDatabasePackageBackedDocument : NSDocument 
 
 /** Initializes the internal state of the document, optionally creating the document's package directory in the process.
   * There are cases where yuo need to call this instead of relying on the document object initialization itself resulting to it getting called. */

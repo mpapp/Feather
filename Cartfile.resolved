@@ -1,2 +1,3 @@
+github "mpapp/RegexKitLite" "92be66c0b2310ad481f0373c6a28e14b18540ff9"
 github "mz2/couchbase-lite-ios" "575073d274ad6a89ba37c71409f20d6db2047084"
 github "mpapp/google-diff-match-patch-Objective-C" "a271c05cee3c49d63e99c9b7cac38d42d058d6e7"

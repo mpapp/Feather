@@ -13,3 +13,6 @@
 [submodule "Carthage/Checkouts/google-diff-match-patch-Objective-C"]
 	path = Carthage/Checkouts/google-diff-match-patch-Objective-C
 	url = ssh://git@github.com/mpapp/google-diff-match-patch-Objective-C.git
+[submodule "Carthage/Checkouts/RegexKitLite"]
+	path = Carthage/Checkouts/RegexKitLite
+	url = ssh://git@github.com/mpapp/RegexKitLite.git

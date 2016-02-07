@@ -8,12 +8,13 @@
 
 #import "MPDatabasePackageBackedDocument.h"
 #import <Feather/Feather.h>
+#import <Feather/MPDatabasePackageController.h>
 
 @import FeatherExtensions;
 
 NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackageBackedDocumentErrorDomain";
 
-@interface MPDatabasePackageBackedDocument () {
+@interface MPDatabasePackageBackedDocument () <MPDatabasePackageControllerDelegate> {
     id _packageController;
 }
 @property (readwrite, nonatomic) NSError *packageAccessError;
