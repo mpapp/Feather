@@ -53,7 +53,7 @@ typedef NS_ENUM(NSUInteger, MPDatabasePackageBackedDocumentErrorCode) {
 
 /** Lazily initialized MPDatabasePackageController instance for the document of the class determined by -packageControllerClass.
   * NOTE! Initialized on accessing this property. */
-@property (strong, readonly, nonatomic) id packageController;
+@property (strong, readonly, nonatomic) __kindof MPDatabasePackageController *packageController;
 
 /** Returns YES if packageController is initialized, NO otherwise. */
 @property (readonly) BOOL packageControllerExists;
