@@ -559,7 +559,13 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
         return nil;
     }
     
-    CBLDocument* doc = [[self databaseForModelProperty: property] existingDocumentWithID:rawValue];
+    CBLDatabase *db = [self databaseForModelProperty: property];
+    
+    __block CBLDocument *doc = nil;
+    mp_dispatch_sync(db.manager.dispatchQueue, [[db packageController] serverQueueToken], ^{
+        doc = [db existingDocumentWithID:rawValue];
+    });
+    
     if (!doc)
     {
         Class declaredInClass = nil;

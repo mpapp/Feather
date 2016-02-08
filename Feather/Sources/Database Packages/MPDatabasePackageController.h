@@ -137,7 +137,7 @@ typedef enum MPDatabasePackageControllerErrorCode {
 
 /** @return the controller for a MPManagedObject subclass.
  @param class A subclass of MPManagedObject. */
-- (nullable MPManagedObjectsController *)controllerForManagedObjectClass:(nonnull Class)class;
+- (nullable __kindof MPManagedObjectsController *)controllerForManagedObjectClass:(nonnull Class)class;
 
 /** The managed object controller subclass closes in the class hierarchy to the managed object class.
   * For instance, for a MPManagedObject > MPColor > MPRGBColor hierarchy, if there is no
@@ -293,7 +293,7 @@ typedef enum MPDatabasePackageControllerErrorCode {
 @property (strong, readwrite, nullable) MPDraft *activeDraft;
 
 /** Returns a managed object given the identifier. */
-- (nullable id)objectWithIdentifier:(nonnull NSString *)identifier;
+- (nullable __kindof MPManagedObject *)objectWithIdentifier:(nonnull NSString *)identifier;
 
 /** WAL Checkpoints the specified databases. */
 - (BOOL)checkpointDatabases:(nonnull NSArray<MPDatabase *>*)databases error:(NSError *__nullable *__nullable)err;

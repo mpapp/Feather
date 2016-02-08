@@ -51,7 +51,7 @@ typedef enum MPDatabaseErrorCode
 @property (readonly, strong) MPMetadata *localMetadata;
 
 /** A weak back pointer to the database controller. Typed id to avoid casting -- MPDatabasePackageController is an abstract class and a concrete subclass  is needed in the application. */
-@property (readonly, weak) id packageController; // subclass of MPDatabasePackageController
+@property (readonly, weak) __kindof MPDatabasePackageController *packageController; // subclass of MPDatabasePackageController
 
 /**
  * @param server CouchServer from which the database is to be found. Should be one of the CouchServers owned by the database controller (2nd parameter).
