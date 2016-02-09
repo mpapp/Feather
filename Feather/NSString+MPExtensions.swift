@@ -17,4 +17,12 @@ public extension NSString {
         
         return modifiedString
     }
+    
+    public func isUUIDLike() -> Bool {
+        return self.length == 36
+            && self.substringWithRange(NSRange(location: 8,length: 1)) == "-"
+            && self.substringWithRange(NSRange(location: 13,length: 1)) == "-"
+            && self.substringWithRange(NSRange(location: 18,length: 1)) == "-"
+            && self.substringWithRange(NSRange(location: 23,length: 1)) == "-"
+    }
 }
