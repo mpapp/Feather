@@ -6,13 +6,14 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <CouchbaseLite/CouchbaseLite.h>
-#import "MPEmbeddedPropertyContainingMixin.h"
+@import CouchbaseLite.MYDynamicObject;
 
+#import "MPEmbeddedPropertyContainingMixin.h"
 
 @protocol MPWaitingOperation;
 @class MPEmbeddedObject;
 @class MPManagedObject;
+@class CBLDatabase;
 
 extern NSString *const MPPasteboardTypeEmbeddedObjectFull;
 extern NSString *const MPPasteboardTypeEmbeddedObjectID;
@@ -70,7 +71,7 @@ NS_REQUIRES_PROPERTY_DEFINITIONS
 - (NSString *)externalize;
 
 /** The embedding managed object of an embedded object is the managed object found when the path is followed through 'embeddingObject' until a MPManagedObject instance is found. */
-@property (readonly) MPManagedObject *embeddingManagedObject;
+@property (readonly) __kindof MPManagedObject *embeddingManagedObject;
 
 /** Returns an MPEmbeddedObject instance for a JSON string. 
   * The class of the object is determined by its 'objectType' property. */
