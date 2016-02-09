@@ -13,7 +13,7 @@
 
 #import "NSImage+MPExtensions.h"
 
-#import <CouchbaseLite/CouchbaseLite.h>
+@import CouchbaseLite;
 
 @interface MPContributor ()
 @property (readwrite) NSInteger priority;

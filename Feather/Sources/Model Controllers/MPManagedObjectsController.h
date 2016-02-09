@@ -11,7 +11,7 @@
 #import "MPCacheable.h"
 #import "NSNotificationCenter+MPManagedObjectExtensions.h"
 
-#import <CouchbaseLite/CouchbaseLite.h>
+@import CouchbaseLite;
 
 extern NSString *_Nonnull const MPManagedObjectsControllerErrorDomain;
 

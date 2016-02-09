@@ -17,7 +17,7 @@
 #import "NSArray+MPExtensions.h"
 #import "NSNotificationCenter+ErrorNotification.h"
 
-#import <CouchbaseLite/CouchbaseLite.h>
+@import CouchbaseLite;
 
 @implementation MPDeepSaver
 

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MPContributorsController.h"
 
-#import <CouchbaseLite/CouchbaseLite.h>
+@import CouchbaseLite;
 
 typedef void (^MPPullCompletionHandler)(NSDictionary * __nullable errDict);
 

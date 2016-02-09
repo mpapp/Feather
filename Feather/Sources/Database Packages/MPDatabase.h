@@ -6,9 +6,8 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import <CouchbaseLite/CouchbaseLite.h>
-
+@import Foundation;
+@import CouchbaseLite;
 #import <Feather/MPJSONRepresentable.h>
 
 extern NSString * const MPDatabaseErrorDomain;

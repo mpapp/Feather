@@ -20,8 +20,7 @@
 #import "MPDatabasePackageController.h"
 
 @import FeatherExtensions;
-
-#import <CouchbaseLite/CouchbaseLite.h>
+@import CouchbaseLite;
 
 @interface MPContributor ()
 @property (readwrite) NSInteger priority;

@@ -19,9 +19,8 @@
 
 #import "Mixin.h"
 
-#import <CouchbaseLite/CouchbaseLite.h>
-
-#import <objc/runtime.h>
+@import CouchbaseLite;
+@import ObjectiveC;
 
 NSString *const MPPasteboardTypeEmbeddedObjectFull    = @"com.piipari.eo.full.plist";
 NSString *const MPPasteboardTypeEmbeddedObjectID      = @"com.piipari.eo.id.plist";

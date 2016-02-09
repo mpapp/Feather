@@ -11,12 +11,9 @@
 #import "NSSet+MPExtensions.h"
 #import "NSString+MPExtensions.h"
 
-#import <CouchbaseLite/CouchbaseLite.h>
-#import <CouchbaseLite/MYDynamicObject.h>
-
-#import <objc/runtime.h>
-
-#import <DiffMatchPatch/DiffMatchPatch.h>
+@import CouchbaseLite;
+@import ObjectiveC;
+@import DiffMatchPatch;
 
 @implementation NSObject (Feather)
 

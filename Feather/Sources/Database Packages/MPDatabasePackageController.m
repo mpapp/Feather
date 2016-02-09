@@ -22,10 +22,10 @@
 
 #import <RegexKitLite/RegexKitLiteFramework.h>
 
-#import <CouchbaseLite/CouchbaseLite.h>
+@import CouchbaseLite;
 #import <CouchbaseLiteListener/CBLListener.h>
 
-#import <objc/runtime.h>
+@import ObjectiveC;
 
 #import <arpa/inet.h>
 #import <net/if.h>

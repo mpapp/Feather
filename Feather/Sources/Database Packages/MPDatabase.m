@@ -22,9 +22,8 @@
 @import FeatherExtensions;
 @import RegexKitLite;
 @import CouchbaseLite;
+@import CouchbaseLite.Logging;
 @import ObjectiveC;
-
-#import <CouchbaseLite/Logging.h>
 
 NSString * const MPDatabaseErrorDomain = @"MPDatabaseErrorDomain";
 NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; //same name used in serverside CouchDB.
