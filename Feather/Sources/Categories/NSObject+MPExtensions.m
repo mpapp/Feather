@@ -390,7 +390,7 @@ void mp_dispatch_sync(dispatch_queue_t q, NSUInteger queueSpecificToken, dispatc
     
     const NSUInteger token = (const NSUInteger)dispatch_get_specific(key);
     
-    if (token == queueSpecificToken)
+    if (token == queueSpecificToken || !q)
         block();
     else
         dispatch_sync(q, block);
@@ -406,7 +406,7 @@ void mp_dispatch_async(dispatch_queue_t q, NSUInteger queueSpecificToken, dispat
     
     const NSUInteger token = (const NSUInteger)dispatch_get_specific(key);
     
-    if (token == queueSpecificToken)
+    if (token == queueSpecificToken || !q)
         block();
     else
         dispatch_async(q, block);
