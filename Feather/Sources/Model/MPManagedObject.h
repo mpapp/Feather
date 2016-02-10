@@ -82,6 +82,9 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 /** The _id of the document this model object represents. Non-nil always, even for deleted objects. */
 @property (readonly, copy) NSString *documentID;
 
+/** The document ID without the object type prefix. */
+@property (readonly, copy) NSString *prefixlessDocumentID;
+
 /** The creation date: the moment -save or -saveModels was issued the first time for the object. It is earlier than the exact moment at which the the object was created in the database. */
 @property (readonly, assign) NSDate *createdAt;
 

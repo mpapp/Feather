@@ -6,8 +6,9 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <XCTest/XCTest.h>
-#import <Feather/Feather.h>
+@import Feather;
+@import Foundation;
+@import XCTest;
 
 @class MPDatabasePackageController;
 

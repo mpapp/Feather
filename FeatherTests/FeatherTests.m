@@ -11,11 +11,13 @@
 #import "FeatherTests.h"
 #import "MPFeatherTestClasses.h"
 
+@import Feather.MPException;
 @import Feather.MPDatabasePackageController_Protected;
 @import FeatherExtensions;
 @import RegexKitLite;
 
-#import <Feather/MPException.h>
+@interface FeatherTests () 
+@end
 
 @implementation FeatherTests
 

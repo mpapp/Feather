@@ -231,8 +231,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 - (NSString *)documentID
 {
     if (self.document) return self.document.documentID;
-    else assert(_deletedDocumentID);
+    else NSAssert(_deletedDocumentID, @"Expecting model %@ to have been deleted", self.propertiesToSave);
     return _deletedDocumentID;
+}
+
+- (NSString *)prefixlessDocumentID {
+    return [[self.documentID componentsSeparatedByString:@":"] lastObject];
 }
 
 - (BOOL)isDeleted
