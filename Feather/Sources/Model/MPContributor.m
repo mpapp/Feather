@@ -38,6 +38,10 @@
     return [[self.controller.packageController contributorIdentitiesController] contributorIdentitiesForContributor:self];
 }
 
+- (NSInteger)positiveIntegralPriority {
+    return MAX(1, self.priority + 1);
+}
+
 - (BOOL)isEditable {
     return NO; // required by the contributor being a tree item.
 }

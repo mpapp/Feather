@@ -26,6 +26,9 @@
   * Joint authorships are legal but not expressed with an equal priority. */
 @property (readonly) NSInteger priority;
 
+/** Priority incremented with 1 such that counting begins from 1 and values smaller than that are trimmed to it. */
+@property (readonly) NSInteger positiveIntegralPriority;
+
 /** Description of the contributor's contributions. */
 @property (readwrite) NSString *contribution;
 
