@@ -16,11 +16,13 @@
 
 #import "MPTitledProtocol.h"
 
+@class MPDatabasePackageController;
+
 @interface MPVirtualSection : NSObject
     <MPTreeItem, MPCacheable, MPPlaceHolding, MPManagedObjectChangeObserver, MPTitledProtocol>
 
 @property (readonly, weak) id<MPTreeItem> parent;
-@property (readonly, weak) id packageController;
+@property (readonly, weak) __kindof MPDatabasePackageController *packageController;
 @property (readonly, weak) Class representedObjectClass;
 
 /** The objects this section corresponds to: for instance 'unplaced figures'.

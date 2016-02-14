@@ -61,7 +61,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 @property (readonly, strong, nonnull) MPDatabase *db;
 
 /** A weak backpointer to the database package controller of this object (the database controller is a subclass of MPDatabasePackageController). */
-@property (readonly, weak) id packageController;
+@property (readonly, weak, nullable) __kindof MPDatabasePackageController *packageController;
 
 /** Returns YES if objects of the +managedObjectClass in this controller's database should be automatically saved upon changing. Overload in a subclass to provide autosaving upon change (default: NO). */
 @property (readonly) BOOL autosavesObjects;

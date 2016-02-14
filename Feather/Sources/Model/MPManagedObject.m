@@ -1069,7 +1069,7 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
             return YES;
         }
         
-        if (propertyType &&! strncmp(propertyType, "\"@Protocol\"", 12) != 0) {
+        if (propertyType && !(strncmp(propertyType, "\"@Protocol\"", 12) != 0)) {
             MPLog(@"Dynamic effective property %@.%@ has type '%s' unsupported by %@",
                   self, key, propertyType, self);
         }

@@ -263,7 +263,7 @@ typedef enum MPDatabasePackageControllerErrorCode {
 @property (strong, readonly, nonnull) NSString *fullyQualifiedIdentifier;
 
 /** An optional delegate for the database package controller. */
-@property (readonly, weak) id<MPDatabasePackageControllerDelegate> delegate;
+@property (readonly, weak, nullable) id<MPDatabasePackageControllerDelegate> delegate;
 
 /** The notification center to which notifications about objects of this database package post notifications to.
   * The default implementation returns [NSNotificationCenter defaultCenter], but the subclass
@@ -356,7 +356,7 @@ typedef void (^MPDatabasePackageControllerUpdateChangeCountHandler)(NSDocumentCh
                                    rootURLHandler:(nonnull MPDatabasePackageControllerRootURLHandler)handler
                          updateChangeCountHandler:(nonnull MPDatabasePackageControllerUpdateChangeCountHandler)changeType;
 
-@property (readwrite, weak) MPDatabasePackageController *packageController;
+@property (readwrite, weak, nullable) __kindof MPDatabasePackageController *packageController;
 @property (readonly, nonnull) MPDatabasePackageControllerRootURLHandler rootURLHandler;
 @property (readonly, nonnull) MPDatabasePackageControllerUpdateChangeCountHandler updateChangeCountHandler;
 

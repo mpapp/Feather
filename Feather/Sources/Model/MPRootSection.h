@@ -19,7 +19,7 @@ extern NSString *const MPPasteboardTypeRootSection;
 @interface MPRootSection : NSObject <MPTreeItem, MPManagedObjectRecentChangeObserver, MPCacheable, MPTitledProtocol, NSPasteboardWriting, NSPasteboardReading>
 
 /** The database controller which this MPRootSection is associated with. */
-@property (readonly, weak) MPDatabasePackageController *packageController;
+@property (readonly, weak) __kindof MPDatabasePackageController *packageController;
 
 /** Creates a new MPRootSection. MPRootSection is abstract, do not allocate them but its subclasses.
  @param packageController The database with which to associate the root section with. */
