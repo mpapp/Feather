@@ -26,11 +26,13 @@ extern NSString * _Nonnull const MPPasteboardTypeRootSection;
 - (nonnull instancetype)initWithPackageController:(nonnull MPDatabasePackageController *)packageController;
 
 /** The objects the section represents in the data model. This is synonymous to -children, though subclasses can override if the items presented in a tree for the object (-children) should not correspond to the objects presented for the object when viewed in detail (-representedObjects). */
-@property (readonly, strong, nonnull) NSArray *representedObjects;
+@property (readonly, strong, nonnull) NSArray<id<MPTreeItem>> *representedObjects;
 
 /** The class name of a MPRootSection subclass determines the managed object class it's responsible for.
  @return For MPContributorRootSection, +managedObjectClass returns [MPContributor class]. */
 + (nonnull Class)managedObjectClass;
+
+@property (readonly, copy, nonnull) NSString *thumbnailImageName;
 
 @property (readonly, strong, nonnull) NSImage *thumbnailImage;
 

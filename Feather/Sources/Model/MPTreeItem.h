@@ -6,18 +6,20 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
-extern NSString *const MPTreeItemDoubleClickedNotification;
+@class MPDatabasePackageController;
+
+extern NSString * _Nonnull const MPTreeItemDoubleClickedNotification;
 
 /** A protocol for items in a tree hierarchy (e.g. source list items). */
 @protocol MPTreeItem <NSObject>
-@property (readwrite, copy) NSString *title;
-@property (readonly, weak) id<MPTreeItem> parent;
-@property (readonly, strong) NSArray *children;
+@property (readwrite, copy, nonnull) NSString *title;
+@property (readonly, weak, nullable) id<MPTreeItem> parent;
+@property (readonly, strong, nonnull) NSArray<id<MPTreeItem>> *children;
 
 /** Siblings are the children of self's parent, **including self**. */
-@property (readonly, strong) NSArray *siblings;
+@property (readonly, strong, nonnull) NSArray<id<MPTreeItem>> *siblings;
 
 @property (readonly) NSUInteger childCount;
 @property (readonly) BOOL hasChildren;
@@ -36,11 +38,10 @@ extern NSString *const MPTreeItemDoubleClickedNotification;
 
 @property (readonly) NSInteger priority;
 
-@property (readonly, weak) id packageController;
+@property (readonly, weak, nullable) __kindof MPDatabasePackageController *packageController;
 
-/** An optional identifier for nodes. 
-  * nil when object intended not identifiable, string otherwise. */
-@property (readonly) NSString *identifier;
+/** An optional identifier for nodes. nil when object intended not identifiable, string otherwise. */
+@property (readonly, nullable) NSString *identifier;
 
 - (BOOL)save;
 
@@ -55,12 +56,12 @@ typedef NS_ENUM(NSInteger, MPOptionalTreeItemState) {
 @protocol MPOptionalTreeItem <MPTreeItem>
 
 /** Objects whose isOptional=YES can be set a state in context of a given object. */
-- (void)setState:(MPOptionalTreeItemState)state inContextOfObject:(id)object;
+- (void)setState:(MPOptionalTreeItemState)state inContextOfObject:(nonnull id)object;
 
 /** Objects whose isOptional=YES are queried with this method for their state. */
-- (MPOptionalTreeItemState)stateInContextOfObject:(id)object;
+- (MPOptionalTreeItemState)stateInContextOfObject:(nonnull id)object;
 
 /** Optional tree items should have a cell state value representation. */
-- (NSCellStateValue)cellStateValueInContextOfObject:(id)object;
+- (NSCellStateValue)cellStateValueInContextOfObject:(nonnull id)object;
 
 @end

@@ -6,12 +6,12 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @protocol MPCacheable <NSObject>
 
 @optional
-+ (NSDictionary *)cachedPropertiesByClassName;
++ (nonnull NSDictionary *)cachedPropertiesByClassName;
 - (void)clearCachedValues;
 - (void)refreshCachedValues;
 
