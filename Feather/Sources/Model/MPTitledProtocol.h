@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol MPTitledProtocol <NSObject>
-@property (readwrite, copy) NSString *title;
-@property (readwrite, copy) NSString *subtitle;
-@property (readwrite, copy) NSString *desc;
+@property (readwrite, copy, nonnull) NSString *title;
+@property (readwrite, copy, nullable) NSString *subtitle;
+@property (readwrite, copy, nullable) NSString *desc;
 @end

@@ -47,7 +47,7 @@ NSString *const MPPasteboardTypeRootSection = @"com.piipari.root-section.id.plis
                                                                              withString:@""];
     
     Class class = NSClassFromString(className);
-    assert([class isSubclassOfClass:[MPManagedObject class]]);
+    NSAssert([class isSubclassOfClass:[MPManagedObject class]], @"%@ is not a subclass of MPManagedObject.", class);
     
     return class;
 }
@@ -198,7 +198,7 @@ NSString *const MPPasteboardTypeRootSection = @"com.piipari.root-section.id.plis
     NSString *representedClassName =
         [className stringByReplacingOccurrencesOfRegex:@"RootSection$" withString:@""];
     Class representedClass = NSClassFromString(representedClassName);
-    assert(representedClass);
+    NSAssert(representedClass, @"Could not resolve represented class for %@ (%@)", self, self.class);
     return representedClass;
 }
 
