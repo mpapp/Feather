@@ -218,23 +218,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         }
         
         // populate root section properties
-        NSMutableArray *rootSections = [NSMutableArray arrayWithCapacity:[[self class] orderedRootSectionClassNames].count];
-        for (NSString *rootSectionClassName in [[self class] orderedRootSectionClassNames])
-        {
-            Class rootSectionCls = NSClassFromString(rootSectionClassName);
-            assert([rootSectionCls isSubclassOfClass:[MPRootSection class]]);
-            
-            // "MPManuscriptRootSection" => "ManucriptRootSection"
-            NSString *classPrefixlessStr = [rootSectionClassName stringByReplacingOccurrencesOfRegex:@"MP" withString:@""];
-            // "ManuscriptRootSection"   => "manuscriptRootSection"
-            NSString *propertyName = [classPrefixlessStr camelCasedString];
-            
-            MPRootSection *rootSection = [[rootSectionCls alloc] initWithPackageController:self];
-            [self setValue:rootSection forKey:propertyName];
-            [rootSections addObject:rootSection];
-        }
-        
-        _rootSections = [rootSections copy];
+        _rootSections = [self newRootSections];
         
         _registeredViewNames = [NSMutableSet setWithCapacity:128];
         
@@ -261,6 +245,30 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     }
     
     return self;
+}
+
+- (NSArray *)newRootSections {
+    NSMutableArray *rootSections = [NSMutableArray arrayWithCapacity:[[self class] orderedRootSectionClassNames].count];
+    for (NSString *rootSectionClassName in [[self class] orderedRootSectionClassNames])
+    {
+        Class rootSectionCls = NSClassFromString(rootSectionClassName);
+        NSAssert([rootSectionCls isSubclassOfClass:[MPRootSection class]],
+                 @"%@ is of unexpected class %@", rootSectionClassName, rootSectionCls);
+
+        // module name may be used as a prefix
+        NSString *moduleNameFreeRootSectionClassName = [rootSectionClassName componentsSeparatedByString:@"."].lastObject;
+        
+        // "MPManuscriptRootSection" => "ManucriptRootSection"
+        NSString *classPrefixlessStr = [moduleNameFreeRootSectionClassName stringByReplacingOccurrencesOfRegex:@"MP" withString:@""];
+        // "ManuscriptRootSection"   => "manuscriptRootSection"
+        NSString *propertyName = [classPrefixlessStr camelCasedString];
+        
+        MPRootSection *rootSection = [[rootSectionCls alloc] initWithPackageController:self];
+        [self setValue:rootSection forKey:propertyName];
+        [rootSections addObject:rootSection];
+    }
+    
+    return rootSections.copy;
 }
 
 - (MPDatabase *)initializeDatabaseNamed:(NSString *)dbName error:(NSError **)error
