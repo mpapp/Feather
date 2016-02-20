@@ -29,7 +29,9 @@
   * MPVirtualSection declares these synonymous to -children, but subclasses can overload in a way where -children and -representedObjects return different arrays of objects. */
 @property (readonly, strong, nonnull) NSArray<id<MPTreeItem>> *representedObjects;
 
-- (nonnull instancetype)initWithPackageController:(nonnull MPDatabasePackageController *)pkgController parent:(nonnull id<MPTreeItem>)parent;
+- (nonnull instancetype)init NS_UNAVAILABLE;
+
+- (nonnull instancetype)initWithPackageController:(nonnull MPDatabasePackageController *)pkgController parent:(nonnull id<MPTreeItem>)parent NS_DESIGNATED_INITIALIZER;
 
 @property (readonly, copy, nonnull) NSString *thumbnailImageName;
 @property (readonly, strong, nonnull) NSImage *thumbnailImage;

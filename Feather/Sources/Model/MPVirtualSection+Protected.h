@@ -9,10 +9,10 @@
 #import <Feather/MPVirtualSection.h>
 
 @interface MPVirtualSection ()
-@property (readwrite, weak) id<MPTreeItem> parent;
-@property (readwrite, strong) NSImage *cachedThumbnailImage;
-@property (readwrite, strong) NSArray *cachedChildren;
-@property (readwrite, strong) NSArray *cachedRepresentedObjects;
+@property (readwrite, weak, nullable) id<MPTreeItem> parent;
+@property (readwrite, strong, nullable) NSImage *cachedThumbnailImage;
+@property (readwrite, strong, nullable) NSArray<id<MPTreeItem>> *cachedChildren;
+@property (readwrite, strong, nullable) NSArray *cachedRepresentedObjects;
 
 @property (readwrite) BOOL childrenCacheIsStale;
 @property (readwrite) BOOL representedObjectsCacheIsStale;
@@ -27,9 +27,9 @@
     NSArray *_representedObjects;
 }
 
-@property (readwrite, copy) NSString *extendedTitle;
-@property (readwrite, strong) Class representedObjectClass;
-@property (readwrite, strong) NSArray *representedObjects;
-@property (readwrite, strong) NSArray *observedManagedObjectClasses;
+@property (readwrite, copy, nullable) NSString *extendedTitle;
+@property (readwrite, strong, nullable) Class representedObjectClass;
+@property (readwrite, strong, nonnull) NSArray *representedObjects;
+@property (readwrite, strong, nonnull) NSArray *observedManagedObjectClasses;
 @end
 

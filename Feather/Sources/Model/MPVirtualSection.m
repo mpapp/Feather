@@ -31,12 +31,6 @@
     return YES; // UI oriented cache.
 }
 
-- (instancetype)init
-{
-    @throw [[MPInitIsPrivateException alloc] initWithSelector:_cmd];
-    return nil;
-}
-
 - (instancetype)initWithPackageController:(MPDatabasePackageController *)pkgController parent:(id<MPTreeItem>)parent
 {
     NSParameterAssert([NSThread isMainThread]);

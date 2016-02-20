@@ -43,8 +43,10 @@ NSString *const MPPasteboardTypeRootSection = @"com.piipari.root-section.id.plis
 
 + (Class)managedObjectClass
 {
-    NSString *className = [NSStringFromClass(self) stringByReplacingOccurrencesOfRegex:@"RootSection$"
-                                                                             withString:@""];
+    // the module name may be part of the class name as a prefix.
+    NSString *clsName = [NSStringFromClass(self) componentsSeparatedByString:@"."].lastObject;
+    NSString *className = [clsName stringByReplacingOccurrencesOfRegex:@"RootSection$"
+                                                            withString:@""];
     
     Class class = NSClassFromString(className);
     NSAssert([class isSubclassOfClass:[MPManagedObject class]], @"%@ is not a subclass of MPManagedObject.", class);

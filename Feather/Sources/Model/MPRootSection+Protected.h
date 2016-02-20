@@ -10,6 +10,6 @@
 
 @interface MPRootSection ()
 - (void)refreshCachedValues;
-@property (readwrite) NSArray *cachedChildren;
-@property (readwrite) NSArray *fixedChildren;
+@property (readwrite, nullable) NSArray<id<MPTreeItem>> *cachedChildren;
+@property (readwrite, nullable) NSArray<id<MPTreeItem>> *fixedChildren;
 @end
