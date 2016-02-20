@@ -17,7 +17,7 @@
 #import "MPEmbeddedObject.h"
 #import "MPEmbeddedPropertyContainingMixin.h"
 
-extern NSString * const MPManagedObjectErrorDomain;
+extern NSString * _Nonnull const MPManagedObjectErrorDomain;
 
 typedef NS_ENUM(NSInteger, MPManagedObjectErrorCode)
 {
@@ -43,13 +43,13 @@ typedef NS_ENUM(NSInteger, MPManagedObjectChangeSource)
 };
 
 /** Pasteboard type for a full managed object. */
-extern NSString *const MPPasteboardTypeManagedObjectFull;
+extern NSString * _Nonnull const MPPasteboardTypeManagedObjectFull;
 
 /** Pasteboard type for a minimal managed object representation with necessary identifiers to find the object by its ID and package controller ID. */
-extern NSString *const MPPasteboardTypeManagedObjectID;
+extern NSString * _Nonnull const MPPasteboardTypeManagedObjectID;
 
 /** Pasteboard type for an array of object ID representations. */
-extern NSString *const MPPasteboardTypeManagedObjectIDArray;
+extern NSString * _Nonnull const MPPasteboardTypeManagedObjectIDArray;
 
 /** An empty tag protocol used to signify objects which can be referenced across database boundaries.
   * This information is used to determine the correct controller for an object. */
@@ -77,67 +77,70 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
     <NSPasteboardWriting, NSPasteboardReading, MPCacheable, MPEmbeddingObject, MPJSONRepresentable>
 
 /** The managed objects controller which manages (and caches) the object. */
-@property (weak, readonly) MPManagedObjectsController *controller;
+@property (weak, readonly, nullable) MPManagedObjectsController *controller;
 
 /** The _id of the document this model object represents. Non-nil always, even for deleted objects. */
-@property (readonly, copy) NSString *documentID;
+@property (readonly, copy, nullable) NSString *documentID;
 
 /** The document ID without the object type prefix. */
-@property (readonly, copy) NSString *prefixlessDocumentID;
+@property (readonly, copy, nullable) NSString *prefixlessDocumentID;
 
 /** The creation date: the moment -save or -saveModels was issued the first time for the object. It is earlier than the exact moment at which the the object was created in the database. */
-@property (readonly, assign) NSDate *createdAt;
+@property (readonly, assign, nullable) NSDate *createdAt;
 
 /** The last update date: the moment -save or -saveModels was issued the last time. It is later than the last a property change was made, and earlier than the exact moment at which the update was registered in the database. */
-@property (readonly, assign) NSDate *updatedAt;
+@property (readonly, assign, nullable) NSDate *updatedAt;
 
 /** Identifier automatically set by each save of this object to the value of the current session, but only if [self.class shouldTrackSessionID] returns YES. */
-@property (readonly) NSString *sessionID;
+@property (readonly, nullable) NSString *sessionID;
 
 /** The MPContributor who created the object. */
-@property (readonly, strong) MPContributor *creator;
+@property (readonly, strong, nullable) MPContributor *creator;
 
 /** Array of MPContributor objects who have edited this document. Kept in the order of last editor: if you're A and the list of editors before your edit was [A,B,C], the array is reodered to [B,C,A]. */
-@property (readonly, strong) NSArray *editors;
+@property (readonly, strong, nullable) NSArray *editors;
 
 /** The complete set of scriptable properties for the scriptable object. */
-@property (readwrite, copy) NSDictionary *scriptingProperties;
+@property (readwrite, copy, nonnull) NSDictionary *scriptingProperties;
 
 /** Sets properties using a dictionary deriving from the scripting system, meaning that the dictionary can have object specifiers as values as well as other objects. */
-- (void)setScriptingDerivedProperties:(NSDictionary *)scriptingDerivedProperties;
+- (void)setScriptingDerivedProperties:(nonnull NSDictionary *)scriptingDerivedProperties;
 
 #pragma mark - Sharing & Moderation
 
 /** The object has been marked shared by the user. Cannot guaranteed to be undone. */
 @property (readonly, assign, getter=isShared) BOOL shared;
 
-- (BOOL)shareWithError:(NSError **)err;
+- (BOOL)shareWithError:(NSError *_Nullable *_Nullable)err;
 
 /** The object's moderation state. By default has value MPManagedObjectModerationStateUnmoderated. Other values imply that the object is also marked shared. */
-@property (readonly, assign) MPManagedObjectModerationState moderationState;
+@property (readonly) MPManagedObjectModerationState moderationState;
 
 /** The object has been moderated as either accepted or rejected by administrators of a shared managed object database. YES implies that the object is also marked shared.*/
-@property (readonly, assign) BOOL isModerated;
+@property (readonly) BOOL isModerated;
 
 /** The object has been moderated as accepted by administrators of a shared managed object database. YES implies that the object is also marked shared. */
-@property (readonly, assign) BOOL isAccepted;
+@property (readonly) BOOL isAccepted;
 - (void)accept;
 
 /** The object has been moderated as rejected by administrators of a shared managed object database. YES implies that the object is also marked shared. */
-@property (readonly, assign) BOOL isRejected;
+@property (readonly) BOOL isRejected;
+
+/** Sets isRejected=YES if it weren't already. Intended to be called only if isRejected=NO. */
 - (void)reject;
 
 /** Returns a value transformed from the prototype object to the prototyped object. Can be for instance the original value, a placeholder value, a copy of the original value, or nil. For instance the property 'title' might be transformed to hide the user's set value for a title to just "Document title". */
-- (id)prototypeTransformedValueForPropertiesDictionaryKey:(NSString *)key forCopyOfPrototypeObject:(MPManagedObject *)mo;
+- (nullable id)prototypeTransformedValueForPropertiesDictionaryKey:(nonnull NSString *)key
+                                          forCopyOfPrototypeObject:(nonnull MPManagedObject *)mo;
 
 /** A human readable name for a property key. Default implementation returns simply the key, capitalized. */
-- (NSString *)humanReadableNameForPropertyKey:(NSString *)key;
+- (nonnull NSString *)humanReadableNameForPropertyKey:(nonnull NSString *)key;
 
 /** The identifier of the object on which this object is based on. Implies that the object is a template. */
-@property (readonly, copy) NSString *prototypeID;
+@property (readonly, copy, nullable) NSString *prototypeID;
 
 /** The prototype object on which this object is based on. */
-@property (readonly, strong) id prototype;
+@property (readonly, strong, nullable) __kindof MPManagedObject *prototype;
 
 /** The object is based on a prototype object. Implies prototype != nil. */
 @property (readonly) BOOL hasPrototype;
@@ -150,7 +153,9 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 
 /** Indicates this object should currently not be allowed to be edited by the user. Useful, for example, for document-local copies of shared/bundled objects. */
 @property (readonly, getter=isLocked) BOOL locked;
+
 - (void)lock;
+
 - (void)unlock;
 
 /** Saves and on failure posts an error notification on errors to the object's package controller's notification center. */
@@ -161,13 +166,13 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 
 /** Saves the object, and all it’s embedded object typed properties, and managed object typed properties.
  * Also sends -deepSave: recursively to all managed and embedded objects referenced by the object. */
-- (BOOL)deepSave:(NSError *__autoreleasing *)outError;
+- (BOOL)deepSave:(NSError *_Nullable __autoreleasing * _Nullable)outError;
 
 /** Deep saves and posts an error notification on errors to the object's package controller's notification center. */
 - (BOOL)deepSave;
 
 /** A shorthand for saving a number of model objects and on hitting an error posting an error notification to the package controller's notification center. */
-+ (BOOL)saveModels:(NSArray *)models;
++ (BOOL)saveModels:(nonnull NSArray<__kindof MPManagedObject *> *)models;
 
 /** Whether this managed object has been deleted. */
 @property (readonly) BOOL isDeleted;
@@ -178,60 +183,60 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 /** The full-text indexable properties for objects of this class. 
   * Default implementation includes none.
   * @return nil if object should not be included in the full-text index, and an array of property key strings. */
-+ (NSArray *)indexablePropertyKeys;
++ (nullable NSArray<NSString *> *)indexablePropertyKeys;
 
 /** The full-text indexable string for a property key. 
   * Default implementation simply calls [self valueForKey:propertyKey] */
-- (NSString *)indexableStringForPropertyKey:(NSString *)propertyKey;
+- (nullable NSString *)indexableStringForPropertyKey:(nonnull NSString *)propertyKey;
 
 /** The tokenized full-text indexable string of the object contents. */
-@property (readonly, copy) NSString *tokenizedFullTextString;
+@property (readonly, copy, nonnull) NSString *tokenizedFullTextString;
 
 /** Get a new document ID for this object type. Not to be called on MPManagedObject directly, but on its concrete subclasses. */
-+ (NSString *)idForNewDocumentInDatabase:(CBLDatabase *)db;
++ (nonnull NSString *)idForNewDocumentInDatabase:(nonnull CBLDatabase *)db;
 
 /** Validation function for saves. All MPManagedObject revision saves (creation & update, NOT deletion) will be evaluated through this function. Default implementation returns YES. Note that there is no need to validate the presence of 'objectType' fields, required prefixing, or other universally required MPManagedObject properties here. Revisions for which this method is run are guaranteed to be non-deleted. */
-+ (BOOL)validateRevision:(CBLRevision *)revision;
++ (BOOL)validateRevision:(nonnull CBLRevision *)revision;
 
 /** Return YES if a property with the given name is required _in the properties dictionary_. 
   * Default implementation returns NO to all properties, and at the time of writing is not used by MPManagedObject validateRevision: but is used by some subclasses. */
-+ (BOOL)requiresProperty:(NSString *)property;
++ (BOOL)requiresProperty:(nonnull NSString *)property;
 
 /** Return YES if instances of this class should track a session ID, NO otherwise. Default implementation returns NO.
   * Session ID tracking can be helpful when you want to make behaviour conditional on whether your client on the present session made a change, or 
   * whether it was another client or the same app on a previous time it was run. */
 + (BOOL)shouldTrackSessionID;
 
-+ (Class)managedObjectClassFromDocumentID:(NSString *)documentID __attribute__((nonnull));
++ (nonnull Class)managedObjectClassFromDocumentID:(nonnull NSString *)documentID;
 
 /** Canonicalization removes a http://, https:// scheme, 
   * as well as replacing  ':', '/' and '.' characters with a '-'. */
-+ (NSString *)canonicalizedIdentifierStringForString:(NSString *)string;
++ (nonnull NSString *)canonicalizedIdentifierStringForString:(nonnull NSString *)string;
 
 /** Human readable name for the type */
-+ (NSString *)humanReadableName;
++ (nonnull NSString *)humanReadableName;
 
 /** A representation of the object with identifier, object type and database package ID keys included. 
  * The dictionary can be resolved to an existing object with +objectWithReferableDictionaryRepresentation. */
-@property (readonly) NSDictionary *referableDictionaryRepresentation;
+@property (readonly, nonnull) NSDictionary *referableDictionaryRepresentation;
 
 /** Constructs a MPManagedObject instance of the type specified in the given referable dictionary representation.
   * Intended for creating managed objects from their pasteboard property list representations. */
-+ (id)objectWithReferableDictionaryRepresentation:(NSDictionary *)referableDictionaryRep;
++ (nonnull id)objectWithReferableDictionaryRepresentation:(nonnull NSDictionary *)referableDictionaryRep;
 
 /**
  *  Returns an object ID array pasteboard representation for a collection of managed objects.
  */
-+ (NSData *)pasteboardObjectIDPropertyListForObjects:(NSArray *)objectIDDictionaries error:(NSError **)err;
++ (nonnull NSData *)pasteboardObjectIDPropertyListForObjects:(nonnull NSArray *)objectIDDictionaries error:(NSError *_Nullable *_Nullable)err;
 
 /** These pasteboard types should be returned as promises. */
-+ (NSSet *)promisedPasteboardTypes;
++ (nonnull NSSet<NSString *> *)promisedPasteboardTypes;
 
 /** String representation of a JSON encodable dictionary representation of the object. By default the representation does not contain referenced objects, but subclasses can override to embed ("denormalise") referenced objects. */
-- (NSString *)JSONStringRepresentation:(NSError **)err;
+- (nonnull NSString *)JSONStringRepresentation:(NSError *_Nullable *_Nullable)err;
 
 /** A JSON encodable dictionary representation of the object. By default the representation does not contain referenced objects, but subclasses can override to embed ("denormalise") referenced objects. */
-@property (readonly, copy) NSDictionary *JSONEncodableDictionaryRepresentation;
+@property (readonly, copy, nonnull) NSDictionary *JSONEncodableDictionaryRepresentation;
 
 /** 
  * The class is intended to be made concrete instances of. 
@@ -244,33 +249,40 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 * Initialise a managed object with a new document managed by the specified controller.
  * @param controller The managed object controller for this object. Must not be nil.
  */
-- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller;
+- (nonnull instancetype)initWithNewDocumentForController:(nonnull MPManagedObjectsController *)controller;
 
 /** Initializer used to when creating a new object with a given prototype.
   * Override in subclass if initialising when copying with a prototype should go a different route. */
-- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller prototype:(id)prototype;
+- (nonnull instancetype)initWithNewDocumentForController:(nonnull MPManagedObjectsController *)controller
+                                               prototype:(nullable __kindof MPManagedObject *)prototype;
 
 /** Initialise a managed object with a new document managed by the specified controller.
   * @param managedObject a non-nil managed object of the same class as the object being returned.
   * @param controller The managed object controller for this object. Must not be nil, but may be different to the controller of managedObject.
   * */
-- (instancetype)initCopyOfManagedObject:(MPManagedObject *)managedObject
-                             controller:(MPManagedObjectsController *)controller;
+- (nonnull instancetype)initCopyOfManagedObject:(nonnull MPManagedObject *)managedObject
+                                     controller:(nonnull MPManagedObjectsController *)controller;
 
 /** A utility method which helps implementing setters for properties which have a managed object subclass as their type (e.g. 'section' as property key is internally stored as 'sectionIDs', setter stores document IDs).  */
-- (void)setObjectIdentifierArrayValueForManagedObjectArray:(NSArray *)objectArray property:(NSString *)propertyKey;
+- (void)setObjectIdentifierArrayValueForManagedObjectArray:(nullable NSArray<__kindof MPManagedObject *> *)objectArray
+                                                  property:(nonnull NSString *)propertyKey;
 
 /** A utility method which helps implementing getters for properties which have a managed object subclass as their intended type (e.g. 'section' as property key is internally stored as 'sectionIDs', getter retrieves objects by document ID).  */
-- (NSArray *)getValueOfObjectIdentifierArrayProperty:(NSString *)propertyKey;
+- (nonnull NSArray<__kindof MPManagedObject *> *)getValueOfObjectIdentifierArrayProperty:(nonnull NSString *)propertyKey;
 
-- (void)setObjectIdentifierSetValueForManagedObjectArray:(NSSet *)objectSet property:(NSString *)propertyKey;
+- (void)setObjectIdentifierSetValueForManagedObjectArray:(nullable NSArray<__kindof MPManagedObject *> *)objectSet
+                                                property:(nonnull NSString *)propertyKey;
 
-- (NSSet *)getValueOfObjectIdentifierSetProperty:(NSString *)propertyKey;
+- (nonnull NSSet<__kindof MPManagedObject *> *)getValueOfObjectIdentifierSetProperty:(nullable NSString *)propertyKey;
 
 /** Set values to an object embedded in a dictionary typed property (e.g. key "R" embedded in dictionary under key "scimago". */
-- (void)setDictionaryEmbeddedValue:(id)value forKey:(NSString *)embeddedKey ofProperty:(NSString *)dictPropertyKey;
+- (void)setDictionaryEmbeddedValue:(nonnull id)value
+                            forKey:(nonnull NSString *)embeddedKey
+                        ofProperty:(nonnull NSString *)dictPropertyKey;
+
 /** Get value of an objec*/
-- (id)getValueForDictionaryEmbeddedKey:(NSString *)embeddedKey ofProperty:(NSString *)dictPropertyKey;
+- (nullable id)getValueForDictionaryEmbeddedKey:(nonnull NSString *)embeddedKey
+                                     ofProperty:(nonnull NSString *)dictPropertyKey;
 
 #pragma mark - Attachments
 
@@ -280,10 +292,10 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
  * @param type The content type of the attachment (MIME type).
  * @param err An optional error pointer.
  */
-- (BOOL)createAttachmentWithName:(NSString *)name
-                      withString:(NSString *)string
-                            type:(NSString *)type
-                           error:(NSError **)err;
+- (BOOL)createAttachmentWithName:(nonnull NSString *)name
+                      withString:(nonnull NSString *)string
+                            type:(nonnull NSString *)type
+                           error:(NSError *_Nullable *_Nullable)err;
 
 /** Create an attachment with string.
  * @param name The name of the attachment. Must be unique per managed object (there can be multiple attachments in the database with the same name, but not multiple for the same managed object).
@@ -291,10 +303,10 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
  * @param type Optional content type of the attachment (MIME type). If nil is given, an attempt is made to determine the file type from the file contents.
  * @param err An optional error pointer.
  */
-- (BOOL)createAttachmentWithName:(NSString *)name
-               withContentsOfURL:(NSURL *)url
-                            type:(NSString *)type
-                           error:(NSError **)err;
+- (BOOL)createAttachmentWithName:(nonnull NSString *)name
+               withContentsOfURL:(nonnull NSURL *)url
+                            type:(nonnull NSString *)type
+                           error:(NSError *_Nullable *_Nullable)err;
 
 
 /** A method which is called after successful initialisation steps but before the object is returned. Can be overloaded by subclasses (oveloaded methods should call the superclass -didInitialize). This method should not be called directly. */
@@ -303,16 +315,18 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 #pragma mark - Scripting
 
 /** Object specifier key for scripting support (the property key in the container) for the *class*. Default implementation: MPManagedObject -> 'allManagedObjects'. Need not be, but can be, overloaded. The container for objects of this type must implement a property with the corresponding name (for instance allManagedObjects).  */
-+ (NSString *)objectSpecifierKey;
++ (nonnull NSString *)objectSpecifierKey;
 
 /** Object specifier key for scripting support for the *instance*. Default implementation calls +objectSpecifierKey. Need not be, but can be, overloaded. */
-@property (readonly, copy) NSString *objectSpecifierKey;
+@property (readonly, copy, nonnull) NSString *objectSpecifierKey;
 
+// FIXME: This does not really belong in MPManagedObject.
 /** String representing the camel cased singular form of instances of this class, useful for property naming. */
-+ (NSString *)singular;
++ (nonnull NSString *)singular;
 
+// FIXME: This does not really belong in MPManagedObject.
 /** String representing the camel cased plural form of instances of this class, useful for property naming. */
-+ (NSString *)plural;
++ (nonnull NSString *)plural;
 
 #pragma mark - 
 
@@ -327,6 +341,6 @@ extern NSString *const MPPasteboardTypeManagedObjectIDArray;
 
 /** A proxy object which calls -save every time setValue:forKey: is called. */
 @interface MPAutosavingManagedObjectProxy : NSProxy
-@property (readonly) MPManagedObject *managedObject;
-- (instancetype)initWithObject:(MPManagedObject *)o;
+@property (readonly, nonnull) MPManagedObject *managedObject;
+- (nonnull instancetype)initWithObject:(nonnull MPManagedObject *)o;
 @end
