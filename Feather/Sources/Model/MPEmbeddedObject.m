@@ -226,7 +226,7 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
 
 - (MPEmbeddedObject *)embeddedObjectWithIdentifier:(NSString *)identifier
 {
-    assert(_embeddedObjectCache);
+    NSAssert(_embeddedObjectCache, @"Embedded object cache is unexpectedly nil");
     return _embeddedObjectCache[identifier];
 }
 
@@ -236,7 +236,8 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
         return;
     
     // should be set only once to a non-null value (shouldn't try setting to non-null value B after setting to A)
-    assert(!_embeddingKey || [_embeddingKey isEqualToString:embeddingKey]);
+    NSAssert(!_embeddingKey || [_embeddingKey isEqualToString:embeddingKey],
+             @"Unexpected _embeddingKey: %@ (expected nil or %@)", _embeddingKey, embeddingKey);
     
     _embeddingKey = embeddingKey;
 }
@@ -319,7 +320,7 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
 }
 
 - (void)cacheValue:(id)value ofProperty:(NSString *)property changed:(BOOL)changed {
-    NSAssert(property, @"Attempting to set value of property with nil argument for object: %@", self);
+    NSAssert(property, @"Attempting to set value of property with nil property argument: %@", self);
     NSAssert(self.embeddingObject, @"Object should have a non-nil embeddingObject: %@", self);
     NSAssert(self.embeddingKey, @"Object should have a non-nil embeddingKey: %@", self);
     NSAssert(_properties, @"Object should have its _properties set when setting value to a property: %@", self);

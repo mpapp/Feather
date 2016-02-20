@@ -15,9 +15,9 @@
 @class MPManagedObject;
 @class CBLDatabase;
 
-extern NSString *const MPPasteboardTypeEmbeddedObjectFull;
-extern NSString *const MPPasteboardTypeEmbeddedObjectID;
-extern NSString *const MPPasteboardTypeEmbeddedObjectIDArray;
+extern NSString *_Nonnull const MPPasteboardTypeEmbeddedObjectFull;
+extern NSString *_Nonnull const MPPasteboardTypeEmbeddedObjectID;
+extern NSString *_Nonnull const MPPasteboardTypeEmbeddedObjectIDArray;
 
 /** Protocol used to mark objects which can embed MPEmbeddedObject instances. */
 @protocol MPEmbeddingObject <MPEmbeddedPropertyContaining, NSObject>
@@ -30,15 +30,17 @@ extern NSString *const MPPasteboardTypeEmbeddedObjectIDArray;
 /** Propagates needsSave = false through the embedded properties of the object. */
 - (void)markNeedsNoSave;
 
-- (BOOL)save:(NSError **)err;
+- (BOOL)save:(NSError *_Nullable *_Nullable)err;
 
 @optional
 /** Returns an embedded object with the specified identifier */
-- (MPEmbeddedObject *)embeddedObjectWithIdentifier:(NSString *)identifier;
+- (nullable MPEmbeddedObject *)embeddedObjectWithIdentifier:(nonnull NSString *)identifier;
 
-- (void)cacheEmbeddedObjectByIdentifier:(MPEmbeddedObject *)obj;
+- (void)cacheEmbeddedObjectByIdentifier:(nonnull MPEmbeddedObject *)obj;
 
-- (void)cacheValue:(id)value ofProperty:(NSString *)property changed:(BOOL)changed;
+- (void)cacheValue:(nullable id)value
+        ofProperty:(nonnull NSString *)property
+           changed:(BOOL)changed;
 
 @end
 
@@ -49,48 +51,49 @@ extern NSString *const MPPasteboardTypeEmbeddedObjectIDArray;
 NS_REQUIRES_PROPERTY_DEFINITIONS
 @interface MPEmbeddedObject : MYDynamicObject <MPEmbeddingObject, NSPasteboardWriting, NSPasteboardReading>
 
-@property (readonly, copy) NSString *identifier;
+@property (readonly, copy, nonnull) NSString *identifier;
 
-@property (weak, readonly) id<MPEmbeddingObject> embeddingObject;
-@property (copy, readonly) NSString *embeddingKey;
+@property (weak, readonly, nullable) id<MPEmbeddingObject> embeddingObject;
+@property (copy, readonly, nullable) NSString *embeddingKey;
 
-@property (readonly, strong) NSMutableSet *changedNames;
+@property (readonly, strong, nonnull) NSMutableSet<NSString *> *changedNames;
 
-- (CBLDatabase *)databaseForModelProperty:(NSString *)property;
+- (nonnull CBLDatabase *)databaseForModelProperty:(nonnull NSString *)property;
 
-- (instancetype)initWithEmbeddingObject:(id<MPEmbeddingObject>)embeddingObject embeddingKey:(NSString *)embeddingKey;
+- (nonnull instancetype)initWithEmbeddingObject:(nonnull id<MPEmbeddingObject>)embeddingObject
+                                   embeddingKey:(nonnull NSString *)embeddingKey;
 
-- (instancetype)initWithDictionary:(NSDictionary *)propertiesDict
-                   embeddingObject:(id<MPEmbeddingObject>)embeddingObject
-                      embeddingKey:(NSString *)key;
+- (nonnull instancetype)initWithDictionary:(nonnull NSDictionary *)propertiesDict
+                           embeddingObject:(nonnull id<MPEmbeddingObject>)embeddingObject
+                              embeddingKey:(nonnull NSString *)key;
 
 /** Returns JSON-encodable dictionary representation of this embedded object. */
-- (NSDictionary *)dictionaryRepresentation;
+- (nonnull NSDictionary *)dictionaryRepresentation;
 
 /** Returns a JSON encodable version of the embedded object. */
-- (NSString *)externalize;
+- (nonnull NSString *)externalize;
 
 /** The embedding managed object of an embedded object is the managed object found when the path is followed through 'embeddingObject' until a MPManagedObject instance is found. */
-@property (readonly) __kindof MPManagedObject *embeddingManagedObject;
+@property (readonly, nullable) __kindof MPManagedObject *embeddingManagedObject;
 
 /** Returns an MPEmbeddedObject instance for a JSON string. 
   * The class of the object is determined by its 'objectType' property. */
-+ (instancetype)embeddedObjectWithJSONString:(NSString *)string
-                             embeddingObject:(id<MPEmbeddingObject>)embeddingObject
-                                embeddingKey:(NSString *)key;
++ (nonnull instancetype)embeddedObjectWithJSONString:(nonnull NSString *)string
+                                     embeddingObject:(nonnull id<MPEmbeddingObject>)embeddingObject
+                                        embeddingKey:(nonnull NSString *)key;
 
-+ (instancetype)embeddedObjectWithDictionary:(NSDictionary *)dictionary
-                             embeddingObject:(id<MPEmbeddingObject>)embeddingObject
-                                embeddingKey:(NSString *)key;
++ (nonnull instancetype)embeddedObjectWithDictionary:(nonnull NSDictionary *)dictionary
+                                     embeddingObject:(nonnull id<MPEmbeddingObject>)embeddingObject
+                                        embeddingKey:(nonnull NSString *)key;
 
 /** Get an embedded object given a dictionary representation that contains a reference to it (used by the pasteboard reader). */
-+ (id)objectWithReferableDictionaryRepresentation:(NSDictionary *)referableDictionaryRep;
++ (nullable __kindof MPEmbeddedObject *)objectWithReferableDictionaryRepresentation:(nonnull NSDictionary *)referableDictionaryRep;
 
-- (BOOL)save:(NSError *__autoreleasing *)outError;
+- (BOOL)save:(NSError *_Nullable __autoreleasing *_Nullable)outError;
 
 /** Saves the object, and all it’s embedded object typed properties, and managed object typed properties.
  * Also sends -deepSave: recursively to all managed and embedded objects referenced by the object. */
-- (BOOL)deepSave:(NSError *__autoreleasing *)outError;
+- (BOOL)deepSave:(NSError *_Nullable __autoreleasing *_Nullable)outError;
 
 /** Deep saves and posts an error notification on errors to the object's package controller's notification center. */
 - (BOOL)deepSave;
