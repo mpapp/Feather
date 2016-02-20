@@ -1731,14 +1731,14 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     
     #ifdef DEBUG
     if ([property isEqualToString:@"objectType"])
-        assert(value);
+        NSAssert(value, @"Expecting a non-nil objectType.");
     #endif
     
     // should not be setting objectType to nil.
     if ([property isEqualTo:@"objectType"])
     {
         NSString *existingObjectType = [self getValueOfProperty:@"objectType"];
-        assert(value);
+        NSAssert(value, @"Expecting a non-nil objectType value (%@).", self.class);
         
         if (existingObjectType)
         {
@@ -1752,7 +1752,7 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     // should not be setting _id to nil
     if ([property isEqual:@"_id"])
     {
-        assert(value);
+        NSAssert(value, @"Expecting a non-nil _id value (%@).", self.class);
         
         NSString *existingID = [self getValueOfProperty:@"_id"];
         
