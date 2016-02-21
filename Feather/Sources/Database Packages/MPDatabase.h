@@ -159,6 +159,8 @@ typedef enum MPDatabaseErrorCode
 /** A back pointer from a CBLDatabase to its MPDatabasePackageController. This is stored as an ObjC runtime associative reference. The method should only be called on a CBLDatabase owned by a MPDatabasePackageController, as the non-nilness of the database controller pointer is asserted. */
 @property (readonly, weak) id packageController;
 
+@property (nonatomic, readonly) BOOL isOpen;
+
 /** Get managed object model objects for documents specified by the array of IDs from the database. */
 - (NSArray *)getManagedObjectsWithIDs:(NSArray *)ids;
 
