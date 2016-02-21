@@ -77,7 +77,7 @@ extern NSString * _Nonnull const MPPasteboardTypeManagedObjectIDArray;
     <NSPasteboardWriting, NSPasteboardReading, MPCacheable, MPEmbeddingObject, MPJSONRepresentable>
 
 /** The managed objects controller which manages (and caches) the object. */
-@property (weak, readonly, nullable) MPManagedObjectsController *controller;
+@property (weak, readonly, nullable) __kindof MPManagedObjectsController *controller;
 
 /** The _id of the document this model object represents. Non-nil always, even for deleted objects. */
 @property (readonly, copy, nullable) NSString *documentID;
