@@ -46,14 +46,14 @@
 @property (readonly, strong, nullable) MPManagedObject<MPTitledProtocol, MPPlaceHolding, MPThumbnailable, MPTreeItem> *wrappedObject;
 
 // FIXME: make this readonly.
-/** The children of the wrapped object, each a MPManagedObject which implements MPTreeItem. */
-@property (readwrite, strong, nonnull) NSArray<MPManagedObject<MPTreeItem> *> *wrappedChildren;
+/** The children of the wrapped object, each conformant to MPTreeItem. */
+@property (readwrite, strong, nonnull) NSArray<id<MPTreeItem>> *wrappedChildren;
 
 - (nonnull instancetype)initWithParent:(nonnull id<MPTreeItem>)parentItem
                          wrappedObject:(nonnull MPManagedObject<MPTitledProtocol, MPPlaceHolding> *)obj;
 
 /** Create an array of MPObjectWrappingSection objects with the specified parent. */
-+ (nonnull NSArray *)arrayOfWrappedObjects:(nonnull NSArray<id<MPTreeItem>> *)wrappedObjects
++ (nonnull NSArray *)arrayOfWrappedObjects:(nonnull NSArray<id<MPTitledProtocol, MPPlaceHolding>> *)wrappedObjects
                                 withParent:(nonnull id<MPTreeItem>)parent;
 
 @end

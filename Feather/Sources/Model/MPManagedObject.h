@@ -6,10 +6,10 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
-
+@import Cocoa;
 @import Foundation;
 @import CouchbaseLite;
+
 #import "MPJSONRepresentable.h"
 
 #import "MPCacheable.h"

@@ -60,6 +60,7 @@
 		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
 		5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
+		5F9F226A1C792A0800244277 /* CollectionType+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9F22691C792A0800244277 /* CollectionType+MPExtensions.swift */; };
 		5FAC23BF19ABFE79000F188C /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAC23BE19ABFE79000F188C /* CoreServices.framework */; };
 		5FC423131AFF8719002234FB /* FeatherExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC423121AFF8719002234FB /* FeatherExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC423191AFF8719002234FB /* FeatherExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; };
@@ -311,6 +312,7 @@
 		5F95F2D71739A94300E8C845 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPIndexableMixin.h; path = Sources/Model/MPIndexableMixin.h; sourceTree = "<group>"; };
 		5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPIndexableMixin.m; path = Sources/Model/MPIndexableMixin.m; sourceTree = "<group>"; };
+		5F9F22691C792A0800244277 /* CollectionType+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CollectionType+MPExtensions.swift"; sourceTree = "<group>"; };
 		5FA0D11319012D19005BC968 /* NSIndexSet+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSIndexSet+MPExtensions.h"; path = "Sources/Categories/NSIndexSet+MPExtensions.h"; sourceTree = "<group>"; };
 		5FA0D11419012D19005BC968 /* NSIndexSet+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSIndexSet+MPExtensions.m"; path = "Sources/Categories/NSIndexSet+MPExtensions.m"; sourceTree = "<group>"; };
 		5FAC23B819ABFA94000F188C /* MPScriptingDefinitionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPScriptingDefinitionManager.h; path = ../Feather/Sources/Scripting/MPScriptingDefinitionManager.h; sourceTree = "<group>"; };
@@ -555,6 +557,14 @@
 			name = "Full Text Search";
 			sourceTree = "<group>";
 		};
+		5F9F22681C7929E000244277 /* Swift Standard Library Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				5F9F22691C792A0800244277 /* CollectionType+MPExtensions.swift */,
+			);
+			name = "Swift Standard Library Extensions";
+			sourceTree = "<group>";
+		};
 		5FA858A219E784DA00161A21 /* Bindings */ = {
 			isa = PBXGroup;
 			children = (
@@ -572,6 +582,7 @@
 		5FC4230F1AFF8719002234FB /* FeatherExtensions */ = {
 			isa = PBXGroup;
 			children = (
+				5F9F22681C7929E000244277 /* Swift Standard Library Extensions */,
 				5FDB35CB1705FCBE0049EBB5 /* Cocoa Categories */,
 				5FC423121AFF8719002234FB /* FeatherExtensions.h */,
 				5FC423101AFF8719002234FB /* Supporting Files */,
@@ -1324,6 +1335,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FFD61981AFF97F400483D9C /* NSWindowController+MPExtensions.m in Sources */,
+				5F9F226A1C792A0800244277 /* CollectionType+MPExtensions.swift in Sources */,
 				5FC423411AFF872E002234FB /* NSNotificationCenter+ErrorNotification.m in Sources */,
 				5FC423551AFF872E002234FB /* NSFileManager+MPExtensions.m in Sources */,
 				5FC423451AFF872E002234FB /* NSDictionary+MPExtensions.m in Sources */,

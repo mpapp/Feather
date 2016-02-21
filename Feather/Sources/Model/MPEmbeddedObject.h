@@ -87,7 +87,7 @@ NS_REQUIRES_PROPERTY_DEFINITIONS
                                         embeddingKey:(nonnull NSString *)key;
 
 /** Get an embedded object given a dictionary representation that contains a reference to it (used by the pasteboard reader). */
-+ (nullable __kindof MPEmbeddedObject *)objectWithReferableDictionaryRepresentation:(nonnull NSDictionary *)referableDictionaryRep;
++ (nullable id)objectWithReferableDictionaryRepresentation:(nonnull NSDictionary *)referableDictionaryRep;
 
 - (BOOL)save:(NSError *_Nullable __autoreleasing *_Nullable)outError;
 
