@@ -14,4 +14,6 @@
 
 + (instancetype)viewControllerOfClass:(Class)viewControllerClass withNibNamed:(NSString *)nibName;
 
+- (void)ensureViewIsLoaded;
+
 @end

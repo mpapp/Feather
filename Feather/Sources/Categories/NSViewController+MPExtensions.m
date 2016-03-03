@@ -20,4 +20,9 @@
     return vc;
 }
 
+- (void)ensureViewIsLoaded
+{
+    [self view]; // Yep, this is all — and you can't do this in Swift
+}
+
 @end
