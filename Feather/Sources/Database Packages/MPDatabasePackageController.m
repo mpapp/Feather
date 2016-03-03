@@ -20,8 +20,7 @@
 
 #import "MPRootSection.h"
 
-#import <RegexKitLite/RegexKitLiteFramework.h>
-
+@import RegexKitLite;
 @import CouchbaseLite;
 #import <CouchbaseLiteListener/CBLListener.h>
 
@@ -720,11 +719,31 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (void)setSnapshotsDatabase:(MPDatabase *)snapshotsDatabase { _snapshotsDatabase = snapshotsDatabase; }
 - (MPDatabase *)snapshotsDatabase { return _snapshotsDatabase; }
 
-- (void)close
+- (BOOL)close:(NSError **)error
 {
     NSParameterAssert(_managedObjectsControllers);
     // multiple MOCs can be connected to the same database.
     NSSet *databases = [_managedObjectsControllers valueForKey:@"db"];
+    
+    __block BOOL transactionLevelZero = YES;
+    for (MPDatabase *db in databases) {
+        mp_dispatch_sync(db.server.dispatchQueue, [db.packageController serverQueueToken], ^{
+            if ([[[db.database valueForKey:@"fmdb"] valueForKey:@"transactionLevel"] integerValue] > 0) {
+                transactionLevelZero = NO;
+            }
+        });
+    }
+    
+    if (!transactionLevelZero) {
+        if (*error) {
+            *error = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
+                                         code:MPDatabasePackageControllerErrorCodeOngoingTransaction
+                                     userInfo:@{NSLocalizedDescriptionKey:@"Cannot close due to ongoing transactions",
+                                                NSLocalizedFailureReasonErrorKey:@"Ongoing transactions",
+                                                NSLocalizedRecoverySuggestionErrorKey:@"Try again after finishing up currently open transactions."}];
+        }
+        return NO;
+    }
     
     NSParameterAssert(_managedObjectsControllers);
     NSParameterAssert(databases.count > 0);
@@ -736,6 +755,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
             [db.server close];
         });
     }
+    
+    return YES;
 }
 
 #pragma mark - Filter functions

@@ -101,7 +101,17 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
 - (void)close {
     [super close];
     
-    [_packageController close];
+    NSUInteger retries = 0;
+    NSError *err = nil;
+    while ((retries < 20) && ![(MPDatabasePackageController *)_packageController close:&err]) {
+        [NSThread sleepForTimeInterval:.5];
+        retries++;
+    }
+    
+    if (retries == 20) {
+        NSLog(@"Failed to close package: %@", err);
+    }
+    
     _packageController = nil;
     
     [self cleanUpTemporaryFiles];
@@ -132,7 +142,17 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
 - (void)applicationWillTerminate:(NSNotification *)notification
 {
     if (_packageController) {
-        [(MPDatabasePackageController *)_packageController close];
+        NSError *err = nil;
+        NSUInteger retries = 0;
+        while ((retries < 20) && ![(MPDatabasePackageController *)_packageController close:&err]) {
+            [NSThread sleepForTimeInterval:.5];
+            retries++;
+        }
+        
+        if (retries == 20) {
+            NSLog(@"WARNING! About to terminate application after failing to close document: %@", err);
+        }
+        
         _packageController = nil;
     }
     [self cleanUpTemporaryFiles];

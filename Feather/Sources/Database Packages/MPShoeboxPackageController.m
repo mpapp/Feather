@@ -270,7 +270,10 @@ static dispatch_once_t onceToken;
 
 + (void)finalizeSharedShoeboxController
 {
-    [_sharedInstance close];
+    NSError *err = nil;
+    if (![_sharedInstance close:&err]) {
+        NSLog(@"Failed to finalize shared shoebox controller: %@", err);
+    }
     onceToken = 0;
     _sharedInstance = nil;
 }
