@@ -56,7 +56,8 @@ typedef enum MPDatabasePackageControllerErrorCode {
     MPDatabasePackageControllerErrorCodeDirectoryAlreadyExists = 4,
     MPDatabasePackageControllerErrorCodeCannotInitializeSharedDatabases = 5,
     MPDatabasePackageControllerErrorCodeDictionaryRepresentationInvalid = 6,
-    MPDatabasePackageControllerErrorCodeNoDatabases = 7
+    MPDatabasePackageControllerErrorCodeNoDatabases = 7,
+    MPDatabasePackageControllerErrorCodeOngoingTransaction = 8
 } MPDatabasePackageControllerErrorCode;
 
 
@@ -133,7 +134,7 @@ typedef enum MPDatabasePackageControllerErrorCode {
                                 error:(NSError *__nonnull __autoreleasing *__nonnull)err;
 
 /** Closes all the database package's databases. */
-- (void)close;
+- (BOOL)close:(NSError *_Nullable *_Nullable)error;
 
 /** @return the controller for a MPManagedObject subclass.
  @param class A subclass of MPManagedObject. */
