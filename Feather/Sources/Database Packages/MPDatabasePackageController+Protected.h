@@ -31,4 +31,7 @@
 
 - (void)didChangeDocument:(CBLDocument *)document source:(MPManagedObjectChangeSource)source;
 
+/** Override in subclass if you want to use multiple CBLManagers in the database package. */
+- (CBLManager *)serverForDatabaseWithName:(NSString *)dbName;
+
 @end

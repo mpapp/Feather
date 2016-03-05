@@ -130,7 +130,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
                 return nil;
             
             NSError *dbError = nil;
-            MPDatabase *db = [self initializeDatabaseNamed:dbName error:&dbError];
+            
+            CBLManager *server = [self serverForDatabaseWithName:dbName];
+            MPDatabase *db = [self initializeDatabaseNamed:dbName server:server error:&dbError];
             
             // If database file has been corrupted, replace it with a new one
             if (!db && dbError && [dbError.domain isEqualToString:@"SQLite"] && dbError.code == 26)
@@ -145,7 +147,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
                     }
                 }
                 
-                db = [self initializeDatabaseNamed:dbName error:&dbError];
+                db = [self initializeDatabaseNamed:dbName server:server error:&dbError];
                 
                 if (db) {
                     [didResetDatabases addObject:db];
@@ -270,10 +272,12 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return rootSections.copy;
 }
 
-- (MPDatabase *)initializeDatabaseNamed:(NSString *)dbName error:(NSError **)error
+- (MPDatabase *)initializeDatabaseNamed:(NSString *)dbName
+                                 server:(CBLManager *)server
+                                  error:(NSError **)error
 {
     NSString *pushFilterName = [self pushFilterNameForDatabaseNamed:dbName];
-    MPDatabase *db = [[MPDatabase alloc] initWithServer:_server
+    MPDatabase *db = [[MPDatabase alloc] initWithServer:server ?: _server
                                       packageController:self
                                                    name:dbName
                                           ensureCreated:YES
@@ -1538,6 +1542,10 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
     [moc didChangeDocument:document forObject:(id)document.modelObject source:source];
 }
 
+- (CBLManager *)serverForDatabaseWithName:(NSString *)dbName {
+    NSParameterAssert(_server);
+    return _server;
+}
 
 @end
 
