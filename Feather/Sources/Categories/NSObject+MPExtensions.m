@@ -116,11 +116,17 @@
     objc_property_t prop = class_getProperty(self, [key UTF8String]);
     if (!prop) return NO;
     
-    const char attribs = *property_getAttributes(prop);
+    const char *attribs = property_getAttributes(prop);
     if (!attribs) return NO;
     
-    // R = readonly
-    return ![[[NSString alloc] initWithUTF8String:&attribs] containsSubstring:@"R"];
+    size_t len = strlen(attribs);
+    for (NSUInteger i = 0; i < len; i++) {
+        if (attribs[i] == 'R') {
+            return YES;
+        }
+    }
+    
+    return NO;
 }
 
 + (Class)commonAncestorForClass:(Class)a andClass:(Class)b
