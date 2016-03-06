@@ -122,11 +122,11 @@
     size_t len = strlen(attribs);
     for (NSUInteger i = 0; i < len; i++) {
         if (attribs[i] == 'R') {
-            return YES;
+            return NO;
         }
     }
     
-    return NO;
+    return YES;
 }
 
 + (Class)commonAncestorForClass:(Class)a andClass:(Class)b
