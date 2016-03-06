@@ -55,6 +55,7 @@
 		5F6857F017287F3100FE06B0 /* MPRootSection+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6C563C1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6C563B1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift */; };
 		5F73DEA7170C6BA300DC411A /* MPShoeboxPackageController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F75C38A1C8BA2C700D67DA4 /* NSArray+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F75C3891C8BA2C700D67DA4 /* NSArray+MPExtensions.swift */; };
 		5F779FCC172BDC3C0011C4DD /* MPThumbnailable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F779FB8172BDC180011C4DD /* MPThumbnailable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F779FF6172BE69A0011C4DD /* MPRESTFulResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F779FF4172BE69A0011C4DD /* MPRESTFulResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
@@ -305,6 +306,7 @@
 		5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MPRootSection+Protected.h"; path = "Sources/Model/MPRootSection+Protected.h"; sourceTree = "<group>"; };
 		5F6C563B1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+MPExtensions.swift"; sourceTree = "<group>"; };
 		5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPShoeboxPackageController+Protected.h"; path = "Sources/Database Packages/MPShoeboxPackageController+Protected.h"; sourceTree = "<group>"; };
+		5F75C3891C8BA2C700D67DA4 /* NSArray+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSArray+MPExtensions.swift"; sourceTree = "<group>"; };
 		5F779F9A172BD3D20011C4DD /* NSView+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSView+MPExtensions.h"; path = "Sources/Categories/NSView+MPExtensions.h"; sourceTree = "<group>"; };
 		5F779F9B172BD3D20011C4DD /* NSView+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSView+MPExtensions.m"; path = "Sources/Categories/NSView+MPExtensions.m"; sourceTree = "<group>"; };
 		5F779FB8172BDC180011C4DD /* MPThumbnailable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MPThumbnailable.h; path = Sources/Model/MPThumbnailable.h; sourceTree = "<group>"; };
@@ -813,6 +815,7 @@
 				5FFD61AD1AFFAAAA00483D9C /* NSTextView+MPExtensions.m */,
 				5FDB382B170702CD0049EBB5 /* NSArray+MPExtensions.h */,
 				5FDB382C170702CD0049EBB5 /* NSArray+MPExtensions.m */,
+				5F75C3891C8BA2C700D67DA4 /* NSArray+MPExtensions.swift */,
 				5FDB3A9917079EA80049EBB5 /* NSNotificationCenter+ErrorNotification.h */,
 				5FDB3A9A17079EAB0049EBB5 /* NSNotificationCenter+ErrorNotification.m */,
 				5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */,
@@ -1347,6 +1350,7 @@
 				5FC4234D1AFF872E002234FB /* NSSet+MPExtensions.m in Sources */,
 				5FC4235F1AFF872E002234FB /* NSUUID+MPExtensions.m in Sources */,
 				5FFD61941AFF97C600483D9C /* NSViewController+MPExtensions.m in Sources */,
+				5F75C38A1C8BA2C700D67DA4 /* NSArray+MPExtensions.swift in Sources */,
 				5FC423491AFF872E002234FB /* NSError+MPExtensions.m in Sources */,
 				5FC4235B1AFF872E002234FB /* NSTask+MPExtensions.m in Sources */,
 				5FC423651AFF872E002234FB /* NSIndexSet+MPExtensions.m in Sources */,

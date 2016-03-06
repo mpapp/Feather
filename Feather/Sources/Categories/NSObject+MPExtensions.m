@@ -158,14 +158,13 @@
 
 + (NSDictionary *)propertiesOfSubclassesForClass:(Class)class matching:(BOOL(^)(Class cls, NSString *key))patternBlock
 {
-    NSArray *classes = [[class.subclasses mapObjectsUsingBlock:^id(Class cls, NSUInteger idx) {
+    NSArray<NSString *> *classes = [[class.subclasses mapObjectsUsingBlock:^id(Class cls, NSUInteger idx) {
         return NSStringFromClass(cls);
     }] arrayByAddingObject:NSStringFromClass(class)];
     
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:classes.count];
     
-    for (NSString *moClassName in classes)
-    {
+    for (NSString *moClassName in classes) {
         Class moClass = NSClassFromString(moClassName);
         
         NSSet *readWritePropertyNamesMatchingPattern =

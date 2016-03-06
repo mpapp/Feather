@@ -27,17 +27,17 @@ NS_INLINE BOOL MPOptionIsOn(NSUInteger flags, NSUInteger flag)
 
 @interface NSObject (Feather)
 
-+ (NSArray *)subclasses;
++ (NSArray<Class> *)subclasses;
 
 /** Subclasses of subclasses of ... of self */
-+ (NSArray *)descendingClasses;
++ (NSArray<Class> *)descendingClasses;
 
 + (BOOL)propertyWithKeyIsReadWrite:(NSString *)key;
 
 + (Class)commonAncestorForClass:(Class)A andClass:(Class)B;
 
-+ (NSDictionary *)propertiesOfSubclassesForClass:(Class)class matching:(BOOL(^)(Class cls, NSString *key))patternBlock;
-+ (NSSet *)propertyKeys;
++ (NSDictionary<NSString *, NSSet<NSString *> *> *)propertiesOfSubclassesForClass:(Class)class matching:(BOOL(^)(Class cls, NSString *key))patternBlock;
++ (NSSet<NSString *> *)propertyKeys;
 
 - (id)performNonLeakingSelector:(SEL)selector;
 - (id)performNonLeakingSelector:(SEL)selector withObject:(id)object;

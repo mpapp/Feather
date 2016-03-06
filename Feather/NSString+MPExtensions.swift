@@ -25,4 +25,16 @@ public extension NSString {
             && self.substringWithRange(NSRange(location: 18,length: 1)) == "-"
             && self.substringWithRange(NSRange(location: 23,length: 1)) == "-"
     }
+    
+    func hasOneOfPrefixes(prefixes: [String], caseInsensitive: Bool) -> Bool {
+        for prefix in prefixes {
+            if (self.hasPrefix(prefix)) {
+                return true
+            }
+            else if caseInsensitive && self.lowercaseString.hasPrefix(prefix.lowercaseString) {
+                return true
+            }
+        }
+        return false;
+    }
 }
