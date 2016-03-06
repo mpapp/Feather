@@ -160,7 +160,7 @@
 {
     NSArray<NSString *> *classes = [[class.subclasses mapObjectsUsingBlock:^id(Class cls, NSUInteger idx) {
         return NSStringFromClass(cls);
-    }] arrayByAddingObject:NSStringFromClass(class)];
+    }] arrayByAddingObject:(id)NSStringFromClass(class)];
     
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:classes.count];
     

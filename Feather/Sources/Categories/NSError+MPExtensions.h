@@ -6,24 +6,25 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @interface NSError (Feather)
 
-+ (NSError *)errorWithDomain:(NSString *)domain code:(NSInteger)code
-                 description:(NSString *)description;
++ (nonnull NSError *)errorWithDomain:(nonnull NSString *)domain
+                                code:(NSInteger)code
+                         description:(nonnull NSString *)description;
 
-+ (NSError *)errorWithDomain:(NSString *)domain
-                        code:(NSInteger)code
-                 description:(NSString *)description
-                      reason:(NSString *)reason;
++ (nonnull NSError *)errorWithDomain:(nonnull NSString *)domain
+                                code:(NSInteger)code
+                         description:(nonnull NSString *)description
+                              reason:(nonnull NSString *)reason;
 
-+ (NSError *)errorWithDomain:(NSString *)domain
-                        code:(NSInteger)code
-                 description:(NSString *)description
-             underlyingError:(NSError *)originalError;
++ (nonnull NSError *)errorWithDomain:(nonnull NSString *)domain
+                                code:(NSInteger)code
+                         description:(nonnull NSString *)description
+                     underlyingError:(nonnull NSError *)originalError;
 
-- (NSError *)errorByMarkingAsShouldPresent;
+- (nonnull NSError *)errorByMarkingAsShouldPresent;
 
 - (BOOL)shouldPresent;
 
