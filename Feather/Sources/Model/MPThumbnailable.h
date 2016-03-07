@@ -10,6 +10,6 @@
 
 @protocol MPThumbnailable <NSObject>
 
-@property (readonly, strong) NSImage *thumbnailImage;
+@property (readonly, strong, nonnull) NSImage *thumbnailImage;
 
 @end
