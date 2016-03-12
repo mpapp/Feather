@@ -12,4 +12,16 @@ public extension NSArray {
     public var uniqueValues:NSArray {
         return NSOrderedSet(array: self as [AnyObject]).array as [AnyObject]
     }
+    
+    public func containsAny(ofObjects objects:[AnyObject]) -> Bool {
+        let setSelf = NSSet(array:self as [AnyObject])
+        
+        for o in objects {
+            if setSelf.containsObject(o) {
+                return true
+            }
+        }
+        
+        return false
+    }
 }
