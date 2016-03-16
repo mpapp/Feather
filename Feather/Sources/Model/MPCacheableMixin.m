@@ -29,8 +29,11 @@
         cachedProperties
             = [self propertiesOfSubclassesForClass:self matching:
                ^BOOL(Class cls, NSString *key) {
-            return [key isMatchedByRegex:@"^cached\\w{1,}"] && [cls propertyWithKeyIsReadWrite:key];
-        }];
+                   BOOL hasCachedPrefix = [key isMatchedByRegex:@"^cached\\w{1,}"];
+                   BOOL isReadwrite = [cls propertyWithKeyIsReadWrite:key];
+                   
+                   return hasCachedPrefix && isReadwrite;
+               }];
 
         objc_setAssociatedObject(self, NSSelectorFromString(cachedPropertiesKey),
                                  cachedProperties, OBJC_ASSOCIATION_RETAIN);

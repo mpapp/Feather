@@ -114,14 +114,20 @@
 + (BOOL)propertyWithKeyIsReadWrite:(NSString *)key
 {
     objc_property_t prop = class_getProperty(self, [key UTF8String]);
-    if (!prop) return NO;
+    if (!prop) {
+        return NO;
+    }
     
     const char *attribs = property_getAttributes(prop);
-    if (!attribs) return NO;
+    if (!attribs) {
+        return NO;
+    }
     
-    size_t len = strlen(attribs);
-    for (NSUInteger i = 0; i < len; i++) {
-        if (attribs[i] == 'R') {
+    // last component is the property name – you may encounter 'R' in there without that meaning it's a readonly property…
+    NSArray *components = [[[NSString stringWithUTF8String:attribs] componentsSeparatedByString:@","] arrayByRemovingLastObject];
+    
+    for (NSString *component in components) {
+        if ([component containsSubstring:@"R"]) {
             return NO;
         }
     }

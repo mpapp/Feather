@@ -34,6 +34,8 @@ typedef enum MPValueToggleResult
 
 - (NSArray<T> *)arrayByRemovingObject:(T)obj;
 
+- (NSArray<T> *)arrayByRemovingLastObject;
+
 - (NSArray<T> *)subarrayUpToIncludingIndex:(NSUInteger)i;
 - (NSArray<T> *)subarrayFromIndex:(NSUInteger)i;
 

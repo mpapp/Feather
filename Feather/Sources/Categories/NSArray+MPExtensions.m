@@ -77,6 +77,14 @@
     return array;
 }
 
+- (NSArray *)arrayByRemovingLastObject {
+    if (self.count <= 1) {
+        return @[];
+    }
+    
+    return [self subarrayWithRange:NSMakeRange(0, self.count - 1)];
+}
+
 - (NSArray *)reversedArray {
     return self.reverseObjectEnumerator.allObjects;
 }
