@@ -952,12 +952,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     else
     {
         NSArray *components = [objectID componentsSeparatedByString:@":"];
-        assert(components.count == 2);
+        NSAssert(components.count >= 2, @"Unexpected component count: %@", components);
         Class concreteClass = NSClassFromString(components[0]);
         NSAssert(concreteClass, @"Expecting a class with name %@", components[0]);
         NSAssert([concreteClass isSubclassOfClass:cls], @"Expecting %@ to be a subclass of %@", concreteClass, cls);
         moc = [self.controller.packageController controllerForManagedObjectClass:concreteClass];
-        assert(moc);
+        NSAssert(moc, @"Missing controller for %@", components);
         cls = concreteClass;
     }
     
