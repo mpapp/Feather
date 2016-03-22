@@ -23,6 +23,20 @@
     return [map copy];
 }
 
+- (NSArray *)nilFilteredMapUsingBlock:(id(^)(id o, NSUInteger idx))mapBlock {
+    NSMutableArray *map = [NSMutableArray arrayWithCapacity:self.count];
+    
+    NSUInteger i = 0;
+    for (id obj in self) {
+        id mappedVal = mapBlock(obj, i++);
+        if (mappedVal) {
+            [map addObject:obj];
+        }
+    }
+    
+    return [map copy];
+}
+
 - (id)firstObjectMatching:(BOOL(^)(id evalutedObject))patternBlock {
     NSUInteger i;
     return [self firstObjectMatching:patternBlock index:&i];

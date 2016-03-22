@@ -26,7 +26,9 @@ typedef enum MPValueToggleResult
 /** Array of the same length, with order of items randomized with arc4random. */
 @property (readonly, copy) NSArray<T> *arrayByRandomizingOrder;
 
-- (NSArray<T> *)mapObjectsUsingBlock:(id(^)(T o, NSUInteger idx))mapBlock;
+- (NSArray *)mapObjectsUsingBlock:(id(^)(T o, NSUInteger idx))mapBlock;
+
+- (NSArray *)nilFilteredMapUsingBlock:(id(^)(id o, NSUInteger idx))mapBlock;
 
 - (T)firstObjectMatching:(BOOL(^)(T evaluatedObject))patternBlock;
 - (T)firstObjectMatching:(BOOL(^)(T evaluatedObject))patternBlock index:(NSUInteger *)index;
