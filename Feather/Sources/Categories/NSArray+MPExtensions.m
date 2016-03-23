@@ -30,7 +30,7 @@
     for (id obj in self) {
         id mappedVal = mapBlock(obj, i++);
         if (mappedVal) {
-            [map addObject:obj];
+            [map addObject:mappedVal];
         }
     }
     
