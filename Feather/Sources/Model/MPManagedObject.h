@@ -218,7 +218,7 @@ extern NSString * _Nonnull const MPPasteboardTypeManagedObjectIDArray;
 
 /** A representation of the object with identifier, object type and database package ID keys included. 
  * The dictionary can be resolved to an existing object with +objectWithReferableDictionaryRepresentation. */
-@property (readonly, nonnull) NSDictionary *referableDictionaryRepresentation;
+@property (readonly, nullable) NSDictionary *referableDictionaryRepresentation;
 
 /** Constructs a MPManagedObject instance of the type specified in the given referable dictionary representation.
   * Intended for creating managed objects from their pasteboard property list representations. */

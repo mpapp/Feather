@@ -1323,6 +1323,10 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 
 - (NSDictionary *)referableDictionaryRepresentation
 {
+    if (!self.documentID || self.isDeleted) {
+        return nil;
+    }
+    
     return @{
       @"_id":self.documentID,
       @"objectType" : self.objectType,
@@ -1332,6 +1336,10 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 
 - (id)pasteboardPropertyListForType:(NSString *)type
 {
+    if (!self.documentID || self.isDeleted) {
+        return nil;
+    }
+    
     // Only these two types should be called directly on MPManagedObject instances (ObjectID array type is for a collection of objects)
     NSParameterAssert([type isEqual:MPPasteboardTypeManagedObjectFull]
                    || [type isEqual:MPPasteboardTypeManagedObjectID]

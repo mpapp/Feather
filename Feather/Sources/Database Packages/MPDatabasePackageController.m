@@ -1453,8 +1453,11 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
         
         for (CBLQueryRow *docRow in db.database.createAllDocumentsQuery.run) {
             CBLDocument *doc = docRow.document;
-            if (doc && docRow && docRow.document && docRow.document.properties)
-                [objs addObject:docRow.document.properties];
+            
+            NSDictionary *props = nil;
+            if (doc && docRow && docRow.document && (props = docRow.document.properties)) {
+                [objs addObject:props];
+            }
         }
         
         dict[db.name] = objs.copy;
