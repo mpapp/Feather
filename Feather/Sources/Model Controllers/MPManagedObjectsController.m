@@ -818,15 +818,15 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 - (NSArray *)managedObjectsForQueryEnumerator:(CBLQueryEnumerator *)rows
 {
     NSMutableArray* entries = [NSMutableArray arrayWithCapacity:rows.count];
-    for (CBLQueryRow* row in rows)
-    {
-        mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.packageController serverQueueToken], ^{
+    mp_dispatch_sync(self.db.database.manager.dispatchQueue, [self.packageController serverQueueToken], ^{
+        for (CBLQueryRow* row in rows)
+        {
             MPManagedObject *modelObj = (MPManagedObject *)[row.document modelObject];
-
+            
             if (!modelObj) {
                 modelObj = _objectCache[row.document.documentID];
                 modelObj.document = row.document;
-
+                
                 if (!modelObj) {
                     if (![row.document isDeleted]) {
                         modelObj = [[row.document managedObjectClass] modelForDocument:row.document];
@@ -846,9 +846,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                 
                 [entries addObject:modelObj];
             }
-        });
-    }
-
+        }
+    });
+    
     return [entries copy];
 }
 
