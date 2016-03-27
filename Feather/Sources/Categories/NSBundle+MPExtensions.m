@@ -66,22 +66,14 @@
         // test suites should be run with the env var MPExecutableName included.
         // It's used to derive a 'main' class and from it the bundle.
         NSString *executableName = [[NSProcessInfo processInfo] environment][@"MPExecutableName"];
-        assert(executableName);
+        NSAssert(executableName, @"Failing to recover environment variable 'MPExecutableName' amongst environment variables.");
         
         Class testClass = NSClassFromString(executableName);
-        assert(testClass);
+        NSAssert(testClass, @"Failing to recover class with with name %@", executableName);
         appBundle = [NSBundle bundleForClass:testClass];
         
         return appBundle;
     }
-    /*else if ([self isCommandLineTool] || [self isXPCService])
-    {
-        NSString *executablePath = [[[[NSProcessInfo processInfo] arguments][0] stringByStandardizingPath] stringByResolvingSymlinksInPath];
-        NSString *bundlePath = [executablePath substringUpTo:@".app"];
-        assert(bundlePath);
-        NSBundle *bundle = [NSBundle bundleWithPath:bundlePath];
-        return bundle;
-    }*/
     else
     {
         return [self mainBundle];
