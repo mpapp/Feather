@@ -166,6 +166,65 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return self;
 }
 
+
+- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller
+                                      properties:(NSDictionary *)properties
+                                      documentID:(NSString *)identifier
+{
+    if (![self.class isConcrete])
+        @throw [NSException exceptionWithName:@"MPAbstractClassException" reason:nil userInfo:nil];
+    
+    NSParameterAssert(controller);
+    NSParameterAssert(controller.db);
+    NSParameterAssert(controller.db.database);
+    
+    _controller = controller;
+    _newDocumentID = identifier;
+    
+    self = [super initWithNewDocumentInDatabase:controller.db.database];
+    NSParameterAssert(self.document);
+    
+    if (self)
+    {
+        assert(_controller);
+        [self didInitialize];
+        self.isNewObject = YES;
+        
+        Class moClass = [properties managedObjectType] ? NSClassFromString([properties managedObjectType]) : [self class];
+        assert(moClass == [_controller managedObjectClass] ||
+               [moClass isSubclassOfClass:[_controller managedObjectClass]]);
+        
+        if (properties && properties.managedObjectType)
+        {
+            assert([properties.managedObjectType isEqualToString:NSStringFromClass(moClass)]);
+            self.objectType = properties.managedObjectType;
+        }
+        
+        [_controller registerObject:self];
+        
+        NSMutableDictionary *p = properties ? [properties mutableCopy] : [NSMutableDictionary dictionaryWithCapacity:10];
+        [p removeObjectForKey:@"_id"];
+        [p removeObjectForKey:@"_rev"];
+        p[@"objectType"] = NSStringFromClass(moClass);
+        [self setValuesForPropertiesWithDictionary:p];
+        
+        if (identifier)
+            assert([self.document.documentID isEqualToString:identifier]);
+        
+#if MP_DEBUG_ZOMBIE_MODELS
+        assert(![_modelObjectByIdentifierMap objectForKey:self.document.documentID] ||
+               ([_modelObjectByIdentifierMap objectForKey:self.document.documentID] == self));
+        [_modelObjectByIdentifierMap setObject:self forKey:self.document.documentID];
+#endif
+    }
+    else
+    {
+        return nil;
+    }
+    
+    return self;
+}
+
 - (void)didInitialize {
     if (!_embeddedObjectCache)
         _embeddedObjectCache = [NSMutableDictionary dictionaryWithCapacity:20];
@@ -1656,64 +1715,6 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     NSParameterAssert([document.properties[@"objectType"] isEqualToString:NSStringFromClass(self)]);
     
     return mo;
-}
-
-- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller
-                                      properties:(NSDictionary *)properties
-                                      documentID:(NSString *)identifier
-{
-    if (![self.class isConcrete])
-        @throw [NSException exceptionWithName:@"MPAbstractClassException" reason:nil userInfo:nil];
-    
-    NSParameterAssert(controller);
-    NSParameterAssert(controller.db);
-    NSParameterAssert(controller.db.database);
-    
-    _controller = controller;
-    _newDocumentID = identifier;
-    
-    self = [super initWithNewDocumentInDatabase:controller.db.database];
-    NSParameterAssert(self.document);
-    
-    if (self)
-    {
-        assert(_controller);
-        [self didInitialize];
-        self.isNewObject = YES;
-        
-        Class moClass = [properties managedObjectType] ? NSClassFromString([properties managedObjectType]) : [self class];
-        assert(moClass == [_controller managedObjectClass] ||
-               [moClass isSubclassOfClass:[_controller managedObjectClass]]);
-        
-        if (properties && properties.managedObjectType)
-        {
-            assert([properties.managedObjectType isEqualToString:NSStringFromClass(moClass)]);
-            self.objectType = properties.managedObjectType;
-        }
-        
-        [_controller registerObject:self];
-        
-        NSMutableDictionary *p = properties ? [properties mutableCopy] : [NSMutableDictionary dictionaryWithCapacity:10];
-        [p removeObjectForKey:@"_id"];
-        [p removeObjectForKey:@"_rev"];
-        p[@"objectType"] = NSStringFromClass(moClass);
-        [self setValuesForPropertiesWithDictionary:p];
-        
-        if (identifier)
-            assert([self.document.documentID isEqualToString:identifier]);
-        
-#if MP_DEBUG_ZOMBIE_MODELS
-        assert(![_modelObjectByIdentifierMap objectForKey:self.document.documentID] ||
-               ([_modelObjectByIdentifierMap objectForKey:self.document.documentID] == self));
-        [_modelObjectByIdentifierMap setObject:self forKey:self.document.documentID];
-#endif
-    }
-    else
-    {
-        return nil;
-    }
-    
-    return self;
 }
 
 - (void)setObjectType:(NSString *)objectType
