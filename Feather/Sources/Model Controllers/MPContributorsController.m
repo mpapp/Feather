@@ -201,12 +201,16 @@ NSString * const MPContributorRoleTranslator = @"translator";
     for (NSInteger i = contributors.count - 1; i >= 0; i--) {
         MPContributor *contributor = contributors[i];
         NSUInteger oldIndex = [newUniverse indexOfObject:contributor];
-        NSParameterAssert(oldIndex != NSNotFound);
+        //NSParameterAssert(oldIndex != NSNotFound);
         
-        if (oldIndex == index)
+        if (oldIndex == index) {
             continue;
+        }
         
-        [newUniverse removeObject:contributor];
+        if (oldIndex != NSNotFound) {
+            [newUniverse removeObject:contributor];
+        }
+        
         [newUniverse insertObject:contributor atIndex:index];
         
         if (handler)
