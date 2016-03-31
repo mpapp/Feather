@@ -34,4 +34,6 @@
 /** Override in subclass if you want to use multiple CBLManagers in the database package. */
 - (CBLManager *)serverForDatabaseWithName:(NSString *)dbName;
 
++ (NSMapTable *)databasePackageControllerRegistry;
+
 @end

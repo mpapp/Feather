@@ -213,8 +213,11 @@ NSString *const MPPasteboardTypeRootSection = @"com.piipari.root-section.id.plis
 }
 
 - (id)pasteboardPropertyListForType:(NSString *)type {
+    NSString *databasePackageID = ((MPDatabasePackageController *)(self.packageController)).fullyQualifiedIdentifier;
+    NSParameterAssert([MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:databasePackageID]);
+    
     NSDictionary *dict = @{
-                           @"databasePackageID":self.packageController.fullyQualifiedIdentifier,
+                           @"databasePackageID":databasePackageID,
                            @"objectType":NSStringFromClass(self.class)
                         };
     
@@ -232,7 +235,7 @@ NSString *const MPPasteboardTypeRootSection = @"com.piipari.root-section.id.plis
     return @[MPPasteboardTypeRootSection];
 }
 
-- (id)initWithPasteboardPropertyList:(id)propertyList ofType:(NSString *)type {
+- (instancetype)initWithPasteboardPropertyList:(id)propertyList ofType:(NSString *)type {
     self = [super init];
     
     if (self) {
@@ -278,16 +281,18 @@ NSString *const MPPasteboardTypeRootSection = @"com.piipari.root-section.id.plis
 + (id)objectWithReferableDictionaryRepresentation:(NSDictionary *)referableDictionaryRep {
     NSString *packageID = referableDictionaryRep[@"databasePackageID"];
     
-    if (!packageID)
+    if (!packageID) {
         return nil;
+    }
     
     NSString *objectType = referableDictionaryRep[@"objectType"];
     
-    if (!objectType)
+    if (!objectType) {
         return nil;
+    }
     
-    MPDatabasePackageController *pkgc
-        = [MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:packageID];
+    MPDatabasePackageController *pkgc = [MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:packageID];
+    NSParameterAssert(pkgc);
     
     Class class = NSClassFromString(objectType);
     

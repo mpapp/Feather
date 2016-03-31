@@ -68,6 +68,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     MPPullCompletionHandler _pullCompletionHandler;
     
     NSMutableDictionary *_controllerDictionary;
+    
+    NSString *_fullyQualifiedIdentifier;
 }
 
 @property (strong, readwrite) MPDatabase *snapshotsDatabase;
@@ -96,7 +98,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     {
         NSAssert(path, @"Expecting a non-nil path");
         
-        _path = path;
+        _path = path.copy;
+        _fullyQualifiedIdentifier = [[_path stringByAppendingString:@"::"] stringByAppendingString:[[NSUUID UUID] UUIDString]];
         
         _sessionID = [[[NSUUID UUID] UUIDString] copy];
         MPLog(@"Database package session ID is %@", _sessionID);
@@ -223,12 +226,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         
         _registeredViewNames = [NSMutableSet setWithCapacity:128];
         
+        [self.class registerDatabasePackageController:self];
+
         [[self class] didOpenPackage];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.isIdentifiable) {
-                [self.class registerDatabasePackageController:self];
-            }
-        });
         
         // state initialisation done on a subsequent event loop cycle such that potential assignments
         // (such as to a singleton reference to this object) exists.
@@ -246,6 +246,11 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     }
     
     return self;
+}
+
+- (void)setPath:(NSString * _Nonnull)path {
+    NSParameterAssert(!_path);
+    _path = path;
 }
 
 - (NSArray *)newRootSections {
@@ -367,38 +372,34 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     };
 }
 
-+ (NSMapTable *)databasePackageControllerRegistry
-{
-    static NSMapTable *reg = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        reg = [NSMapTable strongToWeakObjectsMapTable];
-    });
-               
-    return reg;
-}
-
 + (void)registerDatabasePackageController:(MPDatabasePackageController *)packageController
 {
     // there should not be two or more database package controllers that are identical in memory at the same time.
     // for instance, if a package controller is duplicated, its identifier should be modified.
     
-    NSParameterAssert(packageController.isIdentifiable);
-    NSParameterAssert(![[self databasePackageControllerRegistry] objectForKey:packageController.fullyQualifiedIdentifier]);
-    [self.databasePackageControllerRegistry setObject:packageController forKey:packageController.fullyQualifiedIdentifier];
+    id identifier = packageController.fullyQualifiedIdentifier;
+    id existingObj = [[self databasePackageControllerRegistry] objectForKey:identifier];
+    NSAssert(!existingObj || (existingObj == packageController), @"Another package controller already registered for identifier %@.", identifier);
+    
+#ifdef DEBUG
+    for (MPDatabasePackageController *o in [[self.databasePackageControllerRegistry objectEnumerator] allObjects]) {
+        NSAssert(o != packageController || [identifier isEqual:o.fullyQualifiedIdentifier], @"Package controller %@ is already registered with key %@", o, o.fullyQualifiedIdentifier);
+    }
+#endif
+    
+    if (!existingObj) {
+        [self.databasePackageControllerRegistry setObject:packageController forKey:identifier];
+    }
+    
+    //NSLog(@"Package controller registry after addition: %@", self.databasePackageControllerRegistry);
 }
 
-+ (void)deregisterDatabasePackageController:(MPDatabasePackageController *)packageController
-{
-    if ([packageController isIdentifiable]) {
-        [self.databasePackageControllerRegistry removeObjectForKey:packageController.fullyQualifiedIdentifier];
-    }
++ (void)deregisterDatabasePackageController:(MPDatabasePackageController *)packageController {
+    [self.databasePackageControllerRegistry removeObjectForKey:packageController.fullyQualifiedIdentifier];
 }
 
 + (instancetype)databasePackageControllerWithFullyQualifiedIdentifier:(NSString *)identifier
 {
-    NSAssert([identifier containsString:@"::"],
-             @"Identifier '%@' does not look like a fully qualified identifier.", identifier);
     return [self.databasePackageControllerRegistry objectForKey:identifier];
 }
 
@@ -827,12 +828,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (BOOL)isIdentifiable {
     return self.identifier != nil;
 }
-                                          
-- (NSString *)fullyQualifiedIdentifier {
-    if (!self.isIdentifiable) {
-        return nil;
-    }
-    return [self.path stringByAppendingFormat:@"::%@", self.identifier];
+
+- (id)fullyQualifiedIdentifier {
+    return _fullyQualifiedIdentifier;
 }
 
 - (NSURLCredential *)remoteDatabaseCredentialsForLocalDatabase:(MPDatabase *)database
@@ -898,7 +896,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
        } updateChangeCountHandler:
        ^(NSDocumentChangeType changeType)
        {
-           NSLog(@"Change type: %lu", changeType);
+           //NSLog(@"Change type: %lu", changeType);
        }];
     
     
@@ -1052,7 +1050,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
             NSDictionary *txtDict = [strongSelf.databaseListener.TXTRecordDictionary mutableCopy];
             [txtDict setValue:@(port) forKey:@"port"];
             
-            NSLog(@"Serving %@ at '%@:%@'", strongSelf.path, strongSelf.server.internalURL, @(port));
+            //NSLog(@"Serving %@ at '%@:%@'", strongSelf.path, strongSelf.server.internalURL, @(port));
             
             strongSelf.databaseListener.TXTRecordDictionary = txtDict;
             
@@ -1164,7 +1162,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
  */
 - (void)netService:(NSNetService *)sender didNotPublish:(NSDictionary *)errorDict
 {
-    NSLog(@"ERROR: Service for database package %@ failed to publish: %@", sender, errorDict);
+    //NSLog(@"ERROR: Service for database package %@ failed to publish: %@", sender, errorDict);
 }
 
 - (void)netServiceWillResolve:(NSNetService *)service
@@ -1481,6 +1479,17 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
     
     assert(![_managedObjectsControllers containsObject:moc]);
     [_managedObjectsControllers addObject:moc];
+}
+
++ (NSMapTable *)databasePackageControllerRegistry
+{
+    static NSMapTable *reg = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        reg = [NSMapTable strongToWeakObjectsMapTable];
+    });
+    
+    return reg;
 }
 
 - (void)registerViewName:(NSString *)viewName

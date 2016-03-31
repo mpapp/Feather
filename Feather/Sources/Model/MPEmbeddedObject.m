@@ -13,6 +13,8 @@
 #import "MPEmbeddedObject+Protected.h"
 #import "MPEmbeddedPropertyContainingMixin.h"
 #import "NSNotificationCenter+ErrorNotification.h"
+#import "MPDatabasePackageController+Protected.h"
+
 @import FeatherExtensions;
 
 #import "MPDeepSaver.h"
@@ -928,12 +930,15 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
         return nil;
     }
     
+    NSString *databasePackageID = [self.embeddingManagedObject.controller.packageController fullyQualifiedIdentifier];
+    NSAssert([MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:databasePackageID], @"Failed to resolve package controller with ID %@", databasePackageID);
+    
     return @{
              @"_id"                    : self.identifier,
              @"embeddingObject"        : embeddingObjectID,
              @"embeddingKey"           : self.embeddingKey,
              @"embeddingManagedObject" : embeddingManagedObjectID,
-             @"databasePackageID"      : [self.embeddingManagedObject.controller.packageController fullyQualifiedIdentifier]
+             @"databasePackageID"      : databasePackageID
         };
 }
 

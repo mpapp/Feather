@@ -13,6 +13,7 @@
 #import <Feather/MPEmbeddedObject+Protected.h>
 #import <Feather/MPCacheableMixin.h>
 #import <Feather/MPEmbeddedPropertyContainingMixin.h>
+#import <Feather/MPDatabasePackageController+Protected.h> 
 
 #import "NSString+MPSearchIndex.h"
 #import "MPDeepSaver.h"
@@ -1386,10 +1387,13 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
         return nil;
     }
     
+    NSString *databasePackageID = ((MPDatabasePackageController *)(self.controller.packageController)).fullyQualifiedIdentifier;
+    NSAssert([MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:databasePackageID], @"Failed to resolve package controller with ID %@", databasePackageID);
+    
     return @{
       @"_id":self.documentID,
       @"objectType" : self.objectType,
-      @"databasePackageID" : ((MPDatabasePackageController *)(self.controller.packageController)).fullyQualifiedIdentifier
+      @"databasePackageID" : databasePackageID
     };
 }
 
@@ -1409,7 +1413,11 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     if ([type isEqual:MPPasteboardTypeManagedObjectFull])
     {
         NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithDictionary:self.propertiesToSave];
-        dict[@"databasePackageID"] = ((MPDatabasePackageController *)(self.controller.packageController)).fullyQualifiedIdentifier;
+        
+        NSString *databasePackageID = ((MPDatabasePackageController *)(self.controller.packageController)).fullyQualifiedIdentifier;
+        NSParameterAssert([MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:databasePackageID]);
+        
+        dict[@"databasePackageID"] = databasePackageID;
         
         NSParameterAssert([type isEqualToString:MPPasteboardTypeManagedObjectFull]);
         dataRep = [NSPropertyListSerialization dataWithPropertyList:dict
@@ -1513,7 +1521,15 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     
     NSString *packageControllerID = [referableDictionaryRep objectForKey:@"databasePackageID"];
     MPDatabasePackageController *pkgc = [MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:packageControllerID];
-    NSParameterAssert(pkgc);
+    
+#ifdef DEBUG
+    NSAssert(pkgc, @"Failed to find package controller with fully qualified ID '%@' from %@", packageControllerID, [MPDatabasePackageController databasePackageControllerRegistry]);
+#endif 
+    
+    if (!pkgc) {
+        NSLog(@"Failed to find package controller with fully qualified ID '%@' from %@", packageControllerID, [MPDatabasePackageController databasePackageControllerRegistry]);
+        return nil;
+    }
     
     MPManagedObjectsController *moc = [pkgc controllerForManagedObjectClass:objectType];
     NSParameterAssert(moc);

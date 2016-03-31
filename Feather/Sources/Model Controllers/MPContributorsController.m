@@ -112,8 +112,8 @@ NSString * const MPContributorRoleTranslator = @"translator";
         if (!doc[@"fullName"])
             return;
         
-        emit(doc[@"fullName"], nil);
-    } version:@"1.0"];
+        emit([doc[@"fullName"] lowercaseString], nil);
+    } version:@"1.2"];
 }
 
 - (MPContributor *)contributorWithAddressBookID:(NSString *)personUniqueID {
@@ -126,12 +126,9 @@ NSString * const MPContributorRoleTranslator = @"translator";
 }
 
 - (NSArray *)contributorsWithFullName:(NSString *)fullName {
-    NSParameterAssert(fullName);
-    
-    NSArray *contributors = [self objectsMatchingQueriedView:@"contributorsByFullName" keys:@[fullName]];
-    NSAssert(contributors.count < 2, @"A maximum of one contributor should have been retrieved: %@", contributors);
-    
-    return contributors.firstObject;
+    return [self.allObjects filteredArrayMatching:^BOOL(MPContributor *evaluatedObject) {
+        return [[[evaluatedObject fullName] lowercaseString] isEqualToString:[fullName lowercaseString]];
+    }];
 }
 
 - (NSArray *)contributorsInRole:(NSString *)role {
