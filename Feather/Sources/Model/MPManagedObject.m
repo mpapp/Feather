@@ -469,8 +469,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     if (self.isClean)
         return YES;
     
-    NSParameterAssert(_controller);
-    NSParameterAssert(self.document);
+    NSAssert(_controller, @"Unexpectedly missing controller when attempting to save.");
+    NSAssert(self.document, @"Unexpectedly missing document when attempting to save.");
     [_controller willSaveObject:self];
     
     assert(self.document.modelObject);

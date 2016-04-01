@@ -25,7 +25,9 @@ typedef NS_ENUM(NSInteger, MPManagedObjectErrorCode)
     MPManagedObjectErrorCodeTypeMissing = 1,
     MPManagedObjectErrorCodeUserNotCreator = 2,
     MPManagedObjectErrorCodeMissingBundledData = 3,
-    MPManagedObjectErrorCodeMissingAttachment = 4
+    MPManagedObjectErrorCodeMissingAttachment = 4,
+    MPManagedObjectErrorCodeMissingController = 5,
+    MPManagedObjectErrorCodeMissingDatabase = 6
 };
 
 typedef NS_ENUM(NSInteger, MPManagedObjectModerationState)

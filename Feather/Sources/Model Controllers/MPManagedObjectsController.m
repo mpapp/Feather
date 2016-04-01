@@ -551,7 +551,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (id)objectWithIdentifier:(NSString *)identifier
 {
-    NSParameterAssert(identifier);
+    NSAssert(identifier, @"Expecting a non-nil identifier parameter.");
     NSAssert([[MPManagedObject managedObjectClassFromDocumentID:identifier] isSubclassOfClass:self.managedObjectClass],
              @"Identifier is for an unexpected kind of object: %@ (%@)", identifier, self);
     
