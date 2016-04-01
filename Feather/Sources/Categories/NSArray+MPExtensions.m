@@ -80,7 +80,7 @@
 
 - (NSArray *)subarrayFromIndex:(NSUInteger)i
 {
-    assert(i < self.count);
+    NSAssert(i < self.count, @"Expecting from index %@ to be smaller than the count %@", @(i), @(self.count));
     return [self subarrayWithRange:NSMakeRange(i, self.count - i)];
 }
 
