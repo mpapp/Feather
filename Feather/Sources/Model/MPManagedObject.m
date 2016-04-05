@@ -645,14 +645,20 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 - (void)setDocument:(CBLDocument *)document {
-    if (!_controller)
+    if (!_controller) {
         [self setControllerWithDocument:document];
+    }
     
-    [super setDocument:document];
+    if (!self.document) {
+        [super setDocument:document];
+    }
+    else {
+        NSAssert([self.document isEqual:document], @"Document for managed object %@ is unexpectedly mismatched: %@ != %@", self, self.document, document);
+    }
+    
     NSAssert(document.modelObject == self, @"Unexpected model object: %@", document.modelObject, self);
     
-    if (self.document)
-    {
+    if (self.document) {
         NSAssert(_controller, @"Controller is unexpectedly nil: %@", self);
         [_controller registerObject:self];
     }
