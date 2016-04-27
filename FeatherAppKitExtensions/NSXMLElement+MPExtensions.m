@@ -10,11 +10,7 @@
 #import "NSXMLElement+MPExtensions.h"
 
 @import FeatherExtensions;
-
-//#import "NSCharacterSet_Extensions.h"
-//#import "NSString_Extensions.h"
-
-//@import P2Core.NSString_P2Extensions;
+@import P2Core.NSString_P2Extensions;
 
 const MPTextContentOffset MPTextContentOffsetError = NSIntegerMin;
 const MPTextContentOffset MPTextContentOffsetNotFound = -1;
@@ -49,12 +45,43 @@ const NSUInteger MPDefaultXMLDocumentOutputOptions = (NSXMLNodePreserveNamespace
 
 NSString *const MPXMLElementErrorDomain = @"MPXMLElementErrorDomain";
 
-typedef NS_ENUM(NSInteger, MPXMLElementErrorCode)
-{
+typedef NS_ENUM(NSInteger, MPXMLElementErrorCode) {
     MPXMLElementErrorCodeInnerXMLElementNotFound = 1,
     MPXMLElementErrorCodeTextNodeNotFound = 2,
     MPXMLElementErrorCodeFailedToParseXMLString = 99
 };
+
+@interface NSCharacterSet (MPExtensions)
++ (id)unicodeGremlinCharacterSet;
+@end
+
+@implementation NSCharacterSet (MPExtensions)
+
++ (id)unicodeGremlinCharacterSet {
+    static dispatch_once_t pred = 0;
+    static id UnicodeGremlinCharacterSet = nil;
+    dispatch_once(&pred,
+                  ^{
+                      UnicodeGremlinCharacterSet = [[NSMutableCharacterSet alloc] init];
+                      [UnicodeGremlinCharacterSet formUnionWithCharacterSet:[NSCharacterSet illegalCharacterSet]];
+                      [UnicodeGremlinCharacterSet formUnionWithCharacterSet:[NSCharacterSet controlCharacterSet]];
+                      [UnicodeGremlinCharacterSet formUnionWithCharacterSet:[NSCharacterSet characterSetWithRange:NSMakeRange(0xFFF0UL, 0xFFFFUL)]];
+                      
+                      // private use area
+                      [UnicodeGremlinCharacterSet formUnionWithCharacterSet:[NSCharacterSet characterSetWithRange:NSMakeRange(0xE000UL, 0xF8FFUL)]];
+                      
+                      // supplementary private use A
+                      [UnicodeGremlinCharacterSet formUnionWithCharacterSet:[NSCharacterSet characterSetWithRange:NSMakeRange(0xF0000UL, 0xFFFFFUL)]];
+                      
+                      // supplementary private use B
+                      [UnicodeGremlinCharacterSet formUnionWithCharacterSet:[NSCharacterSet characterSetWithRange:NSMakeRange(0x100000UL, 0x10FFFFUL)]];
+                      
+                      UnicodeGremlinCharacterSet = [UnicodeGremlinCharacterSet copy];
+                  });
+    return UnicodeGremlinCharacterSet;
+}
+
+@end
 
 
 @implementation NSXMLElement (MPExtensions)
@@ -930,7 +957,7 @@ typedef NS_ENUM(NSInteger, MPXMLElementErrorCode)
     }
     
     NSUInteger i = [self.children indexOfObject:childNodes[0]];
-    MPAssertTrue(i != NSNotFound);
+    NSAssert(i != NSNotFound, @"Did not encounter %@ amongst children %@", childNodes[0], self.children);
     
     NSXMLElement *el = [NSXMLElement elementWithName:wrappingElementName];
     
@@ -1274,7 +1301,7 @@ typedef NS_ENUM(NSInteger, MPXMLElementErrorCode)
                                                 textContentOffset:(MPTextContentOffset)innerOffset
                                                             error:(NSError *__autoreleasing *)error
 {
-    MPAssertTrue(innerOffset >= 0);
+    NSParameterAssert(innerOffset >= 0);
     
     [self enforceExplicitPreservedSpace];
     
@@ -1412,7 +1439,7 @@ typedef NS_ENUM(NSInteger, MPXMLElementErrorCode)
 
 - (NSArray *)splitAtInnerXMLElementXPath:(NSString *)XPath textContentOffset:(MPTextContentOffset)innerElementOffset error:(NSError *__autoreleasing  _Nullable *)error
 {
-    MPAssertTrue(innerElementOffset >= MPTextContentOffsetBeginning);
+    NSParameterAssert(innerElementOffset >= MPTextContentOffsetBeginning);
     
     // Prepare
     [self normalizeAdjacentTextNodesPreservingCDATA:NO];
@@ -1540,12 +1567,12 @@ typedef NS_ENUM(NSInteger, MPXMLElementErrorCode)
         NSXMLNode *originalNode = (NSXMLNode *)originalNodes[i];
         NSXMLElement *originalParent = (NSXMLElement *)[originalNode parent];
         NSUInteger parentIndex = [originalNodes indexOfObject:originalParent];
-        MPAssertTrue(parentIndex != NSNotFound || originalNode == self);
+        NSParameterAssert(parentIndex != NSNotFound || originalNode == self);
         
         if (originalNode != self)
         {
             NSXMLElement *newParent = (NSXMLElement *)newNodes[parentIndex];
-            MPAssertNotNil(newParent);
+            NSParameterAssert(newParent);
             [newParent addChild:newNodes[i]];
         }
     }
@@ -1664,7 +1691,7 @@ typedef NS_ENUM(NSInteger, MPXMLElementErrorCode)
             }
         }
         else if (result == MPXMLNodeFilteringResultCollapse) {
-            MPAssertTrue(node.kind == NSXMLElementKind);
+            NSParameterAssert(node.kind == NSXMLElementKind);
         }
         
         previousNode = node;
@@ -1967,7 +1994,7 @@ typedef NS_ENUM(NSInteger, MPXMLElementErrorCode)
     
     if (r.length > 0)
     {
-        MPLogWarning(@"Input XML string contains characters invalid in UTF-8-encoded XML at %@:\n%@", NSStringFromRange(r), s);
+        NSLog(@"Input XML string contains characters invalid in UTF-8-encoded XML at %@:\n%@", NSStringFromRange(r), s);
         
         NSMutableString *ms = [NSMutableString stringWithString:s];
         [ms removeCharactersInSet:invalidCharacters];

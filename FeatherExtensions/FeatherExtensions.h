@@ -34,7 +34,6 @@ FOUNDATION_EXPORT const unsigned char FeatherExtensionsVersionString[];
 
 #import "NSUUID+MPExtensions.h"
 #import "NSString+MPExtensions.h"
-#import "NSAttributedString+MPExtensions.h"
 
 #import "NSDate+MPExtensions.h"
 

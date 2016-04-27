@@ -35,3 +35,5 @@ FOUNDATION_EXPORT const unsigned char FeatherAppKitExtensionsVersionString[];
 #import "NSMenuItem+MPExtensions.h"
 
 #import "NSXMLElement+MPExtensions.h"
+
+#import "NSAttributedString+MPExtensions.h"

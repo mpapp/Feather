@@ -54,6 +54,9 @@
 		5F2AFA6A1C3DE8E000B37435 /* DiffMatchPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */; };
 		5F2CC7751B56E58900D9C714 /* MPFileObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F2CC7731B56E58900D9C714 /* MPFileObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F2CC7761B56E58900D9C714 /* MPFileObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CC7741B56E58900D9C714 /* MPFileObserver.m */; };
+		5F2DA72C1CD0469500F0A3EB /* P2Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F05A36E1CD0461000FE80D8 /* P2Core.framework */; };
+		5F2DA72D1CD04AF700F0A3EB /* NSAttributedString+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB1F4A18F8C84800B3290D /* NSAttributedString+MPExtensions.m */; };
+		5F2DA72E1CD04AFB00F0A3EB /* NSAttributedString+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB1F4918F8C84800B3290D /* NSAttributedString+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3765EB1A1AA1AA0068DA39 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F3765EA1A1AA1AA0068DA39 /* AddressBook.framework */; };
 		5F3D380A1725D8A600D19D7C /* MPCategorizableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D38081725D8A600D19D7C /* MPCategorizableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D38091725D8A600D19D7C /* MPCategorizableMixin.m */; };
@@ -121,8 +124,6 @@
 		5FC4235B1AFF872E002234FB /* NSTask+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D932296317268E37006880C2 /* NSTask+MPExtensions.m */; };
 		5FC4235E1AFF872E002234FB /* NSUUID+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FD0E13118F082BD00789CC9 /* NSUUID+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC4235F1AFF872E002234FB /* NSUUID+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD0E13218F082BD00789CC9 /* NSUUID+MPExtensions.m */; };
-		5FC423601AFF872E002234FB /* NSAttributedString+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB1F4918F8C84800B3290D /* NSAttributedString+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5FC423611AFF872E002234FB /* NSAttributedString+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB1F4A18F8C84800B3290D /* NSAttributedString+MPExtensions.m */; };
 		5FC423631AFF872E002234FB /* NSImage+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FADC70118FAFBAD006F4119 /* NSImage+MPExtensions.m */; };
 		5FC423641AFF872E002234FB /* NSIndexSet+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FA0D11319012D19005BC968 /* NSIndexSet+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC423651AFF872E002234FB /* NSIndexSet+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA0D11419012D19005BC968 /* NSIndexSet+MPExtensions.m */; };
@@ -288,6 +289,7 @@
 		5F05A3651CD0323900FE80D8 /* NSMenuItem+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMenuItem+MPExtensions.m"; sourceTree = "<group>"; };
 		5F05A3681CD0332A00FE80D8 /* NSXMLElement+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSXMLElement+MPExtensions.h"; path = "FeatherAppKitExtensions/NSXMLElement+MPExtensions.h"; sourceTree = SOURCE_ROOT; };
 		5F05A3691CD0332A00FE80D8 /* NSXMLElement+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSXMLElement+MPExtensions.m"; path = "FeatherAppKitExtensions/NSXMLElement+MPExtensions.m"; sourceTree = SOURCE_ROOT; };
+		5F05A36E1CD0461000FE80D8 /* P2Core.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = P2Core.framework; path = Carthage/Build/Mac/P2Core.framework; sourceTree = "<group>"; };
 		5F293B85170CAD53001C2111 /* MPCacheable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MPCacheable.h; path = Sources/Model/MPCacheable.h; sourceTree = "<group>"; };
 		5F293B99170CAD65001C2111 /* MPCacheableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCacheableMixin.h; path = Sources/Model/MPCacheableMixin.h; sourceTree = "<group>"; };
 		5F293B9A170CAD65001C2111 /* MPCacheableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCacheableMixin.m; path = Sources/Model/MPCacheableMixin.m; sourceTree = "<group>"; };
@@ -486,6 +488,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F2DA72C1CD0469500F0A3EB /* P2Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -804,6 +807,7 @@
 		5FDB33051705CB950049EBB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5F05A36E1CD0461000FE80D8 /* P2Core.framework */,
 				5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */,
 				5FDED07E1C67A09A00769001 /* RegexKitLite.framework */,
 				5F5084471C551804009D7211 /* CocoaLumberjack.framework */,
@@ -1077,6 +1081,7 @@
 				5F05A3371CD02D1200FE80D8 /* NSApplication+MPExtensions.h in Headers */,
 				5F05A36C1CD0334B00FE80D8 /* NSXMLElement+MPExtensions.h in Headers */,
 				5F05A3491CD02E0800FE80D8 /* ABRecord+MPExtensions.h in Headers */,
+				5F2DA72E1CD04AFB00F0A3EB /* NSAttributedString+MPExtensions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1095,7 +1100,6 @@
 				5FC423481AFF872E002234FB /* NSError+MPExtensions.h in Headers */,
 				5FC423401AFF872E002234FB /* NSNotificationCenter+ErrorNotification.h in Headers */,
 				5FC423131AFF8719002234FB /* FeatherExtensions.h in Headers */,
-				5FC423601AFF872E002234FB /* NSAttributedString+MPExtensions.h in Headers */,
 				5FC423561AFF872E002234FB /* NSData+MPExtensions.h in Headers */,
 				5FC423641AFF872E002234FB /* NSIndexSet+MPExtensions.h in Headers */,
 				5FC4234C1AFF872E002234FB /* NSSet+MPExtensions.h in Headers */,
@@ -1479,6 +1483,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F2DA72D1CD04AF700F0A3EB /* NSAttributedString+MPExtensions.m in Sources */,
 				5F05A3441CD02D1200FE80D8 /* NSWindowController+MPExtensions.m in Sources */,
 				5F05A3401CD02D1200FE80D8 /* NSView+MPExtensions.m in Sources */,
 				5F05A36D1CD0334B00FE80D8 /* NSXMLElement+MPExtensions.m in Sources */,
@@ -1509,7 +1514,6 @@
 				5FC423411AFF872E002234FB /* NSNotificationCenter+ErrorNotification.m in Sources */,
 				5FC423551AFF872E002234FB /* NSFileManager+MPExtensions.m in Sources */,
 				5FC423451AFF872E002234FB /* NSDictionary+MPExtensions.m in Sources */,
-				5FC423611AFF872E002234FB /* NSAttributedString+MPExtensions.m in Sources */,
 				5FC4234B1AFF872E002234FB /* NSString+MPExtensions.m in Sources */,
 				5FC4234D1AFF872E002234FB /* NSSet+MPExtensions.m in Sources */,
 				5FC4235F1AFF872E002234FB /* NSUUID+MPExtensions.m in Sources */,
@@ -1685,6 +1689,10 @@
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1727,6 +1735,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1768,6 +1780,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1809,6 +1825,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1850,6 +1870,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -1891,6 +1915,10 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -3583,6 +3611,7 @@
 				5F05A32E1CD02CC900FE80D8 /* AppStoreRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5F05A3361CD02CC900FE80D8 /* Build configuration list for PBXNativeTarget "FeatherAppKitExtensionsTests" */ = {
 			isa = XCConfigurationList;
@@ -3595,6 +3624,7 @@
 				5F05A3341CD02CC900FE80D8 /* AppStoreRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5FC423371AFF8719002234FB /* Build configuration list for PBXNativeTarget "FeatherExtensions" */ = {
 			isa = XCConfigurationList;

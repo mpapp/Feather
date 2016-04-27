@@ -16,3 +16,12 @@
 [submodule "Carthage/Checkouts/RegexKitLite"]
 	path = Carthage/Checkouts/RegexKitLite
 	url = ssh://git@github.com/mpapp/RegexKitLite.git
+[submodule "Carthage/Checkouts/CocoaLumberjack"]
+	path = Carthage/Checkouts/CocoaLumberjack
+	url = ssh://git@github.com/mpapp/CocoaLumberjack.git
+[submodule "Carthage/Checkouts/libextobjc"]
+	path = Carthage/Checkouts/libextobjc
+	url = ssh://git@github.com/mz2/libextobjc.git
+[submodule "Carthage/Checkouts/P2Core"]
+	path = Carthage/Checkouts/P2Core
+	url = ssh://git@github.com/mpapp/P2Core.git
