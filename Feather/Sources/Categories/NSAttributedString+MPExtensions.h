@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Matias Piipari. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+@import Cocoa;
 
 extern int gNSStringGeometricsTypesetterBehavior;
 
@@ -34,4 +34,40 @@ extern int gNSStringGeometricsTypesetterBehavior;
 - (float)heightForWidth:(float)width font:(NSFont*)font;
 - (float)widthForHeight:(float)height font:(NSFont*)font;
 
+@end
+
+
+@interface NSAttributedString (MMRTFWithImages)
+- (NSString *)encodeRTFWithImages;
+@end
+
+@interface NSAttributedString (Manuscripts)
+
++ (NSAttributedString *) attributedStringFromString:(NSString *)s attributes:(NSDictionary *)attributes;
+
+@end
+
+@interface NSMutableAttributedString (Manuscripts)
+
+- (void) appendString:(NSString *)s;
+- (void) insertString:(NSString *)s atIndex:(NSUInteger)location;
+
+@end
+
+
+@interface NSDictionary (ManuscriptsAttributedString)
+
++ (NSDictionary *) textAttributesWithFontNamed:(NSString *)fontName
+                                      fontSize:(CGFloat)fontSize
+                                          bold:(BOOL)bold
+                                        italic:(BOOL)italic
+                                         color:(NSColor *)color;
+
++ (NSDictionary *) textAttributesWithSystemFontOfSize:(CGFloat)fontSize
+                                                 bold:(BOOL)bold;
+
+@end
+
+@interface NSAttributedString (Hyperlink)
++(id)hyperlinkFromString:(NSString*)inString withURL:(NSURL*)aURL;
 @end

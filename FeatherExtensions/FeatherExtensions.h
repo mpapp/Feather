@@ -16,8 +16,6 @@ FOUNDATION_EXPORT const unsigned char FeatherExtensionsVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <FeatherExtensions/PublicHeader.h>
 
-#import "NSApplication+MPExtensions.h"
-
 #import "NSObject+MPExtensions.h"
 
 #import "NSFileManager+MPExtensions.h"
@@ -46,24 +44,4 @@ FOUNDATION_EXPORT const unsigned char FeatherExtensionsVersionString[];
 
 #pragma mark -
 
-#import "NSView+MPExtensions.h"
-#import "NSPopover+MPExtensions.h"
-
-#import "NSViewController+MPExtensions.h"
-#import "NSWindowController+MPExtensions.h"
-
-#pragma mark -
-
 #import "NSData+MPExtensions.h"
-
-#import "NSEvent+MPExtensions.h"
-
-#import "NSTextField+MPExtensions.h"
-
-#import "NSTextView+MPExtensions.h"
-
-#import "NSImage+MPExtensions.h"
-
-#pragma mark -
-
-#import "ABRecord+MPExtensions.h"

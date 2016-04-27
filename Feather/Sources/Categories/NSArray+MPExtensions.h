@@ -6,8 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
+@import Foundation;
 
 #define MPLastIndexInArray(a) (a.count - 1)
 
