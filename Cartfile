@@ -1,3 +1,4 @@
 github "mpapp/RegexKitLite" "master"
 github "mz2/couchbase-lite-ios" "master"
 github "mpapp/google-diff-match-patch-Objective-C" "master"
+github "mpapp/P2Core" "master"
