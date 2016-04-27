@@ -90,6 +90,7 @@
 		5F75C38A1C8BA2C700D67DA4 /* NSArray+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F75C3891C8BA2C700D67DA4 /* NSArray+MPExtensions.swift */; };
 		5F779FCC172BDC3C0011C4DD /* MPThumbnailable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F779FB8172BDC180011C4DD /* MPThumbnailable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F779FF6172BE69A0011C4DD /* MPRESTFulResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F779FF4172BE69A0011C4DD /* MPRESTFulResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F89426A1CD04E4E00A9DC07 /* FeatherExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; };
 		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
 		5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
@@ -215,6 +216,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 5F05A3171CD02CC800FE80D8;
 			remoteInfo = FeatherAppKitExtensions;
+		};
+		5F8942681CD04E4900A9DC07 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FDB32F91705CB950049EBB5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5FC4230D1AFF8719002234FB;
+			remoteInfo = FeatherExtensions;
 		};
 		5FC4231A1AFF8719002234FB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -488,6 +496,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F89426A1CD04E4E00A9DC07 /* FeatherExtensions.framework in Frameworks */,
 				5F2DA72C1CD0469500F0A3EB /* P2Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1192,6 +1201,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5F8942691CD04E4900A9DC07 /* PBXTargetDependency */,
 			);
 			name = FeatherAppKitExtensions;
 			productName = FeatherAppKitExtensions;
@@ -1615,6 +1625,11 @@
 			isa = PBXTargetDependency;
 			target = 5F05A3171CD02CC800FE80D8 /* FeatherAppKitExtensions */;
 			targetProxy = 5F05A3231CD02CC800FE80D8 /* PBXContainerItemProxy */;
+		};
+		5F8942691CD04E4900A9DC07 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5FC4230D1AFF8719002234FB /* FeatherExtensions */;
+			targetProxy = 5F8942681CD04E4900A9DC07 /* PBXContainerItemProxy */;
 		};
 		5FC4231B1AFF8719002234FB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
