@@ -195,8 +195,6 @@
 		5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */; };
 		5FDCF34D1710CA600039DAED /* MPModelFoundationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */; };
 		5FDED07F1C67A09A00769001 /* RegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDED07E1C67A09A00769001 /* RegexKitLite.framework */; };
-		5FDED0801C67A0B600769001 /* MPPlaceHolding.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5FDED0811C67A0CD00769001 /* MPJSONRepresentable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FE2C0EB1B256B4C001DB163 /* MPTreeItemUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FE2C0E91B256B4C001DB163 /* MPTreeItemUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FE2C0EC1B256B4C001DB163 /* MPTreeItemUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FE2C0EA1B256B4C001DB163 /* MPTreeItemUtility.m */; };
 		5FEA8B5018A81E0100A7C14B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEA8B4F18A81E0100A7C14B /* XCTest.framework */; };
@@ -1123,8 +1121,6 @@
 				5FC423B61AFF8D07002234FB /* MPScriptingDefinitionManager.h in Headers */,
 				5FC423C91AFF8E28002234FB /* NSDictionary+MPScriptingSupport.h in Headers */,
 				5FC4239C1AFF8CF5002234FB /* FeatherScripting.h in Headers */,
-				5FDED0811C67A0CD00769001 /* MPJSONRepresentable.h in Headers */,
-				5FDED0801C67A0B600769001 /* MPPlaceHolding.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
