@@ -82,6 +82,7 @@
 		5F6857DA17287F0800FE06B0 /* MPRootSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857D817287F0800FE06B0 /* MPRootSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857DB17287F0800FE06B0 /* MPRootSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6857D917287F0800FE06B0 /* MPRootSection.m */; };
 		5F6857F017287F3100FE06B0 /* MPRootSection+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F6AFF4E1CD4D7D9002821B9 /* NSAppleScriptDescript+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6AFF4D1CD4D7D9002821B9 /* NSAppleScriptDescript+MPExtensions.swift */; };
 		5F6C563C1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6C563B1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift */; };
 		5F73DEA7170C6BA300DC411A /* MPShoeboxPackageController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F75C38A1C8BA2C700D67DA4 /* NSArray+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F75C3891C8BA2C700D67DA4 /* NSArray+MPExtensions.swift */; };
@@ -141,7 +142,7 @@
 		5FC423B91AFF8D1B002234FB /* FeatherExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; };
 		5FC423C51AFF8DE3002234FB /* CBLDocument+MPScriptingSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6414BA19A2A876007E5245 /* CBLDocument+MPScriptingSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC423C61AFF8DE9002234FB /* CBLDocument+MPScriptingSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6414BB19A2A876007E5245 /* CBLDocument+MPScriptingSupport.m */; };
-		5FC423C91AFF8E28002234FB /* NSDictionary+MPScriptingSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC423C71AFF8E28002234FB /* NSDictionary+MPScriptingSupport.h */; };
+		5FC423C91AFF8E28002234FB /* NSDictionary+MPScriptingSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC423C71AFF8E28002234FB /* NSDictionary+MPScriptingSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC423CA1AFF8E28002234FB /* NSDictionary+MPScriptingSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC423C81AFF8E28002234FB /* NSDictionary+MPScriptingSupport.m */; };
 		5FC752FF1746E294007818A0 /* NSString+MPSearchIndex.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC752FD1746E294007818A0 /* NSString+MPSearchIndex.h */; };
 		5FC753001746E294007818A0 /* NSString+MPSearchIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752FE1746E294007818A0 /* NSString+MPSearchIndex.m */; };
@@ -340,6 +341,7 @@
 		5F6857D817287F0800FE06B0 /* MPRootSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPRootSection.h; path = Sources/Model/MPRootSection.h; sourceTree = "<group>"; };
 		5F6857D917287F0800FE06B0 /* MPRootSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPRootSection.m; path = Sources/Model/MPRootSection.m; sourceTree = "<group>"; };
 		5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MPRootSection+Protected.h"; path = "Sources/Model/MPRootSection+Protected.h"; sourceTree = "<group>"; };
+		5F6AFF4D1CD4D7D9002821B9 /* NSAppleScriptDescript+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAppleScriptDescript+MPExtensions.swift"; sourceTree = "<group>"; };
 		5F6C563B1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+MPExtensions.swift"; sourceTree = "<group>"; };
 		5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPShoeboxPackageController+Protected.h"; path = "Sources/Database Packages/MPShoeboxPackageController+Protected.h"; sourceTree = "<group>"; };
 		5F75C3891C8BA2C700D67DA4 /* NSArray+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSArray+MPExtensions.swift"; sourceTree = "<group>"; };
@@ -719,13 +721,14 @@
 		5FC423981AFF8CF5002234FB /* FeatherScripting */ = {
 			isa = PBXGroup;
 			children = (
-				5FC423C71AFF8E28002234FB /* NSDictionary+MPScriptingSupport.h */,
-				5FC423C81AFF8E28002234FB /* NSDictionary+MPScriptingSupport.m */,
 				5F6414BA19A2A876007E5245 /* CBLDocument+MPScriptingSupport.h */,
-				5F6414BB19A2A876007E5245 /* CBLDocument+MPScriptingSupport.m */,
-				5FAC23B819ABFA94000F188C /* MPScriptingDefinitionManager.h */,
-				5FAC23B919ABFA94000F188C /* MPScriptingDefinitionManager.m */,
 				5FC4239B1AFF8CF5002234FB /* FeatherScripting.h */,
+				5FAC23B819ABFA94000F188C /* MPScriptingDefinitionManager.h */,
+				5FC423C71AFF8E28002234FB /* NSDictionary+MPScriptingSupport.h */,
+				5F6414BB19A2A876007E5245 /* CBLDocument+MPScriptingSupport.m */,
+				5FAC23B919ABFA94000F188C /* MPScriptingDefinitionManager.m */,
+				5FC423C81AFF8E28002234FB /* NSDictionary+MPScriptingSupport.m */,
+				5F6AFF4D1CD4D7D9002821B9 /* NSAppleScriptDescript+MPExtensions.swift */,
 				5FC423991AFF8CF5002234FB /* Supporting Files */,
 			);
 			path = FeatherScripting;
@@ -1550,6 +1553,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FC423CA1AFF8E28002234FB /* NSDictionary+MPScriptingSupport.m in Sources */,
+				5F6AFF4E1CD4D7D9002821B9 /* NSAppleScriptDescript+MPExtensions.swift in Sources */,
 				5FC423C61AFF8DE9002234FB /* CBLDocument+MPScriptingSupport.m in Sources */,
 				5FC423B51AFF8D04002234FB /* MPScriptingDefinitionManager.m in Sources */,
 			);
@@ -2448,6 +2452,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -3174,6 +3179,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -3216,6 +3222,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -3258,6 +3265,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};

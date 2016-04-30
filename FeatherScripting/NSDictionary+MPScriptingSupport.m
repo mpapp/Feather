@@ -7,12 +7,13 @@
 //
 
 @import FeatherExtensions;
+
 #import "MPScriptingDefinitionManager.h"
 #import "NSDictionary+MPScriptingSupport.h"
 
 @implementation NSDictionary (MPScriptingSupport)
 
-+ (id)scriptingRecordWithDescriptor:(NSAppleEventDescriptor *)inDesc {
++ (NSDictionary *)scriptingRecordWithDescriptor:(NSAppleEventDescriptor *)inDesc {
     NSMutableDictionary *d = [NSMutableDictionary dictionary];
     
     for (NSUInteger i = 0; i < [inDesc numberOfItems]; i++) {

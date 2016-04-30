@@ -82,7 +82,7 @@
 
 + (NSBundle *)XPCServiceBundleWithName:(NSString *)name
 {
-    assert([name hasSuffix:@".xpc"]);
+    NSAssert([name hasSuffix:@".xpc"], @"Name lacks suffix \".xpc\"");
     
     NSBundle *mainBundle = [NSBundle appBundle];
     NSBundle *bundle =

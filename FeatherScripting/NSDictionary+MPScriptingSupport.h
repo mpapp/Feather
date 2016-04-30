@@ -11,6 +11,6 @@
 @interface NSDictionary (MPScriptingSupport)
 
 /** A method to convert an NSAppleEventDescriptor into an NSDictionary. */
-+ (id)scriptingRecordWithDescriptor:(NSAppleEventDescriptor *)inDesc;
++ (NSDictionary *)scriptingRecordWithDescriptor:(NSAppleEventDescriptor *)inDesc;
 
 @end
