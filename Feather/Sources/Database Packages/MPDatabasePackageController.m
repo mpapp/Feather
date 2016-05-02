@@ -1449,14 +1449,17 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
     for (MPDatabase *db in self.databases) {
         NSMutableArray *objs = [NSMutableArray new];
         
-        for (CBLQueryRow *docRow in db.database.createAllDocumentsQuery.run) {
-            CBLDocument *doc = docRow.document;
-            
-            NSDictionary *props = nil;
-            if (doc && docRow && docRow.document && (props = docRow.document.properties)) {
-                [objs addObject:props];
+        mp_dispatch_sync(db.database.manager.dispatchQueue, [db.database.packageController serverQueueToken], ^{
+            for (CBLQueryRow *docRow in db.database.createAllDocumentsQuery.run) {
+                CBLDocument *doc = docRow.document;
+                
+                NSDictionary *props = nil;
+                if (doc && docRow && docRow.document && (props = docRow.document.properties)) {
+                    [objs addObject:props];
+                }
             }
-        }
+        });
+        
         
         dict[db.name] = objs.copy;
     }
