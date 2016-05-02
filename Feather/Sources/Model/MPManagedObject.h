@@ -218,6 +218,9 @@ extern NSString * _Nonnull const MPPasteboardTypeManagedObjectIDArray;
 /** Human readable name for the type */
 + (nonnull NSString *)humanReadableName;
 
+/** Like propertiesToSave, but drops "_id", "_rev", "attachments" and other CouchDB specifics + "objectType". */
+@property (readonly, copy, nonnull) NSDictionary *nonIdentifiableProperties;
+
 /** A representation of the object with identifier, object type and database package ID keys included. 
  * The dictionary can be resolved to an existing object with +objectWithReferableDictionaryRepresentation. */
 @property (readonly, nullable) NSDictionary *referableDictionaryRepresentation;

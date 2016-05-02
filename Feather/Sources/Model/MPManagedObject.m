@@ -733,6 +733,28 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return dict;
 }
 
+- (NSDictionary *)nonIdentifiableProperties {
+    NSMutableDictionary *d = [NSMutableDictionary new];
+    
+    NSDictionary *props = self.propertiesToSave;
+    for (NSString *k in [props allKeys]) {
+        if ([k hasPrefix:@"_"]) {
+            continue;
+        }
+        if ([k isEqualToString:@"objectType"]) {
+            continue;
+        }
+        if ([k isEqualToString:@"attachments"]) {
+            continue;
+        }
+        
+        id v = props[k];
+        d[k] = v;
+    }
+    
+    return d.copy;
+}
+
 - (NSString *)description
 {
     __block NSString *desc = nil;
