@@ -1,0 +1,11 @@
+language: objective-c
+xcode_project: Feather.xcodeproj
+xcode_scheme: Feather
+osx_image: xcode7.3
+before_install:
+  - brew update
+  - brew install carthage
+  - git submodule update --init --recursive
+  - cd Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer; carthage bootstrap --verbose
+  - cd ../../../../../
+  - carthage bootstrap --verbose
