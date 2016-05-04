@@ -10,34 +10,34 @@
 
 @interface NSData (MPExtensions)
 
-- (NSString *)md5DigestString;
+- (nullable NSString *)md5DigestString;
 
-- (NSData *)md5Digest;
+- (nullable NSData *)md5Digest;
 
-- (NSString *)sha1DigestString;
+- (nullable NSString *)sha1DigestString;
 
-- (NSData *)sha1Digest;
+- (nullable NSData *)sha1Digest;
 
-- (NSString *)sha1HMacStringWithKey:(NSString *)key;
+- (nullable NSString *)sha1HMacStringWithKey:(nonnull NSString *)key;
 
-- (NSData *)sha1HMacWithKey:(NSString *)key;
+- (nullable NSData *)sha1HMacWithKey:(nonnull NSString *)key;
 
-- (NSString *)sha256HMacStringWithKey:(NSString *)key;
+- (nullable NSString *)sha256HMacStringWithKey:(nonnull NSString *)key;
 
-- (NSData *)sha256HMacWithKey:(NSString *)key;
+- (nullable NSData *)sha256HMacWithKey:(nonnull NSString *)key;
 
-- (NSString *)hexadecimalString;
+- (nonnull NSString *)hexadecimalString;
 
 - (NSUInteger)crc32Checksum;
 
-- (NSString *)stringByDecodingAsUTF8;
+- (nullable NSString *)stringByDecodingAsUTF8;
 
 @end
 
 @interface NSData (AESAdditions)
 
-- (NSData *)AES256EncryptWithKey:(NSString *)key;
+- (nullable NSData *)AES256EncryptWithKey:(nonnull NSString *)key;
 
-- (NSData *)AES256DecryptWithKey:(NSString *)key;
+- (nullable NSData *)AES256DecryptWithKey:(nonnull NSString *)key;
 
 @end
