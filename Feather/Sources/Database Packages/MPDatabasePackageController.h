@@ -346,7 +346,7 @@ typedef enum MPDatabasePackageControllerErrorCode {
 
 #pragma mark -
 
-typedef NSURL *__nonnull(^MPDatabasePackageControllerRootURLHandler)();
+typedef NSURL *__nullable(^MPDatabasePackageControllerRootURLHandler)();
 typedef void (^MPDatabasePackageControllerUpdateChangeCountHandler)(NSDocumentChangeType changeType);
 
 @interface MPDatabasePackageControllerBlockBasedDelegate : NSObject <MPDatabasePackageControllerDelegate>
