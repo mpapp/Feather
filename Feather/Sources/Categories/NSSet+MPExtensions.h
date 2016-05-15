@@ -8,12 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSSet (Feather)
+@interface NSSet<T> (Feather)
 
-- (NSMutableSet *)mutableDeepContainerCopy;
+- (NSMutableSet<T> *)mutableDeepContainerCopy;
 
-- (NSSet *)mapObjectsUsingBlock:(id (^)(id obj))block;
+- (NSSet<T> *)mapObjectsUsingBlock:(id (^)(T obj))block;
 
-- (NSSet *)filteredSetMatching:(BOOL(^)(id evalutedObject))patternBlock;
+- (NSSet *)nilFilteredMapUsingBlock:(id (^)(id obj))block;
+
+- (NSSet<T> *)filteredSetMatching:(BOOL(^)(T evalutedObject))patternBlock;
 
 @end
