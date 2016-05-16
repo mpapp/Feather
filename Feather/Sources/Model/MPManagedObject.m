@@ -715,6 +715,51 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return YES;
 }
 
+- (BOOL)attachContentsOfURL:(NSURL *)newAttachmentURL
+         withAttachmentName:(NSString *)name
+                contentType:(NSString *)contentType
+                      error:(NSError **)err {
+    CBLAttachment *attachment = nil;
+    
+    BOOL attachmentMatchesByteByByte = NO;
+    
+    BOOL attachmentExists = [[self.attachmentNames filteredArrayMatching:^BOOL(id n) {
+                                return [n isEqualToString:name];
+                            }] count] > 0;
+    if (attachmentExists) {
+        CBLAttachment *attachment = [self attachmentNamed:name];
+        
+        NSData *attachmentData = nil;
+        if (!(attachmentData = [NSData dataWithContentsOfURL:attachment.contentURL options:0 error:err])) {
+            NSLog(@"ERROR: Failed to find existing attachment data at %@", attachment.contentURL);
+            return NO;
+        }
+        
+        NSData *newAttachmentData = nil;
+        if (!(newAttachmentData = [NSData dataWithContentsOfURL:newAttachmentURL options:0 error:err])) {
+            NSLog(@"ERROR: Failed to find new attachment data at %@", newAttachmentURL);
+            return NO;
+        }
+        
+        attachmentMatchesByteByByte = [[attachmentData sha1Digest] isEqual:[newAttachmentData sha1Digest]];
+        
+        if (!attachmentMatchesByteByByte) {
+            NSLog(@"REPLACING attachment named %@ for object %@", name, self.documentID);
+            [self removeAttachmentNamed:name];
+        }
+    }
+    
+    if (!attachmentMatchesByteByByte) {
+        [self setAttachmentNamed:name withContentType:contentType contentURL:newAttachmentURL];
+        attachment = [self attachmentNamed:name];
+        NSAssert(attachment, @"No attachment found with name '%@'", name);
+        
+        return [self save:err];
+    }
+    
+    return YES;
+}
+
 + (BOOL)isConcrete
 {
     return self.subclasses.count == 0;
@@ -983,12 +1028,16 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     if ([obj isEqual:value])
         return; // value unchanged.
     
-    assert([dict isKindOfClass:[NSMutableDictionary class]]);
+    if (dict) {
+        NSAssert([dict isKindOfClass:[NSMutableDictionary class]], @"Expecting dictionary to be mutable:\n%@", dict);
+    }
     
-    if (!dict)
-        [self setValue:[NSMutableDictionary dictionaryWithCapacity:16]
+    if (!dict) {
+        dict = [NSMutableDictionary dictionaryWithCapacity:16];
+        [self setValue:dict
             ofProperty:dictPropertyKey];
-    
+    }
+        
     [dict setValue:value forKey:embeddedKey];
     [self cacheValue:dict ofProperty:dictPropertyKey changed:YES];
     [self markNeedsSave];

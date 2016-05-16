@@ -296,6 +296,12 @@ extern NSString * _Nonnull const MPPasteboardTypeManagedObjectIDArray;
 
 #pragma mark - Attachments
 
+/** Replaces the current citation style with the same name if one was there already. */
+- (BOOL)attachContentsOfURL:(nonnull NSURL *)newAttachmentURL
+         withAttachmentName:(nonnull NSString *)name
+                contentType:(nonnull NSString *)contentType
+                      error:(NSError *_Nullable *_Nullable)err;
+
 /** Create an attachment with string.
  * @param name The name of the attachment. Must be unique per managed object (there can be multiple attachments in the database with the same name, but not multiple for the same managed object).
  * @param string String which will be stored as the attachment data.
