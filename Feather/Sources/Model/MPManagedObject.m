@@ -304,6 +304,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return (self.document == nil);
 }
 
+- (void)setUserContributed:(BOOL)userContributed {
+    [self setValue:@(userContributed) ofProperty:@"userContributed"];
+}
+
+- (BOOL)isUserContributed {
+    return [self getValueOfProperty:@"userContributed"];
+}
+
 + (NSString *)idForNewDocumentInDatabase:(CBLDatabase *)db
 {
     return [NSString stringWithFormat:@"%@:%@", NSStringFromClass([self class]), [[NSUUID UUID] UUIDString]];

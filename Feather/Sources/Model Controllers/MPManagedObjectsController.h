@@ -160,6 +160,9 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** Configure the design document of this controller. Can (and commonly is) overloaded by subclasses, but not to be called manually. */
 - (void)configureViews __attribute__((objc_requires_super));
 
+/** Those objects for which userContributed = YES. */
+@property (readonly, strong, nonnull) NSArray<T> *userContributedObjects;
+
 /** The name of the view which returns all objects managed by this controller. */
 - (nonnull NSString *)allObjectsViewName;
 

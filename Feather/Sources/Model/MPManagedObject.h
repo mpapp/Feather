@@ -156,6 +156,10 @@ extern NSString * _Nonnull const MPPasteboardTypeManagedObjectIDArray;
 /** Indicates this object should currently not be allowed to be edited by the user. Useful, for example, for document-local copies of shared/bundled objects. */
 @property (readonly, getter=isLocked) BOOL locked;
 
+/** Mark objects which have been user contributed when there is also the possibility of the document instead having for instance been bundled with the app.
+  * Note that to be userContributed / bundled (and e.g. therefore locked) are not mutually exclusive. */
+@property (readwrite, getter=isUserContributed) BOOL userContributed;
+
 - (void)lock;
 
 - (void)unlock;

@@ -414,6 +414,19 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
      } version:@"1.0"];
     
+    [[self.db.database viewNamed:[self userContributedObjectsViewName]]
+     setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
+     {
+         if (![self managesDocumentWithDictionary:doc])
+             return;
+         
+         if (!doc[@"userContributed"] || ![doc[@"userContributed"] boolValue]) {
+             return;
+         }
+         
+         emit(doc.managedObjectDocumentID, nil);
+     } version:@"1.3"];
+    
     [[self.db.database viewNamed:self.objectsByTitleViewName]
      setMapBlock:^(NSDictionary *doc, CBLMapEmitBlock emit)
     {
@@ -498,6 +511,14 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     q.keys = @[title];
     
     return [self managedObjectsForQueryEnumerator:q.run];
+}
+
+- (NSString *)userContributedObjectsViewName {
+    return [NSString stringWithFormat:@"%@-user-contributed", NSStringFromClass(self.class)];
+}
+
+- (NSArray *)userContributedObjects {
+    return [self objectsMatchingQueriedView:[self userContributedObjectsViewName] keys:nil];
 }
 
 - (NSArray *)allObjects:(NSError **)error
