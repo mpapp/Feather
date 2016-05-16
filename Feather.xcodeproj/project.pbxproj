@@ -96,6 +96,7 @@
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
 		5F9F226A1C792A0800244277 /* CollectionType+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9F22691C792A0800244277 /* CollectionType+MPExtensions.swift */; };
 		5FAC23BF19ABFE79000F188C /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAC23BE19ABFE79000F188C /* CoreServices.framework */; };
+		5FBDCBF41CE9D691002DEAA7 /* ErrorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBDCBF31CE9D691002DEAA7 /* ErrorPresenter.swift */; };
 		5FC423131AFF8719002234FB /* FeatherExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC423121AFF8719002234FB /* FeatherExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC423191AFF8719002234FB /* FeatherExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; };
 		5FC423201AFF8719002234FB /* FeatherExtensionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4231F1AFF8719002234FB /* FeatherExtensionsTests.m */; };
@@ -361,6 +362,7 @@
 		5FAC23BE19ABFE79000F188C /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
 		5FADC70018FAFBAD006F4119 /* NSImage+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSImage+MPExtensions.h"; path = "../Feather/Sources/Categories/NSImage+MPExtensions.h"; sourceTree = "<group>"; };
 		5FADC70118FAFBAD006F4119 /* NSImage+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSImage+MPExtensions.m"; path = "../Feather/Sources/Categories/NSImage+MPExtensions.m"; sourceTree = "<group>"; };
+		5FBDCBF31CE9D691002DEAA7 /* ErrorPresenter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorPresenter.swift; sourceTree = "<group>"; };
 		5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeatherExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FC423111AFF8719002234FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5FC423121AFF8719002234FB /* FeatherExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeatherExtensions.h; sourceTree = "<group>"; };
@@ -592,6 +594,7 @@
 				5F05A3451CD02D7D00FE80D8 /* AppKit Categories */,
 				5F05A31A1CD02CC800FE80D8 /* FeatherAppKitExtensions.h */,
 				5F05A31C1CD02CC800FE80D8 /* Info.plist */,
+				5FBDCBF31CE9D691002DEAA7 /* ErrorPresenter.swift */,
 			);
 			path = FeatherAppKitExtensions;
 			sourceTree = "<group>";
@@ -1493,6 +1496,7 @@
 			files = (
 				5F2DA72D1CD04AF700F0A3EB /* NSAttributedString+MPExtensions.m in Sources */,
 				5F05A3441CD02D1200FE80D8 /* NSWindowController+MPExtensions.m in Sources */,
+				5FBDCBF41CE9D691002DEAA7 /* ErrorPresenter.swift in Sources */,
 				5F05A3401CD02D1200FE80D8 /* NSView+MPExtensions.m in Sources */,
 				5F05A36D1CD0334B00FE80D8 /* NSXMLElement+MPExtensions.m in Sources */,
 				5F05A34A1CD02E0800FE80D8 /* ABRecord+MPExtensions.m in Sources */,
@@ -1768,6 +1772,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.manuscriptsapp.FeatherAppKitExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1813,6 +1818,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.manuscriptsapp.FeatherAppKitExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1858,6 +1864,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.manuscriptsapp.FeatherAppKitExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
