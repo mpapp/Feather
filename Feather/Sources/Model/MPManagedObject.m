@@ -373,7 +373,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     if (_newDocumentID)
     {
         BOOL hasCorrectPrefix = [_newDocumentID hasPrefix:[NSString stringWithFormat:@"%@:", NSStringFromClass(self.class)]];
-        assert(hasCorrectPrefix);
+        NSAssert(hasCorrectPrefix, @"Prefix %@ is not acceptable.", _newDocumentID);
     }
 #endif
     return _newDocumentID ? _newDocumentID : [[self class] idForNewDocumentInDatabase:db];
