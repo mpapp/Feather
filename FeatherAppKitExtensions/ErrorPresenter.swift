@@ -9,7 +9,7 @@
 import Foundation
 
 // Needed because some objects that implement -presentError: are not subclassing NSResponder.
-protocol ErrorPresenter {
+public protocol ErrorPresenter {
     func presentError(error: NSError) -> Bool
 }
 
