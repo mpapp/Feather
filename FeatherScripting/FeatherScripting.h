@@ -18,4 +18,3 @@ FOUNDATION_EXPORT const unsigned char FeatherScriptingVersionString[];
 
 #import "MPScriptingDefinitionManager.h"
 #import "NSDictionary+MPScriptingSupport.h"
-#import "CBLDocument+MPScriptingSupport.h"

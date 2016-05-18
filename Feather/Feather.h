@@ -53,3 +53,5 @@
 
 #import "MPSnapshot.h"
 #import "MPSnapshotsController.h"
+
+#import "CBLDocument+MPScriptingSupport.h"

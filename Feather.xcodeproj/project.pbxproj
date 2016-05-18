@@ -36,6 +36,7 @@
 		5F05A3671CD0323900FE80D8 /* NSMenuItem+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F05A3651CD0323900FE80D8 /* NSMenuItem+MPExtensions.m */; };
 		5F05A36C1CD0334B00FE80D8 /* NSXMLElement+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F05A3681CD0332A00FE80D8 /* NSXMLElement+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F05A36D1CD0334B00FE80D8 /* NSXMLElement+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F05A3691CD0332A00FE80D8 /* NSXMLElement+MPExtensions.m */; };
+		5F0EFA141CED1FA700A4CED0 /* CBLDocument+MPScriptingSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6414BA19A2A876007E5245 /* CBLDocument+MPScriptingSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F18505E1711B13900079040 /* MPEmbeddedObject+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293C20170E45D4001C2111 /* MPEmbeddedObject+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F18F20E1CD968D5008CE38D /* NSDateFormatter+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F18F20D1CD968D5008CE38D /* NSDateFormatter+MPExtensions.swift */; };
 		5F293B9B170CAD65001C2111 /* MPCacheableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293B99170CAD65001C2111 /* MPCacheableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -67,6 +68,7 @@
 		5F4A48BE1C34079C0029DB3E /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
 		5F4A48BF1C34079C0029DB3E /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; };
 		5F4A48C21C3407C30029DB3E /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
+		5F4ED85F1CECDB61003ED0B8 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4ED85E1CECDB61003ED0B8 /* String+Extensions.swift */; };
 		5F5084411C55119A009D7211 /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
 		5F5084421C55119D009D7211 /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; };
 		5F5084451C551503009D7211 /* CouchbaseLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -142,7 +144,6 @@
 		5FC423B51AFF8D04002234FB /* MPScriptingDefinitionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FAC23B919ABFA94000F188C /* MPScriptingDefinitionManager.m */; };
 		5FC423B61AFF8D07002234FB /* MPScriptingDefinitionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FAC23B819ABFA94000F188C /* MPScriptingDefinitionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC423B91AFF8D1B002234FB /* FeatherExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; };
-		5FC423C51AFF8DE3002234FB /* CBLDocument+MPScriptingSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6414BA19A2A876007E5245 /* CBLDocument+MPScriptingSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC423C61AFF8DE9002234FB /* CBLDocument+MPScriptingSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6414BB19A2A876007E5245 /* CBLDocument+MPScriptingSupport.m */; };
 		5FC423C91AFF8E28002234FB /* NSDictionary+MPScriptingSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC423C71AFF8E28002234FB /* NSDictionary+MPScriptingSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC423CA1AFF8E28002234FB /* NSDictionary+MPScriptingSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC423C81AFF8E28002234FB /* NSDictionary+MPScriptingSupport.m */; };
@@ -332,6 +333,7 @@
 		5F42FC471B10C36900CD88AA /* MPDeepSaver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPDeepSaver.m; path = Sources/Model/MPDeepSaver.m; sourceTree = "<group>"; };
 		5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLite.framework; path = Carthage/Build/Mac/CouchbaseLite.framework; sourceTree = "<group>"; };
 		5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteListener.framework; path = Carthage/Build/Mac/CouchbaseLiteListener.framework; sourceTree = "<group>"; };
+		5F4ED85E1CECDB61003ED0B8 /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		5F5084471C551804009D7211 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac/CocoaLumberjack.framework"; sourceTree = "<group>"; };
 		5F6414BA19A2A876007E5245 /* CBLDocument+MPScriptingSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CBLDocument+MPScriptingSupport.h"; path = "../Feather/Sources/Scripting/CBLDocument+MPScriptingSupport.h"; sourceTree = "<group>"; };
 		5F6414BB19A2A876007E5245 /* CBLDocument+MPScriptingSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CBLDocument+MPScriptingSupport.m"; path = "../Feather/Sources/Scripting/CBLDocument+MPScriptingSupport.m"; sourceTree = "<group>"; };
@@ -681,6 +683,7 @@
 			isa = PBXGroup;
 			children = (
 				5F9F22691C792A0800244277 /* CollectionType+MPExtensions.swift */,
+				5F4ED85E1CECDB61003ED0B8 /* String+Extensions.swift */,
 			);
 			name = "Swift Standard Library Extensions";
 			sourceTree = "<group>";
@@ -1011,11 +1014,11 @@
 		5FDB3A8117079B280049EBB5 /* Model Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				5FDB3A5A170799B30049EBB5 /* MPManagedObjectsController+Protected.h */,
-				5FDB3A58170799B30049EBB5 /* MPManagedObjectsController.h */,
-				5FDB3A59170799B30049EBB5 /* MPManagedObjectsController.m */,
 				5FDB3A7617079AEC0049EBB5 /* MPContributorsController.h */,
+				5FDB3A58170799B30049EBB5 /* MPManagedObjectsController.h */,
+				5FDB3A5A170799B30049EBB5 /* MPManagedObjectsController+Protected.h */,
 				5FDB3A7717079AEC0049EBB5 /* MPContributorsController.m */,
+				5FDB3A59170799B30049EBB5 /* MPManagedObjectsController.m */,
 				5F95F2AF17397F2900E8C845 /* Full Text Search */,
 			);
 			name = "Model Controllers";
@@ -1123,7 +1126,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FC423C51AFF8DE3002234FB /* CBLDocument+MPScriptingSupport.h in Headers */,
 				5FC423B61AFF8D07002234FB /* MPScriptingDefinitionManager.h in Headers */,
 				5FC423C91AFF8E28002234FB /* NSDictionary+MPScriptingSupport.h in Headers */,
 				5FC4239C1AFF8CF5002234FB /* FeatherScripting.h in Headers */,
@@ -1164,6 +1166,7 @@
 				5F73DEA7170C6BA300DC411A /* MPShoeboxPackageController+Protected.h in Headers */,
 				5F293B9B170CAD65001C2111 /* MPCacheableMixin.h in Headers */,
 				5F293B9D170CAD8C001C2111 /* MPCacheable.h in Headers */,
+				5F0EFA141CED1FA700A4CED0 /* CBLDocument+MPScriptingSupport.h in Headers */,
 				5F293BA0170CAECC001C2111 /* MPEmbeddedObject.h in Headers */,
 				5F293BF5170DFD4E001C2111 /* UICKeyChainStore.h in Headers */,
 				5FC4238F1AFF8BDE002234FB /* NSNotificationCenter+MPManagedObjectExtensions.h in Headers */,
@@ -1522,6 +1525,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F4ED85F1CECDB61003ED0B8 /* String+Extensions.swift in Sources */,
 				5F9F226A1C792A0800244277 /* CollectionType+MPExtensions.swift in Sources */,
 				5FC423411AFF872E002234FB /* NSNotificationCenter+ErrorNotification.m in Sources */,
 				5FC423551AFF872E002234FB /* NSFileManager+MPExtensions.m in Sources */,
@@ -2211,6 +2215,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Testing;
@@ -2308,6 +2313,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = AppStoreDebug;
@@ -2799,6 +2805,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Internal;
@@ -3536,6 +3543,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = framework;
 			};
 			name = Debug;
