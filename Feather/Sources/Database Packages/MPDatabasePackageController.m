@@ -13,8 +13,10 @@
 
 @import FeatherExtensions;
 
-#import "MPContributor.h"
-#import "MPContributorsController.h"
+#import <Feather/MPContributor.h>
+#import <Feather/MPContributorsController.h>
+#import <Feather/Feather-Swift.h>
+
 #import "MPSnapshotsController.h"
 #import "MPException.h"
 
@@ -79,11 +81,14 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 @property (strong, readonly) NSMutableSet *registeredViewNames;
 
+@property (readwrite) TreeItemPool *treeItemPool;
+
 @end
 
 @implementation MPDatabasePackageController
 
 @synthesize snapshotsDatabase = _snapshotsDatabase;
+@synthesize treeItemPool = _treeItemPool;
 
 - (instancetype)initWithPath:(NSString *)path
                     readOnly:(BOOL)readOnly
@@ -202,6 +207,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
             = [[MPSnapshotsController alloc] initWithPackageController:self database:_snapshotsDatabase error:err];
         if (!_snapshotsController)
             return nil;
+        
+        _treeItemPool = [[TreeItemPool alloc] init];
         
         _pulls = [[NSMutableArray alloc] initWithCapacity:[[[self class] databaseNames] count]];
         _completedPulls = [[NSMutableArray alloc] initWithCapacity:[[[self class] databaseNames] count]];

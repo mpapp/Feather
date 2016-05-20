@@ -7,6 +7,7 @@
 //
 
 #import <Feather/MPVirtualSection.h>
+#import <Feather/MPObjectWrappingSection.h>
 
 @interface MPVirtualSection ()
 @property (readwrite, weak, nullable) id<MPTreeItem> parent;

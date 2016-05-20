@@ -6,8 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "MPContributorsController.h"
+@import Foundation;
 
 @import CouchbaseLite;
 
@@ -15,6 +14,10 @@ typedef void (^MPPullCompletionHandler)(NSDictionary * __nullable errDict);
 
 @class MPDatabase, MPSnapshot, MPDraft;
 @class CBLDocument;
+@class MPContributorsController, MPContributorIdentitiesController;
+@class TreeItemPool;
+@class MPDatabasePackageController;
+@class MPManagedObject;
 
 @class MPSearchIndexController;
 
@@ -106,6 +109,8 @@ typedef enum MPDatabasePackageControllerErrorCode {
 
 @property (readonly, strong, nullable) NSURL *databaseListenerURL;
 @property (readonly) NSUInteger databaseListenerPort;
+
+@property (readonly, nonnull) TreeItemPool *treeItemPool;
 
 /** Indicates whether the database package controller's contents are to be full text indexed. 
   * Default implementation returns NO, overload to toggle on full-text indexing (see also MPManagedObject FTS indexing related properties and methods.) */

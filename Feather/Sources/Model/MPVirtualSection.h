@@ -6,20 +6,18 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 #import "MPPlaceHolding.h"
-#import "Feather.h"
 #import "MPTreeItem.h"
 #import "MPThumbnailable.h"
 #import "MPCacheableMixin.h"
-
+#import "NSNotificationCenter+MPManagedObjectExtensions.h"
 #import "MPTitledProtocol.h"
 
 @class MPDatabasePackageController;
 
-@interface MPVirtualSection : NSObject
-    <MPTreeItem, MPCacheable, MPPlaceHolding, MPManagedObjectChangeObserver, MPTitledProtocol>
+@interface MPVirtualSection : NSObject <MPTreeItem, MPCacheable, MPPlaceHolding, MPManagedObjectChangeObserver, MPTitledProtocol>
 
 @property (readonly, weak, nullable) id<MPTreeItem> parent;
 @property (readonly, weak, nullable) __kindof MPDatabasePackageController *packageController;
@@ -38,22 +36,3 @@
 
 @end
 
-@interface MPObjectWrappingSection : MPVirtualSection 
-
-@property (readonly, copy, nullable) NSString *extendedTitle;
-
-/** The object being wrapped. */
-@property (readonly, strong, nullable) MPManagedObject<MPTitledProtocol, MPPlaceHolding, MPThumbnailable, MPTreeItem> *wrappedObject;
-
-// FIXME: make this readonly.
-/** The children of the wrapped object, each conformant to MPTreeItem. */
-@property (readwrite, strong, nonnull) NSArray<id<MPTreeItem>> *wrappedChildren;
-
-- (nonnull instancetype)initWithParent:(nonnull id<MPTreeItem>)parentItem
-                         wrappedObject:(nonnull MPManagedObject<MPTitledProtocol, MPPlaceHolding> *)obj;
-
-/** Create an array of MPObjectWrappingSection objects with the specified parent. */
-+ (nonnull NSArray *)arrayOfWrappedObjects:(nonnull NSArray<id<MPTitledProtocol, MPPlaceHolding>> *)wrappedObjects
-                                withParent:(nonnull id<MPTreeItem>)parent;
-
-@end

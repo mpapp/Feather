@@ -9,6 +9,7 @@
 #import "NSNotificationCenter+MPManagedObjectExtensions.h"
 #import "MPManagedObject.h"
 #import "MPDatabasePackageController.h"
+#import "MPManagedObjectsController.h"
 
 @import RegexKitLite;
 @import ObjectiveC;

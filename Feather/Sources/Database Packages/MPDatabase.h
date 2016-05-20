@@ -8,6 +8,7 @@
 
 @import Foundation;
 @import CouchbaseLite;
+
 #import <Feather/MPJSONRepresentable.h>
 
 extern NSString * const MPDatabaseErrorDomain;

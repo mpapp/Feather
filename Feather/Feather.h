@@ -30,6 +30,7 @@
 #import "MPDatabasePackageBackedDocument.h"
 
 #import "MPVirtualSection.h"
+#import "MPObjectWrappingSection.h"
 
 #import "NSNotificationCenter+MPManagedObjectExtensions.h"
 #import "NSDictionary+MPManagedObjectExtensions.h"

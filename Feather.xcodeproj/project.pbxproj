@@ -91,6 +91,9 @@
 		5F75C38A1C8BA2C700D67DA4 /* NSArray+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F75C3891C8BA2C700D67DA4 /* NSArray+MPExtensions.swift */; };
 		5F779FCC172BDC3C0011C4DD /* MPThumbnailable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F779FB8172BDC180011C4DD /* MPThumbnailable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F779FF6172BE69A0011C4DD /* MPRESTFulResource.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F779FF4172BE69A0011C4DD /* MPRESTFulResource.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F8119481CEE32C3007018B8 /* TreeItemPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8119471CEE32C3007018B8 /* TreeItemPool.swift */; };
+		5F81194B1CEE36A5007018B8 /* MPObjectWrappingSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F8119491CEE36A5007018B8 /* MPObjectWrappingSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F81194C1CEE36A5007018B8 /* MPObjectWrappingSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F81194A1CEE36A5007018B8 /* MPObjectWrappingSection.m */; };
 		5F89426A1CD04E4E00A9DC07 /* FeatherExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; };
 		5F89426B1CD0531100A9DC07 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */; };
 		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
@@ -352,6 +355,9 @@
 		5F779F9B172BD3D20011C4DD /* NSView+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSView+MPExtensions.m"; path = "../Feather/Sources/Categories/NSView+MPExtensions.m"; sourceTree = "<group>"; };
 		5F779FB8172BDC180011C4DD /* MPThumbnailable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MPThumbnailable.h; path = Sources/Model/MPThumbnailable.h; sourceTree = "<group>"; };
 		5F779FF4172BE69A0011C4DD /* MPRESTFulResource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPRESTFulResource.h; path = Sources/Model/MPRESTFulResource.h; sourceTree = "<group>"; };
+		5F8119471CEE32C3007018B8 /* TreeItemPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TreeItemPool.swift; path = Sources/Model/TreeItemPool.swift; sourceTree = "<group>"; };
+		5F8119491CEE36A5007018B8 /* MPObjectWrappingSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPObjectWrappingSection.h; path = Sources/Model/MPObjectWrappingSection.h; sourceTree = "<group>"; };
+		5F81194A1CEE36A5007018B8 /* MPObjectWrappingSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPObjectWrappingSection.m; path = Sources/Model/MPObjectWrappingSection.m; sourceTree = "<group>"; };
 		5F95F2D71739A94300E8C845 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPIndexableMixin.h; path = Sources/Model/MPIndexableMixin.h; sourceTree = "<group>"; };
 		5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPIndexableMixin.m; path = Sources/Model/MPIndexableMixin.m; sourceTree = "<group>"; };
@@ -980,33 +986,36 @@
 		5FDB3A8017079B220049EBB5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */,
-				5FDB3A3A1707992B0049EBB5 /* MPManagedObject.h */,
-				5FDB3A3B1707992B0049EBB5 /* MPManagedObject.m */,
+				5FDB3A6817079A750049EBB5 /* MPContributor.h */,
+				5FDB3A6917079A750049EBB5 /* MPContributor.m */,
+				5F42FC461B10C36900CD88AA /* MPDeepSaver.h */,
+				5F42FC471B10C36900CD88AA /* MPDeepSaver.m */,
 				5F293B9E170CAECC001C2111 /* MPEmbeddedObject.h */,
 				5F293B9F170CAECC001C2111 /* MPEmbeddedObject.m */,
 				5F293C20170E45D4001C2111 /* MPEmbeddedObject+Protected.h */,
+				5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */,
+				5FDB3A3A1707992B0049EBB5 /* MPManagedObject.h */,
+				5FDB3A3B1707992B0049EBB5 /* MPManagedObject.m */,
 				5FDB3A3E1707992B0049EBB5 /* MPManagedObject+Protected.h */,
+				5F8119491CEE36A5007018B8 /* MPObjectWrappingSection.h */,
+				5F81194A1CEE36A5007018B8 /* MPObjectWrappingSection.m */,
+				5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */,
+				5F779FF4172BE69A0011C4DD /* MPRESTFulResource.h */,
+				5F6857D817287F0800FE06B0 /* MPRootSection.h */,
+				5F6857D917287F0800FE06B0 /* MPRootSection.m */,
+				5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */,
 				5FDB3A7A17079B1E0049EBB5 /* MPSnapshot.h */,
 				5FDB3A7B17079B1E0049EBB5 /* MPSnapshot.m */,
 				5FDB3A7C17079B1E0049EBB5 /* MPSnapshot+Protected.h */,
 				5FDB3A7017079ABB0049EBB5 /* MPSnapshotsController.h */,
 				5FDB3A7117079ABB0049EBB5 /* MPSnapshotsController.m */,
 				5FDB3A7217079ABB0049EBB5 /* MPSnapshotsController+Protected.h */,
-				5FDB3A6817079A750049EBB5 /* MPContributor.h */,
-				5FDB3A6917079A750049EBB5 /* MPContributor.m */,
-				5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */,
-				5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */,
 				5F6857B61727C40300FE06B0 /* MPTitledProtocol.h */,
-				5F6857D817287F0800FE06B0 /* MPRootSection.h */,
-				5F6857D917287F0800FE06B0 /* MPRootSection.m */,
-				5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */,
+				5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */,
 				5F68579D1727C38900FE06B0 /* MPVirtualSection.h */,
 				5F68579E1727C38900FE06B0 /* MPVirtualSection.m */,
 				5F68579F1727C38900FE06B0 /* MPVirtualSection+Protected.h */,
-				5F779FF4172BE69A0011C4DD /* MPRESTFulResource.h */,
-				5F42FC461B10C36900CD88AA /* MPDeepSaver.h */,
-				5F42FC471B10C36900CD88AA /* MPDeepSaver.m */,
+				5F8119471CEE32C3007018B8 /* TreeItemPool.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1172,6 +1181,7 @@
 				5FC4238F1AFF8BDE002234FB /* NSNotificationCenter+MPManagedObjectExtensions.h in Headers */,
 				5F293C1F170E3B62001C2111 /* MPPlaceHolding.h in Headers */,
 				5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */,
+				5F81194B1CEE36A5007018B8 /* MPObjectWrappingSection.h in Headers */,
 				5F18505E1711B13900079040 /* MPEmbeddedObject+Protected.h in Headers */,
 				5F3D380A1725D8A600D19D7C /* MPCategorizableMixin.h in Headers */,
 				5F3D380E1725D8E000D19D7C /* MPBundlableMixin.h in Headers */,
@@ -1585,7 +1595,9 @@
 				5FC423901AFF8BE3002234FB /* NSNotificationCenter+MPManagedObjectExtensions.m in Sources */,
 				5FDB3A401707992B0049EBB5 /* MPManagedObject.m in Sources */,
 				5FDB3A421707992B0049EBB5 /* MPManagedObject+Mixin.m in Sources */,
+				5F8119481CEE32C3007018B8 /* TreeItemPool.swift in Sources */,
 				5FDB3A5C170799B30049EBB5 /* MPManagedObjectsController.m in Sources */,
+				5F81194C1CEE36A5007018B8 /* MPObjectWrappingSection.m in Sources */,
 				5FFD61B31AFFAF4000483D9C /* NSArray+MPManagedObjectExtensions.m in Sources */,
 				5FDB3A6B17079A750049EBB5 /* MPContributor.m in Sources */,
 				5FDB3A7417079ABB0049EBB5 /* MPSnapshotsController.m in Sources */,
