@@ -23,13 +23,17 @@
 @property (readonly, weak, nullable) __kindof MPDatabasePackageController *packageController;
 @property (readonly, weak, nullable) Class representedObjectClass;
 
+@property (readonly, nonnull) NSString *identifier;
+
 /** The objects this section corresponds to: for instance 'unplaced figures'.
   * MPVirtualSection declares these synonymous to -children, but subclasses can overload in a way where -children and -representedObjects return different arrays of objects. */
 @property (readonly, strong, nonnull) NSArray<id<MPTreeItem>> *representedObjects;
 
 - (nonnull instancetype)init NS_UNAVAILABLE;
 
-- (nonnull instancetype)initWithPackageController:(nonnull MPDatabasePackageController *)pkgController parent:(nonnull id<MPTreeItem>)parent NS_DESIGNATED_INITIALIZER;
+- (nonnull instancetype)initWithPackageController:(nonnull MPDatabasePackageController *)pkgController
+                                           parent:(nonnull id<MPTreeItem>)parent
+                                       identifier:(nonnull NSString *)identifier NS_DESIGNATED_INITIALIZER;
 
 @property (readonly, copy, nonnull) NSString *thumbnailImageName;
 @property (readonly, strong, nonnull) NSImage *thumbnailImage;

@@ -12,12 +12,12 @@
 #import "Mixin.h"
 
 @import FeatherExtensions;
-
 #import <Feather/MPException.h>
 
 @implementation MPVirtualSection
 
 @synthesize inEditMode;
+@synthesize identifier = _identifier;
 
 + (void)initialize
 {
@@ -31,7 +31,7 @@
     return YES; // UI oriented cache.
 }
 
-- (instancetype)initWithPackageController:(MPDatabasePackageController *)pkgController parent:(id<MPTreeItem>)parent
+- (instancetype)initWithPackageController:(MPDatabasePackageController *)pkgController parent:(id<MPTreeItem>)parent identifier:(nonnull NSString *)identifier
 {
     NSParameterAssert([NSThread isMainThread]);
     
@@ -42,6 +42,9 @@
         
         assert(parent);
         _parent = parent;
+        
+        NSParameterAssert(identifier);
+        _identifier = identifier;
         
         // some subclasses get a non-null managedObjectClass later during initialisation, hence the if.
         if (self.representedObjectClass)

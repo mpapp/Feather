@@ -16,22 +16,29 @@
 #import "MPManagedObjectsController.h"
 #import "MPDatabasePackageController.h"
 
-@import FeatherExtensions;
+#import <FeatherExtensions/FeatherExtensions.h>
+
+@interface MPObjectWrappingSection () {
+}
+@end
 
 @implementation MPObjectWrappingSection
+@synthesize identifier = _identifier;
 
 - (instancetype)initWithPackageController:(MPDatabasePackageController *)pkgController {
     @throw [[MPInitIsPrivateException alloc] initWithSelector:_cmd];
 }
 
 - (instancetype)initWithParent:(id<MPTreeItem>)parentItem
-                 wrappedObject:(MPManagedObject<MPTitledProtocol,MPPlaceHolding, MPThumbnailable, MPTreeItem> *)obj {
-    return [self initWithParent:parentItem wrappedObject:obj representedObjects:@[ obj ] representedObjectClass:obj.class observedManagedObjectClasses:nil];
+                 wrappedObject:(MPManagedObject<MPTitledProtocol,MPPlaceHolding, MPThumbnailable, MPTreeItem> *)obj
+                    identifier:(NSString *)theIdentifier {
+    return [self initWithParent:parentItem wrappedObject:obj representedObjects:@[ obj ] identifier:theIdentifier representedObjectClass:obj.class observedManagedObjectClasses:nil];
 }
 
 - (instancetype)initWithParent:(id<MPTreeItem>)parentItem
                  wrappedObject:(MPManagedObject<MPTitledProtocol, MPPlaceHolding, MPThumbnailable, MPTreeItem> *)obj
             representedObjects:(NSArray *)representedObjects
+                    identifier:(NSString *)theIdentifier
         representedObjectClass:(Class)representedObjectClass
   observedManagedObjectClasses:(NSArray *)additionalObservedManagedObjectClasses {
     NSAssert(parentItem, @"Attempting to create object wrapping section with nil parent to wrap (%@)", obj);
@@ -39,13 +46,18 @@
     NSAssert(obj, @"Attempting to create an object wrapping section with a nil obejct for parent %@", parentItem);
     NSAssert([[obj class] isSubclassOfClass:[MPManagedObject class]], @"Unexpected type: %@.", [obj class]);
 
-    if (self = [super initWithPackageController:parentItem.packageController parent:parentItem])
+    if (self = [super initWithPackageController:parentItem.packageController parent:parentItem identifier:theIdentifier])
     {
         _wrappedObject = obj;
         
         _representedObjects = representedObjects;
+        
+        NSParameterAssert(theIdentifier);
+        self.identifier = theIdentifier;
+        
         _managedObjectClass = representedObjectClass;
         _observedManagedObjectClasses = additionalObservedManagedObjectClasses;
+        
         
         [self observeManagedObjectChanges];
     }
@@ -75,10 +87,6 @@
     return [_wrappedObject save:err];
 }
 
-- (NSString *)identifier {
-    return nil;
-}
-
 - (BOOL)isEqual:(id)object {
     if (![self isKindOfClass:object]) {
         return NO;
@@ -95,19 +103,20 @@
 }
 
 + (NSArray *)arrayOfWrappedObjects:(NSArray *)wrappedObjects
-                        withParent:(id<MPTreeItem>)parent {
+                        withParent:(id<MPTreeItem>)parent
+                  identifierPrefix:(NSString *)identifierPrefix {
     // the package controller property should be the same for the parent and all the wrapped objects
     if (wrappedObjects.count > 0)
-        [[wrappedObjects valueForKey:@"controller"] matchingValueForKey:@"packageController"
-                                                                  value:^(BOOL valueMatches, id value)
-         {
+        [[wrappedObjects valueForKey:@"controller"] matchingValueForKey:@"packageController" value:^(BOOL valueMatches, id value) {
              NSParameterAssert(valueMatches);
              NSParameterAssert(value != nil);
              NSParameterAssert(value == parent.packageController);
          }];
     
-    return [wrappedObjects mapObjectsUsingBlock:^id(MPManagedObject<MPTitledProtocol, MPPlaceHolding> *o, NSUInteger idx) {
-        MPObjectWrappingSection *wrappedO = [[MPObjectWrappingSection alloc] initWithParent:parent wrappedObject:o];
+    return [wrappedObjects mapObjectsUsingBlock:^id(MPManagedObject<MPTitledProtocol, MPPlaceHolding, MPTreeItem> *o, NSUInteger idx) {
+        NSParameterAssert([o identifier]);
+        NSString *identifier = [NSString stringWithFormat:@"%@-%@", identifierPrefix, [o identifier]];
+        MPObjectWrappingSection *wrappedO = [[MPObjectWrappingSection alloc] initWithParent:parent wrappedObject:o identifier:identifier];
         wrappedO = (id)[[o.controller.packageController treeItemPool] itemForItem:wrappedO];
         return wrappedO;
     }];
@@ -147,5 +156,9 @@
     return _managedObjectClass;
 }
 
+- (NSString *)description {
+    return [NSString stringWithFormat:@"<MPObjectWrappingSection identifier:%@ title:%@ wrappedObject:%@ wrappedChildren:%@>",
+                                      self.identifier, self.title, self.wrappedObject, self.wrappedChildren];
+}
 
 @end

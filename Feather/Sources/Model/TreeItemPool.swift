@@ -26,7 +26,10 @@ import Foundation
     
     public func fullyQualifiedIdentifier(treeItem item:MPTreeItem) -> String {
         if let parent = item.parent {
-            return "\(parent.identifier)/\(item.identifier)"
+            guard let parentID = parent.identifier else {
+                preconditionFailure("Parent must be identifiable: \(parent)")
+            }
+            return "\(parentID)/\(item.identifier)"
         }
         else {
             guard let identifier = item.identifier else {

@@ -28,9 +28,12 @@
     NSArray *_representedObjects;
 }
 
+@property (readwrite, nonnull) NSString *identifier;
+
 @property (readwrite, copy, nullable) NSString *extendedTitle;
 @property (readwrite, strong, nullable) Class representedObjectClass;
 @property (readwrite, strong, nonnull) NSArray *representedObjects;
 @property (readwrite, strong, nonnull) NSArray *observedManagedObjectClasses;
+
 @end
 

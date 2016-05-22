@@ -32,10 +32,13 @@
 
 - (nonnull instancetype)init NS_UNAVAILABLE;
 
-- (nonnull instancetype)initWithParent:(nonnull id<MPTreeItem>)parentItem wrappedObject:(nonnull MPManagedObject<MPTitledProtocol, MPPlaceHolding> *)obj;
+- (nonnull instancetype)initWithParent:(nonnull id<MPTreeItem>)parentItem
+                         wrappedObject:(nonnull MPManagedObject<MPTitledProtocol, MPPlaceHolding> *)obj
+                            identifier:(nonnull NSString *)identifier;
 
 /** Create an array of MPObjectWrappingSection objects with the specified parent. */
 + (nonnull NSArray *)arrayOfWrappedObjects:(nonnull NSArray<id<MPTitledProtocol, MPPlaceHolding>> *)wrappedObjects
-                                withParent:(nonnull id<MPTreeItem>)parent;
+                                withParent:(nonnull id<MPTreeItem>)parent
+                          identifierPrefix:(nonnull NSString *)identifierPrefix;
 
 @end
