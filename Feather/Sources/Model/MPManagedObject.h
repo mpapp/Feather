@@ -262,7 +262,7 @@ extern NSString * _Nonnull const MPPasteboardTypeManagedObjectIDArray;
 
 /** Initialise a managed object with a specified controller, properties and identifier and a document ID. */
 - (nonnull instancetype)initWithNewDocumentForController:(nonnull MPManagedObjectsController *)controller
-                                              properties:(nullable NSDictionary *)properties
+                                              properties:(nullable NSDictionary<NSString *, id> *)properties
                                               documentID:(nullable NSString *)identifier;
 
 /** Initializer used to when creating a new object with a given prototype.
