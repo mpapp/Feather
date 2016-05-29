@@ -454,9 +454,7 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
          ^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
              NSLog(@"Opened reverted document %@ at URL %@", document, url);
          }];
-
     }];
-    
     
     return revert;
 }
@@ -468,7 +466,10 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
 }
 
 - (void)makeWindowControllers {
-    [self addWindowController:[[[self mainWindowControllerClass] alloc] initWithWindowNibName:@"MPDocument"]];
+    NSWindowController *winC = [[[self mainWindowControllerClass] alloc] initWithWindowNibName:@"MPDocument"];
+    winC.shouldCascadeWindows = NO; // don't cascade windows but remember their position too.
+    winC.windowFrameAutosaveName = self.packageController.identifier;
+    [self addWindowController:winC];
 }
 
 - (id)mainWindowController {
