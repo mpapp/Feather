@@ -467,7 +467,7 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
 
 - (void)makeWindowControllers {
     NSWindowController *winC = [[[self mainWindowControllerClass] alloc] initWithWindowNibName:@"MPDocument"];
-    winC.shouldCascadeWindows = NO; // don't cascade windows but remember their position too.
+    //winC.shouldCascadeWindows = NO; // don't cascade windows but remember their position too.
     winC.windowFrameAutosaveName = self.packageController.identifier;
     [self addWindowController:winC];
 }
