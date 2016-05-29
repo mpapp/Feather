@@ -501,6 +501,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
             Class cls = [MPManagedObject managedObjectClassFromDocumentID:change.documentID];
             MPManagedObjectsController *moc = [self.packageController controllerForManagedObjectClass:cls];
             
+            // moc may be nil and the below code therefore not executed when change is for MPMetadata / MPLocalMetadata object.
             CBLDocument *doc = [moc documentWithIdentifier:change.documentID allDocsMode:kCBLIncludeDeleted];
             if ([doc.currentRevisionID isEqualToString:change.revisionID]) {
                 MPManagedObject *mo = [moc objectWithIdentifier:doc.documentID];
