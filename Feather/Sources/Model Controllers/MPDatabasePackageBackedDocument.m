@@ -18,6 +18,7 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
     id _packageController;
 }
 @property (readwrite, nonatomic) NSError *packageAccessError;
+@property (readwrite) BOOL resourcesCleaned;
 @end
 
 @implementation MPDatabasePackageBackedDocument
@@ -137,6 +138,7 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
     }
     
     _temporaryManuscriptPath = nil;
+    _resourcesCleaned = YES;
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification
@@ -217,6 +219,10 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
     else  {
         NSAssert(_temporaryManuscriptPath,
                  @"Unexpected state: !temporaryManuscriptPath && !bundleRequiresInitialization");
+    }
+    
+    if (_resourcesCleaned) {
+        return nil;
     }
     
     NSAssert(_temporaryManuscriptPath, @"temporaryManuscriptPath should be set (%@)", self.fileURL);
