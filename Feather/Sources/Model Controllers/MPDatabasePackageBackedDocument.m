@@ -18,6 +18,7 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
     id _packageController;
 }
 @property (readwrite, nonatomic) NSError *packageAccessError;
+@property (readwrite) BOOL resourcesCleaned;
 @end
 
 @implementation MPDatabasePackageBackedDocument
@@ -137,6 +138,7 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
     }
     
     _temporaryManuscriptPath = nil;
+    _resourcesCleaned = YES;
 }
 
 - (void)applicationWillTerminate:(NSNotification *)notification
@@ -217,6 +219,10 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
     else  {
         NSAssert(_temporaryManuscriptPath,
                  @"Unexpected state: !temporaryManuscriptPath && !bundleRequiresInitialization");
+    }
+    
+    if (_resourcesCleaned) {
+        return nil;
     }
     
     NSAssert(_temporaryManuscriptPath, @"temporaryManuscriptPath should be set (%@)", self.fileURL);
@@ -454,9 +460,7 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
          ^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
              NSLog(@"Opened reverted document %@ at URL %@", document, url);
          }];
-
     }];
-    
     
     return revert;
 }
@@ -468,7 +472,10 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
 }
 
 - (void)makeWindowControllers {
-    [self addWindowController:[[[self mainWindowControllerClass] alloc] initWithWindowNibName:@"MPDocument"]];
+    NSWindowController *winC = [[[self mainWindowControllerClass] alloc] initWithWindowNibName:@"MPDocument"];
+    //winC.shouldCascadeWindows = NO; // don't cascade windows but remember their position too.
+    winC.windowFrameAutosaveName = self.packageController.identifier;
+    [self addWindowController:winC];
 }
 
 - (id)mainWindowController {

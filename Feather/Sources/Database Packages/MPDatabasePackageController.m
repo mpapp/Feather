@@ -451,8 +451,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (MPManagedObjectsController *)controllerForManagedObjectClass:(Class)class
 {
     MPManagedObjectsController *c = [self _controllerForManagedObjectClass:class];
-    if (c)
+    if (c) {
         return c;
+    }
     
     if (![class conformsToProtocol:@protocol(MPReferencableObject)])
     {
@@ -465,8 +466,11 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return nil;
 }
 
-- (MPManagedObjectsController *)_controllerForManagedObjectClass:(Class)class
-{
+- (MPManagedObjectsController *)_controllerForManagedObjectClass:(Class)class {
+    if ([class isSubclassOfClass:MPMetadata.class]) {
+        return nil;
+    }
+    
     NSParameterAssert(class);
     NSAssert([class isSubclassOfClass:[MPManagedObject class]] && class != [MPManagedObject class],
              @"Unexpected class: %@", class);
