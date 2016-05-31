@@ -945,8 +945,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (void)unlock
 {
-    if (self.isLocked)
+    if (self.isLocked || ![self.propertiesToSave objectForKey:@"locked"]) {
         [self setValue:@(NO) ofProperty:@"locked"];
+    }
 }
 
 - (void)refreshCachedValues
