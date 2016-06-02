@@ -9,8 +9,8 @@
 #import <Cocoa/Cocoa.h>
 
 
-extern inline id MPAnimatorOrView(NSView *view, BOOL animate);
-extern inline id MPAnimatorOrConstraint(NSLayoutConstraint *constraint, BOOL animate);
+extern inline id _Nonnull MPAnimatorOrView(NSView *_Nonnull view, BOOL animate);
+extern inline id _Nonnull MPAnimatorOrConstraint(NSLayoutConstraint *_Nonnull constraint, BOOL animate);
 
 extern NSInteger MPBooleanToState(BOOL b);
 extern BOOL MPStateToBoolean(NSInteger state);
@@ -18,44 +18,45 @@ extern BOOL MPStateToBoolean(NSInteger state);
 
 @interface NSView (MPExtensions)
 
-- (NSLayoutConstraint *)addEdgeConstraint:(NSLayoutAttribute)edge
-                                  subview:(NSView *)subview;
-- (NSLayoutConstraint *)addEdgeConstraint:(NSLayoutAttribute)edge
-                           constantOffset:(CGFloat)value subview:(NSView *)subview;
+- (nonnull NSLayoutConstraint *)addEdgeConstraint:(NSLayoutAttribute)edge
+                                          subview:(nonnull NSView *)subview;
+- (nonnull NSLayoutConstraint *)addEdgeConstraint:(NSLayoutAttribute)edge
+                                   constantOffset:(CGFloat)value
+                                          subview:(nonnull NSView *)subview;
 
-- (void)addSubviewConstrainedToSuperViewEdges:(NSView *)aView;
-- (void)addSubviewConstrainedToSuperViewEdges:(NSView *)aView
+- (void)addSubviewConstrainedToSuperViewEdges:(nonnull NSView *)aView;
+- (void)addSubviewConstrainedToSuperViewEdges:(nonnull NSView *)aView
                                     topOffset:(CGFloat)topOffset
                                   rightOffset:(CGFloat)rightOffset
                                  bottomOffset:(CGFloat)bottomOffset
                                    leftOffset:(CGFloat)leftOffset;
 
-- (void)replaceSubviewsWithSubviewConstrainedToSuperViewEdges:(NSView *)subview;
+- (void)replaceSubviewsWithSubviewConstrainedToSuperViewEdges:(nonnull NSView *)subview;
 
-- (BOOL) hasSubview:(NSView *)subview;
+- (BOOL)hasSubview:(nonnull NSView *)subview;
 
-- (NSLayoutConstraint *) heightConstraint;
-- (NSLayoutConstraint *) horizontalConstraintWithView:(NSView *)anotherView;
-- (NSLayoutConstraint *) verticalConstraintWithView:(NSView *)anotherView;
-- (NSLayoutConstraint *) widthConstraint;
+- (nullable NSLayoutConstraint *)heightConstraint;
+- (nullable NSLayoutConstraint *)horizontalConstraintWithView:(nonnull NSView *)anotherView;
+- (nullable NSLayoutConstraint *)verticalConstraintWithView:(nonnull NSView *)anotherView;
+- (nullable NSLayoutConstraint *)widthConstraint;
 
-- (void) hideWithZeroWidth;
-- (void) hideWithZeroWidthAndAnimate:(BOOL)animate;
-+ (void) hideViews:(NSArray *)views withZeroWidthAndAnimate:(BOOL)animate;
+- (void)hideWithZeroWidth;
+- (void)hideWithZeroWidthAndAnimate:(BOOL)animate;
++ (void)hideViews:(nonnull NSArray<NSView *> *)views withZeroWidthAndAnimate:(BOOL)animate;
 
-- (void) hideWithZeroHeight;
-- (void) hideWithZeroHeightAndAnimate:(BOOL)animate;
-+ (void) hideViews:(NSArray *)views withZeroHeightAndAnimate:(BOOL)animate;
+- (void)hideWithZeroHeight;
+- (void)hideWithZeroHeightAndAnimate:(BOOL)animate;
++ (void)hideViews:(nonnull NSArray<NSView *> *)views withZeroHeightAndAnimate:(BOOL)animate;
 
-- (void) showWithWidth:(CGFloat)width;
-- (void) showWithWidth:(CGFloat)width andAnimate:(BOOL)animate;
+- (void)showWithWidth:(CGFloat)width;
+- (void)showWithWidth:(CGFloat)width andAnimate:(BOOL)animate;
 
-- (void) showWithHeight:(CGFloat)height;
-- (void) showWithHeight:(CGFloat)height andAnimate:(BOOL)animate;
+- (void)showWithHeight:(CGFloat)height;
+- (void)showWithHeight:(CGFloat)height andAnimate:(BOOL)animate;
 
-- (NSString *)superviewPathString;
-- (NSArray *)superviewPath;
+- (nonnull NSString *)superviewPathString;
+- (nonnull NSArray *)superviewPath;
 
-- (NSData *)PDFDataForRect:(CGRect)rect;
+- (nonnull NSData *)PDFDataForRect:(CGRect)rect;
 
 @end
