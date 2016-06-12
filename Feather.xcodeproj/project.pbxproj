@@ -63,6 +63,7 @@
 		5F3D380E1725D8E000D19D7C /* MPBundlableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D380C1725D8E000D19D7C /* MPBundlableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3D380F1725D8E000D19D7C /* MPBundlableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D380D1725D8E000D19D7C /* MPBundlableMixin.m */; };
 		5F3D8C0C1AAD07C900D0D4A8 /* MPJSONRepresentable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F41633F1D0DF2E40017A57C /* NSAttributedString+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F41633E1D0DF2E40017A57C /* NSAttributedString+MPExtensions.swift */; };
 		5F42FC481B10C36900CD88AA /* MPDeepSaver.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F42FC461B10C36900CD88AA /* MPDeepSaver.h */; };
 		5F42FC491B10C36900CD88AA /* MPDeepSaver.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F42FC471B10C36900CD88AA /* MPDeepSaver.m */; };
 		5F4A48BE1C34079C0029DB3E /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
@@ -332,6 +333,7 @@
 		5F3D380C1725D8E000D19D7C /* MPBundlableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPBundlableMixin.h; path = Sources/Model/MPBundlableMixin.h; sourceTree = "<group>"; };
 		5F3D380D1725D8E000D19D7C /* MPBundlableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPBundlableMixin.m; path = Sources/Model/MPBundlableMixin.m; sourceTree = "<group>"; };
 		5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPJSONRepresentable.h; path = Sources/Model/MPJSONRepresentable.h; sourceTree = "<group>"; };
+		5F41633E1D0DF2E40017A57C /* NSAttributedString+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+MPExtensions.swift"; sourceTree = "<group>"; };
 		5F42FC461B10C36900CD88AA /* MPDeepSaver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPDeepSaver.h; path = Sources/Model/MPDeepSaver.h; sourceTree = "<group>"; };
 		5F42FC471B10C36900CD88AA /* MPDeepSaver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPDeepSaver.m; path = Sources/Model/MPDeepSaver.m; sourceTree = "<group>"; };
 		5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLite.framework; path = Carthage/Build/Mac/CouchbaseLite.framework; sourceTree = "<group>"; };
@@ -641,6 +643,7 @@
 				5F05A3651CD0323900FE80D8 /* NSMenuItem+MPExtensions.m */,
 				5F05A3681CD0332A00FE80D8 /* NSXMLElement+MPExtensions.h */,
 				5F05A3691CD0332A00FE80D8 /* NSXMLElement+MPExtensions.m */,
+				5F41633E1D0DF2E40017A57C /* NSAttributedString+MPExtensions.swift */,
 			);
 			name = "AppKit Categories";
 			sourceTree = "<group>";
@@ -1507,6 +1510,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F41633F1D0DF2E40017A57C /* NSAttributedString+MPExtensions.swift in Sources */,
 				5F2DA72D1CD04AF700F0A3EB /* NSAttributedString+MPExtensions.m in Sources */,
 				5F05A3441CD02D1200FE80D8 /* NSWindowController+MPExtensions.m in Sources */,
 				5FBDCBF41CE9D691002DEAA7 /* ErrorPresenter.swift in Sources */,
