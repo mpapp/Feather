@@ -57,8 +57,8 @@
 - (void)observeManagedObjectChanges
 {
     if (self.representedObjectClass)
-        [[_packageController notificationCenter] addPastChangeObserver:self
-                                              forManagedObjectsOfClass:self.representedObjectClass
+        [[(id)_packageController notificationCenter] addPastChangeObserver:self
+                                                  forManagedObjectsOfClass:self.representedObjectClass
          didAdd:
          ^(id<MPManagedObjectChangeObserver, MPCacheable> _self, NSNotification *notification)
          {
@@ -76,7 +76,7 @@
 
 - (void)dealloc {
     NSParameterAssert([NSThread isMainThread]);
-    [[_packageController notificationCenter] removeObserver:self];
+    [[(id)_packageController notificationCenter] removeObserver:self];
 }
 
 - (void)setTitle:(NSString *)title {

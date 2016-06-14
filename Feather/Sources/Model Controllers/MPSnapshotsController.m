@@ -140,7 +140,7 @@
     if (!qenum)
     {
         assert(err);
-        [[self.packageController notificationCenter] postErrorNotification:err];
+        [[(id)self.packageController notificationCenter] postErrorNotification:err];
     }
     return [self managedObjectsForQueryEnumerator:qenum];
 }
@@ -193,7 +193,7 @@
     CBLQueryEnumerator *qenum = [[self snapshottedAttachmentsQueryForSnapshot:snapshot] run:&err];
     if (!qenum)
     {
-        [[self.packageController notificationCenter] postErrorNotification:err];
+        [[(id)self.packageController notificationCenter] postErrorNotification:err];
         return nil;
     }
     
@@ -215,7 +215,7 @@
     
     if (!attachmentsForSHA)
     {
-        [[self.packageController notificationCenter] postErrorNotification:err];
+        [[(id)self.packageController notificationCenter] postErrorNotification:err];
         return nil;
     }
     

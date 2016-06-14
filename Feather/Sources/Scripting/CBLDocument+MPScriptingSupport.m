@@ -7,7 +7,8 @@
 //
 
 #import "CBLDocument+MPScriptingSupport.h"
-#import <Foundation/Foundation.h>
+
+@import Foundation;
 
 @implementation CBLDocument (MPScriptingSupport)
 

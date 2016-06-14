@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Matias Piipari. All rights reserved.
 //
 
-#import <CouchbaseLite/CouchbaseLite.h>
+@import CouchbaseLite;
 
 @interface CBLDocument (MPScriptingSupport)
 
