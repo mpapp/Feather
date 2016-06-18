@@ -1,6 +1,6 @@
 github "mpapp/CocoaLumberjack" "2e778b31ee5ecf0287f2809871087dbec762971e"
 github "mpapp/RegexKitLite" "92be66c0b2310ad481f0373c6a28e14b18540ff9"
-github "mz2/couchbase-lite-ios" "8fea8d7054cd45f1e8e1691c6552bb781a99b5a3"
+github "mz2/couchbase-lite-ios" "5b71454"
 github "mpapp/google-diff-match-patch-Objective-C" "a271c05cee3c49d63e99c9b7cac38d42d058d6e7"
 github "mz2/libextobjc" "7c202c858a655d54eccd5e5b0e717ba04310840a"
-github "mpapp/P2Core" "0acc5a72082fd4f41ad003287fa5291848518770"
+github "mpapp/P2Core" "9da3bc7"
