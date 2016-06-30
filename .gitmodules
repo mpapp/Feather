@@ -25,3 +25,9 @@
 [submodule "Carthage/Checkouts/P2Core"]
 	path = Carthage/Checkouts/P2Core
 	url = ssh://git@github.com/mpapp/P2Core.git
+[submodule "Carthage/Checkouts/MPRateLimiter"]
+	path = Carthage/Checkouts/MPRateLimiter
+	url = ssh://git@github.com/mz2/MPRateLimiter.git
+[submodule "Carthage/Checkouts/MPTimer"]
+	path = Carthage/Checkouts/MPTimer
+	url = ssh://git@github.com/mpapp/MPTimer.git

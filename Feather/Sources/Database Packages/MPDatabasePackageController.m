@@ -80,6 +80,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 @property (strong, readwrite) NSNetService *databaseListenerService;
 
 @property (strong, readonly) NSMutableSet *registeredViewNames;
+@property (strong, nullable) CloudKitSyncService *cloudKitSyncService;
 
 @property (readwrite) TreeItemPool *treeItemPool;
 
@@ -232,6 +233,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         _rootSections = [self newRootSections];
         
         _registeredViewNames = [NSMutableSet setWithCapacity:128];
+        
+        if (self.synchronizesUsingCloudKit) {
+            self.cloudKitSyncService = [[CloudKitSyncService alloc] initWithPackageController:self container:nil];
+        }
         
         [self.class registerDatabasePackageController:self];
 
@@ -428,6 +433,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (BOOL)synchronizesWithRemote { return NO; }
 
 - (BOOL)synchronizesPeerlessly { return YES; }
+
+- (BOOL)synchronizesUsingCloudKit { return NO; }
 
 - (BOOL)controllerExistsForManagedObjectClass:(Class)class
 {

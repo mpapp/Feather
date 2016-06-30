@@ -18,6 +18,7 @@ typedef void (^MPPullCompletionHandler)(NSDictionary * __nullable errDict);
 @class TreeItemPool;
 @class MPDatabasePackageController;
 @class MPManagedObject;
+@class CloudKitSyncService;
 
 @class MPSearchIndexController;
 
@@ -88,7 +89,7 @@ typedef enum MPDatabasePackageControllerErrorCode {
 @property (strong, readonly, nonnull) CBLManager *server;
 
 /** All objects in the database package's databases. No particular sort order is guaranteed. */
-@property (readonly, nonnull) NSArray *allObjects;
+@property (readonly, nonnull) NSArray<__kindof MPManagedObject *> *allObjects;
 
 @property (readonly) unsigned long long serverQueueToken;
 
@@ -103,6 +104,9 @@ typedef enum MPDatabasePackageControllerErrorCode {
 
 /** If returns YES, package's snapshot databases should be synced (default: NO). */
 @property (readonly) BOOL synchronizesSnapshots;
+
+@property (readonly) BOOL synchronizesUsingCloudKit;
+@property (readonly, nullable) CloudKitSyncService *cloudKitSyncService;
 
 /** If returns YES, package's databases should be synced peerlessly (default: YES, overridable application wide with user default MPDefaultsKeySyncPeerlessly). */
 @property (readonly) BOOL synchronizesPeerlessly;
