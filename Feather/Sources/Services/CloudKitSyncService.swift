@@ -71,7 +71,7 @@ import FeatherExtensions
         return NSOrderedSet(array: zoneNames).array as! [String]
     }
     
-    private func ensureUserAuthenticated(completionHandler:()->Void, errorHandler:(ErrorType)->Void) {
+    public func ensureUserAuthenticated(completionHandler:()->Void, errorHandler:(ErrorType)->Void) {
         self.container.fetchUserRecordIDWithCompletionHandler() { recordID, error in
             if let error = error {
                 errorHandler(error)

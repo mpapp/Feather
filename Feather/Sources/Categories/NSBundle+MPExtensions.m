@@ -56,6 +56,7 @@
 
 + (NSBundle *)appBundle
 {
+    /*
     if ([self inTestSuite])
     {
         static NSBundle *appBundle = nil;
@@ -74,7 +75,7 @@
         
         return appBundle;
     }
-    else
+    else*/
     {
         return [self mainBundle];
     }

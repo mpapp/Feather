@@ -32,8 +32,7 @@
     
     NSString *sharedPackagePath = [MPShoeboxPackageController.sharedShoeboxPackageControllerClass sharedDatabasesPath];
     
-    BOOL sharedPackageIsForTestBundle = [[sharedPackagePath lastPathComponent] isEqualToString:
-                                         [[NSBundle appBundle] bundleNameString]];
+    BOOL sharedPackageIsForTestBundle = [sharedPackagePath.lastPathComponent isEqualToString:NSBundle.appBundle.bundleNameString];
     XCTAssertTrue(sharedPackageIsForTestBundle,
                  @"Test bundle name is the last path component of the shared package path.");
     
