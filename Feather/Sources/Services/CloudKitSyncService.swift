@@ -79,6 +79,7 @@ import FeatherExtensions
             }
             else if let recordID = recordID {
                 self.ownerID = recordID
+                completionHandler()
                 return
             }
             else {
