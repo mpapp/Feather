@@ -73,17 +73,22 @@ import FeatherExtensions
     
      
     private var recordZoneNames:[String] {
-        let zoneNames = MPManagedObject.subclasses().map { cls -> String in
+        let zoneNames = MPManagedObject.subclasses().flatMap { cls -> String? in
             let moClass = cls as! MPManagedObject.Type
+            if String(moClass).containsString("Mixin") {
+                return nil
+            }
+            
             return (MPManagedObjectsController.equivalenceClassForManagedObjectClass(moClass) as! MPManagedObject.Type).recordZoneName()
         }
         
         return NSOrderedSet(array: zoneNames).array as! [String]
     }
     
-    public func ensureUserAuthenticated(completionHandler:()->Void, errorHandler:ErrorHandler) {
-        if self.ownerID?.recordName != nil {
-            completionHandler()
+    public typealias UserAuthenticationCompletionHandler = (ownerID:CKRecordID)->Void
+    public func ensureUserAuthenticated(completionHandler:UserAuthenticationCompletionHandler, errorHandler:ErrorHandler) {
+        if let ownerID = self.ownerID {
+            completionHandler(ownerID:ownerID)
             return
         }
         self.container.fetchUserRecordIDWithCompletionHandler() { recordID, error in
@@ -93,12 +98,41 @@ import FeatherExtensions
             }
             else if let recordID = recordID {
                 self.ownerID = recordID
-                completionHandler()
+                completionHandler(ownerID:recordID)
                 return
             }
             else {
                 preconditionFailure("Both error and record were nil?")
             }
+        }
+    }
+    
+    public func ensureRecordZonesExist(completionHandler:()->Void, errorHandler:ErrorHandler) {
+        self.ensureUserAuthenticated({ ownerID in
+            self._ensureRecordZonesExist(ownerID.recordName, completionHandler:completionHandler, errorHandler: errorHandler)
+        }, errorHandler: errorHandler)
+    }
+    
+    private func _ensureRecordZonesExist(ownerName:String, completionHandler:()->Void, errorHandler:ErrorHandler) {
+        let zones = self.recordZoneNames.map { name -> CKRecordZone in
+            let zoneID = CKRecordZoneID(zoneName: name, ownerName: ownerName)
+            let zone = CKRecordZone(zoneID: zoneID)
+            
+            return zone
+        }
+        
+        let op = CKModifyRecordZonesOperation(recordZonesToSave: zones, recordZoneIDsToDelete: [])
+        
+        self.operationQueue.addOperation(op)
+        
+        
+        op.modifyRecordZonesCompletionBlock = { savedRecordZones, deletedRecordZones, error in
+            if let error = error {
+                errorHandler(Error.UnderlyingError(error))
+                return
+            }
+            
+            completionHandler()
         }
     }
     
@@ -125,10 +159,11 @@ import FeatherExtensions
     
     public func push(completionHandler:PushCompletionHandler, errorHandler:ErrorHandler) {
         
-        self.ensureUserAuthenticated({ 
-            self._push(completionHandler, errorHandler: errorHandler)
+        self.ensureUserAuthenticated({ ownerID in
+            self._ensureRecordZonesExist(ownerID.recordName, completionHandler: { 
+                    self._push(completionHandler, errorHandler: errorHandler)
+                }, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
-        
     }
     
     private func _push(completionHandler:PushCompletionHandler, errorHandler:ErrorHandler) {
