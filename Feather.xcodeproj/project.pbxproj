@@ -210,6 +210,8 @@
 		5FF745B81D259BD100B493D0 /* CloudKitSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF745B71D259BD100B493D0 /* CloudKitSyncService.swift */; };
 		5FF745BA1D259C3500B493D0 /* MPRateLimiter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF745B91D259C3500B493D0 /* MPRateLimiter.framework */; };
 		5FF745BC1D25A8F700B493D0 /* MPTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF745BB1D25A8F700B493D0 /* MPTimer.framework */; };
+		5FF745C21D26FCF000B493D0 /* CloudKitSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF745C11D26FCF000B493D0 /* CloudKitSerializer.swift */; };
+		5FF745C41D26FD0A00B493D0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF745C31D26FD0A00B493D0 /* CloudKit.framework */; };
 		5FFC37701AEEF7AF0041FBED /* MPCountryList.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FFC376E1AEEF7AF0041FBED /* MPCountryList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FFC37711AEEF7AF0041FBED /* MPCountryList.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFC376F1AEEF7AF0041FBED /* MPCountryList.m */; };
 		5FFD61B31AFFAF4000483D9C /* NSArray+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */; };
@@ -493,6 +495,8 @@
 		5FF745B71D259BD100B493D0 /* CloudKitSyncService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloudKitSyncService.swift; path = Sources/Services/CloudKitSyncService.swift; sourceTree = "<group>"; };
 		5FF745B91D259C3500B493D0 /* MPRateLimiter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MPRateLimiter.framework; path = Carthage/Build/Mac/MPRateLimiter.framework; sourceTree = "<group>"; };
 		5FF745BB1D25A8F700B493D0 /* MPTimer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MPTimer.framework; path = Carthage/Build/Mac/MPTimer.framework; sourceTree = "<group>"; };
+		5FF745C11D26FCF000B493D0 /* CloudKitSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitSerializer.swift; sourceTree = "<group>"; };
+		5FF745C31D26FD0A00B493D0 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		5FFC376E1AEEF7AF0041FBED /* MPCountryList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCountryList.h; path = Sources/Utilities/MPCountryList.h; sourceTree = "<group>"; };
 		5FFC376F1AEEF7AF0041FBED /* MPCountryList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCountryList.m; path = Sources/Utilities/MPCountryList.m; sourceTree = "<group>"; };
 		5FFD61911AFF97C600483D9C /* NSViewController+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSViewController+MPExtensions.h"; path = "../Feather/Sources/Categories/NSViewController+MPExtensions.h"; sourceTree = "<group>"; };
@@ -572,6 +576,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FF745C41D26FD0A00B493D0 /* CloudKit.framework in Frameworks */,
 				5F4A48BE1C34079C0029DB3E /* CouchbaseLite.framework in Frameworks */,
 				5F5084481C551804009D7211 /* CocoaLumberjack.framework in Frameworks */,
 				5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */,
@@ -841,6 +846,7 @@
 		5FDB33051705CB950049EBB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5FF745C31D26FD0A00B493D0 /* CloudKit.framework */,
 				5FF745BB1D25A8F700B493D0 /* MPTimer.framework */,
 				5FF745B91D259C3500B493D0 /* MPRateLimiter.framework */,
 				5F05A36E1CD0461000FE80D8 /* P2Core.framework */,
@@ -1107,6 +1113,7 @@
 			isa = PBXGroup;
 			children = (
 				5FF745B71D259BD100B493D0 /* CloudKitSyncService.swift */,
+				5FF745C11D26FCF000B493D0 /* CloudKitSerializer.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -1639,6 +1646,7 @@
 				5FF745B81D259BD100B493D0 /* CloudKitSyncService.swift in Sources */,
 				5FDB3A7E17079B1E0049EBB5 /* MPSnapshot.m in Sources */,
 				5FDB3A8817079C020049EBB5 /* MPException.m in Sources */,
+				5FF745C21D26FCF000B493D0 /* CloudKitSerializer.swift in Sources */,
 				5FDB3A9317079DD10049EBB5 /* MPDatabase.m in Sources */,
 				5FDB3A9517079DD10049EBB5 /* MPDatabasePackageController.m in Sources */,
 				5F2CC7761B56E58900D9C714 /* MPFileObserver.m in Sources */,

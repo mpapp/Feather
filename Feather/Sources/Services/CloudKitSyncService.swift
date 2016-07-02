@@ -19,6 +19,7 @@ import FeatherExtensions
         case NilPackageController
         case PartialError(CKErrorCode)
         case OwnerUnknown
+        case UnderlyingError(ErrorType)
     }
     
     weak var packageController:MPDatabasePackageController?
@@ -71,10 +72,10 @@ import FeatherExtensions
         return NSOrderedSet(array: zoneNames).array as! [String]
     }
     
-    public func ensureUserAuthenticated(completionHandler:()->Void, errorHandler:(ErrorType)->Void) {
+    public func ensureUserAuthenticated(completionHandler:()->Void, errorHandler:ErrorHandler) {
         self.container.fetchUserRecordIDWithCompletionHandler() { recordID, error in
             if let error = error {
-                errorHandler(error)
+                errorHandler(Error.UnderlyingError(error))
                 return
             }
             else if let recordID = recordID {
@@ -110,6 +111,14 @@ import FeatherExtensions
     public typealias PushCompletionHandler = (savedRecords:[CKRecord], saveFailures:[(record:CKRecord, error:ErrorType)]?, deletedRecordIDs:[CKRecordID], deletionFailures:[(recordID:CKRecordID, error:ErrorType)]?, completeFailure:ErrorType?)->Void
     
     public func push(completionHandler:PushCompletionHandler, errorHandler:ErrorHandler) {
+        
+        self.ensureUserAuthenticated({ 
+            self._push(completionHandler, errorHandler: errorHandler)
+        }, errorHandler: errorHandler)
+        
+    }
+    
+    private func _push(completionHandler:PushCompletionHandler, errorHandler:ErrorHandler) {
         var recordsMap = [CKRecordID:CKRecord]()
         let records:[CKRecord]
         do {
@@ -123,7 +132,7 @@ import FeatherExtensions
         
         let save = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: [])
         save.savePolicy = CKRecordSavePolicy.AllKeys
-
+        
         self.operationQueue.addOperation(save)
         
         // This block reports an error of type partialFailure when it saves or deletes only some of the records successfully. The userInfo dictionary of the error contains a CKPartialErrorsByItemIDKey key whose value is an NSDictionary object. The keys of that dictionary are the IDs of the records that were not saved or deleted, and the corresponding values are error objects containing information about what happened.
@@ -136,7 +145,7 @@ import FeatherExtensions
             let partialErrorInfo = err.userInfo[CKPartialErrorsByItemIDKey] as! [CKRecordID:NSNumber]
             
             print("Partial error info: \(partialErrorInfo)")
-
+            
             let failedSaves = partialErrorInfo.flatMap { (recordID, errorInfo) -> (record:CKRecord, error:ErrorType)? in
                 // TODO: filter by error type
                 if let record = recordsMap[recordID] {
@@ -144,64 +153,9 @@ import FeatherExtensions
                 }
                 return nil
             }
-
+            
             // TODO: handle failed partial deletions
             completionHandler(savedRecords: savedRecords ?? [], saveFailures:failedSaves, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures:nil, completeFailure: nil)
         }
-    }
-}
-
-public struct CloudKitSerializer {
-    
-    public enum Error: ErrorType {
-        case ObjectDeleted(MPManagedObject)
-        case OwnerDeleted(MPContributor)
-        case DocumentUnavailable(MPManagedObject)
-        case UnexpectedKey(NSObject)
-        case UnexpectedPropertyValue(AnyObject)
-    }
-    
-    public let ownerName:String
-    
-    public func recordZoneID(object:MPManagedObject) -> CKRecordZoneID {
-        return CKRecordZoneID(zoneName: object.dynamicType.recordZoneName(), ownerName: ownerName)
-    }
-    
-    public func recordID(object:MPManagedObject) throws -> CKRecordID {
-        guard let recordName = object.documentID else {
-            throw Error.ObjectDeleted(object)
-        }
-        return CKRecordID(recordName: recordName, zoneID: self.recordZoneID(object))
-    }
-    
-    public func serialize(object:MPManagedObject) throws -> CKRecord {
-        let record = CKRecord(recordType: object.dynamicType.recordZoneName(), recordID: try self.recordID(object))
-        
-        guard let doc = object.document else {
-            throw Error.DocumentUnavailable(object)
-        }
-        
-        for (key, value) in doc.userProperties {
-            guard let keyString = key as? String else {
-                throw Error.UnexpectedKey(key)
-            }
-            
-            let val = object.valueForKey(keyString), valObj = val as? MPManagedObject, valRecordValue = val as? CKRecordValue
-            
-            if let valObj = valObj {
-                let valRecord = try self.serialize(valObj)
-                let valRef = CKReference(record: valRecord, action: CKReferenceAction.None)
-                record.setObject(valRef, forKey: keyString)
-                continue
-            }
-            else if let valRecordValue = valRecordValue {
-                record.setObject(valRecordValue, forKey: keyString)
-            }
-            else {
-                throw Error.UnexpectedPropertyValue(value)
-            }
-        }
-        
-        return record
     }
 }

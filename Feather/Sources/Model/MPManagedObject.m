@@ -912,6 +912,15 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     [self setModerationState:MPManagedObjectModerationStateRejected];
 }
 
+- (NSString *)valueCodingKeyForPersistedPropertyKey:(NSString *)persistedPropertyKey {
+    return persistedPropertyKey;
+}
+
+- (NSString *)persistedPropertyKeyForValueCodingKey:(NSString *)valueCodingKey {
+    return valueCodingKey;
+}
+
+
 - (NSString *)prototypeID
 {
     return [self getValueOfProperty:@"prototype"];
