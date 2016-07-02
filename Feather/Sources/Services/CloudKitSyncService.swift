@@ -24,6 +24,7 @@ import FeatherExtensions
     
     weak var packageController:MPDatabasePackageController?
     let container:CKContainer
+    let recordRepository:CloudKitRecordRepository = CloudKitRecordRepository()
     
     public var ownerID:CKRecordID? = nil {
         didSet {
@@ -54,7 +55,7 @@ import FeatherExtensions
             throw Error.OwnerUnknown
         }
 
-        let serializer = CloudKitSerializer(ownerName:ownerName)
+        let serializer = CloudKitSerializer(ownerName:ownerName, recordRepository: recordRepository)
         let records = try packageController.allObjects.map {
             try serializer.serialize($0)
         }

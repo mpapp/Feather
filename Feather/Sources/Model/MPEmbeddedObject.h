@@ -8,6 +8,8 @@
 
 @import CouchbaseLite.MYDynamicObject;
 
+#import "MPJSONRepresentable.h"
+
 #import "MPEmbeddedPropertyContainingMixin.h"
 
 @protocol MPWaitingOperation;
@@ -49,7 +51,7 @@ extern NSString *_Nonnull const MPPasteboardTypeEmbeddedObjectIDArray;
 /** A model object that can be embedded as values in MPManagedObject's keys. 
   * MPEmbeddedObject itself conforms to MPEmbeddingObject because it can embed other objects. */
 NS_REQUIRES_PROPERTY_DEFINITIONS
-@interface MPEmbeddedObject : MYDynamicObject <MPEmbeddingObject, NSPasteboardWriting, NSPasteboardReading>
+@interface MPEmbeddedObject : MYDynamicObject <MPEmbeddingObject, NSPasteboardWriting, NSPasteboardReading, MPJSONRepresentable>
 
 @property (readonly, copy, nonnull) NSString *identifier;
 
@@ -72,6 +74,8 @@ NS_REQUIRES_PROPERTY_DEFINITIONS
 
 /** Returns a JSON encodable version of the embedded object. */
 - (nonnull NSString *)externalize;
+
+- (nullable NSString *)JSONStringRepresentation:(NSError *_Nullable *_Nullable)err;
 
 /** The embedding managed object of an embedded object is the managed object found when the path is followed through 'embeddingObject' until a MPManagedObject instance is found. */
 @property (readonly, nullable) __kindof MPManagedObject *embeddingManagedObject;

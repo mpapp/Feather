@@ -444,10 +444,26 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
 {
     NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:self.properties.count];
     
-    for (id key in _properties)
+    for (id key in _properties) {
         dict[key] = [self externalizePropertyValue:_properties[key]];
-
+    }
+    
     return dict;
+}
+
+- (NSString *)JSONStringRepresentation:(NSError *__autoreleasing  _Nullable *)err {
+    
+    NSDictionary *props = self.dictionaryRepresentation;
+    NSAssert(props, @"Expecting non-nil properties dictionary for %@", self);
+    
+    NSData *data = [CBLJSON dataWithJSONObject:props options:NSJSONWritingPrettyPrinted error:err];
+    
+    if (!data) {
+        return nil;
+    }
+    
+    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    return str;
 }
 
 - (id)externalize

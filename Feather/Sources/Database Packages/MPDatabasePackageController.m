@@ -235,7 +235,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         _registeredViewNames = [NSMutableSet setWithCapacity:128];
         
         if (self.synchronizesUsingCloudKit) {
-            self.cloudKitSyncService = [[CloudKitSyncService alloc] initWithPackageController:self container:nil];
+            _cloudKitSyncService = [[CloudKitSyncService alloc] initWithPackageController:self container:nil];
+            _cloudKitRecordRepository = [[CloudKitRecordRepository alloc] init];
         }
         
         [self.class registerDatabasePackageController:self];

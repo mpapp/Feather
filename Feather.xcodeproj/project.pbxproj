@@ -58,6 +58,7 @@
 		5F2DA72D1CD04AF700F0A3EB /* NSAttributedString+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB1F4A18F8C84800B3290D /* NSAttributedString+MPExtensions.m */; };
 		5F2DA72E1CD04AFB00F0A3EB /* NSAttributedString+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB1F4918F8C84800B3290D /* NSAttributedString+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3765EB1A1AA1AA0068DA39 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F3765EA1A1AA1AA0068DA39 /* AddressBook.framework */; };
+		5F3A0B251D2840BF00205164 /* CloudKitRecordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3A0B241D2840BF00205164 /* CloudKitRecordRepository.swift */; };
 		5F3CD89B1D0F752D0003DF9B /* MPJSONRepresentable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */; };
 		5F3D380A1725D8A600D19D7C /* MPCategorizableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D38081725D8A600D19D7C /* MPCategorizableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D38091725D8A600D19D7C /* MPCategorizableMixin.m */; };
@@ -335,6 +336,7 @@
 		5F37CE0A1B1CA4EE0022D865 /* icon-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-512.png"; path = "Resources/icon-512.png"; sourceTree = SOURCE_ROOT; };
 		5F37CE0B1B1CA4EE0022D865 /* icon-1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-1024.png"; path = "Resources/icon-1024.png"; sourceTree = SOURCE_ROOT; };
 		5F37CE0C1B1CA4EE0022D865 /* icon.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; name = icon.pdf; path = Resources/icon.pdf; sourceTree = SOURCE_ROOT; };
+		5F3A0B241D2840BF00205164 /* CloudKitRecordRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloudKitRecordRepository.swift; path = Sources/Services/CloudKitRecordRepository.swift; sourceTree = "<group>"; };
 		5F3D38081725D8A600D19D7C /* MPCategorizableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCategorizableMixin.h; path = Sources/Model/MPCategorizableMixin.h; sourceTree = "<group>"; };
 		5F3D38091725D8A600D19D7C /* MPCategorizableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCategorizableMixin.m; path = Sources/Model/MPCategorizableMixin.m; sourceTree = "<group>"; };
 		5F3D380C1725D8E000D19D7C /* MPBundlableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPBundlableMixin.h; path = Sources/Model/MPBundlableMixin.h; sourceTree = "<group>"; };
@@ -1114,6 +1116,7 @@
 			children = (
 				5FF745B71D259BD100B493D0 /* CloudKitSyncService.swift */,
 				5FF745C11D26FCF000B493D0 /* CloudKitSerializer.swift */,
+				5F3A0B241D2840BF00205164 /* CloudKitRecordRepository.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -1666,6 +1669,7 @@
 				5F6857DB17287F0800FE06B0 /* MPRootSection.m in Sources */,
 				5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */,
 				5FC753001746E294007818A0 /* NSString+MPSearchIndex.m in Sources */,
+				5F3A0B251D2840BF00205164 /* CloudKitRecordRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
