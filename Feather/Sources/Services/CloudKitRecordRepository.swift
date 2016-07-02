@@ -31,7 +31,7 @@ import CloudKit
         }
     }
     
-    public func recordZoneID(object:MPManagedObject, ownerName:String) -> CKRecordZoneID {
+    public func recordZoneID(object:MPManagedObject, ownerName:String) throws -> CKRecordZoneID {
         return CKRecordZoneID(zoneName: object.dynamicType.recordZoneName(), ownerName: ownerName)
     }
     
@@ -39,19 +39,18 @@ import CloudKit
         guard let recordName = object.documentID else {
             throw CloudKitSerializer.Error.ObjectDeleted(object)
         }
-        return CKRecordID(recordName: recordName, zoneID: self.recordZoneID(object, ownerName: ownerName))
+        return CKRecordID(recordName: recordName, zoneID: try self.recordZoneID(object, ownerName: ownerName))
     }
     
     public func record(object o:MPManagedObject, ownerName:String) throws -> CKRecord {
-        let recordType = o.dynamicType.recordZoneName()
-        
         let recordID = try self.recordID(o, ownerName: ownerName)
         
         if let existingRecord = self[recordID] {
             return existingRecord
         }
         
-        let record = CKRecord(recordType: recordType, recordID: recordID)
+        
+        let record = CKRecord(recordType: o.recordType, recordID: recordID)
         self.add(record: record)
         
         return record

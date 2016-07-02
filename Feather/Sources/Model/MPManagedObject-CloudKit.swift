@@ -8,9 +8,22 @@
 
 import Foundation
 import RegexKitLite
+import CocoaLumberjackSwift
 
 extension MPManagedObject {
+    
+    public var recordType:String {
+        return (NSStringFromClass(self.dynamicType) as NSString).stringByReplacingOccurrencesOfRegex("^MP", withString: "")
+    }
+    
     public class func recordZoneName() -> String {
-        return (NSStringFromClass(self) as NSString).stringByReplacingOccurrencesOfRegex("^MP", withString: "")
+        let equivalenceAnyClass:AnyClass = MPManagedObjectsController.equivalenceClassForManagedObjectClass(self)
+
+        guard let equivalenceClass = equivalenceAnyClass as? MPManagedObject.Type else {
+            preconditionFailure("Equivalence class of \(self.dynamicType) should be subclass of MPManagedObject: \(equivalenceAnyClass)")
+        }
+        
+        let zoneName = (String(equivalenceClass) as NSString).stringByReplacingOccurrencesOfRegex("^MP", withString: "")
+        return zoneName
     }
 }

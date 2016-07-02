@@ -120,7 +120,9 @@ typedef enum MPManagedObjectsControllerErrorCode
 + (nonnull NSArray<NSString *>*)managedObjectClassNames;
 
 /** A dictionary of managed object Class objects with the managed object controller class as the key. Loaded lazily, once during the application runtime. Can be called manually but should not be overloaded. */
-+ (nonnull NSDictionary *)managedObjectClassByControllerClassNameDictionary;
++ (nonnull NSDictionary<NSString *, Class> *)managedObjectClassByControllerClassNameDictionary;
+
++ (nonnull Class)equivalenceClassForManagedObjectClass:(nonnull Class)moClass;
 
 /** Resolve conflicts for all managed objects managed by this controller. Calls -resolveConflictingRevisionsForObject: for all objects managed by this controller. */
 - (BOOL)resolveConflictingRevisions:(out NSError *__autoreleasing __nonnull *__nonnull)err;

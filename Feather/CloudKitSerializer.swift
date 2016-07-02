@@ -18,6 +18,7 @@ public struct CloudKitSerializer {
         case DocumentUnavailable(MPManagedObject)
         case UnexpectedKey(NSObject)
         case UnexpectedPropertyValue(key:String, value:AnyObject)
+        case MissingController(MPManagedObject)
     }
     
     public let ownerName:String
@@ -25,6 +26,7 @@ public struct CloudKitSerializer {
     
     public func serialize(object:MPManagedObject, serializingKey:String? = nil) throws -> CKRecord {
         let record = try self.recordRepository.record(object:object, ownerName: ownerName)
+        
         let recordID = record.recordID
         
         guard let doc = object.document else {
@@ -45,6 +47,7 @@ public struct CloudKitSerializer {
             switch val {
                 
             case let valObj as MPManagedObject:
+                
                 let valRecord:CKRecord
                 if let existingRecord = self.recordRepository[recordID] {
                     valRecord = existingRecord
@@ -83,6 +86,10 @@ public struct CloudKitSerializer {
                 print("\(kvcKey) => \(embeddedValueDict) (class:\(embeddedValueDict.dynamicType))")
                 let embeddedValueDictString = try (embeddedValueDict as NSDictionary).JSONStringRepresentation()
                 record.setObject(embeddedValueDictString, forKey: kvcKey)
+                
+            case let numberMap as [String:NSNumber]: // e.g. embeddedElementCounts, a map of document IDs to numbers
+                let numberMapString = try (numberMap as NSDictionary).JSONStringRepresentation()
+                record.setObject(numberMapString, forKey: kvcKey)
 
             case let valRecordValue as CKRecordValue:
                 print("\(kvcKey) => \(valRecordValue) (class:\(valRecordValue.dynamicType))")
@@ -90,7 +97,6 @@ public struct CloudKitSerializer {
                 
             default:
                 throw Error.UnexpectedPropertyValue(key:kvcKey, value:value)
-                
             }
         }
         

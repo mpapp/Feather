@@ -212,8 +212,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return classnameArray;
 }
 
-+ (NSDictionary *)managedObjectClassByControllerClassNameDictionary
-{
++ (NSDictionary *)managedObjectClassByControllerClassNameDictionary {
     static NSDictionary *classDict = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -229,6 +228,31 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     });
 
     return classDict;
+}
+
++ (Class)equivalenceClassForManagedObjectClass:(Class)moClass {
+    NSAssert([moClass isSubclassOfClass:MPManagedObject.class], @"Expecting subclass of MPManagedObject, but encountered: \%@", moClass);
+    
+    static NSDictionary *classDict = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        NSMutableDictionary *d = [NSMutableDictionary new];
+        for (Class mocClass in MPManagedObjectsController.subclasses) {
+            Class oClass = mocClass.managedObjectClass;
+            
+            for (Class oSubclass in [oClass.subclasses arrayByAddingObject:oClass]) {
+                NSString *oSubclassName = NSStringFromClass(oSubclass);
+                d[oSubclassName] = mocClass;
+            }
+            
+        }
+        
+        classDict = d.copy;
+    });
+    
+    Class equivalenceClass = [classDict[NSStringFromClass(moClass)] managedObjectClass];
+    NSAssert(equivalenceClass != nil && [equivalenceClass isSubclassOfClass:MPManagedObject.class], @"Unexpected equivalence class '%@'", equivalenceClass);
+    return equivalenceClass;
 }
 
 + (Class)managedObjectClass

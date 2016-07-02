@@ -13,7 +13,7 @@
 typedef void (^MPPullCompletionHandler)(NSDictionary * __nullable errDict);
 
 @class MPDatabase, MPSnapshot, MPDraft;
-@class CBLDocument;
+@class CBLModel, CBLDocument;
 @class MPContributorsController, MPContributorIdentitiesController;
 @class TreeItemPool;
 @class MPDatabasePackageController;
@@ -88,8 +88,8 @@ typedef enum MPDatabasePackageControllerErrorCode {
 /** The database server for this database package. */
 @property (strong, readonly, nonnull) CBLManager *server;
 
-/** All objects in the database package's databases. No particular sort order is guaranteed. */
-@property (readonly, nonnull) NSArray<__kindof MPManagedObject *> *allObjects;
+/** All objects in the database package's databases (MPManagedObject and MPMetadata objects). No particular sort order is guaranteed. */
+@property (readonly, nonnull) NSArray<__kindof CBLModel *> *allObjects;
 
 @property (readonly) unsigned long long serverQueueToken;
 

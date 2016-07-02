@@ -56,9 +56,17 @@ import FeatherExtensions
         }
 
         let serializer = CloudKitSerializer(ownerName:ownerName, recordRepository: recordRepository)
-        let records = try packageController.allObjects.map {
-            try serializer.serialize($0)
-        }
+        
+        // TODO: support serialising also MPMetadata objects.
+        let records = try packageController.allObjects.filter({ o -> Bool in
+            return o is MPManagedObject
+            }).map { o -> CKRecord in
+                guard let mo = o as? MPManagedObject else {
+                    preconditionFailure("Expecting MPManagedObject instances to come through.")
+                }
+                let record = try serializer.serialize(mo)
+                return record
+            }
         
         return records
     }
@@ -67,13 +75,17 @@ import FeatherExtensions
     private var recordZoneNames:[String] {
         let zoneNames = MPManagedObject.subclasses().map { cls -> String in
             let moClass = cls as! MPManagedObject.Type
-            return moClass.recordZoneName()
+            return (MPManagedObjectsController.equivalenceClassForManagedObjectClass(moClass) as! MPManagedObject.Type).recordZoneName()
         }
         
         return NSOrderedSet(array: zoneNames).array as! [String]
     }
     
     public func ensureUserAuthenticated(completionHandler:()->Void, errorHandler:ErrorHandler) {
+        if self.ownerID?.recordName != nil {
+            completionHandler()
+            return
+        }
         self.container.fetchUserRecordIDWithCompletionHandler() { recordID, error in
             if let error = error {
                 errorHandler(Error.UnderlyingError(error))
@@ -143,6 +155,7 @@ import FeatherExtensions
                 return
             }
             
+            print("Error: \(err), \(err.userInfo), \(err.userInfo[CKPartialErrorsByItemIDKey]), \(err.userInfo[CKPartialErrorsByItemIDKey]!.dynamicType)")
             let partialErrorInfo = err.userInfo[CKPartialErrorsByItemIDKey] as! [CKRecordID:NSNumber]
             
             print("Partial error info: \(partialErrorInfo)")
