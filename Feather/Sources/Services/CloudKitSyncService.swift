@@ -24,7 +24,7 @@ import FeatherExtensions
     
     weak var packageController:MPDatabasePackageController?
     let container:CKContainer
-    let recordRepository:CloudKitRecordRepository = CloudKitRecordRepository()
+    let recordZoneRepository:CloudKitRecordZoneRepository
     
     public var ownerID:CKRecordID? = nil {
         didSet {
@@ -36,6 +36,7 @@ import FeatherExtensions
     public init(packageController:MPDatabasePackageController, container:CKContainer? = CKContainer.defaultContainer()) {
         self.packageController = packageController
         self.container = container ?? CKContainer.defaultContainer()
+        self.recordZoneRepository = CloudKitRecordZoneRepository(zoneSuffix: packageController.identifier)
         
         self.operationQueue.maxConcurrentOperationCount = 1
         
@@ -55,7 +56,7 @@ import FeatherExtensions
             throw Error.OwnerUnknown
         }
 
-        let serializer = CloudKitSerializer(ownerName:ownerName, recordRepository: recordRepository)
+        let serializer = CloudKitSerializer(ownerName:ownerName, recordZoneRepository: self.recordZoneRepository)
         
         // TODO: support serialising also MPMetadata objects.
         let records = try packageController.allObjects.filter({ o -> Bool in
@@ -69,20 +70,6 @@ import FeatherExtensions
             }
         
         return records
-    }
-    
-     
-    private var recordZoneNames:[String] {
-        let zoneNames = MPManagedObject.subclasses().flatMap { cls -> String? in
-            let moClass = cls as! MPManagedObject.Type
-            if String(moClass).containsString("Mixin") {
-                return nil
-            }
-            
-            return (MPManagedObjectsController.equivalenceClassForManagedObjectClass(moClass) as! MPManagedObject.Type).recordZoneName()
-        }
-        
-        return NSOrderedSet(array: zoneNames).array as! [String]
     }
     
     public typealias UserAuthenticationCompletionHandler = (ownerID:CKRecordID)->Void
@@ -106,6 +93,30 @@ import FeatherExtensions
             }
         }
     }
+ 
+    public var recordZoneNames:[String] {
+        let zoneNames = MPManagedObject.subclasses().flatMap { cls -> String? in
+            let moClass = cls as! MPManagedObject.Type
+            if String(moClass).containsString("Mixin") {
+                return nil
+            }
+            
+            return (MPManagedObjectsController.equivalenceClassForManagedObjectClass(moClass) as! MPManagedObject.Type).recordZoneName()
+        }
+        
+        return NSOrderedSet(array: zoneNames).array as! [String]
+    }
+    
+    public func recordZones(ownerName:String) -> [CKRecordZone] {
+        let zones = self.recordZoneNames.map { name -> CKRecordZone in
+            let zoneID = CKRecordZoneID(zoneName: name, ownerName: ownerName)
+            let zone = CKRecordZone(zoneID: zoneID)
+            
+            return zone
+        }
+        
+        return zones
+    }
     
     public func ensureRecordZonesExist(completionHandler:()->Void, errorHandler:ErrorHandler) {
         self.ensureUserAuthenticated({ ownerID in
@@ -114,14 +125,8 @@ import FeatherExtensions
     }
     
     private func _ensureRecordZonesExist(ownerName:String, completionHandler:()->Void, errorHandler:ErrorHandler) {
-        let zones = self.recordZoneNames.map { name -> CKRecordZone in
-            let zoneID = CKRecordZoneID(zoneName: name, ownerName: ownerName)
-            let zone = CKRecordZone(zoneID: zoneID)
-            
-            return zone
-        }
         
-        let op = CKModifyRecordZonesOperation(recordZonesToSave: zones, recordZoneIDsToDelete: [])
+        let op = CKModifyRecordZonesOperation(recordZonesToSave: self.recordZones(ownerName), recordZoneIDsToDelete: [])
         
         self.operationQueue.addOperation(op)
         
@@ -136,21 +141,37 @@ import FeatherExtensions
     }
     
     public typealias ErrorHandler = (CloudKitSyncService.Error)->Void
-    public typealias SubscriptionCompletionHandler = (savedSubscriptions:[CKSubscription], failedSubscriptions:[(subscription:CKSubscription, error:ErrorType)]?) -> Void
+    public typealias SubscriptionCompletionHandler = (savedSubscriptions:[CKSubscription], failedSubscriptions:[(subscription:CKSubscription, error:ErrorType)]?, completeFailure:ErrorType?) -> Void
     
-    public func subscribe(ownerName:String, commpletionHandler:SubscriptionCompletionHandler) {
-        self.container.privateCloudDatabase
-        
+    public func ensureSubscriptionsExist(completionHandler:SubscriptionCompletionHandler) {
+        self.ensureUserAuthenticated({ ownerID in
+            self.ensureRecordZonesExist({ 
+                    self._ensureSubscriptionsExist(ownerID.recordName, completionHandler: completionHandler)
+                }, errorHandler: { (err) in
+                completionHandler(savedSubscriptions: [], failedSubscriptions: nil, completeFailure: err)
+            })
+        }) { err in
+            completionHandler(savedSubscriptions: [], failedSubscriptions: nil, completeFailure: err)
+        }
+    }
+    
+    private func _ensureSubscriptionsExist(ownerName:String, completionHandler:SubscriptionCompletionHandler) {
         let subscriptions = self.recordZoneNames.map { zoneName -> CKSubscription in
             let zoneID = CKRecordZoneID(zoneName: zoneName, ownerName: ownerName)
-            return CKSubscription(zoneID: zoneID, subscriptionID: "\(zoneName)-subscription", options: CKSubscriptionOptions.FiresOnRecordUpdate.union(CKSubscriptionOptions.FiresOnRecordDeletion))
+            return CKSubscription(zoneID: zoneID, subscriptionID: "\(zoneName)-subscription", options: [])
         }
         
         let save = CKModifySubscriptionsOperation(subscriptionsToSave: subscriptions, subscriptionIDsToDelete: [])
         self.operationQueue.addOperation(save)
         
         save.modifySubscriptionsCompletionBlock = { savedSubscriptions, deletedSubscriptions, error in
-            
+            if let error = error {
+                print(error)
+                completionHandler(savedSubscriptions: savedSubscriptions ?? [], failedSubscriptions: nil, completeFailure: error)
+            }
+            else {
+                completionHandler(savedSubscriptions: savedSubscriptions ?? [], failedSubscriptions: nil, completeFailure: nil)
+            }
         }
     }
     
@@ -190,20 +211,25 @@ import FeatherExtensions
             }
             
             print("Error: \(err), \(err.userInfo), \(err.userInfo[CKPartialErrorsByItemIDKey]), \(err.userInfo[CKPartialErrorsByItemIDKey]!.dynamicType)")
-            let partialErrorInfo = err.userInfo[CKPartialErrorsByItemIDKey] as! [CKRecordID:NSNumber]
-            
-            print("Partial error info: \(partialErrorInfo)")
-            
-            let failedSaves = partialErrorInfo.flatMap { (recordID, errorInfo) -> (record:CKRecord, error:ErrorType)? in
-                // TODO: filter by error type
-                if let record = recordsMap[recordID] {
-                    return (record:record, error:Error.PartialError(CKErrorCode(rawValue: errorInfo.integerValue)!))
+            if let partialErrorInfo = err.userInfo[CKPartialErrorsByItemIDKey] as? [CKRecordID:NSNumber] {
+                
+                
+                print("Partial error info: \(partialErrorInfo)")
+                
+                let failedSaves = partialErrorInfo.flatMap { (recordID, errorInfo) -> (record:CKRecord, error:ErrorType)? in
+                    // TODO: filter by error type
+                    if let record = recordsMap[recordID] {
+                        return (record:record, error:Error.PartialError(CKErrorCode(rawValue: errorInfo.integerValue)!))
+                    }
+                    return nil
                 }
-                return nil
+                
+                // TODO: handle partial failures by retrying them in case the issue is due to something recoverable.
+                completionHandler(savedRecords: savedRecords ?? [], saveFailures:failedSaves, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures:nil, completeFailure: nil)
             }
-            
-            // TODO: handle failed partial deletions
-            completionHandler(savedRecords: savedRecords ?? [], saveFailures:failedSaves, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures:nil, completeFailure: nil)
+            else {
+                completionHandler(savedRecords: savedRecords ?? [], saveFailures:nil, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures: nil, completeFailure: err)
+            }
         }
     }
 }

@@ -22,10 +22,10 @@ public struct CloudKitSerializer {
     }
     
     public let ownerName:String
-    public let recordRepository:CloudKitRecordRepository
+    public let recordZoneRepository:CloudKitRecordZoneRepository
     
     public func serialize(object:MPManagedObject, serializingKey:String? = nil) throws -> CKRecord {
-        let record = try self.recordRepository.record(object:object, ownerName: ownerName)
+        let record = try self.recordZoneRepository.record(object:object, ownerName: ownerName)
         
         let recordID = record.recordID
         
@@ -49,7 +49,7 @@ public struct CloudKitSerializer {
             case let valObj as MPManagedObject:
                 
                 let valRecord:CKRecord
-                if let existingRecord = self.recordRepository[recordID] {
+                if let existingRecord = self.recordZoneRepository.recordRepository[recordID] {
                     valRecord = existingRecord
                 }
                 else {
@@ -64,9 +64,9 @@ public struct CloudKitSerializer {
                 
             case let valObjArray as [MPManagedObject]:
                 let references = try valObjArray.map { vObj -> CKReference in
-                    let recordItemID = try self.recordRepository.recordID(vObj, ownerName: ownerName)
+                    let recordItemID = try self.recordZoneRepository.recordID(forObject:vObj, ownerName: ownerName)
                     let recordItem:CKRecord
-                    if let existingRecord = self.recordRepository[recordItemID] {
+                    if let existingRecord = self.recordZoneRepository.recordRepository[recordItemID] {
                         recordItem = existingRecord
                     }
                     else {

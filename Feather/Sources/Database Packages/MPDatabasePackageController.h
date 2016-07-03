@@ -18,7 +18,7 @@ typedef void (^MPPullCompletionHandler)(NSDictionary * __nullable errDict);
 @class TreeItemPool;
 @class MPDatabasePackageController;
 @class MPManagedObject;
-@class CloudKitSyncService, CloudKitRecordRepository;
+@class CloudKitSyncService, CloudKitRecordZoneRepository;
 
 @class MPSearchIndexController;
 
@@ -107,7 +107,7 @@ typedef enum MPDatabasePackageControllerErrorCode {
 
 @property (readonly) BOOL synchronizesUsingCloudKit;
 @property (readonly, nullable) CloudKitSyncService *cloudKitSyncService;
-@property (readonly, nullable) CloudKitRecordRepository *cloudKitRecordRepository;
+@property (readonly, nullable) CloudKitRecordZoneRepository *cloudKitRecordZoneRepository;
 
 /** If returns YES, package's databases should be synced peerlessly (default: YES, overridable application wide with user default MPDefaultsKeySyncPeerlessly). */
 @property (readonly) BOOL synchronizesPeerlessly;

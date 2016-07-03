@@ -12,8 +12,8 @@ import CocoaLumberjackSwift
 
 extension MPManagedObject {
     
-    public var recordType:String {
-        return (NSStringFromClass(self.dynamicType) as NSString).stringByReplacingOccurrencesOfRegex("^MP", withString: "")
+    public class func recordType() -> String {
+        return (NSStringFromClass(self) as NSString).stringByReplacingOccurrencesOfRegex("^MP", withString: "")
     }
     
     public class func recordZoneName() -> String {
