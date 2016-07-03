@@ -234,11 +234,6 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         
         _registeredViewNames = [NSMutableSet setWithCapacity:128];
         
-        if (self.synchronizesUsingCloudKit) {
-            _cloudKitSyncService = [[CloudKitSyncService alloc] initWithPackageController:self container:nil];
-            _cloudKitRecordZoneRepository = [[CloudKitRecordZoneRepository alloc] init];
-        }
-        
         [self.class registerDatabasePackageController:self];
 
         [[self class] didOpenPackage];
@@ -328,6 +323,11 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 }
 
 - (id)ensureInitialStateInitialized {
+    // done at this stage as these services require initialization to have completed and for the package controller to be in a defined state.
+    if (self.synchronizesUsingCloudKit) {
+        _cloudKitSyncService = [[CloudKitSyncService alloc] initWithPackageController:self container:nil];
+    }
+    
     return nil; // override in subclass
 }
 

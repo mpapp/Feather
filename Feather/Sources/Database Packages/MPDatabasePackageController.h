@@ -107,7 +107,6 @@ typedef enum MPDatabasePackageControllerErrorCode {
 
 @property (readonly) BOOL synchronizesUsingCloudKit;
 @property (readonly, nullable) CloudKitSyncService *cloudKitSyncService;
-@property (readonly, nullable) CloudKitRecordZoneRepository *cloudKitRecordZoneRepository;
 
 /** If returns YES, package's databases should be synced peerlessly (default: YES, overridable application wide with user default MPDefaultsKeySyncPeerlessly). */
 @property (readonly) BOOL synchronizesPeerlessly;
