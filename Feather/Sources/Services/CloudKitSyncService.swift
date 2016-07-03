@@ -107,15 +107,18 @@ import FeatherExtensions
         return NSOrderedSet(array: zoneNames).array as! [String]
     }
     
-    public func recordZones(ownerName:String) -> [CKRecordZone] {
-        let zones = self.recordZoneNames.map { name -> CKRecordZone in
-            let zoneID = CKRecordZoneID(zoneName: name, ownerName: ownerName)
-            let zone = CKRecordZone(zoneID: zoneID)
+    public func recordZones(ownerName:String) throws -> [CKRecordZone] {
+        let zones = try MPManagedObject.subclasses().flatMap { cls -> CKRecordZone? in
+            let moClass = cls as! MPManagedObject.Type
+            if String(moClass).containsString("Mixin") {
+                return nil
+            }
             
+            let zone = try self.recordZoneRepository.recordZone(objectType: moClass, ownerName: ownerName)
             return zone
         }
         
-        return zones
+        return NSOrderedSet(array: zones).array as! [CKRecordZone]
     }
     
     public func ensureRecordZonesExist(completionHandler:()->Void, errorHandler:ErrorHandler) {
@@ -125,8 +128,14 @@ import FeatherExtensions
     }
     
     private func _ensureRecordZonesExist(ownerName:String, completionHandler:()->Void, errorHandler:ErrorHandler) {
-        
-        let op = CKModifyRecordZonesOperation(recordZonesToSave: self.recordZones(ownerName), recordZoneIDsToDelete: [])
+        let op:CKModifyRecordZonesOperation
+        do {
+            op = CKModifyRecordZonesOperation(recordZonesToSave: try self.recordZones(ownerName), recordZoneIDsToDelete: [])
+        }
+        catch {
+            errorHandler(Error.UnderlyingError(error))
+            return
+        }
         
         self.operationQueue.addOperation(op)
         
