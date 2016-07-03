@@ -40,7 +40,7 @@ public struct CloudKitSerializer {
             
             let kvcKey = object.valueCodingKeyForPersistedPropertyKey(keyString)
             
-            print("Object:\(object), key: \(kvcKey), recordID:\(recordID)")
+            //print("Object:\(object), key: \(kvcKey), recordID:\(recordID)")
             
             let val = object.valueForKey(kvcKey)
             
@@ -78,12 +78,12 @@ public struct CloudKitSerializer {
                 record.setObject(references, forKey: kvcKey)
 
             case let embeddedValues as [MPEmbeddedObject]:
-                print("\(kvcKey) => \(embeddedValues) (class:\(embeddedValues.dynamicType))")
+                //print("\(kvcKey) => \(embeddedValues) (class:\(embeddedValues.dynamicType))")
                 let embeddedValuesString = try (embeddedValues as NSArray).JSONStringRepresentation()
                 record.setObject(embeddedValuesString, forKey: kvcKey)
                 
             case let embeddedValueDict as [String:MPEmbeddedObject]:
-                print("\(kvcKey) => \(embeddedValueDict) (class:\(embeddedValueDict.dynamicType))")
+                //print("\(kvcKey) => \(embeddedValueDict) (class:\(embeddedValueDict.dynamicType))")
                 let embeddedValueDictString = try (embeddedValueDict as NSDictionary).JSONStringRepresentation()
                 record.setObject(embeddedValueDictString, forKey: kvcKey)
                 
@@ -92,7 +92,7 @@ public struct CloudKitSerializer {
                 record.setObject(numberMapString, forKey: kvcKey)
 
             case let valRecordValue as CKRecordValue:
-                print("\(kvcKey) => \(valRecordValue) (class:\(valRecordValue.dynamicType))")
+                //print("\(kvcKey) => \(valRecordValue) (class:\(valRecordValue.dynamicType))")
                 record.setObject(valRecordValue, forKey: kvcKey)
                 
             default:

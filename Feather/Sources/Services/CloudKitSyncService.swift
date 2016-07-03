@@ -125,7 +125,6 @@ import FeatherExtensions
         
         self.operationQueue.addOperation(op)
         
-        
         op.modifyRecordZonesCompletionBlock = { savedRecordZones, deletedRecordZones, error in
             if let error = error {
                 errorHandler(Error.UnderlyingError(error))
