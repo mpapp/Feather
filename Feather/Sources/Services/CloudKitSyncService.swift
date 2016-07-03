@@ -220,15 +220,14 @@ import FeatherExtensions
             }
             
             print("Error: \(err), \(err.userInfo), \(err.userInfo[CKPartialErrorsByItemIDKey]), \(err.userInfo[CKPartialErrorsByItemIDKey]!.dynamicType)")
-            if let partialErrorInfo = err.userInfo[CKPartialErrorsByItemIDKey] as? [CKRecordID:NSNumber] {
-                
+            if let partialErrorInfo = err.userInfo[CKPartialErrorsByItemIDKey] as? [CKRecordID:NSError] {
                 
                 print("Partial error info: \(partialErrorInfo)")
                 
                 let failedSaves = partialErrorInfo.flatMap { (recordID, errorInfo) -> (record:CKRecord, error:ErrorType)? in
                     // TODO: filter by error type
                     if let record = recordsMap[recordID] {
-                        return (record:record, error:Error.PartialError(CKErrorCode(rawValue: errorInfo.integerValue)!))
+                        return (record:record, error:Error.UnderlyingError(errorInfo))
                     }
                     return nil
                 }
@@ -240,5 +239,45 @@ import FeatherExtensions
                 completionHandler(savedRecords: savedRecords ?? [], saveFailures:nil, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures: nil, completeFailure: err)
             }
         }
+    }
+    
+    public func _pull(ownerName:String, recordZone:CKRecordZone, completionHandler:()->Void, errorHandler:ErrorHandler) {
+        let fetchRecords = CKFetchRecordsOperation()
+        
+        self.operationQueue.addOperation(fetchRecords)
+        
+        let op = CKFetchRecordChangesOperation(recordZoneID: recordZone.zoneID, previousServerChangeToken:nil)
+        self.operationQueue.addOperation(op)
+        
+        op.recordChangedBlock = { record in
+            
+        }
+        
+        op.recordWithIDWasDeletedBlock = { deletedID in
+            if let record = self.recordZoneRepository.recordRepository.record(ID:deletedID),
+               let packageController = self.packageController,
+               let deletedObj = packageController.objectWithIdentifier(record.recordID.recordName) {
+                deletedObj.deleteDocument()
+            }
+        }
+        
+        /*
+        fetchRecords.perRecordCompletionBlock = { record, recordID, error in
+            guard let record = record, rID = recordID  else {
+                print("Error: \(error)")
+                return
+            }
+            
+            print("Record for \(rID): \(record)")
+        }
+        
+        fetchRecords.fetchRecordsCompletionBlock = { recordMap, error in
+            if let error = error {
+                errorHandler(Error.UnderlyingError(error))
+                return
+            }
+            
+            completionHandler()
+        }*/
     }
 }
