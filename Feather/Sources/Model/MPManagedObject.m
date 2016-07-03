@@ -538,6 +538,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return success;
 }
 
+- (BOOL)deleteObject {
+    [self deleteDocument];
+}
+
 - (BOOL)deleteDocument:(NSError **)error {
     __block BOOL success = NO;
     

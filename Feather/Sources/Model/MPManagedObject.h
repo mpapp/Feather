@@ -192,6 +192,9 @@ extern NSString * _Nonnull const MPPasteboardTypeManagedObjectIDArray;
 /** A shorthand for deleting a model object and on hitting an error posting an error notification to the package controller's notification center. */
 - (BOOL)deleteDocument;
 
+/** Synonymous to -deleteDocument to make the Swift compiler (that does not like the ambiguous -deleteDocument and -deleteDocument:) happy. Hack hack! */
+- (BOOL)deleteObject;
+
 /** The full-text indexable properties for objects of this class. 
   * Default implementation includes none.
   * @return nil if object should not be included in the full-text index, and an array of property key strings. */

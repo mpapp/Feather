@@ -250,6 +250,9 @@ import FeatherExtensions
         self.operationQueue.addOperation(op)
         
         op.recordChangedBlock = { record in
+            if let obj = self.packageController?.objectWithIdentifier(record.recordID.recordName) {
+                
+            }
             
         }
         
@@ -257,7 +260,7 @@ import FeatherExtensions
             if let record = self.recordZoneRepository.recordRepository.record(ID:deletedID),
                let packageController = self.packageController,
                let deletedObj = packageController.objectWithIdentifier(record.recordID.recordName) {
-                deletedObj.deleteDocument()
+                deletedObj.deleteObject()
             }
         }
         

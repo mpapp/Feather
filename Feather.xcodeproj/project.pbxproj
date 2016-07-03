@@ -103,6 +103,7 @@
 		5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
 		5F9F226A1C792A0800244277 /* CollectionType+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9F22691C792A0800244277 /* CollectionType+MPExtensions.swift */; };
+		5FA9D02E1D29C74000C96CE1 /* CloudKitDeserializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA9D02D1D29C74000C96CE1 /* CloudKitDeserializer.swift */; };
 		5FAC23BF19ABFE79000F188C /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAC23BE19ABFE79000F188C /* CoreServices.framework */; };
 		5FBDCBF41CE9D691002DEAA7 /* ErrorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBDCBF31CE9D691002DEAA7 /* ErrorPresenter.swift */; };
 		5FC423131AFF8719002234FB /* FeatherExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC423121AFF8719002234FB /* FeatherExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -375,6 +376,7 @@
 		5F9F22691C792A0800244277 /* CollectionType+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CollectionType+MPExtensions.swift"; sourceTree = "<group>"; };
 		5FA0D11319012D19005BC968 /* NSIndexSet+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSIndexSet+MPExtensions.h"; path = "Sources/Categories/NSIndexSet+MPExtensions.h"; sourceTree = "<group>"; };
 		5FA0D11419012D19005BC968 /* NSIndexSet+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSIndexSet+MPExtensions.m"; path = "Sources/Categories/NSIndexSet+MPExtensions.m"; sourceTree = "<group>"; };
+		5FA9D02D1D29C74000C96CE1 /* CloudKitDeserializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitDeserializer.swift; sourceTree = "<group>"; };
 		5FAC23B819ABFA94000F188C /* MPScriptingDefinitionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPScriptingDefinitionManager.h; path = ../Feather/Sources/Scripting/MPScriptingDefinitionManager.h; sourceTree = "<group>"; };
 		5FAC23B919ABFA94000F188C /* MPScriptingDefinitionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPScriptingDefinitionManager.m; path = ../Feather/Sources/Scripting/MPScriptingDefinitionManager.m; sourceTree = "<group>"; };
 		5FAC23BC19ABFE5C000F188C /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
@@ -1117,6 +1119,7 @@
 				5FF745B71D259BD100B493D0 /* CloudKitSyncService.swift */,
 				5FF745C11D26FCF000B493D0 /* CloudKitSerializer.swift */,
 				5F3A0B241D2840BF00205164 /* CloudKitRecordRepository.swift */,
+				5FA9D02D1D29C74000C96CE1 /* CloudKitDeserializer.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -1654,6 +1657,7 @@
 				5FDB3A9517079DD10049EBB5 /* MPDatabasePackageController.m in Sources */,
 				5F2CC7761B56E58900D9C714 /* MPFileObserver.m in Sources */,
 				5FDB3AA017079ED80049EBB5 /* MPShoeboxPackageController.m in Sources */,
+				5FA9D02E1D29C74000C96CE1 /* CloudKitDeserializer.swift in Sources */,
 				5F293B9C170CAD65001C2111 /* MPCacheableMixin.m in Sources */,
 				5F42FC491B10C36900CD88AA /* MPDeepSaver.m in Sources */,
 				5F293BA1170CAECC001C2111 /* MPEmbeddedObject.m in Sources */,
