@@ -241,7 +241,7 @@ import FeatherExtensions
         }
     }
     
-    public func _pull(ownerName:String, recordZone:CKRecordZone, completionHandler:()->Void, errorHandler:ErrorHandler) {
+    public func pull(ownerName:String, recordZone:CKRecordZone, completionHandler:()->Void, errorHandler:ErrorHandler) {
         let fetchRecords = CKFetchRecordsOperation()
         
         self.operationQueue.addOperation(fetchRecords)
