@@ -240,7 +240,9 @@ extern NSString * _Nonnull const MPPasteboardTypeManagedObjectIDArray;
 
 /** Constructs a MPManagedObject instance of the type specified in the given referable dictionary representation.
   * Intended for creating managed objects from their pasteboard property list representations. */
-+ (nonnull id)objectWithReferableDictionaryRepresentation:(nonnull NSDictionary *)referableDictionaryRep;
++ (nonnull instancetype)objectWithReferableDictionaryRepresentation:(nonnull NSDictionary *)referableDictionaryRep;
+
+
 
 /**
  *  Returns an object ID array pasteboard representation for a collection of managed objects.
