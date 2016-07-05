@@ -62,7 +62,8 @@ public struct CloudKitDeserializer {
             
         case let referenceArray as [CKReference]:
             precondition(object.dynamicType.classOfProperty(kvcKey) is NSArray.Type)
-            object.setValue(referenceArray.map { $0.recordID.recordName }, forKey: propertyKey)
+            print(propertyKey)
+            object.setValue(referenceArray.map { $0.recordID.recordName }, ofProperty: propertyKey)
             break
             
         case let valString as String where object.dynamicType.classOfProperty(kvcKey) is MPEmbeddedObject.Type:

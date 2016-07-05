@@ -17,14 +17,15 @@ import FeatherExtensions
     
     public enum Error: ErrorType {
         case NilPackageController
-        case PartialError(CKErrorCode)
         case OwnerUnknown
+        case PartialError(CKErrorCode)
+        case NoRecordToDeleteWithID(CKRecordID)
         case UnderlyingError(ErrorType)
     }
     
     weak var packageController:MPDatabasePackageController?
     let container:CKContainer
-    let recordZoneRepository:CloudKitRecordZoneRepository
+    public let recordZoneRepository:CloudKitRecordZoneRepository
     
     public var ownerID:CKRecordID? = nil {
         didSet {
@@ -133,7 +134,7 @@ import FeatherExtensions
             op = CKModifyRecordZonesOperation(recordZonesToSave: try self.recordZones(ownerName), recordZoneIDsToDelete: [])
         }
         catch {
-            errorHandler(Error.UnderlyingError(error))
+            errorHandler(.UnderlyingError(error))
             return
         }
         
@@ -141,7 +142,7 @@ import FeatherExtensions
         
         op.modifyRecordZonesCompletionBlock = { savedRecordZones, deletedRecordZones, error in
             if let error = error {
-                errorHandler(Error.UnderlyingError(error))
+                errorHandler(.UnderlyingError(error))
                 return
             }
             
@@ -241,46 +242,61 @@ import FeatherExtensions
         }
     }
     
-    public func pull(ownerName:String, recordZone:CKRecordZone, completionHandler:()->Void, errorHandler:ErrorHandler) {
+    public typealias PullCompletionHandler = (failedChanges:[(record:CKRecord, error:Error)]?, failedDeletions:[(recordID:CKRecordID, error:Error)]?)->Void
+    
+    public func pull(recordZone:CKRecordZone, completionHandler:PullCompletionHandler, completeFailure:ErrorHandler) {
+        self.ensureUserAuthenticated({ ownerID in
+            self._ensureRecordZonesExist(ownerID.recordName, completionHandler: { 
+                self._pull(ownerID.recordName, recordZone: recordZone, completionHandler: completionHandler, completeFailure: completeFailure)
+            }, errorHandler: completeFailure)
+        }, errorHandler: completeFailure)
+    }
+    
+    public func _pull(ownerName:String, recordZone:CKRecordZone, completionHandler:PullCompletionHandler, completeFailure:ErrorHandler) {
         let fetchRecords = CKFetchRecordsOperation()
+        
+        guard let packageController = self.packageController else {
+            completeFailure(.NilPackageController)
+            return
+        }
+        
+        let deserializer = CloudKitDeserializer(packageController: packageController)
         
         self.operationQueue.addOperation(fetchRecords)
         
         let op = CKFetchRecordChangesOperation(recordZoneID: recordZone.zoneID, previousServerChangeToken:nil)
         self.operationQueue.addOperation(op)
         
+        var changeFails = [(record:CKRecord, error:Error)]()
         op.recordChangedBlock = { record in
-            if let obj = self.packageController?.objectWithIdentifier(record.recordID.recordName) {
-                
+            do {
+                try deserializer.deserialize(record, applyOnlyChangedFields: false)
             }
-            
+            catch {
+                changeFails.append((record:record, error:.UnderlyingError(error)))
+                return
+            }
         }
         
+        var deletionFails = [(recordID:CKRecordID, error:Error)]()
         op.recordWithIDWasDeletedBlock = { deletedID in
             if let record = self.recordZoneRepository.recordRepository.record(ID:deletedID),
                let packageController = self.packageController,
                let deletedObj = packageController.objectWithIdentifier(record.recordID.recordName) {
                 deletedObj.deleteObject()
             }
-        }
-        
-        /*
-        fetchRecords.perRecordCompletionBlock = { record, recordID, error in
-            guard let record = record, rID = recordID  else {
-                print("Error: \(error)")
-                return
+            else {
+                deletionFails.append((recordID:deletedID, Error.NoRecordToDeleteWithID(deletedID)))
             }
-            
-            print("Record for \(rID): \(record)")
         }
         
-        fetchRecords.fetchRecordsCompletionBlock = { recordMap, error in
+        op.fetchRecordChangesCompletionBlock = { serverChangeToken, clientChangeTokenData, error in
             if let error = error {
-                errorHandler(Error.UnderlyingError(error))
+                completeFailure(.UnderlyingError(error))
                 return
             }
             
-            completionHandler()
-        }*/
+            completionHandler(failedChanges: changeFails, failedDeletions: deletionFails)
+        }
     }
 }
