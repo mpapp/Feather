@@ -8,33 +8,37 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *_Nonnull const MPDictionaryExtensionErrorDomain;
 
-@interface NSDictionary (Feather)
+typedef NS_ENUM(NSUInteger, MPDictionaryExtensionErrorCode) {
+    MPDictionaryExtensionErrorCodeUnexpectedDictionaryData = 1
+};
 
-- (NSMutableDictionary *)mutableDeepContainerCopy;
-- (NSMutableDictionary *)dictionaryOfSetsWithDictionaryOfArrays;
+@interface NSDictionary <K,V> (Feather)
 
-- (BOOL)containsObject:(id)object;
-- (BOOL)containsObjectForKey:(id)key;
+- (nonnull NSMutableDictionary<K, V> *)mutableDeepContainerCopy;
+- (nonnull NSMutableDictionary *)dictionaryOfSetsWithDictionaryOfArrays;
 
-- (id)anyObjectMatching:(BOOL(^)(id evaluatedKey, id evaluatedObject))patternBlock;
+- (BOOL)containsObject:(nonnull id)object;
+- (BOOL)containsObjectForKey:(nonnull id)key;
 
-- (NSDictionary *)dictionaryWithObjectsMatching:(BOOL(^)(id evaluatedKey, id evaluatedObject))patternBlock;
+- (nullable id)anyObjectMatching:(BOOL(^_Nonnull)(_Nonnull id evaluatedKey, _Nullable id evaluatedObject))patternBlock;
 
-+ (NSDictionary *)decodeDictionaryFromJSONString:(NSString *)s;
+- (nonnull NSDictionary *)dictionaryWithObjectsMatching:(BOOL(^_Nonnull)(_Nonnull id evaluatedKey, _Nonnull id evaluatedObject))patternBlock;
 
-- (NSString *)JSONStringRepresentation:(NSError **)err;
++ (nullable NSDictionary *)decodeDictionaryFromJSONString:(nonnull NSString *)s error:(NSError *_Nullable *_Nullable)error;
+
+- (nullable NSString *)JSONStringRepresentation:(NSError *_Nullable *_Nullable)err;
 
 @end
 
-
-extern NSDictionary *MPDictionaryFromDictionaries(NSInteger n, ...);
-extern NSDictionary *MPDictionaryFromTwoDictionaries(NSDictionary *d1, NSDictionary *d2);
+extern NSDictionary *_Nonnull MPDictionaryFromDictionaries(NSInteger n, ...);
+extern NSDictionary *_Nonnull MPDictionaryFromTwoDictionaries(NSDictionary *_Nonnull d1, NSDictionary *_Nonnull d2);
 
 /**
  * Converts an immutable NSDictionary into an NSMutableDictionary. Returns the argument as is if it is already an NSMutableDictionary instance.
  */
-extern NSMutableDictionary *MPMutableDictionaryForDictionary(NSDictionary *d);
+extern NSMutableDictionary *_Nonnull MPMutableDictionaryForDictionary(NSDictionary * _Nonnull d);
 
-extern NSMutableDictionary *MPMutableDictionaryFromDictionaries(NSInteger n, ...);
-extern NSMutableDictionary *MPMutableDictionaryFromTwoDictionaries(NSDictionary *d1, NSDictionary *d2);
+extern NSMutableDictionary *_Nonnull MPMutableDictionaryFromDictionaries(NSInteger n, ...);
+extern NSMutableDictionary *_Nonnull MPMutableDictionaryFromTwoDictionaries(NSDictionary *_Nonnull d1, NSDictionary *_Nonnull d2);

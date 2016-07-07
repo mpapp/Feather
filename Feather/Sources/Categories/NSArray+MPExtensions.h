@@ -10,61 +10,65 @@
 
 #define MPLastIndexInArray(a) (a.count - 1)
 
-typedef enum MPValueToggleResult
-{
+typedef NS_ENUM(NSUInteger, MPValueToggleResult) {
     MPValueToggleResultRemoved = 0,
     MPValueToggleResultAdded = 1
-} MPValueToggleResult;
+};
 
+typedef NS_ENUM(NSUInteger, MPArrayExtensionErrorCode) {
+    MPArrayExtensionErrorCodeUnexpectedArrayData = 1
+};
 
 @interface NSArray <T> (FeatherTypeParameterized)
 
 /** Returns a copy of the array iterated from end to beginning. */
-@property (readonly, copy) NSArray<T> *reversedArray;
+@property (readonly, copy, nonnull) NSArray<T> *reversedArray;
 
 /** Array of the same length, with order of items randomized with arc4random. */
-@property (readonly, copy) NSArray<T> *arrayByRandomizingOrder;
+@property (readonly, copy, nonnull) NSArray<T> *arrayByRandomizingOrder;
 
-- (NSArray *)mapObjectsUsingBlock:(id(^)(T o, NSUInteger idx))mapBlock;
+- (nonnull NSArray *)mapObjectsUsingBlock:(_Nonnull id(^ _Nonnull)(_Nonnull T o, NSUInteger idx))mapBlock;
 
-- (NSArray *)nilFilteredMapUsingBlock:(id(^)(id o, NSUInteger idx))mapBlock;
+- (nonnull NSArray *)nilFilteredMapUsingBlock:(_Nonnull id(^ _Nonnull)(_Nonnull id o, NSUInteger idx))mapBlock;
 
-- (T)firstObjectMatching:(BOOL(^)(T evaluatedObject))patternBlock;
-- (T)firstObjectMatching:(BOOL(^)(T evaluatedObject))patternBlock index:(NSUInteger *)index;
-- (NSArray<T> *)filteredArrayMatching:(BOOL(^)(T evaluatedObject))patternBlock;
+- (nullable T)firstObjectMatching:(BOOL(^ _Nonnull)(_Nonnull T evaluatedObject))patternBlock;
+- (nullable T)firstObjectMatching:(BOOL(^ _Nonnull)(_Nonnull T evaluatedObject))patternBlock index:(NSUInteger * _Nullable)index;
+- (nonnull NSArray<T> *)filteredArrayMatching:(BOOL(^ _Nonnull)(_Nonnull T evaluatedObject))patternBlock;
 
-- (NSArray<T> *)arrayByRemovingObject:(T)obj;
+- (nonnull NSArray<T> *)arrayByRemovingObject:(nonnull T)obj;
 
-- (NSArray<T> *)arrayByRemovingLastObject;
+- (nonnull NSArray<T> *)arrayByRemovingLastObject;
 
-- (NSArray<T> *)subarrayUpToIncludingIndex:(NSUInteger)i;
-- (NSArray<T> *)subarrayFromIndex:(NSUInteger)i;
+- (nonnull NSArray<T> *)subarrayUpToIncludingIndex:(NSUInteger)i;
+- (nonnull NSArray<T> *)subarrayFromIndex:(NSUInteger)i;
 
 @end
 
-@interface NSArray (Feather)
+@interface NSArray <T> (Feather)
 
-- (NSMutableArray *)mutableDeepContainerCopy;
+- (nonnull NSMutableArray<T> *)mutableDeepContainerCopy;
 
-- (NSSet *)allObjectSubclasses;
+- (nonnull NSSet *)allObjectSubclasses;
 
 /** If all objects are subclasses of one or more of the classes given as an argument, returns YES, otherwise NO.
   * Returns NO for an empty array.
   * The classes array must not be empty. */
-- (BOOL)allObjectsAreSubclassesOfClasses:(NSArray *)classes;
-- (BOOL)allObjectsAreSubclassesOf:(Class)class;
+- (BOOL)allObjectsAreSubclassesOfClasses:(nonnull NSArray<Class> *)classes;
+- (BOOL)allObjectsAreSubclassesOf:(nonnull Class)class;
 
 
 /** Returns a flattened array (where objects contained inside arrays in the array are made top level objects). */
-@property (readonly, copy) NSArray *arrayByFlatteningArray;
+@property (readonly, copy, nonnull) NSArray *arrayByFlatteningArray;
 
 
-- (void)matchingValueForKey:(NSString *)key value:(void(^)(BOOL valueMatches, id value))valueBlock;
+- (void)matchingValueForKey:(nonnull NSString *)key value:(void(^ _Nonnull)(BOOL valueMatches, _Nullable id value))valueBlock;
 
 /**  A JSON encodable string representation of the array. Objects in the array must all implement a method with selector -JSONStringRepresentation: */
-- (NSString *)JSONStringRepresentation:(NSError **)err;
+- (nullable NSString *)JSONStringRepresentation:(NSError *_Nullable *_Nullable)err;
 
-- (NSArray *)allPermutations;
++ (nullable NSDictionary *)decodeFromJSONString:(nonnull NSString *)s error:(NSError *_Nullable *_Nullable)error;
+
+- (nonnull NSArray<T> *)allPermutations;
 
 @end
 
@@ -75,18 +79,17 @@ typedef enum MPValueToggleResult
 @interface NSMutableArray (Feather)
 
 /** Removes and returns the first object in this mutable array. */
-- (id) popObject;
+- (nullable id) popObject;
 
 /** Inserts an object at the beginning of this mutable array. */
-- (void) pushObject:(id)object;
+- (void)pushObject:(nonnull id)object;
 
 /** Inserts all objects in the given array into the beginning of this mutable array, in the same order they appear in the source array. */
-- (void) pushObjectsInArray:(NSArray *)array;
+- (void)pushObjectsInArray:(nonnull NSArray *)array;
 
 /** Adds the object in the array if it wasn't there, and removes it from there if it were present. */
-- (MPValueToggleResult)toggleValue:(id)obj;
+- (MPValueToggleResult)toggleValue:(nonnull id)obj;
 
 @end
 
-
-extern NSArray *MPNilToEmptyArray(NSArray *array);
+extern NSArray *_Nonnull MPNilToEmptyArray(NSArray * _Nullable array);

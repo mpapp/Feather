@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 Manuscripts.app Limited. All rights reserved.
 //
 
+@import Foundation;
+
 @protocol MPJSONRepresentable <NSObject>
-- (NSString *)JSONStringRepresentation:(NSError **)error;
+- (nullable NSString *)JSONStringRepresentation:(NSError *_Nullable *_Nullable)error;
 @end

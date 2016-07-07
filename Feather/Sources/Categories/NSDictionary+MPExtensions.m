@@ -6,12 +6,15 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
+#import "MPJSONRepresentable.h"
+
 #import "NSDictionary+MPExtensions.h"
 #import "NSArray+MPExtensions.h"
 #import "NSSet+MPExtensions.h"
 #import "NSString+MPExtensions.h"
 
-#import "MPJSONRepresentable.h"
+
+NSString *const MPDictionaryExtensionErrorDomain = @"MPDictionaryExtensionErrorDomain";
 
 @implementation NSDictionary (Feather)
 
@@ -85,12 +88,16 @@
     return [dict copy];
 }
 
-+ (NSDictionary *)decodeDictionaryFromJSONString:(NSString *)s
-{
-    NSError *error = nil;
-    NSDictionary *d = [NSJSONSerialization JSONObjectWithData:[s dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-    assert(d);
-    assert(!error);
++ (NSDictionary *)decodeFromJSONString:(NSString *)s error:(NSError **)error {
+    NSDictionary *d = [NSJSONSerialization JSONObjectWithData:[s dataUsingEncoding:NSUTF8StringEncoding] options:0 error:error];
+    if (![d isKindOfClass:NSDictionary.class]) {
+        if (error) {
+            *error = [NSError errorWithDomain:MPDictionaryExtensionErrorDomain
+                                         code:MPDictionaryExtensionErrorCodeUnexpectedDictionaryData
+                                     userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Data cannot be decoded as a dictionary: %@", d.class]}];
+            return nil;
+        }
+    }
     return d;
 }
 

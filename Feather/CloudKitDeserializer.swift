@@ -70,9 +70,12 @@ public struct CloudKitDeserializer {
             object.setValue(embObj, ofProperty: propertyKey)
             
         case let valString as String where object.dynamicType.classOfProperty(kvcKey) is NSDictionary.Type:
-            let dict = NSDictionary.decodeDictionaryFromJSONString(valString)
+            let dict = try NSDictionary.decodeDictionaryFromJSONString(valString)
             object.setValue(dict, ofProperty: propertyKey)
-            break
+            
+        case let valString as String where object.dynamicType.classOfProperty(kvcKey) is NSArray.Type:
+            let array = try NSArray.decodeFromJSONString(valString)
+            object.setValue(array, forKey: propertyKey)
             
         default:
             print("\(kvcKey),\(propertyKey) => \(val)")

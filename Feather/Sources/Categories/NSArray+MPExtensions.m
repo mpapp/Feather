@@ -9,6 +9,9 @@
 #import "NSArray+MPExtensions.h"
 #import "MPJSONRepresentable.h"
 
+NSString *_Nonnull const MPArrayExtensionErrorDomain = @"@MPArrayExtensionErrorDomain";
+
+
 @implementation NSArray (FeatherTypeParameterized)
 
 - (NSArray *)mapObjectsUsingBlock:(id(^)(id o, NSUInteger idx))mapBlock {
@@ -196,6 +199,20 @@
 {
     return [self valueForKeyPath:@"@unionOfArrays.self"];
 }
+
++ (NSDictionary *)decodeFromJSONString:(NSString *)s error:(NSError **)error {
+    NSDictionary *d = [NSJSONSerialization JSONObjectWithData:[s dataUsingEncoding:NSUTF8StringEncoding] options:0 error:error];
+    if (![d isKindOfClass:NSArray.class]) {
+        if (error) {
+            *error = [NSError errorWithDomain:MPArrayExtensionErrorDomain
+                                         code:MPArrayExtensionErrorCodeUnexpectedArrayData
+                                     userInfo:@{NSLocalizedDescriptionKey:[NSString stringWithFormat:@"Data cannot be decoded as an array: %@", d.class]}];
+            return nil;
+        }
+    }
+    return d;
+}
+
 
 - (NSString *)JSONStringRepresentation:(NSError **)err
 {
