@@ -102,6 +102,10 @@ import FeatherExtensions
                 return nil
             }
             
+            if self.packageController!.controllerForManagedObjectClass(moClass) == nil {
+                return nil
+            }
+            
             return (MPManagedObjectsController.equivalenceClassForManagedObjectClass(moClass) as! MPManagedObject.Type).recordZoneName()
         }
         
@@ -115,6 +119,10 @@ import FeatherExtensions
                 return nil
             }
             
+            guard let _ = self.packageController!.controllerForManagedObjectClass(moClass) else {
+                return nil
+            }
+            
             let zone = try self.recordZoneRepository.recordZone(objectType: moClass, ownerName: ownerName)
             return zone
         }
@@ -122,13 +130,23 @@ import FeatherExtensions
         return NSOrderedSet(array: zones).array as! [CKRecordZone]
     }
     
-    public func ensureRecordZonesExist(completionHandler:()->Void, errorHandler:ErrorHandler) {
+    private var recordZonesChecked:[CKRecordZone]? = nil // Record zones created by the app won't change during app runtime. You may as well just check them once.
+    
+    public func ensureRecordZonesExist(completionHandler:(ownerID:CKRecordID, recordZones:[CKRecordZone])->Void, errorHandler:ErrorHandler) {
         self.ensureUserAuthenticated({ ownerID in
-            self._ensureRecordZonesExist(ownerID.recordName, completionHandler:completionHandler, errorHandler: errorHandler)
+            if let recordZonesChecked = self.recordZonesChecked {
+                completionHandler(ownerID: ownerID, recordZones: recordZonesChecked)
+                return
+            }
+            
+            self._ensureRecordZonesExist(ownerID.recordName, completionHandler:{ recordZones in
+                self.recordZonesChecked = recordZones
+                completionHandler(ownerID:ownerID, recordZones: recordZones)
+            }, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
-    private func _ensureRecordZonesExist(ownerName:String, completionHandler:()->Void, errorHandler:ErrorHandler) {
+    private func _ensureRecordZonesExist(ownerName:String, completionHandler:(recordZones:[CKRecordZone])->Void, errorHandler:ErrorHandler) {
         let op:CKModifyRecordZonesOperation
         do {
             op = CKModifyRecordZonesOperation(recordZonesToSave: try self.recordZones(ownerName), recordZoneIDsToDelete: [])
@@ -146,22 +164,22 @@ import FeatherExtensions
                 return
             }
             
-            completionHandler()
+            guard let recordZones = savedRecordZones else {
+                preconditionFailure("Unexpectedly no saved record zones although no error occurred.")
+            }
+            
+            completionHandler(recordZones:recordZones)
         }
     }
     
     public typealias ErrorHandler = (CloudKitSyncService.Error)->Void
-    public typealias SubscriptionCompletionHandler = (savedSubscriptions:[CKSubscription], failedSubscriptions:[(subscription:CKSubscription, error:ErrorType)]?, completeFailure:ErrorType?) -> Void
+    public typealias SubscriptionCompletionHandler = (savedSubscriptions:[CKSubscription], failedSubscriptions:[(subscription:CKSubscription, error:ErrorType)]?, errorHandler:ErrorType?) -> Void
     
     public func ensureSubscriptionsExist(completionHandler:SubscriptionCompletionHandler) {
-        self.ensureUserAuthenticated({ ownerID in
-            self.ensureRecordZonesExist({ 
-                    self._ensureSubscriptionsExist(ownerID.recordName, completionHandler: completionHandler)
-                }, errorHandler: { (err) in
-                completionHandler(savedSubscriptions: [], failedSubscriptions: nil, completeFailure: err)
-            })
+        self.ensureRecordZonesExist({ ownerID, _ in
+            self._ensureSubscriptionsExist(ownerID.recordName, completionHandler: completionHandler)
         }) { err in
-            completionHandler(savedSubscriptions: [], failedSubscriptions: nil, completeFailure: err)
+            completionHandler(savedSubscriptions: [], failedSubscriptions: nil, errorHandler: err)
         }
     }
     
@@ -177,22 +195,21 @@ import FeatherExtensions
         save.modifySubscriptionsCompletionBlock = { savedSubscriptions, deletedSubscriptions, error in
             if let error = error {
                 print(error)
-                completionHandler(savedSubscriptions: savedSubscriptions ?? [], failedSubscriptions: nil, completeFailure: error)
+                completionHandler(savedSubscriptions: savedSubscriptions ?? [], failedSubscriptions: nil, errorHandler: error)
             }
             else {
-                completionHandler(savedSubscriptions: savedSubscriptions ?? [], failedSubscriptions: nil, completeFailure: nil)
+                completionHandler(savedSubscriptions: savedSubscriptions ?? [], failedSubscriptions: nil, errorHandler: nil)
             }
         }
     }
     
-    public typealias PushCompletionHandler = (savedRecords:[CKRecord], saveFailures:[(record:CKRecord, error:ErrorType)]?, deletedRecordIDs:[CKRecordID], deletionFailures:[(recordID:CKRecordID, error:ErrorType)]?, completeFailure:ErrorType?)->Void
+    public typealias PushCompletionHandler = (savedRecords:[CKRecord], saveFailures:[(record:CKRecord, error:ErrorType)]?, deletedRecordIDs:[CKRecordID], deletionFailures:[(recordID:CKRecordID, error:ErrorType)]?, errorHandler:ErrorType?)->Void
     
     public func push(completionHandler:PushCompletionHandler, errorHandler:ErrorHandler) {
-        
         self.ensureUserAuthenticated({ ownerID in
-            self._ensureRecordZonesExist(ownerID.recordName, completionHandler: { 
-                    self._push(completionHandler, errorHandler: errorHandler)
-                }, errorHandler: errorHandler)
+            self._ensureRecordZonesExist(ownerID.recordName, completionHandler: { recordZones in
+                self._push(completionHandler, errorHandler: errorHandler)
+            }, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
@@ -204,7 +221,7 @@ import FeatherExtensions
             for record in records { recordsMap[record.recordID] = record }
         }
         catch {
-            completionHandler(savedRecords:[], saveFailures:nil, deletedRecordIDs:[], deletionFailures:nil, completeFailure:error)
+            completionHandler(savedRecords:[], saveFailures:nil, deletedRecordIDs:[], deletionFailures:nil, errorHandler:error)
             return
         }
         
@@ -216,7 +233,7 @@ import FeatherExtensions
         // This block reports an error of type partialFailure when it saves or deletes only some of the records successfully. The userInfo dictionary of the error contains a CKPartialErrorsByItemIDKey key whose value is an NSDictionary object. The keys of that dictionary are the IDs of the records that were not saved or deleted, and the corresponding values are error objects containing information about what happened.
         save.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
             guard let err = error else {
-                completionHandler(savedRecords: savedRecords ?? [], saveFailures: nil, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures: nil, completeFailure: nil)
+                completionHandler(savedRecords: savedRecords ?? [], saveFailures: nil, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures: nil, errorHandler: nil)
                 return
             }
             
@@ -234,29 +251,79 @@ import FeatherExtensions
                 }
                 
                 // TODO: handle partial failures by retrying them in case the issue is due to something recoverable.
-                completionHandler(savedRecords: savedRecords ?? [], saveFailures:failedSaves, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures:nil, completeFailure: nil)
+                completionHandler(savedRecords: savedRecords ?? [], saveFailures:failedSaves, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures:nil, errorHandler: nil)
             }
             else {
-                completionHandler(savedRecords: savedRecords ?? [], saveFailures:nil, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures: nil, completeFailure: err)
+                completionHandler(savedRecords: savedRecords ?? [], saveFailures:nil, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures: nil, errorHandler: err)
             }
         }
     }
     
     public typealias PullCompletionHandler = (failedChanges:[(record:CKRecord, error:Error)]?, failedDeletions:[(recordID:CKRecordID, error:Error)]?)->Void
     
-    public func pull(recordZone:CKRecordZone, completionHandler:PullCompletionHandler, completeFailure:ErrorHandler) {
-        self.ensureUserAuthenticated({ ownerID in
-            self._ensureRecordZonesExist(ownerID.recordName, completionHandler: { 
-                self._pull(ownerID.recordName, recordZone: recordZone, completionHandler: completionHandler, completeFailure: completeFailure)
-            }, errorHandler: completeFailure)
-        }, errorHandler: completeFailure)
+    public func pull(completionHandler:([Error])->Void) {
+        let grp = dispatch_group_create()
+        
+        dispatch_group_enter(grp) // 1 enter
+        
+        let errorQ = dispatch_queue_create("push-error-queue", nil)
+        
+        var errors = [Error]()
+        
+        self.ensureRecordZonesExist({ ownerID, recordZones in
+            let recordZoneNames = recordZones.map { $0.zoneID.zoneName }
+            
+            DDLogDebug("Pulling from record zones: \(recordZoneNames)")
+            for recordZone in recordZones {
+                dispatch_group_enter(grp) // 2 enter
+                self.pull(recordZone, completionHandler: { failedChanges, failedDeletions in
+                    for failedChange in failedChanges ?? [] {
+                        dispatch_sync(errorQ) {
+                            errors.append(failedChange.error)
+                        }
+                    }
+                
+                    for failedDeletion in failedDeletions ?? [] {
+                        dispatch_sync(errorQ) {
+                            errors.append(failedDeletion.error)
+                        }
+                    }
+                    
+                    dispatch_group_leave(grp) // 2A leave
+                    }, errorHandler: { error in
+                        dispatch_sync(errorQ) {
+                            errors.append(error)
+                        }
+                        dispatch_group_leave(grp) // 2B leave
+                })
+            }
+            
+            dispatch_group_leave(grp) // 1A leave
+
+        }) { error in
+            dispatch_sync(errorQ) {
+                errors.append(.UnderlyingError(error))
+            }
+            dispatch_group_leave(grp) // 1B leave
+            return
+        }
+        
+        dispatch_group_notify(grp, dispatch_get_main_queue()) { 
+            completionHandler(errors)
+        }
     }
     
-    public func _pull(ownerName:String, recordZone:CKRecordZone, completionHandler:PullCompletionHandler, completeFailure:ErrorHandler) {
+    public func pull(recordZone:CKRecordZone, completionHandler:PullCompletionHandler, errorHandler:ErrorHandler) {
+        self.ensureRecordZonesExist({ ownerID, _ in
+            self._pull(ownerID.recordName, recordZone: recordZone, completionHandler: completionHandler, errorHandler: errorHandler)
+        }, errorHandler: errorHandler)
+    }
+    
+    public func _pull(ownerName:String, recordZone:CKRecordZone, completionHandler:PullCompletionHandler, errorHandler:ErrorHandler) {
         let fetchRecords = CKFetchRecordsOperation()
         
         guard let packageController = self.packageController else {
-            completeFailure(.NilPackageController)
+            errorHandler(.NilPackageController)
             return
         }
         
@@ -265,7 +332,6 @@ import FeatherExtensions
         self.operationQueue.addOperation(fetchRecords)
         
         let op = CKFetchRecordChangesOperation(recordZoneID: recordZone.zoneID, previousServerChangeToken:nil)
-        self.operationQueue.addOperation(op)
         
         var changeFails = [(record:CKRecord, error:Error)]()
         op.recordChangedBlock = { record in
@@ -292,11 +358,13 @@ import FeatherExtensions
         
         op.fetchRecordChangesCompletionBlock = { serverChangeToken, clientChangeTokenData, error in
             if let error = error {
-                completeFailure(.UnderlyingError(error))
+                errorHandler(.UnderlyingError(error))
                 return
             }
             
             completionHandler(failedChanges: changeFails, failedDeletions: deletionFails)
         }
+        
+        self.operationQueue.addOperation(op)
     }
 }

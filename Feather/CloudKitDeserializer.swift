@@ -62,7 +62,6 @@ public struct CloudKitDeserializer {
             
         case let referenceArray as [CKReference]:
             precondition(object.dynamicType.classOfProperty(kvcKey) is NSArray.Type)
-            print(propertyKey)
             object.setValue(referenceArray.map { $0.recordID.recordName }, ofProperty: propertyKey)
             break
             
@@ -76,6 +75,7 @@ public struct CloudKitDeserializer {
             break
             
         default:
+            print(propertyKey)
             object.setValue(val, forKey: kvcKey)
         }
         
