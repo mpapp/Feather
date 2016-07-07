@@ -138,8 +138,11 @@ typedef enum MPManagedObjectsControllerErrorCode
 #pragma mark -
 #pragma mark Managed Object CRUD
 
-/** Returns a new managed object. */
+/** Returns a new managed object of type -managedObjectClass. */
 - (nonnull T)newObject;
+
+/** If nil passed in as argument, -managedObjectClass is assumed to be the type. */
+- (nonnull T)newObjectOfClass:(nullable Class)cls;
 
 /** Returns a new managed object with the specified prototype. */
 - (nonnull T)newObjectWithPrototype:(nonnull MPManagedObject *)prototype;

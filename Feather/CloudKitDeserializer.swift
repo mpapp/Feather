@@ -31,7 +31,9 @@ public struct CloudKitDeserializer {
                 throw Error.NoControllerForModelClass(modelClass)
             }
             
-            obj = moc.newObject()
+            print(modelClass)
+            print(moc)
+            obj = moc.newObjectOfClass(modelClass)
         }
         
         if applyOnlyChangedFields {
@@ -70,7 +72,7 @@ public struct CloudKitDeserializer {
             object.setValue(embObj, ofProperty: propertyKey)
             
         case let valString as String where object.dynamicType.classOfProperty(kvcKey) is NSDictionary.Type:
-            let dict = try NSDictionary.decodeDictionaryFromJSONString(valString)
+            let dict = try NSDictionary.decodeFromJSONString(valString)
             object.setValue(dict, ofProperty: propertyKey)
             
         case let valString as String where object.dynamicType.classOfProperty(kvcKey) is NSArray.Type:

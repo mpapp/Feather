@@ -26,7 +26,7 @@ typedef NS_ENUM(NSUInteger, MPDictionaryExtensionErrorCode) {
 
 - (nonnull NSDictionary *)dictionaryWithObjectsMatching:(BOOL(^_Nonnull)(_Nonnull id evaluatedKey, _Nonnull id evaluatedObject))patternBlock;
 
-+ (nullable NSDictionary *)decodeDictionaryFromJSONString:(nonnull NSString *)s error:(NSError *_Nullable *_Nullable)error;
++ (nullable NSDictionary *)decodeFromJSONString:(nonnull NSString *)s error:(NSError *_Nullable *_Nullable)error;
 
 - (nullable NSString *)JSONStringRepresentation:(NSError *_Nullable *_Nullable)err;
 

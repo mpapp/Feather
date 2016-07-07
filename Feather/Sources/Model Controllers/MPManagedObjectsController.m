@@ -663,12 +663,23 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return NO;
 }
 
-- (id)newObject
-{
-    MPManagedObject *obj = [[[[self class] managedObjectClass] alloc] initWithNewDocumentForController:self];
-    obj.objectType = [[self class] managedObjectClassName];
+- (id)newObjectOfClass:(Class)cls {
+    if (!cls) {
+        cls = [[self class] managedObjectClass];
+    }
+    
+    NSString *className = NSStringFromClass(cls);
+    NSParameterAssert([cls isSubclassOfClass:self.managedObjectClass]);
+               
+    MPManagedObject *obj = [[cls alloc] initWithNewDocumentForController:self];
+    obj.objectType = className;
     obj.autosaves = [self autosavesObjects];
+    
     return obj;
+}
+
+- (id)newObject {
+    return [self newObjectOfClass:nil];
 }
 
 - (Class)prototypeClass {

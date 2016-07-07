@@ -1870,8 +1870,9 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
         
         if (existingObjectType)
         {
-            if (![value isEqual:existingObjectType])
+            if (![value isEqual:existingObjectType]) {
                 @throw [NSException exceptionWithName:@"MPInvalidArgumentException" reason:@"Trying to reset objectType" userInfo:nil];
+            }
             
             return YES; // nothing to do (value is the same)
         }
