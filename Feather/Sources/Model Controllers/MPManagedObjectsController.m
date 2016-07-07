@@ -408,7 +408,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
     // create new revision with properties of rev[0]
     CBLSavedRevision *rev = revs[0];
-    return [rev createRevisionWithProperties:rev.properties error:err];
+    return [rev createRevisionWithProperties:rev.properties error:err] != nil;
 }
 
 #pragma mark -

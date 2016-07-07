@@ -134,7 +134,7 @@
 - (BOOL)save
 {
     @throw [[MPUnexpectedSelectorException alloc] initWithSelector:_cmd];
-    return nil;
+    return NO;
 }
 
 - (NSString *)thumbnailImageName {

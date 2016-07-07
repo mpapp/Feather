@@ -223,7 +223,7 @@ static Class _shoeboxPackageControllerClass = nil;
 {
     _shoeboxPackageControllerClass = nil;
     _sharedInstance = nil;
-    onceToken = nil;
+    onceToken = 0;
 }
 
 + (Class)sharedShoeboxPackageControllerClass

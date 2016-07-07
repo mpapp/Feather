@@ -161,7 +161,7 @@ NSString *const MPPasteboardTypeRootSection = @"com.piipari.root-section.id.plis
 }
 
 - (BOOL)save
-{ @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return nil; }
+{ @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return NO; }
 
 - (NSUInteger)childCount
 { return [[self children] count]; }

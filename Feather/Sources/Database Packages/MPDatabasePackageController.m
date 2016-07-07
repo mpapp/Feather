@@ -325,7 +325,11 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (id)ensureInitialStateInitialized {
     // done at this stage as these services require initialization to have completed and for the package controller to be in a defined state.
     if (self.synchronizesUsingCloudKit) {
-        _cloudKitSyncService = [[CloudKitSyncService alloc] initWithPackageController:self container:nil];
+        NSError *err = nil;
+        _cloudKitSyncService = [[CloudKitSyncService alloc] initWithPackageController:self container:nil error:&err];
+        if (!_cloudKitSyncService) {
+            MPLog(@"Failed to initialize CloudKit sync service: %@", _cloudKitSyncService);
+        }
     }
     
     return nil; // override in subclass
@@ -353,7 +357,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         return YES;
     
     if (![fm copyItemAtURL:dbURL toURL:targetDBURL error:err]) {
-        return nil;
+        return NO;
     }
     
     NSURL *attachmentsURL = [bootstrapDataURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%@ attachments", dbName]];
@@ -367,8 +371,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     if ([fm fileExistsAtPath:attachmentsURL.path isDirectory:nil] &&
         ![fm fileExistsAtPath:targetAttachmentsURL.path isDirectory:nil]) {
         
-        if (![fm copyItemAtURL:attachmentsURL toURL:targetAttachmentsURL error:err])
-            return nil;
+        if (![fm copyItemAtURL:attachmentsURL toURL:targetAttachmentsURL error:err]) {
+            return NO;
+        }
     }
     
     return YES;

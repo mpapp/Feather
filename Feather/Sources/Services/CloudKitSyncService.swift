@@ -36,14 +36,14 @@ import FeatherExtensions
     }
     private let operationQueue:NSOperationQueue = NSOperationQueue()
     
-    public init(packageController:MPDatabasePackageController, container:CKContainer? = CKContainer.defaultContainer()) {
+    public init(packageController:MPDatabasePackageController, container:CKContainer? = CKContainer.defaultContainer()) throws {
         self.packageController = packageController
         self.container = container ?? CKContainer.defaultContainer()
         self.recordZoneRepository = CloudKitRecordZoneRepository(zoneSuffix: packageController.identifier)
         
         self.operationQueue.maxConcurrentOperationCount = 1
         
-        self.state = CloudKitState(packageController:packageController)
+        self.state = try CloudKitState.state(packageController:packageController)
         
         if #available(OSX 10.11, *) {
             NSNotificationCenter.defaultCenter().addObserverForName(CKAccountChangedNotification, object: nil, queue: NSOperationQueue.mainQueue()) { notification in

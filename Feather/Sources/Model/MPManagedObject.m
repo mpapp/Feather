@@ -325,7 +325,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 - (BOOL)isUserContributed {
-    return [self getValueOfProperty:@"userContributed"];
+    return [[self getValueOfProperty:@"userContributed"] boolValue];
 }
 
 + (NSString *)idForNewDocumentInDatabase:(CBLDatabase *)db
@@ -1323,7 +1323,8 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
             return imp_implementationWithBlock(^id(MPManagedObject *receiver) {
                 id effectiveReceiver = [self receiverForEffectivePropertyAccessorReceiver:receiver property:property];
                 IMP imp = [self impForGetterOfProperty:adjustedProperty ofClass:MYClassFromType(propertyType)];
-                id o = imp(effectiveReceiver, NSSelectorFromString(adjustedProperty));
+                id o = ((id(*)(id, SEL))imp)(effectiveReceiver, NSSelectorFromString(adjustedProperty));
+                
                 return o;
             });
         case _C_INT:
