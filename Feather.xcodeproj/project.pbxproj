@@ -81,6 +81,7 @@
 		5F50844A1C5518A0009D7211 /* DiffMatchPatch.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5F50844B1C5518A7009D7211 /* DiffMatchPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */; };
 		5F50844C1C5518AA009D7211 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5084471C551804009D7211 /* CocoaLumberjack.framework */; };
+		5F5C5B551D2EC84800CD99BD /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5C5B541D2EC84800CD99BD /* Dictionary+Extensions.swift */; };
 		5F6857A01727C38900FE06B0 /* MPVirtualSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579D1727C38900FE06B0 /* MPVirtualSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F68579E1727C38900FE06B0 /* MPVirtualSection.m */; };
 		5F6857A21727C38900FE06B0 /* MPVirtualSection+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579F1727C38900FE06B0 /* MPVirtualSection+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -104,6 +105,8 @@
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
 		5F9F226A1C792A0800244277 /* CollectionType+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9F22691C792A0800244277 /* CollectionType+MPExtensions.swift */; };
 		5FA9D02E1D29C74000C96CE1 /* CloudKitDeserializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA9D02D1D29C74000C96CE1 /* CloudKitDeserializer.swift */; };
+		5FAA0A681D2EA87800F18A2D /* CloudKitState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAA0A671D2EA87800F18A2D /* CloudKitState.swift */; };
+		5FAA0A6A1D2EA96500F18A2D /* Freddy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAA0A691D2EA96500F18A2D /* Freddy.framework */; };
 		5FAC23BF19ABFE79000F188C /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAC23BE19ABFE79000F188C /* CoreServices.framework */; };
 		5FBDCBF41CE9D691002DEAA7 /* ErrorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBDCBF31CE9D691002DEAA7 /* ErrorPresenter.swift */; };
 		5FC423131AFF8719002234FB /* FeatherExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC423121AFF8719002234FB /* FeatherExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -350,6 +353,7 @@
 		5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteListener.framework; path = Carthage/Build/Mac/CouchbaseLiteListener.framework; sourceTree = "<group>"; };
 		5F4ED85E1CECDB61003ED0B8 /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		5F5084471C551804009D7211 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac/CocoaLumberjack.framework"; sourceTree = "<group>"; };
+		5F5C5B541D2EC84800CD99BD /* Dictionary+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extensions.swift"; sourceTree = "<group>"; };
 		5F6414BA19A2A876007E5245 /* CBLDocument+MPScriptingSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CBLDocument+MPScriptingSupport.h"; path = "../Feather/Sources/Scripting/CBLDocument+MPScriptingSupport.h"; sourceTree = "<group>"; };
 		5F6414BB19A2A876007E5245 /* CBLDocument+MPScriptingSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CBLDocument+MPScriptingSupport.m"; path = "../Feather/Sources/Scripting/CBLDocument+MPScriptingSupport.m"; sourceTree = "<group>"; };
 		5F68579D1727C38900FE06B0 /* MPVirtualSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPVirtualSection.h; path = Sources/Model/MPVirtualSection.h; sourceTree = "<group>"; };
@@ -377,6 +381,8 @@
 		5FA0D11319012D19005BC968 /* NSIndexSet+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSIndexSet+MPExtensions.h"; path = "Sources/Categories/NSIndexSet+MPExtensions.h"; sourceTree = "<group>"; };
 		5FA0D11419012D19005BC968 /* NSIndexSet+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSIndexSet+MPExtensions.m"; path = "Sources/Categories/NSIndexSet+MPExtensions.m"; sourceTree = "<group>"; };
 		5FA9D02D1D29C74000C96CE1 /* CloudKitDeserializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitDeserializer.swift; sourceTree = "<group>"; };
+		5FAA0A671D2EA87800F18A2D /* CloudKitState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitState.swift; sourceTree = "<group>"; };
+		5FAA0A691D2EA96500F18A2D /* Freddy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Freddy.framework; path = Carthage/Build/Mac/Freddy.framework; sourceTree = "<group>"; };
 		5FAC23B819ABFA94000F188C /* MPScriptingDefinitionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPScriptingDefinitionManager.h; path = ../Feather/Sources/Scripting/MPScriptingDefinitionManager.h; sourceTree = "<group>"; };
 		5FAC23B919ABFA94000F188C /* MPScriptingDefinitionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPScriptingDefinitionManager.m; path = ../Feather/Sources/Scripting/MPScriptingDefinitionManager.m; sourceTree = "<group>"; };
 		5FAC23BC19ABFE5C000F188C /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
@@ -580,6 +586,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5FAA0A6A1D2EA96500F18A2D /* Freddy.framework in Frameworks */,
 				5FF745C41D26FD0A00B493D0 /* CloudKit.framework in Frameworks */,
 				5F4A48BE1C34079C0029DB3E /* CouchbaseLite.framework in Frameworks */,
 				5F5084481C551804009D7211 /* CocoaLumberjack.framework in Frameworks */,
@@ -713,6 +720,7 @@
 			children = (
 				5F9F22691C792A0800244277 /* CollectionType+MPExtensions.swift */,
 				5F4ED85E1CECDB61003ED0B8 /* String+Extensions.swift */,
+				5F5C5B541D2EC84800CD99BD /* Dictionary+Extensions.swift */,
 			);
 			name = "Swift Standard Library Extensions";
 			sourceTree = "<group>";
@@ -850,6 +858,7 @@
 		5FDB33051705CB950049EBB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5FAA0A691D2EA96500F18A2D /* Freddy.framework */,
 				5FF745C31D26FD0A00B493D0 /* CloudKit.framework */,
 				5FF745BB1D25A8F700B493D0 /* MPTimer.framework */,
 				5FF745B91D259C3500B493D0 /* MPRateLimiter.framework */,
@@ -1120,6 +1129,7 @@
 				5FF745C11D26FCF000B493D0 /* CloudKitSerializer.swift */,
 				5F3A0B241D2840BF00205164 /* CloudKitRecordRepository.swift */,
 				5FA9D02D1D29C74000C96CE1 /* CloudKitDeserializer.swift */,
+				5FAA0A671D2EA87800F18A2D /* CloudKitState.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -1599,6 +1609,7 @@
 				5FC423631AFF872E002234FB /* NSImage+MPExtensions.m in Sources */,
 				5F6C563C1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift in Sources */,
 				5F18F20E1CD968D5008CE38D /* NSDateFormatter+MPExtensions.swift in Sources */,
+				5F5C5B551D2EC84800CD99BD /* Dictionary+Extensions.swift in Sources */,
 				5FC423511AFF872E002234FB /* NSObject+MPExtensions.m in Sources */,
 				5FC423431AFF872E002234FB /* NSDate+MPExtensions.m in Sources */,
 				5FC423571AFF872E002234FB /* NSData+MPExtensions.m in Sources */,
@@ -1674,6 +1685,7 @@
 				5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */,
 				5FC753001746E294007818A0 /* NSString+MPSearchIndex.m in Sources */,
 				5F3A0B251D2840BF00205164 /* CloudKitRecordRepository.swift in Sources */,
+				5FAA0A681D2EA87800F18A2D /* CloudKitState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

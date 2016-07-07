@@ -27,6 +27,8 @@ import FeatherExtensions
     let container:CKContainer
     public let recordZoneRepository:CloudKitRecordZoneRepository
     
+    let state:CloudKitState
+    
     public var ownerID:CKRecordID? = nil {
         didSet {
             
@@ -40,6 +42,8 @@ import FeatherExtensions
         self.recordZoneRepository = CloudKitRecordZoneRepository(zoneSuffix: packageController.identifier)
         
         self.operationQueue.maxConcurrentOperationCount = 1
+        
+        self.state = CloudKitState(packageController:packageController)
         
         if #available(OSX 10.11, *) {
             NSNotificationCenter.defaultCenter().addObserverForName(CKAccountChangedNotification, object: nil, queue: NSOperationQueue.mainQueue()) { notification in
@@ -331,7 +335,8 @@ import FeatherExtensions
         
         self.operationQueue.addOperation(fetchRecords)
         
-        let op = CKFetchRecordChangesOperation(recordZoneID: recordZone.zoneID, previousServerChangeToken:nil)
+        let prevChangeToken = self.state.serverChangeToken(recordZone.zoneID)
+        let op = CKFetchRecordChangesOperation(recordZoneID: recordZone.zoneID, previousServerChangeToken:prevChangeToken)
         
         var changeFails = [(record:CKRecord, error:Error)]()
         op.recordChangedBlock = { record in

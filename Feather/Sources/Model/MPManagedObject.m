@@ -41,6 +41,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 {
     __weak MPManagedObjectsController *_controller;
     NSString *_newDocumentID;
+    NSString *_cloudKitChangeTag;
 }
 
 @property (readwrite) BOOL isNewObject;
@@ -50,6 +51,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 @property (readonly, copy) NSString *deletedDocumentID;
 
 @property (readwrite) NSString *sessionID;
+@property (readwrite) NSString *cachedCloudKitChangeTag;
 
 @end
 
@@ -63,6 +65,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 @synthesize controller = _controller;
 @synthesize embeddedObjectCache = _embeddedObjectCache;
 @synthesize deletedDocumentID = _deletedDocumentID;
+@synthesize cachedCloudKitChangeTag = _cachedCloudKitChangeTag;
 
 @dynamic isModerated, isRejected, isAccepted, creator, prototype, sessionID;
 
@@ -237,6 +240,19 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 + (BOOL)hasMainThreadIsolatedCachedProperties {
     return NO;
+}
+
+- (void)setCloudKitChangeTag:(NSString * _Nullable)cloudKitChangeTag {
+    _cloudKitChangeTag = cloudKitChangeTag;
+    _cachedCloudKitChangeTag = cloudKitChangeTag;
+}
+
+- (NSString *)cloudKitChangeTag {
+    if (!_cachedCloudKitChangeTag) {
+        _cachedCloudKitChangeTag = [self getValueOfProperty:@"cloudKitChangeTag"] ?: [NSNull null];
+    }
+    
+    return [_cachedCloudKitChangeTag isEqual:[NSNull null]] ? _cachedCloudKitChangeTag : nil;
 }
 
 + (BOOL)shouldTrackSessionID
@@ -487,9 +503,16 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     
     [self updateTimestamps];
     
-    if ([self.class shouldTrackSessionID])
+    if ([self.class shouldTrackSessionID]) {
         self.sessionID = [[self.controller packageController] sessionID];
+    }
     
+    NSString *currentChangeTag = self.cloudKitChangeTag;
+    NSString *savedChangeTag = [self getValueOfProperty:@"cloudKitChangeTag"];
+    if (currentChangeTag && savedChangeTag) {
+        [self setValue:currentChangeTag ofProperty:@"cloudKitChangeTag"];
+    }
+
     __block BOOL success = NO;
     
     mp_dispatch_sync(self.database.manager.dispatchQueue, [self.database.packageController serverQueueToken], ^{

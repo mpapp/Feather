@@ -30,9 +30,6 @@ public struct CloudKitDeserializer {
             guard let moc = self.packageController.controllerForManagedObjectClass(modelClass) else {
                 throw Error.NoControllerForModelClass(modelClass)
             }
-            
-            print(modelClass)
-            print(moc)
             obj = moc.newObjectOfClass(modelClass)
         }
         
@@ -80,7 +77,6 @@ public struct CloudKitDeserializer {
             object.setValue(array, forKey: propertyKey)
             
         default:
-            print("\(kvcKey),\(propertyKey) => \(val)")
             object.setValue(val, forKey: kvcKey)
         }
         
