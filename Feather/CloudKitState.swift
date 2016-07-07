@@ -49,8 +49,12 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
         try serializedData.writeToURL(url, options: [])
     }
     
-    public func serverChangeToken(recordZoneID:CKRecordZoneID) -> CKServerChangeToken? {
+    public func serverChangeToken(forZoneID recordZoneID:CKRecordZoneID) -> CKServerChangeToken? {
         return self.recordZones[recordZoneID]
+    }
+    
+    public mutating func setServerChangeToken(token:CKServerChangeToken, forZoneID recordZoneID:CKRecordZoneID) {
+        self.recordZones[recordZoneID] = token
     }
     
     public init(json: JSON) throws {

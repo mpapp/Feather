@@ -21,13 +21,14 @@ import FeatherExtensions
         case PartialError(CKErrorCode)
         case NoRecordToDeleteWithID(CKRecordID)
         case UnderlyingError(ErrorType)
+        case MissingServerChangeToken(CKRecordZone)
     }
     
     weak var packageController:MPDatabasePackageController?
     let container:CKContainer
     public let recordZoneRepository:CloudKitRecordZoneRepository
     
-    let state:CloudKitState
+    var state:CloudKitState
     
     public var ownerID:CKRecordID? = nil {
         didSet {
@@ -335,7 +336,7 @@ import FeatherExtensions
         
         self.operationQueue.addOperation(fetchRecords)
         
-        let prevChangeToken = self.state.serverChangeToken(recordZone.zoneID)
+        let prevChangeToken = self.state.serverChangeToken(forZoneID: recordZone.zoneID)
         let op = CKFetchRecordChangesOperation(recordZoneID: recordZone.zoneID, previousServerChangeToken:prevChangeToken)
         
         var changeFails = [(record:CKRecord, error:Error)]()
@@ -362,12 +363,27 @@ import FeatherExtensions
         }
         
         op.fetchRecordChangesCompletionBlock = { serverChangeToken, clientChangeTokenData, error in
+            
             if let error = error {
                 errorHandler(.UnderlyingError(error))
                 return
             }
             
+            guard let changeToken = serverChangeToken else {
+                errorHandler(.MissingServerChangeToken(recordZone))
+                return
+            }
+            
+            self.state.setServerChangeToken(changeToken, forZoneID:recordZone.zoneID)
+            
             completionHandler(failedChanges: changeFails, failedDeletions: deletionFails)
+            
+            do {
+                try self.state.serialize()
+            }
+            catch {
+                DDLogError("ERROR: Failed to serialize server change token: \(error)")
+            }
         }
         
         self.operationQueue.addOperation(op)
