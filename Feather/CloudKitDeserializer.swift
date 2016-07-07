@@ -75,7 +75,7 @@ public struct CloudKitDeserializer {
             break
             
         default:
-            print(propertyKey)
+            print("\(kvcKey),\(propertyKey) => \(val)")
             object.setValue(val, forKey: kvcKey)
         }
         

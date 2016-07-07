@@ -946,9 +946,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return NO; // overload in subclasses to form a prototype when shared
 }
 
-- (BOOL)isLocked
-{
-    return [self.document.properties[@"locked"] boolValue];
+- (BOOL)isLocked {
+    return [[self getValueOfProperty:@"locked"] boolValue];
+}
+
+- (void)setLocked:(BOOL)locked {
+    [self setValue:@(locked) ofProperty:@"locked"];
 }
 
 - (void)lock
