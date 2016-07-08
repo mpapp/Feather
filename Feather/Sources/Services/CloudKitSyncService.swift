@@ -23,7 +23,6 @@ import FeatherExtensions
         case NoRecordToDeleteWithID(CKRecordID)
         case UnderlyingError(ErrorType)
         case MissingServerChangeToken(CKRecordZone)
-        case StateInitializationFailed
         case UnexpectedRecords([CKRecord]?)
     }
     
@@ -333,6 +332,22 @@ import FeatherExtensions
         }, errorHandler: errorHandler)
     }
     
+    private func ensureStateInitialized(ownerName:String, packageController:MPDatabasePackageController, allowInitializing:Bool) throws {
+        if self.state == nil {
+            if !allowInitializing {
+                throw Error.NilState
+            }
+            
+            let state = CloudKitState(ownerName: ownerName, packageController: packageController, packages: [])
+            do {
+                self.state = try state.deserialize()
+            }
+            catch {
+                self.state = state
+            }
+        }
+    }
+    
     public func _pull(ownerName:String, recordZone:CKRecordZone, completionHandler:PullCompletionHandler, errorHandler:ErrorHandler) {
         let fetchRecords = CKFetchRecordsOperation()
         fetchRecords.database = self.database
@@ -346,19 +361,11 @@ import FeatherExtensions
         
         self.operationQueue.addOperation(fetchRecords)
         
-        if self.state == nil {
-            let state = CloudKitState(ownerName: ownerName, packageController: packageController, packages: [])
-            do {
-                self.state = try state.deserialize()
-            }
-            catch {
-                self.state = state
-            }
+        do {
+            try self.ensureStateInitialized(ownerName, packageController: packageController, allowInitializing: true)
         }
-        
-        guard var state = self.state else {
-            errorHandler(.StateInitializationFailed)
-            return
+        catch {
+            errorHandler(.UnderlyingError(error))
         }
         
         let prevChangeToken = self.state?.serverChangeToken(forZoneID: recordZone.zoneID)
@@ -377,7 +384,6 @@ import FeatherExtensions
                 return
             }
         }
-    
         
         func recordWithIDWasDeleted(deletedID:CKRecordID) {
             if let record = self.recordZoneRepository.recordRepository.record(ID:deletedID),
@@ -402,7 +408,7 @@ import FeatherExtensions
                 return
             }
             
-            state.setServerChangeToken(changeToken, forZoneID:recordZone.zoneID)
+            self.state?.setServerChangeToken(changeToken, forZoneID:recordZone.zoneID)
             
             if op.moreComing {
                 let op = CKFetchRecordChangesOperation(recordZoneID: recordZone.zoneID, previousServerChangeToken:prevChangeToken)
@@ -416,8 +422,8 @@ import FeatherExtensions
             }
             
             do {
-                try state.serialize()
-                self.state = state
+                try self.ensureStateInitialized(ownerName, packageController:packageController, allowInitializing:false)
+                try self.state?.serialize()
             }
             catch {
                 errorHandler(.UnderlyingError(error))
@@ -445,6 +451,20 @@ import FeatherExtensions
     }
     
     public func _availableDatabasePackages(ownerName:String, completionHandler:DatabasePackageMetadataListHandler, errorHandler:ErrorHandler) {
+        
+        guard let packageController = self.packageController else {
+            errorHandler(.NilPackageController)
+            return
+        }
+        
+        do {
+            try self.ensureStateInitialized(ownerName, packageController: packageController, allowInitializing: true)
+        }
+        catch {
+            errorHandler(.UnderlyingError(error))
+            return
+        }
+        
         var packages = self.state?.packages ?? [DatabasePackageMetadata]()
         
         func recordChanged(record:CKRecord) {
@@ -479,12 +499,24 @@ import FeatherExtensions
                 self.operationQueue.addOperation(op)
             }
             else {
-                guard let _ = self.state else {
-                    errorHandler(.NilState)
+                do {
+                    try self.ensureStateInitialized(ownerName, packageController: packageController, allowInitializing: false)
+                }
+                catch {
+                    errorHandler(.UnderlyingError(error))
                     return
                 }
                 
                 self.state?.packages = packages
+                
+                do {
+                    try self.state?.serialize()
+                }
+                catch {
+                    errorHandler(.UnderlyingError(error))
+                    return
+                }
+                
                 completionHandler(packages)
             }
         }
