@@ -28,6 +28,7 @@ import FeatherExtensions
     
     weak var packageController:MPDatabasePackageController?
     let container:CKContainer
+    let database:CKDatabase
     public let recordZoneRepository:CloudKitRecordZoneRepository
     
     var state:CloudKitState?
@@ -37,12 +38,17 @@ import FeatherExtensions
     
     private let operationQueue:NSOperationQueue = NSOperationQueue()
     
-    public init(packageController:MPDatabasePackageController, container:CKContainer? = CKContainer.defaultContainer(), ignoredKeys:[String]) throws {
+    public init(packageController:MPDatabasePackageController, container:CKContainer? = CKContainer.defaultContainer(), database:CKDatabase? = CKContainer.defaultContainer().privateCloudDatabase, ignoredKeys:[String]) throws {
         self.packageController = packageController
         self.container = container ?? CKContainer.defaultContainer()
+        self.database = database ?? CKContainer.defaultContainer().privateCloudDatabase
         self.recordZoneRepository = CloudKitRecordZoneRepository(zoneSuffix: packageController.identifier)
         self.ignoredKeys = ignoredKeys
         self.operationQueue.maxConcurrentOperationCount = 1
+        
+        super.init()
+        
+        precondition(self.database == self.container.privateCloudDatabase || self.database == self.container.publicCloudDatabase, "Database should be the container's public or private database but is not.")
         
         if #available(OSX 10.11, *) {
             NSNotificationCenter.defaultCenter().addObserverForName(CKAccountChangedNotification, object: nil, queue: NSOperationQueue.mainQueue()) { notification in
@@ -153,6 +159,7 @@ import FeatherExtensions
         let op:CKModifyRecordZonesOperation
         do {
             op = CKModifyRecordZonesOperation(recordZonesToSave: try self.recordZones(ownerName), recordZoneIDsToDelete: [])
+            op.database = self.database
         }
         catch {
             errorHandler(.UnderlyingError(error))
@@ -193,6 +200,7 @@ import FeatherExtensions
         }
         
         let save = CKModifySubscriptionsOperation(subscriptionsToSave: subscriptions, subscriptionIDsToDelete: [])
+        save.database = self.database
         self.operationQueue.addOperation(save)
         
         save.modifySubscriptionsCompletionBlock = { savedSubscriptions, deletedSubscriptions, error in
@@ -230,6 +238,7 @@ import FeatherExtensions
         
         let save = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: [])
         save.savePolicy = CKRecordSavePolicy.AllKeys
+        save.database = self.database
         
         self.operationQueue.addOperation(save)
         
@@ -324,6 +333,7 @@ import FeatherExtensions
     
     public func _pull(ownerName:String, recordZone:CKRecordZone, completionHandler:PullCompletionHandler, errorHandler:ErrorHandler) {
         let fetchRecords = CKFetchRecordsOperation()
+        fetchRecords.database = self.database
         
         guard let packageController = self.packageController else {
             errorHandler(.NilPackageController)
@@ -351,6 +361,7 @@ import FeatherExtensions
         
         let prevChangeToken = self.state?.serverChangeToken(forZoneID: recordZone.zoneID)
         let op = CKFetchRecordChangesOperation(recordZoneID: recordZone.zoneID, previousServerChangeToken:prevChangeToken)
+        op.database = self.database
         
         var changeFails = [(record:CKRecord, error:Error)]()
         op.recordChangedBlock = { record in
@@ -417,8 +428,7 @@ import FeatherExtensions
         func cursorHandler(cursor:CKQueryCursor?, error:NSError?) -> Void {
             if let cursor = cursor {
                 let op = CKQueryOperation(cursor: cursor)
-                op.database = self.container.privateCloudDatabase
-                op.resultsLimit = CKQueryOperationMaximumResults
+                op.database = self.database
                 op.recordFetchedBlock = recordFetchedHandler
                 op.queryCompletionBlock = cursorHandler
                 self.operationQueue.addOperation(op)
@@ -429,9 +439,8 @@ import FeatherExtensions
         }
 
         let op = CKQueryOperation(query: CKQuery(recordType: "DatabasePackageMetadata", predicate: NSPredicate(value: true)))
-        op.database = self.container.privateCloudDatabase
+        op.database = self.database
         op.zoneID = CKRecordZone.defaultRecordZone().zoneID
-        op.resultsLimit = CKQueryOperationMaximumResults
         op.recordFetchedBlock = recordFetchedHandler
         op.queryCompletionBlock = cursorHandler
         
@@ -451,7 +460,7 @@ import FeatherExtensions
         packageMetadata["title"] = packageController.title
         
         let saveMetadata = CKModifyRecordsOperation(recordsToSave: [packageMetadata], recordIDsToDelete: nil)
-        saveMetadata.database = self.container.privateCloudDatabase
+        saveMetadata.database = self.database
         saveMetadata.savePolicy = .AllKeys
         
         self.operationQueue.addOperation(saveMetadata)
