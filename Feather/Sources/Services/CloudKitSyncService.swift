@@ -475,6 +475,12 @@ import FeatherExtensions
         
         func recordChanged(record:CKRecord) {
             let package = DatabasePackageMetadata(recordID: record.recordID, title: record["title"] as? String ?? nil, changeTag: record.recordChangeTag)
+            
+            // Replace if existing item found. 
+            // Maintaining sort order is not important.
+            if let index = packages.indexOf({ pkg in pkg.recordID == package.recordID }) {
+                packages.removeAtIndex(index)
+            }
             packages.append(package)
         }
         
@@ -547,13 +553,19 @@ import FeatherExtensions
     }
     
     public func ensureDatabasePackageMetadataExists(completionHandler:DatabasePackageMetadataHandler, errorHandler:ErrorHandler) {
+        self.ensureUserAuthenticated({ ownerID in
+            self._ensureDatabasePackageMetadataExists(ownerID.recordName, completionHandler: completionHandler, errorHandler: errorHandler)
+        }, errorHandler: errorHandler)
+    }
+    
+    public func _ensureDatabasePackageMetadataExists(ownerName:String, completionHandler:DatabasePackageMetadataHandler, errorHandler:ErrorHandler) {
         guard let packageController = self.packageController else {
             errorHandler(.NilPackageController)
             return
         }
         
         let identifier = packageController.identifier
-        let packageMetadata = CKRecord(recordType: "DatabasePackageMetadata", recordID: CKRecordID(recordName: identifier, zoneID: CKRecordZone.defaultRecordZone().zoneID))
+        let packageMetadata = CKRecord(recordType: "DatabasePackageMetadata", recordID: CKRecordID(recordName: identifier, zoneID: self.packageMetadataZoneID(ownerName)))
         packageMetadata["title"] = packageController.title
         
         let saveMetadata = CKModifyRecordsOperation(recordsToSave: [packageMetadata], recordIDsToDelete: nil)
