@@ -417,6 +417,7 @@ import FeatherExtensions
         func cursorHandler(cursor:CKQueryCursor?, error:NSError?) -> Void {
             if let cursor = cursor {
                 let op = CKQueryOperation(cursor: cursor)
+                op.database = self.container.privateCloudDatabase
                 op.resultsLimit = CKQueryOperationMaximumResults
                 op.recordFetchedBlock = recordFetchedHandler
                 op.queryCompletionBlock = cursorHandler
@@ -428,9 +429,12 @@ import FeatherExtensions
         }
 
         let op = CKQueryOperation(query: CKQuery(recordType: "DatabasePackageMetadata", predicate: NSPredicate(value: true)))
+        op.database = self.container.privateCloudDatabase
+        op.zoneID = CKRecordZone.defaultRecordZone().zoneID
         op.resultsLimit = CKQueryOperationMaximumResults
         op.recordFetchedBlock = recordFetchedHandler
         op.queryCompletionBlock = cursorHandler
+        
         self.operationQueue.addOperation(op)
     }
     
@@ -447,6 +451,7 @@ import FeatherExtensions
         packageMetadata["title"] = packageController.title
         
         let saveMetadata = CKModifyRecordsOperation(recordsToSave: [packageMetadata], recordIDsToDelete: nil)
+        saveMetadata.database = self.container.privateCloudDatabase
         saveMetadata.savePolicy = .AllKeys
         
         self.operationQueue.addOperation(saveMetadata)
