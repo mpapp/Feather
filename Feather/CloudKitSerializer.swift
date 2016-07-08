@@ -23,6 +23,7 @@ public struct CloudKitSerializer {
     
     public let ownerName:String
     public let recordZoneRepository:CloudKitRecordZoneRepository
+    public let ignoredKeys:[String]
     
     public func serialize(object:MPManagedObject, serializingKey:String? = nil) throws -> CKRecord {
         let record = try self.recordZoneRepository.record(object:object, ownerName: ownerName)
@@ -37,6 +38,10 @@ public struct CloudKitSerializer {
                 throw Error.UnexpectedKey(key)
             }
             
+            if self.ignoredKeys.contains(keyString) {
+                continue
+            }
+            
             try self.refresh(record:record, withObject: object, key: keyString, value:value)
         }
         
@@ -48,6 +53,7 @@ public struct CloudKitSerializer {
         
         let recordID = record.recordID
         let kvcKey = object.valueCodingKeyForPersistedPropertyKey(keyString)
+        
         let val = object.valueForKey(kvcKey)
         
         switch val {

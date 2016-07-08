@@ -106,7 +106,12 @@ typedef enum MPDatabasePackageControllerErrorCode {
 @property (readonly) BOOL synchronizesSnapshots;
 
 @property (readonly) BOOL synchronizesUsingCloudKit;
+
+/** The CloudKit sync service of a package controller can be messaged to push and pull data from CloudKit for the document. */
 @property (readonly, nullable) CloudKitSyncService *cloudKitSyncService;
+
+/** These ignored keys are those ignored when pushing data to CloudKit via the CloudKit sync service. The default implementation returns an empty array, you can override this in subclasses to customise behaviour. */
+@property (readonly, nonnull) NSArray<NSString *> *cloudKitIgnoredKeys;
 
 /** If returns YES, package's databases should be synced peerlessly (default: YES, overridable application wide with user default MPDefaultsKeySyncPeerlessly). */
 @property (readonly) BOOL synchronizesPeerlessly;

@@ -96,7 +96,7 @@ extern NSString * _Nonnull const MPPasteboardTypeManagedObjectIDArray;
 /** Identifier automatically set by each save of this object to the value of the current session, but only if [self.class shouldTrackSessionID] returns YES. */
 @property (readonly, nullable) NSString *sessionID;
 
-/** The latest record change tag seen when pulling changes from CloudKit for this object. */
+/** The latest record change tag seen when pulling changes from CloudKit for this object. Only. */
 @property (readonly, nullable) NSString *cloudKitChangeTag;
 
 /** The MPContributor who created the object. */

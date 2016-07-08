@@ -22,29 +22,26 @@ import FeatherExtensions
         case NoRecordToDeleteWithID(CKRecordID)
         case UnderlyingError(ErrorType)
         case MissingServerChangeToken(CKRecordZone)
+        case StateInitializationFailed
     }
     
     weak var packageController:MPDatabasePackageController?
     let container:CKContainer
     public let recordZoneRepository:CloudKitRecordZoneRepository
     
-    var state:CloudKitState
+    var state:CloudKitState?
     
-    public var ownerID:CKRecordID? = nil {
-        didSet {
-            
-        }
-    }
+    public var ownerID:CKRecordID?
+    public var ignoredKeys:[String]
+    
     private let operationQueue:NSOperationQueue = NSOperationQueue()
     
-    public init(packageController:MPDatabasePackageController, container:CKContainer? = CKContainer.defaultContainer()) throws {
+    public init(packageController:MPDatabasePackageController, container:CKContainer? = CKContainer.defaultContainer(), ignoredKeys:[String]) throws {
         self.packageController = packageController
         self.container = container ?? CKContainer.defaultContainer()
         self.recordZoneRepository = CloudKitRecordZoneRepository(zoneSuffix: packageController.identifier)
-        
+        self.ignoredKeys = ignoredKeys
         self.operationQueue.maxConcurrentOperationCount = 1
-        
-        self.state = try CloudKitState.state(packageController:packageController)
         
         if #available(OSX 10.11, *) {
             NSNotificationCenter.defaultCenter().addObserverForName(CKAccountChangedNotification, object: nil, queue: NSOperationQueue.mainQueue()) { notification in
@@ -62,7 +59,7 @@ import FeatherExtensions
             throw Error.OwnerUnknown
         }
 
-        let serializer = CloudKitSerializer(ownerName:ownerName, recordZoneRepository: self.recordZoneRepository)
+        let serializer = CloudKitSerializer(ownerName:ownerName, recordZoneRepository: self.recordZoneRepository, ignoredKeys: self.ignoredKeys)
         
         // TODO: support serialising also MPMetadata objects.
         let records = try packageController.allObjects.filter({ o -> Bool in
@@ -336,7 +333,22 @@ import FeatherExtensions
         
         self.operationQueue.addOperation(fetchRecords)
         
-        let prevChangeToken = self.state.serverChangeToken(forZoneID: recordZone.zoneID)
+        if self.state == nil {
+            let state = CloudKitState(ownerName: ownerName, packageController: packageController)
+            do {
+                self.state = try state.deserialize()
+            }
+            catch {
+                self.state = state
+            }
+        }
+        
+        guard var state = self.state else {
+            errorHandler(.StateInitializationFailed)
+            return
+        }
+        
+        let prevChangeToken = self.state?.serverChangeToken(forZoneID: recordZone.zoneID)
         let op = CKFetchRecordChangesOperation(recordZoneID: recordZone.zoneID, previousServerChangeToken:prevChangeToken)
         
         var changeFails = [(record:CKRecord, error:Error)]()
@@ -374,12 +386,13 @@ import FeatherExtensions
                 return
             }
             
-            self.state.setServerChangeToken(changeToken, forZoneID:recordZone.zoneID)
+            state.setServerChangeToken(changeToken, forZoneID:recordZone.zoneID)
             
             completionHandler(failedChanges: changeFails, failedDeletions: deletionFails)
             
             do {
-                try self.state.serialize()
+                try state.serialize()
+                self.state = state
             }
             catch {
                 DDLogError("ERROR: Failed to serialize server change token: \(error)")
@@ -387,5 +400,31 @@ import FeatherExtensions
         }
         
         self.operationQueue.addOperation(op)
+    }
+    
+    public func synchronize(completionHandler:(errors:[Error])->Void) {
+        self.pull { pullErrors in
+            
+            if (pullErrors.count > 0) {
+                completionHandler(errors: pullErrors)
+                return
+            }
+            
+            self.push({ (savedRecords, saveFailures, deletedRecordIDs, deletionFailures, completeFailure) in
+                var errors = [Error]()
+                
+                if let saveFailures = saveFailures {
+                    errors.appendContentsOf(saveFailures.map { Error.UnderlyingError($0.error) })
+                }
+                
+                if let deletionFailures = deletionFailures {
+                    errors.appendContentsOf(deletionFailures.map { Error.UnderlyingError($0.error) })
+                }
+                
+                completionHandler(errors:errors)
+            }) { error in
+                completionHandler(errors: [error])
+            }
+        }
     }
 }

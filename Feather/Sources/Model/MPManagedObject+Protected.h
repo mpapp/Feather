@@ -10,26 +10,30 @@
 
 @import CouchbaseLite;
 
+@class MPEmbeddedObject;
+
 @interface MPManagedObject (Protected)
 
-@property (readwrite, copy) NSString *objectType;
+@property (readwrite, copy, nonnull) NSString *objectType;
 
 // publicly read-only
-@property (weak, readwrite) MPManagedObjectsController *controller;
-@property (readwrite, assign, getter=isShared, setter=setShared:) BOOL isShared;
-@property (readwrite, assign) MPManagedObjectModerationState moderationState;
-@property (readwrite) MPManagedObject *prototype;
+@property (weak, readwrite, nullable) MPManagedObjectsController *controller;
+@property (readwrite, getter=isShared, setter=setShared:) BOOL isShared;
+@property (readwrite) MPManagedObjectModerationState moderationState;
+@property (readwrite, nullable) MPManagedObject *prototype;
 
-- (void)setEmbeddedObjectArray:(NSArray *)value ofProperty:(NSString *)property;
-- (NSArray *)getEmbeddedObjectArrayProperty:(NSString *)property;
+- (void)setEmbeddedObjectArray:(nullable NSArray *)value ofProperty:(nonnull NSString *)property;
+- (nullable NSArray<MPEmbeddedObject *> *)getEmbeddedObjectArrayProperty:(nonnull NSString *)property;
 
-- (NSDictionary *)getEmbeddedObjectDictionaryProperty:(NSString *)property;
-- (void)setEmbeddedObjectDictionary:(NSDictionary *)value ofProperty:(NSString *)property;
+- (nullable NSDictionary *)getEmbeddedObjectDictionaryProperty:(nonnull NSString *)property;
+- (void)setEmbeddedObjectDictionary:(nullable NSDictionary *)value ofProperty:(nonnull NSString *)property;
 
-- (void)setEmbeddedObject:(MPEmbeddedObject *)embeddedObj ofProperty:(NSString *)property;
-- (MPEmbeddedObject *)getEmbeddedObjectProperty:(NSString *)property;
+- (void)setEmbeddedObject:(nullable MPEmbeddedObject *)embeddedObj ofProperty:(nonnull NSString *)property;
+- (nullable MPEmbeddedObject *)getEmbeddedObjectProperty:(nonnull NSString *)property;
 
-- (MPEmbeddedObject *)decodeEmbeddedObject:(id)rawValue embeddingKey:(NSString *)key;
+- (nullable MPEmbeddedObject *)decodeEmbeddedObject:(nullable id)rawValue embeddingKey:(nonnull NSString *)key;
+
+@property (readwrite, nullable) NSString *cloudKitChangeTag;
 
 @end
 
@@ -38,18 +42,18 @@
 /* MPManagedObject & MPEmbeddedObject need some otherwise private state of CBLModel exposed. */
 @interface CBLModel (Private) <MPEmbeddingObject>
 
-- (void)CBLDocumentChanged:(CBLDocument *)doc;
--   (id)externalizePropertyValue: (id)value;
-- (void)cacheValue:(id)value ofProperty:(NSString *)property changed:(BOOL)changed;
-- (CBLModel *)getModelProperty:(NSString*)property;
+- (void)CBLDocumentChanged:(nonnull CBLDocument *)doc;
+-   (nonnull id)externalizePropertyValue:(nonnull id)value;
+- (void)cacheValue:(nullable id)value ofProperty:(nonnull NSString *)property changed:(BOOL)changed;
+- (nullable CBLModel *)getModelProperty:(nonnull NSString *)property;
 - (void)markNeedsSave;
-- (void)markPropertyNeedsSave:(NSString*)property;
+- (void)markPropertyNeedsSave:(nonnull NSString *)property;
 
 
 @end
 
 @interface CBLModel (PrivateExtensions) <MPEmbeddingObject>
-@property (strong, readwrite) CBLDocument *document;
+@property (strong, readwrite, nullable) CBLDocument *document;
 
 - (void)markNeedsNoSave; // propagates needsSave = false to object's embedded properties
 @end

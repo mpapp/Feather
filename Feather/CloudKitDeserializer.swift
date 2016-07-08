@@ -9,6 +9,7 @@
 import Foundation
 import CloudKit
 import CouchbaseLite
+import Feather.MPManagedObject_Protected
 
 public struct CloudKitDeserializer {
     
@@ -79,6 +80,8 @@ public struct CloudKitDeserializer {
         default:
             object.setValue(val, forKey: kvcKey)
         }
+        
+        object.cloudKitChangeTag = record.recordChangeTag
         
         object.saveObject()
     }

@@ -20,17 +20,26 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
     
     private var recordZones:[CKRecordZoneID:CKServerChangeToken] = [CKRecordZoneID:CKServerChangeToken]()
     
-    private let ownerID:CKRecordID
+    private let ownerName:String
     
-    private weak var packageController:MPDatabasePackageController?
+    private(set) public weak var packageController:MPDatabasePackageController?
     
-    public static func state(packageController packageController: MPDatabasePackageController) throws -> CloudKitState {
-        guard let stateURL = NSURL(fileURLWithPath: packageController.path).URLByAppendingPathComponent("cloudkit-state.json"),
-              let statePath = stateURL.path where NSFileManager.defaultManager().fileExistsAtPath(statePath) else {
-            throw Error.NoSavedState(packageController)
+    public init(ownerName:String, packageController: MPDatabasePackageController) {
+        self.ownerName = ownerName
+        self.packageController = packageController
+    }
+    
+    public func deserialize() throws -> CloudKitState {
+        guard let packageController = self.packageController else {
+            throw Error.NoPackageController
         }
         
-        var state = try CloudKitState.init(json:try JSON(data: try NSData(contentsOfURL: stateURL, options:[])))
+        guard let stateURL = NSURL(fileURLWithPath: packageController.path).URLByAppendingPathComponent("cloudkit-state.json"),
+            let statePath = stateURL.path where NSFileManager.defaultManager().fileExistsAtPath(statePath) else {
+                throw Error.NoSavedState(packageController)
+        }
+        
+        var state = try CloudKitState(json:try JSON(data: try NSData(contentsOfURL: stateURL, options:[])))
         state.packageController = packageController
         
         return state
@@ -58,7 +67,7 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
     }
     
     public init(json: JSON) throws {
-        self.ownerID = CKRecordID(recordName: try json.string("ownerName"))
+        self.ownerName = try json.string("ownerName")
         
         let items = try json.array("recordZones").flatMap { item -> (CKRecordZoneID, CKServerChangeToken)? in
             let zoneID = try CKRecordZoneID(zoneName: item.string("zoneName"), ownerName:item.string("ownerName"))
@@ -81,7 +90,7 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
     
     public func toJSON() -> JSON {
         return .Dictionary([
-                "ownerName": .String(self.ownerID.recordName),
+                "ownerName": .String(self.ownerName),
                 "recordZones": .Array(self.recordZones.map { pair -> JSON in
                     let tokenStr = NSKeyedArchiver.archivedDataWithRootObject(pair.1).base64EncodedStringWithOptions([])
                     return .Dictionary(["zoneName":.String(pair.0.zoneName), "serverChangeToken":.String(tokenStr)])

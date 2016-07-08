@@ -322,13 +322,17 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return dbPath;
 }
 
+- (NSArray *)cloudKitIgnoredKeys {
+    return @[];
+}
+
 - (id)ensureInitialStateInitialized {
     // done at this stage as these services require initialization to have completed and for the package controller to be in a defined state.
     if (self.synchronizesUsingCloudKit) {
         NSError *err = nil;
-        _cloudKitSyncService = [[CloudKitSyncService alloc] initWithPackageController:self container:nil error:&err];
+        _cloudKitSyncService = [[CloudKitSyncService alloc] initWithPackageController:self container:nil ignoredKeys:[self cloudKitIgnoredKeys] error:&err];
         if (!_cloudKitSyncService) {
-            MPLog(@"Failed to initialize CloudKit sync service: %@", _cloudKitSyncService);
+            MPLog(@"Failed to initialize CloudKit sync service: %@", err);
         }
     }
     
