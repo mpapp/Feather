@@ -136,7 +136,7 @@ import FeatherExtensions
             return zone
         }
         
-        let packageMetadataZone = CKRecordZone(zoneID: self.packageMetadataZoneID(ownerName: ownerName))
+        let packageMetadataZone = CKRecordZone(zoneID: self.packageMetadataZoneID(ownerName))
         return NSOrderedSet(array: zones + [packageMetadataZone]).array as! [CKRecordZone]
     }
     
@@ -484,9 +484,9 @@ import FeatherExtensions
             }
         }
         
-        let changeToken = self.state?.serverChangeToken(forZoneID: self.packageMetadataZoneID(ownerName: ownerName))
+        let changeToken = self.state?.serverChangeToken(forZoneID: self.packageMetadataZoneID(ownerName))
         
-        let op = CKFetchRecordChangesOperation(recordZoneID: self.packageMetadataZoneID(ownerName: ownerName), previousServerChangeToken: nil)
+        let op = CKFetchRecordChangesOperation(recordZoneID: self.packageMetadataZoneID(ownerName), previousServerChangeToken: nil)
         
         func fetchRecordChangesCompletion(serverChangeToken:CKServerChangeToken?, clientTokenData:NSData?, error:NSError?) {
             if let error = error {
@@ -495,7 +495,7 @@ import FeatherExtensions
             }
             
             if op.moreComing {
-                let op = CKFetchRecordChangesOperation(recordZoneID: self.packageMetadataZoneID(ownerName: ownerName), previousServerChangeToken: nil)
+                let op = CKFetchRecordChangesOperation(recordZoneID: self.packageMetadataZoneID(ownerName), previousServerChangeToken: nil)
                 op.previousServerChangeToken = serverChangeToken
                 op.database = self.database
                 op.recordChangedBlock = recordChanged
@@ -542,7 +542,7 @@ import FeatherExtensions
         return "DatabasePackageMetadata"
     }
     
-    private func packageMetadataZoneID(ownerName ownerName:String) -> CKRecordZoneID {
+    private func packageMetadataZoneID(ownerName:String) -> CKRecordZoneID {
         return CKRecordZoneID(zoneName: self.packageMetadataZoneName, ownerName: ownerName)
     }
     
