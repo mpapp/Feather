@@ -184,20 +184,26 @@ import FeatherExtensions
     }
     
     public typealias ErrorHandler = (CloudKitSyncService.Error)->Void
-    public typealias SubscriptionCompletionHandler = (savedSubscriptions:[CKSubscription], failedSubscriptions:[(subscription:CKSubscription, error:ErrorType)]?, errorHandler:ErrorType?) -> Void
+    public typealias SubscriptionCompletionHandler = (savedSubscriptions:[CKSubscription], failedSubscriptions:[(subscription:CKSubscription, error:ErrorType)]?, error:ErrorType?) -> Void
     
     public func ensureSubscriptionsExist(completionHandler:SubscriptionCompletionHandler) {
         self.ensureRecordZonesExist({ ownerID, _ in
             self._ensureSubscriptionsExist(ownerID.recordName, completionHandler: completionHandler)
         }) { err in
-            completionHandler(savedSubscriptions: [], failedSubscriptions: nil, errorHandler: err)
+            completionHandler(savedSubscriptions: [], failedSubscriptions: nil, error: err)
         }
     }
     
     private func _ensureSubscriptionsExist(ownerName:String, completionHandler:SubscriptionCompletionHandler) {
-        let subscriptions = self.recordZoneNames.map { zoneName -> CKSubscription in
-            let zoneID = CKRecordZoneID(zoneName: zoneName, ownerName: ownerName)
-            return CKSubscription(zoneID: zoneID, subscriptionID: "\(zoneName)-subscription", options: [])
+        let subscriptions:[CKSubscription]
+        do {
+            subscriptions = try self.recordZones(ownerName).map { zone -> CKSubscription in
+                return CKSubscription(zoneID: zone.zoneID, subscriptionID: "\(zone.zoneID.zoneName)-subscription", options: [])
+            }
+        }
+        catch {
+            completionHandler(savedSubscriptions: [], failedSubscriptions: nil, error: error)
+            return
         }
         
         let save = CKModifySubscriptionsOperation(subscriptionsToSave: subscriptions, subscriptionIDsToDelete: [])
@@ -207,10 +213,10 @@ import FeatherExtensions
         save.modifySubscriptionsCompletionBlock = { savedSubscriptions, deletedSubscriptions, error in
             if let error = error {
                 print(error)
-                completionHandler(savedSubscriptions: savedSubscriptions ?? [], failedSubscriptions: nil, errorHandler: error)
+                completionHandler(savedSubscriptions: savedSubscriptions ?? [], failedSubscriptions: nil, error: error)
             }
             else {
-                completionHandler(savedSubscriptions: savedSubscriptions ?? [], failedSubscriptions: nil, errorHandler: nil)
+                completionHandler(savedSubscriptions: savedSubscriptions ?? [], failedSubscriptions: nil, error: nil)
             }
         }
     }
