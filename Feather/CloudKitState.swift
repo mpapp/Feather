@@ -14,6 +14,7 @@ import FeatherExtensions
 public struct DatabasePackageMetadata {
     let recordID:CKRecordID
     let title:String?
+    let changeTag:String?
 }
 
 public struct CloudKitState: JSONEncodable, JSONDecodable {
@@ -97,12 +98,17 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
             let packageMetadataZoneID = CKRecordZoneID(zoneName: try package.string("zoneName"), ownerName: try package.string("ownerName"))
             let recordID = CKRecordID(recordName: try package.string("recordName"), zoneID: packageMetadataZoneID)
             
-            var title:String? = try package.string("title")
+            var title:String? = try package.string("title", alongPath: [.MissingKeyBecomesNil])
             if title == "" {
-                title =  nil
+                title = nil
             }
             
-            return DatabasePackageMetadata(recordID: recordID, title: title)
+            var changeTag:String? = try package.string("changeTag", alongPath: [.MissingKeyBecomesNil])
+            if changeTag == "" {
+                changeTag = nil
+            }
+            
+            return DatabasePackageMetadata(recordID: recordID, title: title, changeTag: changeTag)
         }
         
         self.recordZones = [CKRecordZoneID:CKServerChangeToken](withPairs:items)
@@ -117,9 +123,10 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
                 }),
                 "packages": .Array(self.packages.map { package -> JSON in
                     [ "recordName":.String(package.recordID.recordName),
-                        "title": .String(package.title ?? ""),
+                           "title":.String(package.title ?? ""),
                         "zoneName":.String(package.recordID.zoneID.zoneName),
-                        "ownerName":.String(package.recordID.zoneID.ownerName) ] })
+                       "ownerName":.String(package.recordID.zoneID.ownerName),
+                       "changeTag":.String(package.changeTag ?? "")] })
             ])
     }
     

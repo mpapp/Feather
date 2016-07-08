@@ -17,6 +17,7 @@ import FeatherExtensions
     
     public enum Error: ErrorType {
         case NilPackageController
+        case NilState
         case OwnerUnknown
         case PartialError(CKErrorCode)
         case NoRecordToDeleteWithID(CKRecordID)
@@ -365,7 +366,9 @@ import FeatherExtensions
         op.database = self.database
         
         var changeFails = [(record:CKRecord, error:Error)]()
-        op.recordChangedBlock = { record in
+        var deletionFails = [(recordID:CKRecordID, error:Error)]()
+        
+        func recordChanged(record:CKRecord) {
             do {
                 try deserializer.deserialize(record, applyOnlyChangedFields: false)
             }
@@ -374,9 +377,9 @@ import FeatherExtensions
                 return
             }
         }
+    
         
-        var deletionFails = [(recordID:CKRecordID, error:Error)]()
-        op.recordWithIDWasDeletedBlock = { deletedID in
+        func recordWithIDWasDeleted(deletedID:CKRecordID) {
             if let record = self.recordZoneRepository.recordRepository.record(ID:deletedID),
                let packageController = self.packageController,
                let deletedObj = packageController.objectWithIdentifier(record.recordID.recordName),
@@ -388,8 +391,7 @@ import FeatherExtensions
             }
         }
         
-        op.fetchRecordChangesCompletionBlock = { serverChangeToken, clientChangeTokenData, error in
-            
+        func fetchRecordChangesCompletion(serverChangeToken:CKServerChangeToken?, clientChangeTokenData:NSData?, error:NSError?) {
             if let error = error {
                 errorHandler(.UnderlyingError(error))
                 return
@@ -402,16 +404,34 @@ import FeatherExtensions
             
             state.setServerChangeToken(changeToken, forZoneID:recordZone.zoneID)
             
-            completionHandler(failedChanges: changeFails, failedDeletions: deletionFails)
+            if op.moreComing {
+                let op = CKFetchRecordChangesOperation(recordZoneID: recordZone.zoneID, previousServerChangeToken:prevChangeToken)
+                op.database = self.database
+                op.previousServerChangeToken = changeToken
+                op.recordChangedBlock = recordChanged
+                op.recordWithIDWasDeletedBlock = recordWithIDWasDeleted
+                op.fetchRecordChangesCompletionBlock = fetchRecordChangesCompletion
+                
+                self.operationQueue.addOperation(op)
+            }
             
             do {
                 try state.serialize()
                 self.state = state
             }
             catch {
-                DDLogError("ERROR: Failed to serialize server change token: \(error)")
+                errorHandler(.UnderlyingError(error))
+                return
+            }
+            
+            if !op.moreComing {
+                completionHandler(failedChanges: changeFails, failedDeletions: deletionFails)
             }
         }
+        
+        op.recordChangedBlock = recordChanged
+        op.recordWithIDWasDeletedBlock = recordWithIDWasDeleted
+        op.fetchRecordChangesCompletionBlock = fetchRecordChangesCompletion
         
         self.operationQueue.addOperation(op)
     }
@@ -419,42 +439,61 @@ import FeatherExtensions
     public typealias DatabasePackageMetadataListHandler = ([DatabasePackageMetadata]) -> Void
     
     public func availableDatabasePackages(completionHandler:DatabasePackageMetadataListHandler, errorHandler:ErrorHandler) {
-        self.ensureUserAuthenticated({ ownerID in
+        self.ensureRecordZonesExist({ ownerID, _ in
             self._availableDatabasePackages(ownerID.recordName, completionHandler: completionHandler, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
     public func _availableDatabasePackages(ownerName:String, completionHandler:DatabasePackageMetadataListHandler, errorHandler:ErrorHandler) {
-        var packages = [DatabasePackageMetadata]()
+        var packages = self.state?.packages ?? [DatabasePackageMetadata]()
         
-        func recordFetchedHandler(record:CKRecord) {
-            let package = DatabasePackageMetadata(recordID: record.recordID, title: record["title"] as? String ?? nil)
+        func recordChanged(record:CKRecord) {
+            let package = DatabasePackageMetadata(recordID: record.recordID, title: record["title"] as? String ?? nil, changeTag: record.recordChangeTag)
             packages.append(package)
         }
-
-        func cursorHandler(cursor:CKQueryCursor?, error:NSError?) -> Void {
+        
+        func recordWithIDWasDeleted(record:CKRecordID) {
+            if let index = packages.indexOf({ $0.recordID.recordName == record.recordName }) {
+                packages.removeAtIndex(index)
+            }
+        }
+        
+        let changeToken = self.state?.serverChangeToken(forZoneID: self.packageMetadataZoneID(ownerName: ownerName))
+        
+        let op = CKFetchRecordChangesOperation(recordZoneID: self.packageMetadataZoneID(ownerName: ownerName), previousServerChangeToken: nil)
+        
+        func fetchRecordChangesCompletion(serverChangeToken:CKServerChangeToken?, clientTokenData:NSData?, error:NSError?) {
             if let error = error {
                 errorHandler(.UnderlyingError(error))
                 return
             }
             
-            if let cursor = cursor {
-                let op = CKQueryOperation(cursor: cursor)
+            if op.moreComing {
+                let op = CKFetchRecordChangesOperation(recordZoneID: self.packageMetadataZoneID(ownerName: ownerName), previousServerChangeToken: nil)
+                op.previousServerChangeToken = serverChangeToken
                 op.database = self.database
-                op.recordFetchedBlock = recordFetchedHandler
-                op.queryCompletionBlock = cursorHandler
+                op.recordChangedBlock = recordChanged
+                op.recordWithIDWasDeletedBlock = recordWithIDWasDeleted
+                op.fetchRecordChangesCompletionBlock = fetchRecordChangesCompletion
+                
                 self.operationQueue.addOperation(op)
             }
             else {
+                guard let _ = self.state else {
+                    errorHandler(.NilState)
+                    return
+                }
+                
+                self.state?.packages = packages
                 completionHandler(packages)
             }
         }
-
-        let op = CKQueryOperation(query: CKQuery(recordType: "DatabasePackageMetadata", predicate: NSPredicate(value: true)))
+        
+        op.previousServerChangeToken = changeToken
         op.database = self.database
-        op.zoneID = self.packageMetadataZoneID(ownerName:ownerName)
-        op.recordFetchedBlock = recordFetchedHandler
-        op.queryCompletionBlock = cursorHandler
+        op.recordChangedBlock = recordChanged
+        op.recordWithIDWasDeletedBlock = recordWithIDWasDeleted
+        op.fetchRecordChangesCompletionBlock = fetchRecordChangesCompletion
         
         self.operationQueue.addOperation(op)
     }
