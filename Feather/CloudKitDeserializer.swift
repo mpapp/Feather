@@ -20,11 +20,16 @@ public struct CloudKitDeserializer {
     
     public let packageController:MPDatabasePackageController
 
-    public func deserialize(record:CKRecord, applyOnlyChangedFields:Bool = false) throws -> MPManagedObject {
-        let obj:MPManagedObject
+    public func deserialize(record:CKRecord, applyOnlyChangedFields:Bool = false) throws -> MPManagedObject? {
+        let obj:MPManagedObject?
         
         if let o = packageController.objectWithIdentifier(record.recordID.recordName) {
-            obj = o
+            if let pkgC = o.controller?.packageController where pkgC == self.packageController {
+                obj = o
+            }
+            else {
+                obj = nil
+            }
         }
         else {
             let modelClass:AnyClass = MPManagedObject.managedObjectClassFromDocumentID(record.recordID.recordName)
@@ -34,55 +39,59 @@ public struct CloudKitDeserializer {
             obj = moc.newObjectOfClass(modelClass)
         }
         
+        guard let object = obj else {
+            return nil
+        }
+        
         if applyOnlyChangedFields {
             for recordKey in record.changedKeys() {
-                try self.refresh(object: obj, withRecord:record, key: recordKey)
+                try self.refresh(object: object, withRecord:record, key: recordKey)
             }
         }
         else {
             for recordKey in record.allKeys() {
-                try self.refresh(object: obj, withRecord:record, key: recordKey)
+                try self.refresh(object: object, withRecord:record, key: recordKey)
             }
         }
         
         return obj
     }
     
-    private func refresh(object object:MPManagedObject, withRecord record:CKRecord, key kvcKey:String) throws {
+    private func refresh(object obj:MPManagedObject, withRecord record:CKRecord, key kvcKey:String) throws {
         let val = record.objectForKey(kvcKey)
-        let propertyKey = object.persistedPropertyKeyForValueCodingKey(kvcKey)
+        let propertyKey = obj.persistedPropertyKeyForValueCodingKey(kvcKey)
         
         switch val {
         case nil:
-            object.setValue(nil, forKey: kvcKey)
+            obj.setValue(nil, forKey: kvcKey)
             
         case let reference as CKReference:
-            precondition(object.dynamicType.classOfProperty(kvcKey) is MPManagedObject.Type)
-            object.setValue(reference.recordID.recordName, ofProperty: propertyKey)
+            precondition(obj.dynamicType.classOfProperty(kvcKey) is MPManagedObject.Type)
+            obj.setValue(reference.recordID.recordName, ofProperty: propertyKey)
             
         case let referenceArray as [CKReference]:
-            precondition(object.dynamicType.classOfProperty(kvcKey) is NSArray.Type)
-            object.setValue(referenceArray.map { $0.recordID.recordName }, ofProperty: propertyKey)
+            precondition(obj.dynamicType.classOfProperty(kvcKey) is NSArray.Type)
+            obj.setValue(referenceArray.map { $0.recordID.recordName }, ofProperty: propertyKey)
             break
             
-        case let valString as String where object.dynamicType.classOfProperty(kvcKey) is MPEmbeddedObject.Type:
-            let embObj = MPEmbeddedObject(JSONString: valString, embeddingObject: object, embeddingKey: kvcKey)
-            object.setValue(embObj, ofProperty: propertyKey)
+        case let valString as String where obj.dynamicType.classOfProperty(kvcKey) is MPEmbeddedObject.Type:
+            let embObj = MPEmbeddedObject(JSONString: valString, embeddingObject: obj, embeddingKey: kvcKey)
+            obj.setValue(embObj, ofProperty: propertyKey)
             
-        case let valString as String where object.dynamicType.classOfProperty(kvcKey) is NSDictionary.Type:
+        case let valString as String where obj.dynamicType.classOfProperty(kvcKey) is NSDictionary.Type:
             let dict = try NSDictionary.decodeFromJSONString(valString)
-            object.setValue(dict, ofProperty: propertyKey)
+            obj.setValue(dict, ofProperty: propertyKey)
             
-        case let valString as String where object.dynamicType.classOfProperty(kvcKey) is NSArray.Type:
+        case let valString as String where obj.dynamicType.classOfProperty(kvcKey) is NSArray.Type:
             let array = try NSArray.decodeFromJSONString(valString)
-            object.setValue(array, forKey: propertyKey)
+            obj.setValue(array, forKey: propertyKey)
             
         default:
-            object.setValue(val, forKey: kvcKey)
+            obj.setValue(val, forKey: kvcKey)
         }
         
-        object.cloudKitChangeTag = record.recordChangeTag
+        obj.cloudKitChangeTag = record.recordChangeTag
         
-        object.saveObject()
+        obj.saveObject()
     }
 }

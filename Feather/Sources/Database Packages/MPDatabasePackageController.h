@@ -266,8 +266,11 @@ typedef enum MPDatabasePackageControllerErrorCode {
   * Base class implementation returns always nil, can be overridden in subclasses. */
 - (nullable NSURL *)bootstrapDatabaseURLForDatabaseWithName:(nonnull NSString *)dbName;
 
-/** A globally unique identifier for the database controller. Must be overloaded by a subclass. */
+/** A globally unique identifier for the database controller. Must be overriden by a subclass. */
 @property (strong, readonly, nonnull) NSString *identifier;
+
+/** Title is a human readable name for the database controller. Default implementation returns nil, can be overridden by a subclass. */
+@property (strong, readonly, nullable) NSString *title;
 
 /** Signifies whether the package controller is identifiable. 
   * Base class implementation simply returns self.identifier != nil but you may want to override this for lazily populated identifiers (for instance if the identifier itself is based on the database state, the package controller may not always be identifiable). */

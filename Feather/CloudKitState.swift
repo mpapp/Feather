@@ -11,6 +11,11 @@ import Freddy
 import CloudKit
 import FeatherExtensions
 
+public struct DatabasePackageMetadata {
+    let recordID:CKRecordID
+    let title:String?
+}
+
 public struct CloudKitState: JSONEncodable, JSONDecodable {
     
     enum Error:ErrorType {
@@ -24,9 +29,12 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
     
     private(set) public weak var packageController:MPDatabasePackageController?
     
-    public init(ownerName:String, packageController: MPDatabasePackageController) {
+    public var packages:[DatabasePackageMetadata] = [DatabasePackageMetadata]()
+    
+    public init(ownerName:String, packageController: MPDatabasePackageController, packages:[DatabasePackageMetadata]) {
         self.ownerName = ownerName
         self.packageController = packageController
+        self.packages = packages
     }
     
     public func deserialize() throws -> CloudKitState {
@@ -85,6 +93,18 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
             return (zoneID, token)
         }
         
+        self.packages = try json.array("packages").map { package -> DatabasePackageMetadata in
+            let packageMetadataZoneID = CKRecordZoneID(zoneName: try package.string("zoneName"), ownerName: try package.string("ownerName"))
+            let recordID = CKRecordID(recordName: try package.string("recordName"), zoneID: packageMetadataZoneID)
+            
+            var title:String? = try package.string("title")
+            if title == "" {
+                title =  nil
+            }
+            
+            return DatabasePackageMetadata(recordID: recordID, title: title)
+        }
+        
         self.recordZones = [CKRecordZoneID:CKServerChangeToken](withPairs:items)
     }
     
@@ -94,7 +114,12 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
                 "recordZones": .Array(self.recordZones.map { pair -> JSON in
                     let tokenStr = NSKeyedArchiver.archivedDataWithRootObject(pair.1).base64EncodedStringWithOptions([])
                     return .Dictionary(["zoneName":.String(pair.0.zoneName), "serverChangeToken":.String(tokenStr)])
-                })
+                }),
+                "packages": .Array(self.packages.map { package -> JSON in
+                    [ "recordName":.String(package.recordID.recordName),
+                        "title": .String(package.title ?? ""),
+                        "zoneName":.String(package.recordID.zoneID.zoneName),
+                        "ownerName":.String(package.recordID.zoneID.ownerName) ] })
             ])
     }
     

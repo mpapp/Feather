@@ -853,6 +853,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     @throw [MPAbstractMethodException exceptionWithSelector:_cmd]; return nil;
 }
 
+- (NSString *)title {
+    return nil;
+}
+
 - (BOOL)isIdentifiable {
     return self.identifier != nil;
 }

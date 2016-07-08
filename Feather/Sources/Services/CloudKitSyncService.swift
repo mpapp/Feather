@@ -23,6 +23,7 @@ import FeatherExtensions
         case UnderlyingError(ErrorType)
         case MissingServerChangeToken(CKRecordZone)
         case StateInitializationFailed
+        case UnexpectedRecords([CKRecord]?)
     }
     
     weak var packageController:MPDatabasePackageController?
@@ -334,7 +335,7 @@ import FeatherExtensions
         self.operationQueue.addOperation(fetchRecords)
         
         if self.state == nil {
-            let state = CloudKitState(ownerName: ownerName, packageController: packageController)
+            let state = CloudKitState(ownerName: ownerName, packageController: packageController, packages: [])
             do {
                 self.state = try state.deserialize()
             }
@@ -366,9 +367,10 @@ import FeatherExtensions
         op.recordWithIDWasDeletedBlock = { deletedID in
             if let record = self.recordZoneRepository.recordRepository.record(ID:deletedID),
                let packageController = self.packageController,
-               let deletedObj = packageController.objectWithIdentifier(record.recordID.recordName) {
-                deletedObj.deleteObject()
-            }
+               let deletedObj = packageController.objectWithIdentifier(record.recordID.recordName),
+               let pkgC = deletedObj.controller?.packageController where pkgC == packageController { // package controller check is done because objectWithIdentifier can return an object from the shared database
+                    deletedObj.deleteObject()
+               }
             else {
                 deletionFails.append((recordID:deletedID, Error.NoRecordToDeleteWithID(deletedID)))
             }
@@ -402,9 +404,70 @@ import FeatherExtensions
         self.operationQueue.addOperation(op)
     }
     
+    public typealias DatabasePackageMetadataListHandler = ([DatabasePackageMetadata]) -> Void
+    
+    public func availableDatabasePackages(completionHandler:DatabasePackageMetadataListHandler) {
+        var packages = [DatabasePackageMetadata]()
+        
+        func recordFetchedHandler(record:CKRecord) {
+            let package = DatabasePackageMetadata(recordID: record.recordID, title: record["title"] as? String ?? nil)
+            packages.append(package)
+        }
+
+        func cursorHandler(cursor:CKQueryCursor?, error:NSError?) -> Void {
+            if let cursor = cursor {
+                let op = CKQueryOperation(cursor: cursor)
+                op.resultsLimit = CKQueryOperationMaximumResults
+                op.recordFetchedBlock = recordFetchedHandler
+                op.queryCompletionBlock = cursorHandler
+                self.operationQueue.addOperation(op)
+            }
+            else {
+                completionHandler(packages)
+            }
+        }
+
+        let op = CKQueryOperation(query: CKQuery(recordType: "DatabasePackageMetadata", predicate: NSPredicate(value: true)))
+        op.resultsLimit = CKQueryOperationMaximumResults
+        op.recordFetchedBlock = recordFetchedHandler
+        op.queryCompletionBlock = cursorHandler
+        self.operationQueue.addOperation(op)
+    }
+    
+    public typealias DatabasePackageMetadataHandler = (packageMetadata:CKRecord) -> Void
+    
+    public func ensureDatabasePackageMetadataExists(completionHandler:DatabasePackageMetadataHandler, errorHandler:ErrorHandler) {
+        guard let packageController = self.packageController else {
+            errorHandler(.NilPackageController)
+            return
+        }
+        
+        let identifier = packageController.identifier
+        let packageMetadata = CKRecord(recordType: "DatabasePackageMetadata", recordID: CKRecordID(recordName: identifier, zoneID: CKRecordZone.defaultRecordZone().zoneID))
+        packageMetadata["title"] = packageController.title
+        
+        let saveMetadata = CKModifyRecordsOperation(recordsToSave: [packageMetadata], recordIDsToDelete: nil)
+        saveMetadata.savePolicy = .AllKeys
+        
+        self.operationQueue.addOperation(saveMetadata)
+        
+        saveMetadata.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+            if let error = error {
+                errorHandler(.UnderlyingError(error))
+                return
+            }
+            
+            guard let records = savedRecords, firstRecord = records.first where records.count == 1 else {
+                errorHandler(Error.UnexpectedRecords(savedRecords))
+                return
+            }
+            
+            completionHandler(packageMetadata: firstRecord)
+        }
+    }
+    
     public func synchronize(completionHandler:(errors:[Error])->Void) {
         self.pull { pullErrors in
-            
             if (pullErrors.count > 0) {
                 completionHandler(errors: pullErrors)
                 return
@@ -421,7 +484,16 @@ import FeatherExtensions
                     errors.appendContentsOf(deletionFailures.map { Error.UnderlyingError($0.error) })
                 }
                 
-                completionHandler(errors:errors)
+                if errors.count > 0 {
+                    completionHandler(errors:errors)
+                    return
+                }
+                
+                self.ensureDatabasePackageMetadataExists({ packageMetadata in
+                    completionHandler(errors:[])
+                }) { err in
+                    completionHandler(errors:[err])
+                }
             }) { error in
                 completionHandler(errors: [error])
             }
