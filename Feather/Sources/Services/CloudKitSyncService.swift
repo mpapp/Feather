@@ -118,7 +118,7 @@ import FeatherExtensions
             return (MPManagedObjectsController.equivalenceClassForManagedObjectClass(moClass) as! MPManagedObject.Type).recordZoneName()
         }
         
-        return NSOrderedSet(array: zoneNames).array as! [String]
+        return NSOrderedSet(array: zoneNames + [self.packageMetadataZoneName]).array as! [String]
     }
     
     public func recordZones(ownerName:String) throws -> [CKRecordZone] {
@@ -136,7 +136,8 @@ import FeatherExtensions
             return zone
         }
         
-        return NSOrderedSet(array: zones).array as! [CKRecordZone]
+        let packageMetadataZone = CKRecordZone(zoneID: self.packageMetadataZoneID(ownerName: ownerName))
+        return NSOrderedSet(array: zones + [packageMetadataZone]).array as! [CKRecordZone]
     }
     
     private var recordZonesChecked:[CKRecordZone]? = nil // Record zones created by the app won't change during app runtime. You may as well just check them once.
@@ -417,7 +418,13 @@ import FeatherExtensions
     
     public typealias DatabasePackageMetadataListHandler = ([DatabasePackageMetadata]) -> Void
     
-    public func availableDatabasePackages(completionHandler:DatabasePackageMetadataListHandler) {
+    public func availableDatabasePackages(completionHandler:DatabasePackageMetadataListHandler, errorHandler:ErrorHandler) {
+        self.ensureUserAuthenticated({ ownerID in
+            self._availableDatabasePackages(ownerID.recordName, completionHandler: completionHandler, errorHandler: errorHandler)
+        }, errorHandler: errorHandler)
+    }
+    
+    public func _availableDatabasePackages(ownerName:String, completionHandler:DatabasePackageMetadataListHandler, errorHandler:ErrorHandler) {
         var packages = [DatabasePackageMetadata]()
         
         func recordFetchedHandler(record:CKRecord) {
@@ -426,6 +433,11 @@ import FeatherExtensions
         }
 
         func cursorHandler(cursor:CKQueryCursor?, error:NSError?) -> Void {
+            if let error = error {
+                errorHandler(.UnderlyingError(error))
+                return
+            }
+            
             if let cursor = cursor {
                 let op = CKQueryOperation(cursor: cursor)
                 op.database = self.database
@@ -440,7 +452,7 @@ import FeatherExtensions
 
         let op = CKQueryOperation(query: CKQuery(recordType: "DatabasePackageMetadata", predicate: NSPredicate(value: true)))
         op.database = self.database
-        op.zoneID = CKRecordZone.defaultRecordZone().zoneID
+        op.zoneID = self.packageMetadataZoneID(ownerName:ownerName)
         op.recordFetchedBlock = recordFetchedHandler
         op.queryCompletionBlock = cursorHandler
         
@@ -448,6 +460,14 @@ import FeatherExtensions
     }
     
     public typealias DatabasePackageMetadataHandler = (packageMetadata:CKRecord) -> Void
+    
+    private var packageMetadataZoneName:String {
+        return "DatabasePackageMetadata"
+    }
+    
+    private func packageMetadataZoneID(ownerName ownerName:String) -> CKRecordZoneID {
+        return CKRecordZoneID(zoneName: self.packageMetadataZoneName, ownerName: ownerName)
+    }
     
     public func ensureDatabasePackageMetadataExists(completionHandler:DatabasePackageMetadataHandler, errorHandler:ErrorHandler) {
         guard let packageController = self.packageController else {
