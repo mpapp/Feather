@@ -14,6 +14,8 @@ public struct CloudKitDatabasePackageListingService {
     
     public enum Error:ErrorType {
         case NoPackageListSerializationURL
+        case UnderlyingError(ErrorType)
+        case UnexpectedNilResponseData
     }
     
     public typealias DatabasePackageMetadataListHandler = ([DatabasePackageMetadata]) -> Void
@@ -21,8 +23,9 @@ public struct CloudKitDatabasePackageListingService {
     private(set) public var packageList:CloudKitDatabasePackageList?
     private var databasePackageChangeToken:CKServerChangeToken?
     
-    let container:CKContainer
-    let database:CKDatabase
+    public let container:CKContainer
+    public let database:CKDatabase
+    private let operationQueue = NSOperationQueue()
     
     public init(container:CKContainer = CKContainer.defaultContainer(), database:CKDatabase = CKContainer.defaultContainer().privateCloudDatabase) {
         self.container = container
@@ -43,6 +46,61 @@ public struct CloudKitDatabasePackageListingService {
         CloudKitSyncService.ensureUserAuthenticated(container, completionHandler: { ownerID in
             self._availableDatabasePackages(ownerID.recordName, completionHandler: completionHandler, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
+    }
+    
+    public func purgeAllRecordZones(completionHandler:(deletedZoneIDs:[CKRecordZoneID], errors:[Error]) -> Void) {
+        CloudKitSyncService.ensureUserAuthenticated(container, completionHandler: { ownerID in
+            let op = CKFetchRecordZonesOperation.fetchAllRecordZonesOperation()
+            self.operationQueue.addOperation(op)
+            
+            op.fetchRecordZonesCompletionBlock = { zoneMap, error in
+                if let error = error {
+                    completionHandler(deletedZoneIDs: [], errors:[.UnderlyingError(error)])
+                    return
+                }
+                
+                guard let map = zoneMap else {
+                    completionHandler(deletedZoneIDs: [], errors:[.UnexpectedNilResponseData])
+                    return
+                }
+                
+                let zonesToDelete = Array(map.values.map({ $0.zoneID }))
+                
+                var allDeletedIDs = [CKRecordZoneID]()
+                var allErrors = [Error]()
+                
+                let grp = dispatch_group_create()
+                for zoneChunk in zonesToDelete.chunks(withDistance: 10) {
+                    dispatch_group_enter(grp)
+                    
+                    let deleteOp = CKModifyRecordZonesOperation(recordZonesToSave: nil, recordZoneIDsToDelete: zoneChunk)
+                    self.operationQueue.addOperation(deleteOp)
+                    
+                    deleteOp.modifyRecordZonesCompletionBlock = { _, deletedZoneIDs, error in
+                        if let error = error {
+                            allErrors.append(.UnderlyingError(error))
+                            dispatch_group_leave(grp)
+                            return
+                        }
+                        
+                        guard let deletedIDs = deletedZoneIDs else {
+                            allErrors.append(Error.UnexpectedNilResponseData)
+                            dispatch_group_leave(grp)
+                            return
+                        }
+                        
+                        allDeletedIDs.appendContentsOf(deletedIDs)
+                        dispatch_group_leave(grp)
+                    }
+                }
+                
+                dispatch_group_notify(grp, dispatch_get_main_queue()) {
+                    completionHandler(deletedZoneIDs: allDeletedIDs, errors: allErrors)
+                }
+            }
+        }) { error in
+            completionHandler(deletedZoneIDs:[], errors: [.UnderlyingError(error)])
+        }
     }
     
     private var packageListSerializationURL:NSURL? {

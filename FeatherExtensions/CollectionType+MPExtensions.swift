@@ -18,4 +18,14 @@ public extension CollectionType {
         return nil
     }
     
+    @warn_unused_result
+    func chunks(withDistance distance: Index.Distance) -> [[SubSequence.Generator.Element]] {
+        var index = startIndex
+        let generator: AnyGenerator<Array<SubSequence.Generator.Element>> = AnyGenerator {
+            defer { index = index.advancedBy(distance, limit: self.endIndex) }
+            return index != self.endIndex ? Array(self[index ..< index.advancedBy(distance, limit: self.endIndex)]) : nil
+        }
+        return Array(generator)
+    }
+    
 }

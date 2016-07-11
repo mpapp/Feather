@@ -58,21 +58,13 @@ public struct CloudKitSerializer {
         switch val {
             
         case let valObj as MPManagedObject:
-            let valRecord:CKRecord
-            
             guard let valDocID = valObj.documentID else {
                 break
             }
             
             let zone = try self.recordZoneRepository.recordZone(objectType: valObj.dynamicType, ownerName: ownerName)
             let valRecordID = CKRecordID(recordName: valDocID, zoneID:zone.zoneID)
-            if let existingRecord = self.recordZoneRepository.recordRepository[valRecordID] {
-                valRecord = existingRecord
-            }
-            else {
-                valRecord = try self.serialize(valObj, serializingKey: kvcKey)
-            }
-            let valRef = CKReference(record: valRecord, action: .None)
+            let valRef = CKReference(recordID: valRecordID, action: .None)
             record.setObject(valRef, forKey: kvcKey)
             
         // unresolvable references (where object being referenced is nil at the moment) should still be stored as a CKReference.
@@ -126,6 +118,13 @@ public struct CloudKitSerializer {
         case let valRecordValue as CKRecordValue:
             //print("\(kvcKey) => \(valRecordValue) (class:\(valRecordValue.dynamicType))")
             record.setObject(valRecordValue, forKey: kvcKey)
+            
+        case _ as NSURL where object.dynamicType.classOfProperty(kvcKey) is NSURL.Type:
+            guard let valueString = value as? String else {
+                throw Error.UnexpectedPropertyValue(key: kvcKey, propertyKey: keyString, value: value, valueType: value.dynamicType)
+            }
+            
+            record.setObject(valueString, forKey: kvcKey)
             
         default:
             if kvcKey == "prototype" {
