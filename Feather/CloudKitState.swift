@@ -59,6 +59,13 @@ public struct CloudKitDatabasePackageList: JSONEncodable, JSONDecodable {
     
     public func serialize(toURL url:NSURL) throws {
         let data = try self.toJSON().serialize()
+        
+        // ensure the containing directory exists.
+        let containingDir = (url.path! as NSString).stringByDeletingLastPathComponent
+        if !NSFileManager.defaultManager().fileExistsAtPath(containingDir) {
+            try NSFileManager.defaultManager().createDirectoryAtURL(NSURL(fileURLWithPath:containingDir), withIntermediateDirectories: true, attributes: [:])
+        }
+        
         try data.writeToURL(url, options: [])
     }
 }

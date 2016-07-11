@@ -50,7 +50,7 @@ public struct CloudKitDatabasePackageListingService {
             return nil
         }
         
-        return NSURL(fileURLWithPath:(appSupportFolder as NSString).stringByAppendingPathComponent("\(self.container.containerIdentifier)-\(self.container.privateCloudDatabase === self.database ? "private" : "public").json"))
+        return NSURL(fileURLWithPath:((appSupportFolder as NSString).stringByAppendingPathComponent(NSBundle.mainBundle().bundleIdentifier!) as NSString).stringByAppendingPathComponent("database-package-list-\(self.container.containerIdentifier!)-\(self.container.privateCloudDatabase === self.database ? "private" : "public").json"))
     }
     
     public mutating func _availableDatabasePackages(ownerName:String, completionHandler:DatabasePackageMetadataListHandler, errorHandler:CloudKitSyncService.ErrorHandler) {
