@@ -13,10 +13,9 @@ import MPRateLimiter
 import CocoaLumberjackSwift
 import FeatherExtensions
 
-@objc public class CloudKitSyncService: NSObject {
+public struct CloudKitSyncService {
     
     public enum Error: ErrorType {
-        case NilPackageController
         case NilState
         case OwnerUnknown
         case PartialError(CKErrorCode)
@@ -24,29 +23,27 @@ import FeatherExtensions
         case UnderlyingError(ErrorType)
         case MissingServerChangeToken(CKRecordZone)
         case UnexpectedRecords([CKRecord]?)
+        case UnexpectedRecordZoneIDs([CKRecordZoneID]?)
     }
     
-    weak var packageController:MPDatabasePackageController?
-    let container:CKContainer
-    let database:CKDatabase
+    private(set) public static var ownerID:CKRecordID?
+    public let container:CKContainer
+    public let database:CKDatabase
     public let recordZoneRepository:CloudKitRecordZoneRepository
     
-    var state:CloudKitState?
+    public typealias PackageIdentifier = String
+    var state:[PackageIdentifier:CloudKitState] = [PackageIdentifier:CloudKitState]()
     
-    public var ownerID:CKRecordID?
     public var ignoredKeys:[String]
     
     private let operationQueue:NSOperationQueue = NSOperationQueue()
     
-    public init(packageController:MPDatabasePackageController, container:CKContainer? = CKContainer.defaultContainer(), database:CKDatabase? = CKContainer.defaultContainer().privateCloudDatabase, ignoredKeys:[String]) throws {
-        self.packageController = packageController
-        self.container = container ?? CKContainer.defaultContainer()
-        self.database = database ?? CKContainer.defaultContainer().privateCloudDatabase
-        self.recordZoneRepository = CloudKitRecordZoneRepository(zoneSuffix: packageController.identifier)
+    public init(container:CKContainer = CKContainer.defaultContainer(), database:CKDatabase = CKContainer.defaultContainer().privateCloudDatabase, packageIdentifier:PackageIdentifier, ignoredKeys:[String]) throws {
+        self.recordZoneRepository = CloudKitRecordZoneRepository(zoneSuffix: packageIdentifier)
         self.ignoredKeys = ignoredKeys
         self.operationQueue.maxConcurrentOperationCount = 1
-        
-        super.init()
+        self.container = container
+        self.database = database
         
         precondition(self.database == self.container.privateCloudDatabase || self.database == self.container.publicCloudDatabase, "Database should be the container's public or private database but is not.")
         
@@ -57,12 +54,8 @@ import FeatherExtensions
         }
     }
     
-    private func allRecords() throws -> [CKRecord] {
-        guard let packageController = self.packageController else {
-            throw Error.NilPackageController
-        }
-        
-        guard let ownerName = self.ownerID?.recordName else {
+    private func allRecords(packageController:MPDatabasePackageController) throws -> [CKRecord] {
+        guard let ownerName = self.dynamicType.ownerID?.recordName else {
             throw Error.OwnerUnknown
         }
 
@@ -83,12 +76,13 @@ import FeatherExtensions
     }
     
     public typealias UserAuthenticationCompletionHandler = (ownerID:CKRecordID)->Void
-    public func ensureUserAuthenticated(completionHandler:UserAuthenticationCompletionHandler, errorHandler:ErrorHandler) {
+    public static func ensureUserAuthenticated(container:CKContainer, completionHandler:UserAuthenticationCompletionHandler, errorHandler:ErrorHandler) {
         if let ownerID = self.ownerID {
             completionHandler(ownerID:ownerID)
             return
         }
-        self.container.fetchUserRecordIDWithCompletionHandler() { recordID, error in
+        
+        container.fetchUserRecordIDWithCompletionHandler() { recordID, error in
             if let error = error {
                 errorHandler(Error.UnderlyingError(error))
                 return
@@ -104,31 +98,31 @@ import FeatherExtensions
         }
     }
  
-    public var recordZoneNames:[String] {
+    public func recordZoneNames(packageController:MPDatabasePackageController) -> [String] {
         let zoneNames = MPManagedObject.subclasses().flatMap { cls -> String? in
             let moClass = cls as! MPManagedObject.Type
             if String(moClass).containsString("Mixin") {
                 return nil
             }
             
-            if self.packageController!.controllerForManagedObjectClass(moClass) == nil {
+            if packageController.controllerForManagedObjectClass(moClass) == nil {
                 return nil
             }
             
             return (MPManagedObjectsController.equivalenceClassForManagedObjectClass(moClass) as! MPManagedObject.Type).recordZoneName()
         }
         
-        return NSOrderedSet(array: zoneNames + [self.packageMetadataZoneName]).array as! [String]
+        return NSOrderedSet(array: zoneNames + [CloudKitDatabasePackageListingService.packageMetadataZoneName]).array as! [String]
     }
     
-    public func recordZones(ownerName:String) throws -> [CKRecordZone] {
+    public func recordZones(packageController:MPDatabasePackageController, ownerName:String) throws -> [CKRecordZone] {
         let zones = try MPManagedObject.subclasses().flatMap { cls -> CKRecordZone? in
             let moClass = cls as! MPManagedObject.Type
             if String(moClass).containsString("Mixin") {
                 return nil
             }
             
-            guard let _ = self.packageController!.controllerForManagedObjectClass(moClass) else {
+            guard let _ = packageController.controllerForManagedObjectClass(moClass) else {
                 return nil
             }
             
@@ -136,30 +130,30 @@ import FeatherExtensions
             return zone
         }
         
-        let packageMetadataZone = CKRecordZone(zoneID: self.packageMetadataZoneID(ownerName))
+        let packageMetadataZone = CKRecordZone(zoneID: CloudKitDatabasePackageListingService.packageMetadataZoneID(ownerName))
         return NSOrderedSet(array: zones + [packageMetadataZone]).array as! [CKRecordZone]
     }
     
     private var recordZonesChecked:[CKRecordZone]? = nil // Record zones created by the app won't change during app runtime. You may as well just check them once.
     
-    public func ensureRecordZonesExist(completionHandler:(ownerID:CKRecordID, recordZones:[CKRecordZone])->Void, errorHandler:ErrorHandler) {
-        self.ensureUserAuthenticated({ ownerID in
+    public mutating func ensureRecordZonesExist(packageController:MPDatabasePackageController, completionHandler:(ownerID:CKRecordID, recordZones:[CKRecordZone])->Void, errorHandler:ErrorHandler) {
+        CloudKitSyncService.ensureUserAuthenticated(self.container, completionHandler: { ownerID in
             if let recordZonesChecked = self.recordZonesChecked {
                 completionHandler(ownerID: ownerID, recordZones: recordZonesChecked)
                 return
             }
             
-            self._ensureRecordZonesExist(ownerID.recordName, completionHandler:{ recordZones in
+            self._ensureRecordZonesExist(packageController, ownerName:ownerID.recordName, completionHandler:{ recordZones in
                 self.recordZonesChecked = recordZones
                 completionHandler(ownerID:ownerID, recordZones: recordZones)
             }, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
-    private func _ensureRecordZonesExist(ownerName:String, completionHandler:(recordZones:[CKRecordZone])->Void, errorHandler:ErrorHandler) {
+    private func _ensureRecordZonesExist(packageController:MPDatabasePackageController, ownerName:String, completionHandler:(recordZones:[CKRecordZone])->Void, errorHandler:ErrorHandler) {
         let op:CKModifyRecordZonesOperation
         do {
-            op = CKModifyRecordZonesOperation(recordZonesToSave: try self.recordZones(ownerName), recordZoneIDsToDelete: [])
+            op = CKModifyRecordZonesOperation(recordZonesToSave: try self.recordZones(packageController, ownerName:ownerName), recordZoneIDsToDelete: [])
             op.database = self.database
         }
         catch {
@@ -186,18 +180,18 @@ import FeatherExtensions
     public typealias ErrorHandler = (CloudKitSyncService.Error)->Void
     public typealias SubscriptionCompletionHandler = (savedSubscriptions:[CKSubscription], failedSubscriptions:[(subscription:CKSubscription, error:ErrorType)]?, error:ErrorType?) -> Void
     
-    public func ensureSubscriptionsExist(completionHandler:SubscriptionCompletionHandler) {
-        self.ensureRecordZonesExist({ ownerID, _ in
-            self._ensureSubscriptionsExist(ownerID.recordName, completionHandler: completionHandler)
+    public mutating func ensureSubscriptionsExist(packageController:MPDatabasePackageController, completionHandler:SubscriptionCompletionHandler) {
+        self.ensureRecordZonesExist(packageController, completionHandler: { ownerID, _ in
+            self._ensureSubscriptionsExist(packageController, ownerName:ownerID.recordName, completionHandler: completionHandler)
         }) { err in
             completionHandler(savedSubscriptions: [], failedSubscriptions: nil, error: err)
         }
     }
     
-    private func _ensureSubscriptionsExist(ownerName:String, completionHandler:SubscriptionCompletionHandler) {
+    private func _ensureSubscriptionsExist(packageController:MPDatabasePackageController, ownerName:String, completionHandler:SubscriptionCompletionHandler) {
         let subscriptions:[CKSubscription]
         do {
-            subscriptions = try self.recordZones(ownerName).map { zone -> CKSubscription in
+            subscriptions = try self.recordZones(packageController, ownerName:ownerName).map { zone -> CKSubscription in
                 return CKSubscription(zoneID: zone.zoneID, subscriptionID: "\(zone.zoneID.zoneName)-subscription", options: [])
             }
         }
@@ -223,23 +217,23 @@ import FeatherExtensions
     
     public typealias PushCompletionHandler = (savedRecords:[CKRecord], saveFailures:[(record:CKRecord, error:ErrorType)]?, deletedRecordIDs:[CKRecordID], deletionFailures:[(recordID:CKRecordID, error:ErrorType)]?, errorHandler:ErrorType?)->Void
     
-    public func push(completionHandler:PushCompletionHandler, errorHandler:ErrorHandler) {
-        self.ensureUserAuthenticated({ ownerID in
-            self._ensureRecordZonesExist(ownerID.recordName, completionHandler: { recordZones in
-                self._push(completionHandler, errorHandler: errorHandler)
+    public mutating func push(packageController:MPDatabasePackageController, completionHandler:PushCompletionHandler, errorHandler:ErrorHandler) {
+        CloudKitSyncService.ensureUserAuthenticated(self.container, completionHandler: { ownerID in
+            self._ensureRecordZonesExist(packageController, ownerName:ownerID.recordName, completionHandler: { recordZones in
+                self._push(packageController, completionHandler:completionHandler, errorHandler: errorHandler)
             }, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
-    private func _push(completionHandler:PushCompletionHandler, errorHandler:ErrorHandler) {
+    private func _push(packageController:MPDatabasePackageController, completionHandler:PushCompletionHandler, errorHandler:ErrorHandler) {
         var recordsMap = [CKRecordID:CKRecord]()
         let records:[CKRecord]
         do {
-            records = try self.allRecords()
+            records = try self.allRecords(packageController) // FIXME: push only records changed since last sync.
             for record in records { recordsMap[record.recordID] = record }
         }
         catch {
-            completionHandler(savedRecords:[], saveFailures:nil, deletedRecordIDs:[], deletionFailures:nil, errorHandler:error)
+            errorHandler(.UnderlyingError(error))
             return
         }
         
@@ -280,7 +274,7 @@ import FeatherExtensions
     
     public typealias PullCompletionHandler = (failedChanges:[(record:CKRecord, error:Error)]?, failedDeletions:[(recordID:CKRecordID, error:Error)]?)->Void
     
-    public func pull(completionHandler:([Error])->Void) {
+    public mutating func pull(packageController:MPDatabasePackageController, completionHandler:([Error])->Void) {
         let grp = dispatch_group_create()
         
         dispatch_group_enter(grp) // 1 enter
@@ -289,13 +283,13 @@ import FeatherExtensions
         
         var errors = [Error]()
         
-        self.ensureRecordZonesExist({ ownerID, recordZones in
+        self.ensureRecordZonesExist(packageController, completionHandler: { ownerID, recordZones in
             let recordZoneNames = recordZones.map { $0.zoneID.zoneName }
             
             DDLogDebug("Pulling from record zones: \(recordZoneNames)")
             for recordZone in recordZones {
                 dispatch_group_enter(grp) // 2 enter
-                self.pull(recordZone, completionHandler: { failedChanges, failedDeletions in
+                self.pull(packageController, recordZone:recordZone, completionHandler: { failedChanges, failedDeletions in
                     for failedChange in failedChanges ?? [] {
                         dispatch_sync(errorQ) {
                             errors.append(failedChange.error)
@@ -313,7 +307,7 @@ import FeatherExtensions
                         dispatch_sync(errorQ) {
                             errors.append(error)
                         }
-                        dispatch_group_leave(grp) // 2B leave
+                    dispatch_group_leave(grp) // 2B leave
                 })
             }
             
@@ -332,49 +326,44 @@ import FeatherExtensions
         }
     }
     
-    public func pull(recordZone:CKRecordZone, completionHandler:PullCompletionHandler, errorHandler:ErrorHandler) {
-        self.ensureRecordZonesExist({ ownerID, _ in
-            self._pull(ownerID.recordName, recordZone: recordZone, completionHandler: completionHandler, errorHandler: errorHandler)
+    public mutating func pull(packageController:MPDatabasePackageController, recordZone:CKRecordZone, completionHandler:PullCompletionHandler, errorHandler:ErrorHandler) {
+        self.ensureRecordZonesExist(packageController, completionHandler: { ownerID, _ in
+            self._pull(packageController, ownerName:ownerID.recordName, recordZone: recordZone, completionHandler: completionHandler, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
-    private func ensureStateInitialized(ownerName:String, packageController:MPDatabasePackageController, allowInitializing:Bool) throws {
-        if self.state == nil {
+    private mutating func ensureStateInitialized(packageController:MPDatabasePackageController, ownerName:String, allowInitializing:Bool) throws {
+        if self.state[packageController.identifier] == nil {
             if !allowInitializing {
                 throw Error.NilState
             }
             
-            let state = CloudKitState(ownerName: ownerName, packageController: packageController, packages: [])
+            let state = CloudKitState(ownerName: ownerName, packageController: packageController)
             do {
-                self.state = try state.deserialize()
+                self.state[packageController.identifier] = try state.deserialize()
             }
             catch {
-                self.state = state
+                self.state[packageController.identifier] = state
             }
         }
     }
     
-    public func _pull(ownerName:String, recordZone:CKRecordZone, completionHandler:PullCompletionHandler, errorHandler:ErrorHandler) {
+    public mutating func _pull(packageController:MPDatabasePackageController, ownerName:String, recordZone:CKRecordZone, completionHandler:PullCompletionHandler, errorHandler:ErrorHandler) {
         let fetchRecords = CKFetchRecordsOperation()
         fetchRecords.database = self.database
-        
-        guard let packageController = self.packageController else {
-            errorHandler(.NilPackageController)
-            return
-        }
         
         let deserializer = CloudKitDeserializer(packageController: packageController)
         
         self.operationQueue.addOperation(fetchRecords)
         
         do {
-            try self.ensureStateInitialized(ownerName, packageController: packageController, allowInitializing: true)
+            try self.ensureStateInitialized(packageController, ownerName:ownerName, allowInitializing: true)
         }
         catch {
             errorHandler(.UnderlyingError(error))
         }
         
-        let prevChangeToken = self.state?.serverChangeToken(forZoneID: recordZone.zoneID)
+        let prevChangeToken = self.state[packageController.identifier]?.serverChangeToken(forZoneID: recordZone.zoneID)
         let op = CKFetchRecordChangesOperation(recordZoneID: recordZone.zoneID, previousServerChangeToken:prevChangeToken)
         op.database = self.database
         
@@ -393,7 +382,6 @@ import FeatherExtensions
         
         func recordWithIDWasDeleted(deletedID:CKRecordID) {
             if let record = self.recordZoneRepository.recordRepository.record(ID:deletedID),
-               let packageController = self.packageController,
                let deletedObj = packageController.objectWithIdentifier(record.recordID.recordName),
                let pkgC = deletedObj.controller?.packageController where pkgC == packageController { // package controller check is done because objectWithIdentifier can return an object from the shared database
                     deletedObj.deleteObject()
@@ -414,7 +402,7 @@ import FeatherExtensions
                 return
             }
             
-            self.state?.setServerChangeToken(changeToken, forZoneID:recordZone.zoneID)
+            self.state[packageController.identifier]?.setServerChangeToken(changeToken, forZoneID:recordZone.zoneID)
             
             if op.moreComing {
                 let op = CKFetchRecordChangesOperation(recordZoneID: recordZone.zoneID, previousServerChangeToken:prevChangeToken)
@@ -428,8 +416,8 @@ import FeatherExtensions
             }
             
             do {
-                try self.ensureStateInitialized(ownerName, packageController:packageController, allowInitializing:false)
-                try self.state?.serialize()
+                try self.ensureStateInitialized(packageController, ownerName:ownerName, allowInitializing:false)
+                try self.state[packageController.identifier]?.serialize()
             }
             catch {
                 errorHandler(.UnderlyingError(error))
@@ -448,124 +436,17 @@ import FeatherExtensions
         self.operationQueue.addOperation(op)
     }
     
-    public typealias DatabasePackageMetadataListHandler = ([DatabasePackageMetadata]) -> Void
-    
-    public func availableDatabasePackages(completionHandler:DatabasePackageMetadataListHandler, errorHandler:ErrorHandler) {
-        self.ensureRecordZonesExist({ ownerID, _ in
-            self._availableDatabasePackages(ownerID.recordName, completionHandler: completionHandler, errorHandler: errorHandler)
-        }, errorHandler: errorHandler)
-    }
-    
-    public func _availableDatabasePackages(ownerName:String, completionHandler:DatabasePackageMetadataListHandler, errorHandler:ErrorHandler) {
-        
-        guard let packageController = self.packageController else {
-            errorHandler(.NilPackageController)
-            return
-        }
-        
-        do {
-            try self.ensureStateInitialized(ownerName, packageController: packageController, allowInitializing: true)
-        }
-        catch {
-            errorHandler(.UnderlyingError(error))
-            return
-        }
-        
-        var packages = self.state?.packages ?? [DatabasePackageMetadata]()
-        
-        func recordChanged(record:CKRecord) {
-            let package = DatabasePackageMetadata(recordID: record.recordID, title: record["title"] as? String ?? nil, changeTag: record.recordChangeTag)
-            
-            // Replace if existing item found. 
-            // Maintaining sort order is not important.
-            if let index = packages.indexOf({ pkg in pkg.recordID == package.recordID }) {
-                packages.removeAtIndex(index)
-            }
-            packages.append(package)
-        }
-        
-        func recordWithIDWasDeleted(record:CKRecordID) {
-            if let index = packages.indexOf({ $0.recordID.recordName == record.recordName }) {
-                packages.removeAtIndex(index)
-            }
-        }
-        
-        let changeToken = self.state?.serverChangeToken(forZoneID: self.packageMetadataZoneID(ownerName))
-        
-        let op = CKFetchRecordChangesOperation(recordZoneID: self.packageMetadataZoneID(ownerName), previousServerChangeToken: nil)
-        
-        func fetchRecordChangesCompletion(serverChangeToken:CKServerChangeToken?, clientTokenData:NSData?, error:NSError?) {
-            if let error = error {
-                errorHandler(.UnderlyingError(error))
-                return
-            }
-            
-            if op.moreComing {
-                let op = CKFetchRecordChangesOperation(recordZoneID: self.packageMetadataZoneID(ownerName), previousServerChangeToken: nil)
-                op.previousServerChangeToken = serverChangeToken
-                op.database = self.database
-                op.recordChangedBlock = recordChanged
-                op.recordWithIDWasDeletedBlock = recordWithIDWasDeleted
-                op.fetchRecordChangesCompletionBlock = fetchRecordChangesCompletion
-                
-                self.operationQueue.addOperation(op)
-            }
-            else {
-                do {
-                    try self.ensureStateInitialized(ownerName, packageController: packageController, allowInitializing: false)
-                }
-                catch {
-                    errorHandler(.UnderlyingError(error))
-                    return
-                }
-                
-                self.state?.packages = packages
-                
-                do {
-                    try self.state?.serialize()
-                }
-                catch {
-                    errorHandler(.UnderlyingError(error))
-                    return
-                }
-                
-                completionHandler(packages)
-            }
-        }
-        
-        op.previousServerChangeToken = changeToken
-        op.database = self.database
-        op.recordChangedBlock = recordChanged
-        op.recordWithIDWasDeletedBlock = recordWithIDWasDeleted
-        op.fetchRecordChangesCompletionBlock = fetchRecordChangesCompletion
-        
-        self.operationQueue.addOperation(op)
-    }
-    
     public typealias DatabasePackageMetadataHandler = (packageMetadata:CKRecord) -> Void
-    
-    private var packageMetadataZoneName:String {
-        return "DatabasePackageMetadata"
-    }
-    
-    private func packageMetadataZoneID(ownerName:String) -> CKRecordZoneID {
-        return CKRecordZoneID(zoneName: self.packageMetadataZoneName, ownerName: ownerName)
-    }
-    
-    public func ensureDatabasePackageMetadataExists(completionHandler:DatabasePackageMetadataHandler, errorHandler:ErrorHandler) {
-        self.ensureUserAuthenticated({ ownerID in
-            self._ensureDatabasePackageMetadataExists(ownerID.recordName, completionHandler: completionHandler, errorHandler: errorHandler)
+        
+    public mutating func ensureDatabasePackageMetadataExists(packageController:MPDatabasePackageController, completionHandler:DatabasePackageMetadataHandler, errorHandler:ErrorHandler) {
+        CloudKitSyncService.ensureUserAuthenticated(self.container, completionHandler: { ownerID in
+            self._ensureDatabasePackageMetadataExists(packageController, ownerName:ownerID.recordName, completionHandler: completionHandler, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
-    public func _ensureDatabasePackageMetadataExists(ownerName:String, completionHandler:DatabasePackageMetadataHandler, errorHandler:ErrorHandler) {
-        guard let packageController = self.packageController else {
-            errorHandler(.NilPackageController)
-            return
-        }
-        
+    public func _ensureDatabasePackageMetadataExists(packageController:MPDatabasePackageController, ownerName:String, completionHandler:DatabasePackageMetadataHandler, errorHandler:ErrorHandler) {
         let identifier = packageController.identifier
-        let packageMetadata = CKRecord(recordType: "DatabasePackageMetadata", recordID: CKRecordID(recordName: identifier, zoneID: self.packageMetadataZoneID(ownerName)))
+        let packageMetadata = CKRecord(recordType: "DatabasePackageMetadata", recordID: CKRecordID(recordName: identifier, zoneID: CloudKitDatabasePackageListingService.packageMetadataZoneID(ownerName)))
         packageMetadata["title"] = packageController.title
         
         let saveMetadata = CKModifyRecordsOperation(recordsToSave: [packageMetadata], recordIDsToDelete: nil)
@@ -589,15 +470,55 @@ import FeatherExtensions
         }
     }
     
-    public func synchronize(completionHandler:(errors:[Error])->Void) {
-        self.pull { pullErrors in
+    public typealias DeletedRecordZonesHandler = (deletedZoneIDs:[CKRecordZoneID])->Void
+    
+    public mutating func purge(packageController:MPDatabasePackageController, completionHandler:DeletedRecordZonesHandler, errorHandler:ErrorHandler) {
+        CloudKitSyncService.ensureUserAuthenticated(container, completionHandler: { ownerID in
+            self._purge(packageController, ownerName:ownerID.recordName, completionHandler: completionHandler, errorHandler: errorHandler)
+        }, errorHandler: errorHandler)
+    }
+    
+    public func _purge(packageController:MPDatabasePackageController, ownerName:String, completionHandler:DeletedRecordZonesHandler, errorHandler:ErrorHandler) {
+        let deleteZones:CKModifyRecordZonesOperation
+        
+        do {
+            deleteZones = CKModifyRecordZonesOperation(recordZonesToSave: nil, recordZoneIDsToDelete: try self.recordZones(packageController, ownerName:ownerName).map { $0.zoneID })
+        }
+        catch {
+            errorHandler(.UnderlyingError(error))
+            return
+        }
+        
+        self.operationQueue.addOperation(deleteZones)
+        
+        deleteZones.modifyRecordZonesCompletionBlock = { _, deletedIDs, error in
+            if let error = error {
+                errorHandler(.UnderlyingError(error))
+                return
+            }
+            
+            guard let deletedZoneIDs = deletedIDs else {
+                errorHandler(Error.UnexpectedRecordZoneIDs(deletedIDs))
+                return
+            }
+            
+            completionHandler(deletedZoneIDs: deletedZoneIDs)
+        }
+    }
+    
+    public mutating func synchronize(packageController:MPDatabasePackageController, completionHandler:(errors:[Error])->Void) {
+        self.pull(packageController) { pullErrors in
             if (pullErrors.count > 0) {
                 completionHandler(errors: pullErrors)
                 return
             }
             
-            self.push({ (savedRecords, saveFailures, deletedRecordIDs, deletionFailures, completeFailure) in
+            self.push(packageController, completionHandler:{ (savedRecords, saveFailures, deletedRecordIDs, deletionFailures, completeFailure) in
                 var errors = [Error]()
+                
+                if let completeFailure = completeFailure {
+                    errors.append(.UnderlyingError(completeFailure))
+                }
                 
                 if let saveFailures = saveFailures {
                     errors.appendContentsOf(saveFailures.map { Error.UnderlyingError($0.error) })
@@ -612,7 +533,7 @@ import FeatherExtensions
                     return
                 }
                 
-                self.ensureDatabasePackageMetadataExists({ packageMetadata in
+                self.ensureDatabasePackageMetadataExists(packageController, completionHandler: { packageMetadata in
                     completionHandler(errors:[])
                 }) { err in
                     completionHandler(errors:[err])

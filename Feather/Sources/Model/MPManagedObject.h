@@ -142,7 +142,7 @@ extern NSString * _Nonnull const MPPasteboardTypeManagedObjectIDArray;
 - (nonnull NSString *)humanReadableNameForPropertyKey:(nonnull NSString *)key;
 
 /** The identifier of the object on which this object is based on. Implies that the object is a template. */
-@property (readonly, copy, nullable) NSString *prototypeID;
+@property (readonly, copy, nonatomic, nullable) NSString *prototypeID;
 
 /** The prototype object on which this object is based on. */
 @property (readonly, strong, nullable) __kindof MPManagedObject *prototype;

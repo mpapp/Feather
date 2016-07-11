@@ -17,8 +17,9 @@ public struct CloudKitSerializer {
         case OwnerDeleted(MPContributor)
         case DocumentUnavailable(MPManagedObject)
         case UnexpectedKey(NSObject)
-        case UnexpectedPropertyValue(key:String, value:AnyObject)
+        case UnexpectedPropertyValue(key:String, propertyKey:String, value:AnyObject, valueType:AnyClass)
         case MissingController(MPManagedObject)
+        case UnexpectedReferenceValue(String)
     }
     
     public let ownerName:String
@@ -49,9 +50,7 @@ public struct CloudKitSerializer {
     }
     
     private func refresh(record record:CKRecord, withObject object:MPManagedObject, key keyString:String, value:AnyObject) throws {
-        //print("Object:\(object), key: \(kvcKey), recordID:\(recordID)")
         
-        let recordID = record.recordID
         let kvcKey = object.valueCodingKeyForPersistedPropertyKey(keyString)
         
         let val = object.valueForKey(kvcKey)
@@ -59,16 +58,37 @@ public struct CloudKitSerializer {
         switch val {
             
         case let valObj as MPManagedObject:
-            
             let valRecord:CKRecord
-            if let existingRecord = self.recordZoneRepository.recordRepository[recordID] {
+            
+            guard let valDocID = valObj.documentID else {
+                break
+            }
+            
+            let zone = try self.recordZoneRepository.recordZone(objectType: valObj.dynamicType, ownerName: ownerName)
+            let valRecordID = CKRecordID(recordName: valDocID, zoneID:zone.zoneID)
+            if let existingRecord = self.recordZoneRepository.recordRepository[valRecordID] {
                 valRecord = existingRecord
             }
             else {
                 valRecord = try self.serialize(valObj, serializingKey: kvcKey)
             }
-            let valRef = CKReference(record: valRecord, action: CKReferenceAction.None)
+            let valRef = CKReference(record: valRecord, action: .None)
             record.setObject(valRef, forKey: kvcKey)
+            
+        // unresolvable references (where object being referenced is nil at the moment) should still be stored as a CKReference.
+        case nil where value is String && object.dynamicType.classOfProperty(kvcKey) is MPManagedObject.Type:
+            guard let valueString = value as? String else {
+                preconditionFailure("Logic error: value should be guaranteed to be a string in this case.")
+            }
+            
+            guard let objType = MPManagedObject.managedObjectClassFromDocumentID(valueString) as? MPManagedObject.Type else {
+                throw Error.UnexpectedReferenceValue(valueString)
+            }
+            
+            let zone = try self.recordZoneRepository.recordZone(objectType: objType, ownerName: ownerName)
+            let recordID = CKRecordID(recordName: valueString, zoneID: zone.zoneID)
+            let reference = CKReference(recordID: recordID, action: .None)
+            record.setObject(reference, forKey: keyString)
             
         case let embObj as MPEmbeddedObject:
             let embObjString = try embObj.JSONStringRepresentation()
@@ -108,7 +128,14 @@ public struct CloudKitSerializer {
             record.setObject(valRecordValue, forKey: kvcKey)
             
         default:
-            throw Error.UnexpectedPropertyValue(key:kvcKey, value:value)
+            if kvcKey == "prototype" {
+                if let val = val {
+                    precondition(val is MPManagedObject)
+                }
+            }
+            print("object:\(object), keyString:\(keyString) value:\(value) (\(value.dynamicType)), val:\(val) (\(val.dynamicType))")
+
+            throw Error.UnexpectedPropertyValue(key:kvcKey, propertyKey: keyString, value:value, valueType:value.dynamicType)
         }
     }
 }

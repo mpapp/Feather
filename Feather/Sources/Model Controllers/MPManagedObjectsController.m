@@ -250,7 +250,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         classDict = d.copy;
     });
     
-    Class equivalenceClass = [classDict[NSStringFromClass(moClass)] managedObjectClass];
+    NSString *classString = NSStringFromClass(moClass);
+    classString = [classString stringByReplacingOccurrencesOfString:@"NSKVONotifying_" withString:@""]; // ugh.
+    Class equivalenceClass = [classDict[classString] managedObjectClass];
     NSAssert(equivalenceClass != nil && [equivalenceClass isSubclassOfClass:MPManagedObject.class], @"Unexpected equivalence class '%@'", equivalenceClass);
     return equivalenceClass;
 }

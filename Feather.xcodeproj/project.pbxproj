@@ -10,6 +10,7 @@
 		28526FB41C3511D600966551 /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; };
 		5F00787A1C95C4D400DDB296 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */; };
 		5F00787C1C95C4D400DDB296 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */; };
+		5F019E2A1D330C2C00424CDA /* CloudKitDatabasePackageListingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F019E291D330C2C00424CDA /* CloudKitDatabasePackageListingService.swift */; };
 		5F05A31B1CD02CC800FE80D8 /* FeatherAppKitExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F05A31A1CD02CC800FE80D8 /* FeatherAppKitExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F05A3221CD02CC800FE80D8 /* FeatherAppKitExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F05A3181CD02CC800FE80D8 /* FeatherAppKitExtensions.framework */; };
 		5F05A3271CD02CC900FE80D8 /* FeatherAppKitExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F05A3261CD02CC900FE80D8 /* FeatherAppKitExtensionsTests.swift */; };
@@ -303,6 +304,7 @@
 
 /* Begin PBXFileReference section */
 		5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjackSwift.framework; path = "Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac/CocoaLumberjackSwift.framework"; sourceTree = "<group>"; };
+		5F019E291D330C2C00424CDA /* CloudKitDatabasePackageListingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitDatabasePackageListingService.swift; sourceTree = "<group>"; };
 		5F05A3181CD02CC800FE80D8 /* FeatherAppKitExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeatherAppKitExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F05A31A1CD02CC800FE80D8 /* FeatherAppKitExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeatherAppKitExtensions.h; sourceTree = "<group>"; };
 		5F05A31C1CD02CC800FE80D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1130,6 +1132,7 @@
 				5F3A0B241D2840BF00205164 /* CloudKitRecordRepository.swift */,
 				5FA9D02D1D29C74000C96CE1 /* CloudKitDeserializer.swift */,
 				5FAA0A671D2EA87800F18A2D /* CloudKitState.swift */,
+				5F019E291D330C2C00424CDA /* CloudKitDatabasePackageListingService.swift */,
 			);
 			name = Services;
 			sourceTree = "<group>";
@@ -1656,6 +1659,7 @@
 				5F8119481CEE32C3007018B8 /* TreeItemPool.swift in Sources */,
 				5FDB3A5C170799B30049EBB5 /* MPManagedObjectsController.m in Sources */,
 				5F81194C1CEE36A5007018B8 /* MPObjectWrappingSection.m in Sources */,
+				5F019E2A1D330C2C00424CDA /* CloudKitDatabasePackageListingService.swift in Sources */,
 				5FFD61B31AFFAF4000483D9C /* NSArray+MPManagedObjectExtensions.m in Sources */,
 				5FDB3A6B17079A750049EBB5 /* MPContributor.m in Sources */,
 				5FDB3A7417079ABB0049EBB5 /* MPSnapshotsController.m in Sources */,

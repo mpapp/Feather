@@ -948,10 +948,31 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     return valueCodingKey;
 }
 
+// Some nasty accesssors needed because of legacy reasons and confusion between 'prototype' / 'prototypeID'.
+
+- (void)setPrototypeID:(NSString * _Nullable)prototypeID {
+    [self setValue:prototypeID ofProperty:@"prototype"];
+}
 
 - (NSString *)prototypeID
 {
     return [self getValueOfProperty:@"prototype"];
+}
+
+- (void)setPrototype:(MPManagedObject *)prototype {
+    [self setValue:prototype.documentID ofProperty:@"prototype"];
+}
+
+- (MPManagedObject *)prototype {
+    NSString *prototypeID = [self getValueOfProperty:@"prototype"];
+    
+    if (!prototypeID) {
+        return nil;
+    }
+    
+    MPManagedObject *o = [self.controller.packageController objectWithIdentifier:prototypeID];
+    NSAssert(!o || [o isKindOfClass:MPManagedObject.class], @"Unexpected prototype object: %@", o);
+    return o;
 }
 
 - (BOOL)hasPrototype
@@ -1124,7 +1145,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         return nil;
     
     Class cls = [[self class] classOfProperty:property];
-    assert([cls isSubclassOfClass:[MPManagedObject class]]);
+    NSAssert([cls isSubclassOfClass:[MPManagedObject class]], @"%@ is not subclass of MPManagedObject", cls);
     
     MPManagedObjectsController *moc = nil;
     
@@ -1133,7 +1154,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         CBLDatabase *db = [self databaseForModelProperty:property];
         MPDatabasePackageController *pkgc = [db packageController];
         moc = [pkgc controllerForManagedObjectClass:cls];
-        assert(moc);
+        NSParameterAssert(moc);
+        NSAssert([cls isSubclassOfClass:[moc managedObjectClass]], @"%@ is not subclass of %@", cls, [moc managedObjectClass]);
     }
     else
     {
@@ -1151,8 +1173,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     {
         
         MPManagedObject *mo = [moc objectWithIdentifier:objectID];
-        if (mo)
+        if (mo) {
             return mo;
+        }
         
         MPShoeboxPackageController *shoebox = [MPShoeboxPackageController sharedShoeboxController];
         MPManagedObjectsController *sharedMOC = [shoebox controllerForManagedObjectClass:cls];
@@ -1833,7 +1856,6 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 @end
 
 @implementation MPManagedObject (Protected)
-@dynamic prototype;
 
 + (instancetype)modelForDocument:(CBLDocument *)document
 {

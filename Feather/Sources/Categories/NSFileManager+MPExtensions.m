@@ -29,7 +29,7 @@ NSString * __nonnull const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFea
 {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory,
                                                          NSUserDomainMask, YES);
-    NSString *path = paths[0];
+    NSString *path = paths.firstObject;
     return path;
 }
 

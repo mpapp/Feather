@@ -17,6 +17,52 @@ public struct DatabasePackageMetadata {
     let changeTag:String?
 }
 
+public struct CloudKitDatabasePackageList: JSONEncodable, JSONDecodable {
+    public let packages:[DatabasePackageMetadata]
+    
+    public init(contentsOfURL url:NSURL) throws {
+        let data = try NSData(contentsOfURL: url, options: [])
+        try self.init(json: try JSON(data:data))
+    }
+    
+    public init(packages:[DatabasePackageMetadata]) {
+        self.packages = packages
+    }
+    
+    public init(json: JSON) throws {
+        self.packages = try json.array("packages").map { package -> DatabasePackageMetadata in
+            let packageMetadataZoneID = CKRecordZoneID(zoneName: try package.string("zoneName"), ownerName: try package.string("ownerName"))
+            let recordID = CKRecordID(recordName: try package.string("recordName"), zoneID: packageMetadataZoneID)
+            
+            var title:String? = try package.string("title", alongPath: [.MissingKeyBecomesNil])
+            if title == "" {
+                title = nil
+            }
+            
+            var changeTag:String? = try package.string("changeTag", alongPath: [.MissingKeyBecomesNil])
+            if changeTag == "" {
+                changeTag = nil
+            }
+            
+            return DatabasePackageMetadata(recordID: recordID, title: title, changeTag: changeTag)
+        }
+    }
+    
+    public func toJSON() -> JSON {
+        return .Array(self.packages.map { package -> JSON in
+             [ "recordName":.String(package.recordID.recordName),
+                    "title":.String(package.title ?? ""),
+                 "zoneName":.String(package.recordID.zoneID.zoneName),
+                "ownerName":.String(package.recordID.zoneID.ownerName),
+                "changeTag":.String(package.changeTag ?? "")] })
+    }
+    
+    public func serialize(toURL url:NSURL) throws {
+        let data = try self.toJSON().serialize()
+        try data.writeToURL(url, options: [])
+    }
+}
+
 public struct CloudKitState: JSONEncodable, JSONDecodable {
     
     enum Error:ErrorType {
@@ -30,12 +76,9 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
     
     private(set) public weak var packageController:MPDatabasePackageController?
     
-    public var packages:[DatabasePackageMetadata] = [DatabasePackageMetadata]()
-    
-    public init(ownerName:String, packageController: MPDatabasePackageController, packages:[DatabasePackageMetadata]) {
+    public init(ownerName:String, packageController: MPDatabasePackageController) {
         self.ownerName = ownerName
         self.packageController = packageController
-        self.packages = packages
     }
     
     public func deserialize() throws -> CloudKitState {
@@ -94,23 +137,6 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
             return (zoneID, token)
         }
         
-        self.packages = try json.array("packages").map { package -> DatabasePackageMetadata in
-            let packageMetadataZoneID = CKRecordZoneID(zoneName: try package.string("zoneName"), ownerName: try package.string("ownerName"))
-            let recordID = CKRecordID(recordName: try package.string("recordName"), zoneID: packageMetadataZoneID)
-            
-            var title:String? = try package.string("title", alongPath: [.MissingKeyBecomesNil])
-            if title == "" {
-                title = nil
-            }
-            
-            var changeTag:String? = try package.string("changeTag", alongPath: [.MissingKeyBecomesNil])
-            if changeTag == "" {
-                changeTag = nil
-            }
-            
-            return DatabasePackageMetadata(recordID: recordID, title: title, changeTag: changeTag)
-        }
-        
         self.recordZones = [CKRecordZoneID:CKServerChangeToken](withPairs:items)
     }
     
@@ -120,13 +146,7 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
                 "recordZones": .Array(self.recordZones.map { pair -> JSON in
                     let tokenStr = NSKeyedArchiver.archivedDataWithRootObject(pair.1).base64EncodedStringWithOptions([])
                     return .Dictionary(["zoneName":.String(pair.0.zoneName), "serverChangeToken":.String(tokenStr)])
-                }),
-                "packages": .Array(self.packages.map { package -> JSON in
-                    [ "recordName":.String(package.recordID.recordName),
-                           "title":.String(package.title ?? ""),
-                        "zoneName":.String(package.recordID.zoneID.zoneName),
-                       "ownerName":.String(package.recordID.zoneID.ownerName),
-                       "changeTag":.String(package.changeTag ?? "")] })
+                })
             ])
     }
     
