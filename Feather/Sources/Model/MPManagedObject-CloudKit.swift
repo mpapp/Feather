@@ -23,7 +23,8 @@ extension MPManagedObject {
             preconditionFailure("Equivalence class of \(self.dynamicType) should be subclass of MPManagedObject: \(equivalenceAnyClass)")
         }
         
-        let zoneName = (String(equivalenceClass) as NSString).stringByReplacingOccurrencesOfRegex("^MP", withString: "")
+        // TODO: Find a more robust way to get rid of the NSKVONotifying_ prefix.
+        let zoneName = (String(equivalenceClass) as NSString).stringByReplacingOccurrencesOfRegex("^MP", withString: "").stringByReplacingOccurrencesOfString("NSKVONotifying_", withString: "")
         return zoneName
     }
 }

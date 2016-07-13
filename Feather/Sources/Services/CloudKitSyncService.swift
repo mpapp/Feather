@@ -349,9 +349,9 @@ public struct CloudKitSyncService {
         }
     }
     
-    public mutating func pull(packageController:MPDatabasePackageController, recordZone:CKRecordZone, completionHandler:PullCompletionHandler, errorHandler:ErrorHandler) {
+    public mutating func pull(packageController:MPDatabasePackageController, recordZone:CKRecordZone, useServerToken:Bool = true, completionHandler:PullCompletionHandler, errorHandler:ErrorHandler) {
         self.ensureRecordZonesExist(packageController, completionHandler: { ownerID, _ in
-            self._pull(packageController, ownerName:ownerID.recordName, recordZone: recordZone, completionHandler: completionHandler, errorHandler: errorHandler)
+            self._pull(packageController, ownerName:ownerID.recordName, recordZone: recordZone, useServerToken: useServerToken, completionHandler: completionHandler, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
@@ -371,7 +371,7 @@ public struct CloudKitSyncService {
         }
     }
     
-    public mutating func _pull(packageController:MPDatabasePackageController, ownerName:String, recordZone:CKRecordZone, completionHandler:PullCompletionHandler, errorHandler:ErrorHandler) {
+    public mutating func _pull(packageController:MPDatabasePackageController, ownerName:String, recordZone:CKRecordZone, useServerToken:Bool, completionHandler:PullCompletionHandler, errorHandler:ErrorHandler) {
         let fetchRecords = CKFetchRecordsOperation()
         fetchRecords.database = self.database
         
@@ -386,7 +386,7 @@ public struct CloudKitSyncService {
             errorHandler(.UnderlyingError(error))
         }
         
-        let prevChangeToken = self.state[packageController.identifier]?.serverChangeToken(forZoneID: recordZone.zoneID)
+        let prevChangeToken = useServerToken ? self.state[packageController.identifier]?.serverChangeToken(forZoneID: recordZone.zoneID) : nil
         let op = CKFetchRecordChangesOperation(recordZoneID: recordZone.zoneID, previousServerChangeToken:prevChangeToken)
         op.database = self.database
         
@@ -495,37 +495,45 @@ public struct CloudKitSyncService {
     
     public typealias DeletedRecordZonesHandler = (deletedZoneIDs:[CKRecordZoneID])->Void
     
-    public mutating func purge(packageController:MPDatabasePackageController, completionHandler:DeletedRecordZonesHandler, errorHandler:ErrorHandler) {
+    public mutating func purge(packageController:MPDatabasePackageController, recordIDs:[CKRecordID], completionHandler:DeletedRecordZonesHandler, errorHandler:ErrorHandler) {
         CloudKitSyncService.ensureUserAuthenticated(container, completionHandler: { ownerID in
-            self._purge(packageController, ownerName:ownerID.recordName, completionHandler: completionHandler, errorHandler: errorHandler)
+            self._purge(packageController, ownerName:ownerID.recordName, recordIDs:recordIDs, completionHandler: completionHandler, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
-    public func _purge(packageController:MPDatabasePackageController, ownerName:String, completionHandler:DeletedRecordZonesHandler, errorHandler:ErrorHandler) {
-        let deleteZones:CKModifyRecordZonesOperation
+    public mutating func _purge(packageController:MPDatabasePackageController, ownerName:String, recordIDs:[CKRecordID], completionHandler:DeletedRecordZonesHandler, errorHandler:ErrorHandler) {
         
-        do {
-            deleteZones = CKModifyRecordZonesOperation(recordZonesToSave: nil, recordZoneIDsToDelete: try self.recordZones(packageController, ownerName:ownerName).map { $0.zoneID })
-        }
-        catch {
-            errorHandler(.UnderlyingError(error))
-            return
-        }
-        
-        self.operationQueue.addOperation(deleteZones)
-        
-        deleteZones.modifyRecordZonesCompletionBlock = { _, deletedIDs, error in
-            if let error = error {
+        self.pull(packageController) { errors in
+            if errors.count > 0 {
+                errorHandler(Error.CompoundError(errors))
+                return
+            }
+            
+            let deleteZones:CKModifyRecordZonesOperation
+            
+            do {
+                deleteZones = CKModifyRecordZonesOperation(recordZonesToSave: nil, recordZoneIDsToDelete: try self.recordZones(packageController, ownerName:ownerName).map { $0.zoneID })
+            }
+            catch {
                 errorHandler(.UnderlyingError(error))
                 return
             }
             
-            guard let deletedZoneIDs = deletedIDs else {
-                errorHandler(Error.UnexpectedRecordZoneIDs(deletedIDs))
-                return
-            }
+            self.operationQueue.addOperation(deleteZones)
             
-            completionHandler(deletedZoneIDs: deletedZoneIDs)
+            deleteZones.modifyRecordZonesCompletionBlock = { _, deletedIDs, error in
+                if let error = error {
+                    errorHandler(.UnderlyingError(error))
+                    return
+                }
+                
+                guard let deletedZoneIDs = deletedIDs else {
+                    errorHandler(Error.UnexpectedRecordZoneIDs(deletedIDs))
+                    return
+                }
+                
+                completionHandler(deletedZoneIDs: deletedZoneIDs)
+            }
         }
     }
     
