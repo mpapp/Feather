@@ -80,7 +80,6 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 @property (strong, readwrite) NSNetService *databaseListenerService;
 
 @property (strong, readonly) NSMutableSet *registeredViewNames;
-@property (strong, nullable) CloudKitSyncService *cloudKitSyncService;
 
 @property (readwrite) TreeItemPool *treeItemPool;
 

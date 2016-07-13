@@ -940,6 +940,10 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
     [self setModerationState:MPManagedObjectModerationStateRejected];
 }
 
++ (NSArray *)cloudKitIgnoredKeys {
+    return @[ @"id" , @"collection", @"containedObjectID" ];
+}
+
 - (NSString *)valueCodingKeyForPersistedPropertyKey:(NSString *)persistedPropertyKey {
     return persistedPropertyKey;
 }

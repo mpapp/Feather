@@ -84,7 +84,7 @@ public struct CloudKitDeserializer {
             
         case let valString as String where obj.dynamicType.classOfProperty(kvcKey) is NSArray.Type:
             let array = try NSArray.decodeFromJSONString(valString)
-            obj.setValue(array, forKey: propertyKey)
+            obj.setValue(array, ofProperty: propertyKey)
             
         case let valString as String where obj.dynamicType.classOfProperty(kvcKey) is NSURL.Type:
             obj.setValue(valString, forKey: propertyKey)

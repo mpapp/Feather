@@ -24,6 +24,7 @@ public struct CloudKitSyncService {
         case MissingServerChangeToken(CKRecordZone)
         case UnexpectedRecords([CKRecord]?)
         case UnexpectedRecordZoneIDs([CKRecordZoneID]?)
+        case CompoundError([Error])
     }
     
     private(set) public static var ownerID:CKRecordID?
@@ -34,13 +35,10 @@ public struct CloudKitSyncService {
     public typealias PackageIdentifier = String
     var state:[PackageIdentifier:CloudKitState] = [PackageIdentifier:CloudKitState]()
     
-    public var ignoredKeys:[String]
-    
     private let operationQueue:NSOperationQueue = NSOperationQueue()
     
-    public init(container:CKContainer = CKContainer.defaultContainer(), database:CKDatabase = CKContainer.defaultContainer().privateCloudDatabase, packageIdentifier:PackageIdentifier, ignoredKeys:[String]) throws {
+    public init(container:CKContainer = CKContainer.defaultContainer(), database:CKDatabase = CKContainer.defaultContainer().privateCloudDatabase, packageIdentifier:PackageIdentifier) throws {
         self.recordZoneRepository = CloudKitRecordZoneRepository(zoneSuffix: packageIdentifier)
-        self.ignoredKeys = ignoredKeys
         self.operationQueue.maxConcurrentOperationCount = 1
         self.container = container
         self.database = database
@@ -59,7 +57,7 @@ public struct CloudKitSyncService {
             throw Error.OwnerUnknown
         }
 
-        let serializer = CloudKitSerializer(ownerName:ownerName, recordZoneRepository: self.recordZoneRepository, ignoredKeys: self.ignoredKeys)
+        let serializer = CloudKitSerializer(ownerName:ownerName, recordZoneRepository: self.recordZoneRepository)
         
         // TODO: support serialising also MPMetadata objects.
         let records = try packageController.allObjects.filter({ o -> Bool in
@@ -237,38 +235,63 @@ public struct CloudKitSyncService {
             return
         }
         
-        let save = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: [])
-        save.savePolicy = CKRecordSavePolicy.AllKeys
-        save.database = self.database
+        // FIXME: propagate deletions made since last sync.
         
-        self.operationQueue.addOperation(save)
+        let grp = dispatch_group_create()
         
-        // This block reports an error of type partialFailure when it saves or deletes only some of the records successfully. The userInfo dictionary of the error contains a CKPartialErrorsByItemIDKey key whose value is an NSDictionary object. The keys of that dictionary are the IDs of the records that were not saved or deleted, and the corresponding values are error objects containing information about what happened.
-        save.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
-            guard let err = error else {
-                completionHandler(savedRecords: savedRecords ?? [], saveFailures: nil, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures: nil, errorHandler: nil)
-                return
-            }
+        var allSuccessfulSaves = [CKRecord]()
+        var allFailedSaves = [(record:CKRecord, error:ErrorType)]()
+        var allSuccessfulDeletions = [CKRecordID]()
+        var completeFailures = [Error]()
+        //var allFailedDeletions = [(recordID:CKRecordID, error:ErrorType)]()
+        
+        for recordChunk in records.chunks(withDistance: 100) {
+       
+            dispatch_group_enter(grp)
             
-            print("Error: \(err), \(err.userInfo), \(err.userInfo[CKPartialErrorsByItemIDKey]), \(err.userInfo[CKPartialErrorsByItemIDKey]!.dynamicType)")
-            if let partialErrorInfo = err.userInfo[CKPartialErrorsByItemIDKey] as? [CKRecordID:NSError] {
-                
-                print("Partial error info: \(partialErrorInfo)")
-                
-                let failedSaves = partialErrorInfo.flatMap { (recordID, errorInfo) -> (record:CKRecord, error:ErrorType)? in
-                    // TODO: filter by error type
-                    if let record = recordsMap[recordID] {
-                        return (record:record, error:Error.UnderlyingError(errorInfo))
-                    }
-                    return nil
+            let save = CKModifyRecordsOperation(recordsToSave: recordChunk, recordIDsToDelete: [])
+            save.savePolicy = CKRecordSavePolicy.AllKeys
+            save.database = self.database
+            
+            self.operationQueue.addOperation(save)
+            
+            // This block reports an error of type partialFailure when it saves or deletes only some of the records successfully. The userInfo dictionary of the error contains a CKPartialErrorsByItemIDKey key whose value is an NSDictionary object. The keys of that dictionary are the IDs of the records that were not saved or deleted, and the corresponding values are error objects containing information about what happened.
+            save.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
+                guard let err = error else {
+                    allSuccessfulSaves.appendContentsOf(savedRecords ?? [])
+                    allSuccessfulDeletions.appendContentsOf(deletedRecordIDs ?? [])
+                    completionHandler(savedRecords: savedRecords ?? [], saveFailures: nil, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures: nil, errorHandler: nil)
+                    dispatch_group_leave(grp)
+                    return
                 }
                 
-                // TODO: handle partial failures by retrying them in case the issue is due to something recoverable.
-                completionHandler(savedRecords: savedRecords ?? [], saveFailures:failedSaves, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures:nil, errorHandler: nil)
+                print("Error: \(err), \(err.userInfo), \(err.userInfo[CKPartialErrorsByItemIDKey])")
+                if let partialErrorInfo = err.userInfo[CKPartialErrorsByItemIDKey] as? [CKRecordID:NSError] {
+                    
+                    print("Partial error info: \(partialErrorInfo)")
+                    
+                    let failedSaves = partialErrorInfo.flatMap { (recordID, errorInfo) -> (record:CKRecord, error:ErrorType)? in
+                        // TODO: filter by error type
+                        if let record = recordsMap[recordID] {
+                            return (record:record, error:Error.UnderlyingError(errorInfo))
+                        }
+                        return nil
+                    }
+                    
+                    allFailedSaves.appendContentsOf(failedSaves)
+                    // TODO: handle also deletion failures.
+                    // TODO: handle partial failures by retrying them in case the issue is due to something recoverable.
+                }
+                else {
+                    completeFailures.append(.UnderlyingError(err))
+                }
+                
+                dispatch_group_leave(grp)
             }
-            else {
-                completionHandler(savedRecords: savedRecords ?? [], saveFailures:nil, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures: nil, errorHandler: err)
-            }
+        }
+        
+        dispatch_group_notify(grp, dispatch_get_main_queue()) { 
+            completionHandler(savedRecords: allSuccessfulSaves, saveFailures: allFailedSaves, deletedRecordIDs: allSuccessfulDeletions, deletionFailures: nil, errorHandler: completeFailures.count > 0 ? Error.CompoundError(completeFailures) : nil)
         }
     }
     

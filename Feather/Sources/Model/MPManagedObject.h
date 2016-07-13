@@ -163,6 +163,9 @@ extern NSString * _Nonnull const MPPasteboardTypeManagedObjectIDArray;
   * Note that to be userContributed / bundled (and e.g. therefore locked) are not mutually exclusive. */
 @property (readwrite, getter=isUserContributed) BOOL userContributed;
 
+/** These ignored keys are those ignored when pushing data to CloudKit via the CloudKit sync service. The default implementation returns an empty array, you can override this in subclasses to customise behaviour. */
++ (nonnull NSArray<NSString *> *)cloudKitIgnoredKeys;
+
 /** KVC key corresponding to a property key stored in the object's backing dictionary. Base class implementation returns the argument value. */
 - (nonnull NSString *)valueCodingKeyForPersistedPropertyKey:(nonnull NSString *)persistedPropertyKey;
 

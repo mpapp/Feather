@@ -200,8 +200,8 @@ NSString *_Nonnull const MPArrayExtensionErrorDomain = @"@MPArrayExtensionErrorD
     return [self valueForKeyPath:@"@unionOfArrays.self"];
 }
 
-+ (NSDictionary *)decodeFromJSONString:(NSString *)s error:(NSError **)error {
-    NSDictionary *d = [NSJSONSerialization JSONObjectWithData:[s dataUsingEncoding:NSUTF8StringEncoding] options:0 error:error];
++ (NSArray *)decodeFromJSONString:(NSString *)s error:(NSError **)error {
+    NSArray *d = [NSJSONSerialization JSONObjectWithData:[s dataUsingEncoding:NSUTF8StringEncoding] options:0 error:error];
     if (![d isKindOfClass:NSArray.class]) {
         if (error) {
             *error = [NSError errorWithDomain:MPArrayExtensionErrorDomain

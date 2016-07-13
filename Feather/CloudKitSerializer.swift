@@ -24,7 +24,6 @@ public struct CloudKitSerializer {
     
     public let ownerName:String
     public let recordZoneRepository:CloudKitRecordZoneRepository
-    public let ignoredKeys:[String]
     
     public func serialize(object:MPManagedObject, serializingKey:String? = nil) throws -> CKRecord {
         let record = try self.recordZoneRepository.record(object:object, ownerName: ownerName)
@@ -39,7 +38,7 @@ public struct CloudKitSerializer {
                 throw Error.UnexpectedKey(key)
             }
             
-            if self.ignoredKeys.contains(keyString) {
+            if object.dynamicType.cloudKitIgnoredKeys().contains(keyString) {
                 continue
             }
             

@@ -66,7 +66,7 @@ typedef NS_ENUM(NSUInteger, MPArrayExtensionErrorCode) {
 /**  A JSON encodable string representation of the array. Objects in the array must all implement a method with selector -JSONStringRepresentation: */
 - (nullable NSString *)JSONStringRepresentation:(NSError *_Nullable *_Nullable)err;
 
-+ (nullable NSDictionary *)decodeFromJSONString:(nonnull NSString *)s error:(NSError *_Nullable *_Nullable)error;
++ (nullable NSArray *)decodeFromJSONString:(nonnull NSString *)s error:(NSError *_Nullable *_Nullable)error;
 
 - (nonnull NSArray<T> *)allPermutations;
 
