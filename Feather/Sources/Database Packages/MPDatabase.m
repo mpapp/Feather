@@ -479,7 +479,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
                       self.name);
     
     CBLDatabase *db = (CBLDatabase *)notification.object;
-    NSLog(@"%@ database changed", self.name);
+    //NSLog(@"%@ database changed", self.name);
     
     NSAssert(db == self.database, @"Expecting %@ (%@) == %@ (%@)", db, db.name, self.database, self.database.name);
     
