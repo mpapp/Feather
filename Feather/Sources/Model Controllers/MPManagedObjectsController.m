@@ -1235,14 +1235,14 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 #pragma mark - 
 
-- (NSArray *)objectsMatchingQueriedView:(NSString *)view keys:(NSArray *)keys
-{
-    NSParameterAssert(view);
+- (NSArray *)objectsMatchingQueriedView:(NSString *)view keys:(NSArray *)keys {
+    // Assertions here are safe because query may be sent once database is already torn down during shutdown.
+    //NSParameterAssert(view);
     
     CBLQuery *q = [self.db.database existingViewNamed:view].createQuery;
-#ifdef DEBUG
-    NSParameterAssert(q);
-#endif
+//#ifdef DEBUG
+//    NSParameterAssert(q);
+//#endif
     
     if (!q) {
         MPLog(@"WARNING! No view with name '%@' in database %@ (%@)", view, self.db.name, self.db.database);
