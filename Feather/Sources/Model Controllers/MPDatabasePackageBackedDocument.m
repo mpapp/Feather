@@ -443,27 +443,34 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
     return YES;
 }
 
+- (BOOL)shouldReopenOnRevert {
+    return NO;
+}
+
 - (BOOL)revertToContentsOfURL:(NSURL *)url
                        ofType:(NSString *)typeName
                         error:(NSError *__autoreleasing *)outError {
     BOOL revert = [super revertToContentsOfURL:url ofType:typeName error:outError];
     
-    NSURL *fileURL = self.fileURL;
-    
-    _reverted = YES;
-    
-    [NSObject performInMainQueueAfterDelay:.0 block:^{
-        [self close];
-        [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:fileURL
-                                                                               display:YES
-                                                                     completionHandler:
-         ^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
-             NSLog(@"Opened reverted document %@ at URL %@", document, url);
-         }];
-    }];
-    
+    if ([self shouldReopenOnRevert]) {
+        NSURL *fileURL = self.fileURL;
+        
+        _reverted = YES;
+        
+        [NSObject performInMainQueueAfterDelay:.0 block:^{
+            [self close];
+            [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:fileURL
+                                                                                   display:YES
+                                                                         completionHandler:
+             ^(NSDocument *document, BOOL documentWasAlreadyOpen, NSError *error) {
+                 NSLog(@"Opened reverted document %@ at URL %@", document, url);
+             }];
+        }];
+    }
+
     return revert;
 }
+
 
 #pragma mark - Window controller
 

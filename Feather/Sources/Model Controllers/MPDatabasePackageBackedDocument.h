@@ -83,6 +83,9 @@ typedef NS_ENUM(NSUInteger, MPDatabasePackageBackedDocumentErrorCode) {
 /** Document state has been reverted */
 @property (readonly) BOOL reverted;
 
+/** YES if document should be opened with a slight delay after reverting, NO otherwise. Default implementation always responds to NO. */
+@property (readonly) BOOL shouldReopenOnRevert;
+
 /** A shorthand for getting the document's primary window controller. */
 @property (readonly) id mainWindowController;
 
