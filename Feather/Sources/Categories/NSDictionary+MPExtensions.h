@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 extern NSString *_Nonnull const MPDictionaryExtensionErrorDomain;
 

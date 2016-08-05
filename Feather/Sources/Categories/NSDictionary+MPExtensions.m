@@ -6,12 +6,12 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import "MPJSONRepresentable.h"
-
 #import "NSDictionary+MPExtensions.h"
 #import "NSArray+MPExtensions.h"
 #import "NSSet+MPExtensions.h"
 #import "NSString+MPExtensions.h"
+
+#import "MPJSONRepresentable.h"
 
 
 NSString *const MPDictionaryExtensionErrorDomain = @"MPDictionaryExtensionErrorDomain";

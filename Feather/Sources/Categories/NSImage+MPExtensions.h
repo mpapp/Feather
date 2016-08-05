@@ -8,7 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-extern NSString *const MPImageExtensionsErrorDomain;
+extern NSString *_Nonnull const MPImageExtensionsErrorDomain;
 
 typedef NS_ENUM(NSUInteger, MPImageExtensionsErrorCode) {
     MPImageExtensionsErrorCodeUnknown = 0,
@@ -27,56 +27,56 @@ typedef struct MPEMUSize
 
 @interface NSImage (MPExtensions)
 
-- (NSImage *)roundCornersImageCornerRadius:(NSInteger)radius;
+- (nonnull NSImage *)roundCornersImageCornerRadius:(NSInteger)radius;
 
-@property (readonly) CGImageRef CGImage;
+@property (readonly, nonnull) CGImageRef CGImage;
 
-+ (NSImage *)imageForURL:(NSURL *)imageURL;
++ (nullable NSImage *)imageForURL:(nonnull NSURL *)imageURL;
 - (NSUInteger)DPI;
 - (MPEMUSize)EMUSize;
 
-@property (readonly) NSData *PNGRepresentation;
+@property (readonly, nonnull) NSData *PNGRepresentation;
 
 /** Return the detected bitmap image type for given data as a NSBitmapImageFileType value, 
   * or **NSNotFound** if none applies. */
-+ (NSUInteger)bitmapImageTypeForData:(NSData *)data __attribute__((nonnull));
++ (NSUInteger)bitmapImageTypeForData:(nonnull NSData *)data;
 
 /** Return the detected bitmap image type for pasteboard type as a NSBitmapImageFileType value,
   * or **NSNotFound** if none applies. */
-+ (NSUInteger)bitmapImageFileTypeForPasteboardType:(NSString *)pasteboardType;
++ (NSUInteger)bitmapImageFileTypeForPasteboardType:(nonnull NSString *)pasteboardType;
 
-+ (NSUInteger)bitmapImageFileTypeForPathExtension:(NSString *)fileExtension;
++ (NSUInteger)bitmapImageFileTypeForPathExtension:(nonnull NSString *)fileExtension;
 
-+ (NSString *)canonicalPathExtensionForBitmapImageFileType:(NSBitmapImageFileType)fileType;
++ (nonnull NSString *)canonicalPathExtensionForBitmapImageFileType:(NSBitmapImageFileType)fileType;
 
 /** An array of UTTs for image data formats used on the pasteboard. */
-+ (NSArray *)prioritizedImageDataPasteboardTypes;
++ (nonnull NSArray<NSString *> *)prioritizedImageDataPasteboardTypes;
 
 /** Returns an NSImage object read from the given pasteboard, and passes by reference the type of the image.
   * Image type is selected in priority, preferring PDF first, then bitmap only formats (PNG, JPEG, TIFF, BMP, JPEG2000). */
-+ (NSImage *)imageFromPasteboard:(NSPasteboard *)pasteboard pasteboardType:(NSString **)type;
++ (nullable NSImage *)imageFromPasteboard:(nonnull NSPasteboard *)pasteboard pasteboardType:(NSString *_Nullable * _Nullable)type;
 
 /** A framed version of the image */
-- (NSImage *)framedWithSize:(NSSize)size;
+- (nonnull NSImage *)framedWithSize:(NSSize)size;
 
 /** Copy a representation of the image as data with data writing and bitmap type options. */
-- (NSData *)imageDataWithOptions:(NSDataWritingOptions)options
-                            type:(NSBitmapImageFileType)type
-                           error:(NSError **)error;
+- (nullable NSData *)imageDataWithOptions:(NSDataWritingOptions)options
+                                     type:(NSBitmapImageFileType)type
+                                    error:(NSError *_Nonnull *_Nonnull)error;
 
 /** Write the image to file at the given path in a format of your choice. */
-- (BOOL)writeToFile:(NSString *)path
+- (BOOL)writeToFile:(nonnull NSString *)path
             options:(NSDataWritingOptions)options
                type:(NSBitmapImageFileType)type
-              error:(NSError **)error;
+              error:(NSError *_Nullable *_Nullable)error;
 
 @end
 
 // Kindly contributed by Charles Parnot (FDFoundation)
 @interface NSImage (FDImageDiff)
 
-- (BOOL)isPixelEqualToImage:(NSImage *)image;
+- (BOOL)isPixelEqualToImage:(nonnull NSImage *)image;
 
-- (CGFloat)pixelDifferenceWithImage:(NSImage *)image;
+- (CGFloat)pixelDifferenceWithImage:(nonnull NSImage *)image;
 
 @end
