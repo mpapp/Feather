@@ -216,9 +216,11 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
             return nil;
         }
     }
-    else  {
-        NSAssert(_temporaryManuscriptPath,
-                 @"Unexpected state: !temporaryManuscriptPath && !bundleRequiresInitialization");
+    else {
+        if (!_resourcesCleaned) {
+            NSAssert(_temporaryManuscriptPath,
+                     @"Unexpected state: !temporaryManuscriptPath && !bundleRequiresInitialization");            
+        }
     }
     
     if (_resourcesCleaned) {
