@@ -11,7 +11,7 @@
 #import "NSSet+MPExtensions.h"
 #import "NSString+MPExtensions.h"
 
-#import "MPJSONRepresentable.h"
+#import "FeatherExtensions/MPJSONRepresentable.h"
 
 
 NSString *const MPDictionaryExtensionErrorDomain = @"MPDictionaryExtensionErrorDomain";

@@ -70,6 +70,8 @@ typedef struct MPEMUSize
                type:(NSBitmapImageFileType)type
               error:(NSError *_Nullable *_Nullable)error;
 
++ (nullable NSImage *)resizedImage:(nonnull NSImage *)sourceImage toPixelDimensions:(NSSize)newSize;
+
 @end
 
 // Kindly contributed by Charles Parnot (FDFoundation)

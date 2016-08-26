@@ -499,4 +499,8 @@ NSString * __nonnull const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFea
     return UTI;
 }
 
+- (NSNumber *)fileSizeAtPath:(NSString *)path {
+    return [[self attributesOfItemAtPath:path error:NULL] objectForKey:NSFileSize];
+}
+
 @end

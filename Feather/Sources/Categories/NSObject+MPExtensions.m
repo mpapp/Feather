@@ -437,29 +437,19 @@ void mp_dispatch_async(dispatch_queue_t q, NSUInteger queueSpecificToken, dispat
 
 - (NSString *)diffDescription
 {
-    if ([self isKindOfClass:[NSDictionary class]] || [self isKindOfClass:[NSArray class]])
+    if ([self isKindOfClass:[NSDictionary class]] || [self isKindOfClass:[NSArray class]] || [self isKindOfClass:[NSData class]])
     {
         NSString *shortDescription = [self description];
         if ([shortDescription length] > MAX_CHARS)
             shortDescription = [[shortDescription substringToIndex:MAX_CHARS] stringByAppendingString:@"..."];
         return [NSString stringWithFormat:@"%@ entries: %@", @([(id)self count]), shortDescription];
     }
-    
-    else if ([self isKindOfClass:[NSData class]])
-    {
-        NSString *shortDescription = [self description];
-        if ([shortDescription length] > MAX_CHARS)
-            shortDescription = [[shortDescription substringToIndex:MAX_CHARS] stringByAppendingString:@"..."];
-        return [NSString stringWithFormat:@"%@ bytes: %@", @([(id)self length]), shortDescription];
-    }
-    
     else if ([self isKindOfClass:[NSString class]])
     {
         return [NSString stringWithFormat:@"%@ characters: %@", @([(id)self length]), [self description]];
     }
     
-    else
-        return [self description];
+    return [self description];
 }
 
 - (void)appendToString:(NSMutableString *)diff
