@@ -105,6 +105,7 @@
 		5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
 		5F9F226A1C792A0800244277 /* CollectionType+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9F22691C792A0800244277 /* CollectionType+MPExtensions.swift */; };
+		5FA29AC11D71ACF2000DB8C1 /* NSOutlineView+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA29AC01D71ACF2000DB8C1 /* NSOutlineView+MPExtensions.swift */; };
 		5FA9D02E1D29C74000C96CE1 /* CloudKitDeserializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA9D02D1D29C74000C96CE1 /* CloudKitDeserializer.swift */; };
 		5FAA0A681D2EA87800F18A2D /* CloudKitState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAA0A671D2EA87800F18A2D /* CloudKitState.swift */; };
 		5FAA0A6A1D2EA96500F18A2D /* Freddy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAA0A691D2EA96500F18A2D /* Freddy.framework */; };
@@ -382,6 +383,7 @@
 		5F9F22691C792A0800244277 /* CollectionType+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CollectionType+MPExtensions.swift"; sourceTree = "<group>"; };
 		5FA0D11319012D19005BC968 /* NSIndexSet+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSIndexSet+MPExtensions.h"; path = "Sources/Categories/NSIndexSet+MPExtensions.h"; sourceTree = "<group>"; };
 		5FA0D11419012D19005BC968 /* NSIndexSet+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSIndexSet+MPExtensions.m"; path = "Sources/Categories/NSIndexSet+MPExtensions.m"; sourceTree = "<group>"; };
+		5FA29AC01D71ACF2000DB8C1 /* NSOutlineView+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOutlineView+MPExtensions.swift"; sourceTree = "<group>"; };
 		5FA9D02D1D29C74000C96CE1 /* CloudKitDeserializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitDeserializer.swift; sourceTree = "<group>"; };
 		5FAA0A671D2EA87800F18A2D /* CloudKitState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitState.swift; sourceTree = "<group>"; };
 		5FAA0A691D2EA96500F18A2D /* Freddy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Freddy.framework; path = Carthage/Build/Mac/Freddy.framework; sourceTree = "<group>"; };
@@ -673,6 +675,7 @@
 				5F05A3681CD0332A00FE80D8 /* NSXMLElement+MPExtensions.h */,
 				5F05A3691CD0332A00FE80D8 /* NSXMLElement+MPExtensions.m */,
 				5F41633E1D0DF2E40017A57C /* NSAttributedString+MPExtensions.swift */,
+				5FA29AC01D71ACF2000DB8C1 /* NSOutlineView+MPExtensions.swift */,
 			);
 			name = "AppKit Categories";
 			sourceTree = "<group>";
@@ -1578,6 +1581,7 @@
 				5F05A33E1CD02D1200FE80D8 /* NSTextView+MPExtensions.m in Sources */,
 				5F05A33A1CD02D1200FE80D8 /* NSEvent+MPExtensions.m in Sources */,
 				5F05A3421CD02D1200FE80D8 /* NSViewController+MPExtensions.m in Sources */,
+				5FA29AC11D71ACF2000DB8C1 /* NSOutlineView+MPExtensions.swift in Sources */,
 				5F05A3381CD02D1200FE80D8 /* NSApplication+MPExtensions.m in Sources */,
 				5F05A3471CD02DC200FE80D8 /* NSPopover+MPExtensions.m in Sources */,
 			);
