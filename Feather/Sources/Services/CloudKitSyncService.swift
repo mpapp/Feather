@@ -52,7 +52,7 @@ public struct CloudKitSyncService {
         }
     }
     
-    private func allRecords(packageController:MPDatabasePackageController) throws -> [CKRecord] {
+    public func allRecords(packageController:MPDatabasePackageController) throws -> [CKRecord] {
         guard let ownerName = self.dynamicType.ownerID?.recordName else {
             throw Error.OwnerUnknown
         }
