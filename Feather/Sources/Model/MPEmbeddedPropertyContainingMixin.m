@@ -41,4 +41,8 @@
     return [self embeddedPropertiesMap][NSStringFromClass(self)];
 }
 
+- (void)willUpdateEmbeddedObject:(MPEmbeddedObject *)embeddedObject withEmbeddingKey:(NSString *)embedddingKey {
+    // intentionally no-op. override in subclasses to do Stuff.
+}
+
 @end

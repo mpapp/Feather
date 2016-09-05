@@ -478,6 +478,9 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
                  @"Unexpected identifier for object of class %@", self.class);
     }
     
+    if ([_embeddingObject respondsToSelector:@selector(willUpdateEmbeddedObject:withEmbeddingKey:)]) {
+        [_embeddingObject willUpdateEmbeddedObject:self withEmbeddingKey:self.embeddingKey];
+    }
     return [_embeddingObject save:err];
 }
 
