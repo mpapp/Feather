@@ -92,20 +92,20 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
 {
     if (self = [super init])
     {
-        assert([propertiesDict isKindOfClass:[NSDictionary class]]);
+        NSAssert([propertiesDict isKindOfClass:[NSDictionary class]], @"Unexpected class: %@ (%@)", propertiesDict, [propertiesDict class]);
         
         if (propertiesDict[@"_id"]) {
-            assert([propertiesDict[@"_id"] hasPrefix:NSStringFromClass(self.class)]);
-            assert(propertiesDict[@"objectType"]); // if one of _id or objectType is present, both should be.
+            NSAssert([propertiesDict[@"_id"] hasPrefix:NSStringFromClass(self.class)], @"Unexpected ID prefix %@", propertiesDict[@"_id"]);
+            NSAssert(propertiesDict[@"objectType"], @"Missing objectType: %@", propertiesDict); // if one of _id or objectType is present, both should be.
         }
         
         if (propertiesDict[@"objectType"]) {
-            assert([propertiesDict[@"objectType"] isEqualToString:NSStringFromClass(self.class)]);
-            assert(propertiesDict[@"_id"]); // if one of _id or objectType is present, both should be.
+            NSAssert([propertiesDict[@"objectType"] isEqualToString:NSStringFromClass(self.class)], @"Unexpected objectType %@ != %@", propertiesDict[@"objectType"], NSStringFromClass(self.class));
+            NSAssert(propertiesDict[@"_id"], @"Missing _id: %@", propertiesDict); // if one of _id or objectType is present, both should be.
         }
         
-        assert(key);
-        assert(embeddingObject);
+        NSAssert(key, @"Missing embedding key: %@ (object:%@, class: %@)", propertiesDict, object, self.class);
+        NSAssert(embeddingObject, @"Missing embedding object: %@ (key:%@, class:  %@)", propertiesDict, key, self.class);
         
         _embeddingObject = embeddingObject;
         _embeddingKey = key;
