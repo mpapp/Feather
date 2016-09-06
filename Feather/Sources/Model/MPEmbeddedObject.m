@@ -104,7 +104,7 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
             NSAssert(propertiesDict[@"_id"], @"Missing _id: %@", propertiesDict); // if one of _id or objectType is present, both should be.
         }
         
-        NSAssert(key, @"Missing embedding key: %@ (object:%@, class: %@)", propertiesDict, object, self.class);
+        NSAssert(key, @"Missing embedding key: %@ (properties:%@, class: %@)", self, propertiesDict, self.class);
         NSAssert(embeddingObject, @"Missing embedding object: %@ (key:%@, class:  %@)", propertiesDict, key, self.class);
         
         _embeddingObject = embeddingObject;

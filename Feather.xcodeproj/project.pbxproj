@@ -110,6 +110,7 @@
 		5FAA0A681D2EA87800F18A2D /* CloudKitState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAA0A671D2EA87800F18A2D /* CloudKitState.swift */; };
 		5FAA0A6A1D2EA96500F18A2D /* Freddy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAA0A691D2EA96500F18A2D /* Freddy.framework */; };
 		5FAC23BF19ABFE79000F188C /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAC23BE19ABFE79000F188C /* CoreServices.framework */; };
+		5FAF535A1D7F397600372EF5 /* RegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDED07E1C67A09A00769001 /* RegexKitLite.framework */; };
 		5FBDCBF41CE9D691002DEAA7 /* ErrorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBDCBF31CE9D691002DEAA7 /* ErrorPresenter.swift */; };
 		5FC423131AFF8719002234FB /* FeatherExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC423121AFF8719002234FB /* FeatherExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC423191AFF8719002234FB /* FeatherExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; };
@@ -555,6 +556,7 @@
 				5FC423911AFF8CCA002234FB /* libz.dylib in Frameworks */,
 				5F89426B1CD0531100A9DC07 /* CocoaLumberjackSwift.framework in Frameworks */,
 				5F2AFA6A1C3DE8E000B37435 /* DiffMatchPatch.framework in Frameworks */,
+				5FAF535A1D7F397600372EF5 /* RegexKitLite.framework in Frameworks */,
 				5FC423751AFF87FC002234FB /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
