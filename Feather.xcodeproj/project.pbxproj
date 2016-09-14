@@ -214,6 +214,7 @@
 		5FE2C0EB1B256B4C001DB163 /* MPTreeItemUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FE2C0E91B256B4C001DB163 /* MPTreeItemUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FE2C0EC1B256B4C001DB163 /* MPTreeItemUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FE2C0EA1B256B4C001DB163 /* MPTreeItemUtility.m */; };
 		5FEA8B5018A81E0100A7C14B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEA8B4F18A81E0100A7C14B /* XCTest.framework */; };
+		5FEE14CE1D89552F0087924A /* MPContributorChangeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEE14CD1D89552F0087924A /* MPContributorChangeObserver.swift */; };
 		5FF745AB1D25518300B493D0 /* MPManagedObject-CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF745AA1D25518300B493D0 /* MPManagedObject-CloudKit.swift */; };
 		5FF745B81D259BD100B493D0 /* CloudKitSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF745B71D259BD100B493D0 /* CloudKitSyncService.swift */; };
 		5FF745BA1D259C3500B493D0 /* MPRateLimiter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF745B91D259C3500B493D0 /* MPRateLimiter.framework */; };
@@ -506,6 +507,7 @@
 		5FE2C0E91B256B4C001DB163 /* MPTreeItemUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPTreeItemUtility.h; path = Sources/Utilities/MPTreeItemUtility.h; sourceTree = "<group>"; };
 		5FE2C0EA1B256B4C001DB163 /* MPTreeItemUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPTreeItemUtility.m; path = Sources/Utilities/MPTreeItemUtility.m; sourceTree = "<group>"; };
 		5FEA8B4F18A81E0100A7C14B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		5FEE14CD1D89552F0087924A /* MPContributorChangeObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MPContributorChangeObserver.swift; path = Sources/Model/MPContributorChangeObserver.swift; sourceTree = "<group>"; };
 		5FF745AA1D25518300B493D0 /* MPManagedObject-CloudKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "MPManagedObject-CloudKit.swift"; path = "Sources/Model/MPManagedObject-CloudKit.swift"; sourceTree = "<group>"; };
 		5FF745B71D259BD100B493D0 /* CloudKitSyncService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloudKitSyncService.swift; path = Sources/Services/CloudKitSyncService.swift; sourceTree = "<group>"; };
 		5FF745B91D259C3500B493D0 /* MPRateLimiter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MPRateLimiter.framework; path = Carthage/Build/Mac/MPRateLimiter.framework; sourceTree = "<group>"; };
@@ -1060,6 +1062,7 @@
 				5F68579F1727C38900FE06B0 /* MPVirtualSection+Protected.h */,
 				5F8119471CEE32C3007018B8 /* TreeItemPool.swift */,
 				5FF745AA1D25518300B493D0 /* MPManagedObject-CloudKit.swift */,
+				5FEE14CD1D89552F0087924A /* MPContributorChangeObserver.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1688,6 +1691,7 @@
 				5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */,
 				5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */,
 				5FC802281B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.m in Sources */,
+				5FEE14CE1D89552F0087924A /* MPContributorChangeObserver.swift in Sources */,
 				5F3D380F1725D8E000D19D7C /* MPBundlableMixin.m in Sources */,
 				5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */,
 				5FE2C0EC1B256B4C001DB163 /* MPTreeItemUtility.m in Sources */,
