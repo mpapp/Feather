@@ -807,9 +807,14 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 {
     __block NSDictionary *dict = nil;
     mp_dispatch_sync(self.database.manager.dispatchQueue,
-                     [self.database.packageController serverQueueToken], ^{
-        dict = [super propertiesToSave];
-    });
+                     [self.database.packageController serverQueueToken],
+                     ^{
+                         // workaround to https://github.com/couchbase/couchbase-lite-ios/issues/1454
+                         if (!self.document) {
+                             return;
+                         }
+                         dict = [super propertiesToSave];
+                     });
     
     return dict;
 }
