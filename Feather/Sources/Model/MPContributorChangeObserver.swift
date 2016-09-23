@@ -21,7 +21,7 @@ import Foundation
     func didRemoveSection(notification:NSNotification)
 }
 
-@objc(MPContributorChangeObserver) public protocol ContributorRecentChangeObserver: MPManagedObjectRecentChangeObserver {
+@objc(MPContributorRecentChangeObserver) public protocol ContributorRecentChangeObserver: MPManagedObjectRecentChangeObserver {
     func hasAddedSection(notification:NSNotification)
     func hasUpdatedSection(notification:NSNotification)
     func hasRemovedSection(notification:NSNotification)

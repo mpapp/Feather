@@ -15,28 +15,10 @@ extern NSString *_Nonnull const MPContributorRoleTranslator;
 
 @class MPContributor, MPContributorIdentity;
 
-/** Have classes which observe MPContributor changes conform to this protocol. That is, a class X whose instances x are sent
- 
- [[packageController notificationCenter] addObserver:x forManagedObjectClass:[MPContributor class]]
- 
- should conform to this protocol.
- */
-@protocol MPContributorChangeObserver <MPManagedObjectChangeObserver, NSObject>
-- (void)didAddContributor:(nonnull NSNotification *)notification;
-- (void)didUpdateContributor:(nonnull NSNotification *)notification;
-- (void)didRemoveContributor:(nonnull NSNotification *)notification;
-@end
-
-@protocol MPContributorRecentChangeObserver <MPManagedObjectRecentChangeObserver, NSObject>
-- (void)hasAddedContributor:(nonnull NSNotification *)notification;
-- (void)hasUpdatedContributor:(nonnull NSNotification *)notification;
-- (void)hasRemovedContributor:(nonnull NSNotification *)notification;
-@end
-
 @class MPContributor;
 
 /** Controller for MPContributor objects. */
-@interface MPContributorsController : MPManagedObjectsController <MPContributorRecentChangeObserver, MPCacheable>
+@interface MPContributorsController : MPManagedObjectsController <MPCacheable>
 
 /** An MPContributor object that signifies the current user. Created on demand. */
 @property (readonly, strong, nonnull) MPContributor *me;
