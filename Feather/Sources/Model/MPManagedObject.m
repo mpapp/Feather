@@ -1550,7 +1550,7 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     NSAssert([MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:databasePackageID],
              @"Failed to resolve package controller with ID %@", databasePackageID);
     
-    NSParameterAssert(self.objectType, @"Missing 'objectType' property for managed object of type %@ (%@)", self.class, self.propertiesToSave);
+    NSAssert(self.objectType, @"Missing 'objectType' property for managed object of type %@ (%@)", self.class, self.propertiesToSave);
     
     return @{
       @"_id":self.documentID,
