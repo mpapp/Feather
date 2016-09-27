@@ -317,7 +317,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (BOOL)isDeleted
 {
-    return (self.document == nil);
+    return (self.document == nil) || self.document.isDeleted;
 }
 
 - (void)setUserContributed:(BOOL)userContributed {
