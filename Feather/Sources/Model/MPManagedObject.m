@@ -1547,11 +1547,14 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     }
     
     NSString *databasePackageID = ((MPDatabasePackageController *)(self.controller.packageController)).fullyQualifiedIdentifier;
-    NSAssert([MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:databasePackageID], @"Failed to resolve package controller with ID %@", databasePackageID);
+    NSAssert([MPDatabasePackageController databasePackageControllerWithFullyQualifiedIdentifier:databasePackageID],
+             @"Failed to resolve package controller with ID %@", databasePackageID);
+    
+    NSParameterAssert(self.objectType, @"Missing 'objectType' property for managed object of type %@ (%@)", self.class, self.propertiesToSave);
     
     return @{
       @"_id":self.documentID,
-      @"objectType" : self.objectType,
+      @"objectType" : NSStringFromClass(self.class),
       @"databasePackageID" : databasePackageID
     };
 }
