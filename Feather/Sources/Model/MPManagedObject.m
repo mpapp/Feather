@@ -1124,9 +1124,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (id)getValueForDictionaryEmbeddedKey:(NSString *)embeddedKey ofProperty:(NSString *)dictPropertyKey
 {
-    NSMutableDictionary *dict = [self getValueOfProperty:dictPropertyKey];
+    NSDictionary *dict = [self getValueOfProperty:dictPropertyKey];
     if (dict)
-        NSParameterAssert([dict isKindOfClass:[NSMutableDictionary class]]);
+        NSAssert([dict isKindOfClass:[NSDictionary class]], @"Expecting dictionary but encountered %@", dict.class);
     return dict[embeddedKey];
 }
 
