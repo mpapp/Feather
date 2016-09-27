@@ -17,6 +17,8 @@ const MPTextContentOffset MPTextContentOffsetNotFound = -1;
 const MPTextContentOffset MPTextContentOffsetBeginning = 0;
 const MPTextContentOffset MPTextContentOffsetEnd = NSIntegerMax;
 
+const NSString *_Nonnull MPXMLElementExtensionsErrorDomain = @"MPXMLElementExtensionsErrorDomain";
+
 //
 // Note: the options are almost `NSXMLNodePreserveAll`, but with `NSXMLNodePreserveCharacterReferences` dropped,
 // because including it causes valid documents with text nodes containing &lt; *and* the # character to expand
@@ -168,6 +170,18 @@ typedef NS_ENUM(NSInteger, MPXMLElementErrorCode) {
 + (NSXMLElement *)XMLElementFromString:(NSString *)XMLString error:(NSError *__autoreleasing *)error
 {
     NSString *cleanXMLString = [XMLString stringByRemovingInvalidUTF8EncodedXMLCharacters];
+    
+    if (!cleanXMLString) {
+        if (error) {
+            *error = [NSError errorWithDomain:MPXMLElementErrorDomain
+                                         code:MPXMLElementErrorCodeFailedToParseXMLString
+                                     userInfo:@{NSLocalizedDescriptionKey:
+                                                    [NSString stringWithFormat:@"Bad XML string:\n", XMLString]
+                                                }];
+        }
+        return nil;
+    }
+    
     NSXMLElement *element = [[NSXMLElement alloc] initWithXMLString:cleanXMLString error:error];
     return element;
 }

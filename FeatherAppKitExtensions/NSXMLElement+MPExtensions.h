@@ -20,7 +20,6 @@ extern const MPTextContentOffset MPTextContentOffsetEnd;
 extern const NSUInteger MPDefaultXMLDocumentParsingOptions;
 extern const NSUInteger MPDefaultXMLDocumentOutputOptions;
 
-
 typedef NS_ENUM(NSInteger, MPXMLNodeFilteringResult)
 {
     MPXMLNodeFilteringResultKeep = 1,
