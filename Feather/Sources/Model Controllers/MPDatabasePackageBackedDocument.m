@@ -104,12 +104,12 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
     
     NSUInteger retries = 0;
     NSError *err = nil;
-    while ((retries < 20) && ![(MPDatabasePackageController *)_packageController close:&err]) {
-        [NSThread sleepForTimeInterval:.5];
+    while ((retries < 60) && ![(MPDatabasePackageController *)_packageController close:&err]) {
+        [NSThread sleepForTimeInterval:.08];
         retries++;
     }
     
-    if (retries == 20) {
+    if (retries == 60) {
         NSLog(@"Failed to close package: %@", err);
     }
     
