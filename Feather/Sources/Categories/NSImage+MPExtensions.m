@@ -11,6 +11,8 @@
 #define RGB(R,G,B) [NSColor colorWithCalibratedRed:(R)/255. green:(G)/255. blue:(B)/255. alpha:1]
 #define RGBA(R,G,B,A) [NSColor colorWithCalibratedRed:(R)/255. green:(G)/255. blue:(B)/255. alpha:(A)]
 
+@import QuickLook;
+
 @implementation NSImage (RoundCorner)
 
 void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, float ovalHeight)
@@ -424,6 +426,146 @@ void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, fl
     }
     
     NSAssert(false, @"Unexpected file type: %@", @(fileType));
+}
+
+#pragma mark - Previews & thumbnails
+
+// We thank Charles Parnot (https://github.com/cparnot) for donating the image preview & thumbnail code.
+
++ (NSImage *)imageWithPreviewOfFileAtURL:(NSURL *)url croppedAndScaledToFinalSize:(NSSize)finalSize
+{
+    CGSize coreGraphicsSize = NSSizeToCGSize(finalSize);
+    CFDictionaryRef options = (__bridge CFDictionaryRef)@{(__bridge NSString *)kQLThumbnailOptionIconModeKey: @NO};
+    CGImageRef imageRef = QLThumbnailImageCreate(kCFAllocatorDefault, (__bridge CFURLRef)(url), coreGraphicsSize, options);
+    
+    // now that we know the image proportions, we need to create a larger thumbnail that can be cropped to the final size without empty pixels
+    CGSize imageSize = CGSizeMake(CGImageGetWidth(imageRef), CGImageGetHeight(imageRef));
+    CGFloat scaleFactor1 = finalSize.width  / imageSize.width;
+    CGFloat scaleFactor2 = finalSize.height / imageSize.height;
+    CGFloat scaleFactor = fmaxf(scaleFactor1, scaleFactor2);
+    if (scaleFactor > 1.0)
+    {
+        imageSize.width *= scaleFactor;
+        imageSize.height *= scaleFactor;
+        if (imageRef)
+            CFRelease(imageRef);
+        imageRef = QLThumbnailImageCreate(kCFAllocatorDefault, (__bridge CFURLRef)(url), imageSize, options);
+    }
+    
+    // CGImageRef --> NSImage
+    NSImage *image = nil;
+    if (imageRef)
+    {
+        image = [[NSImage alloc] initWithCGImage:imageRef size:imageSize];
+        CFRelease(imageRef);
+    }
+    
+    // fall back on Finder icon and resize
+    if (!image)
+        image = [[NSWorkspace sharedWorkspace] iconForFile:url.path];
+    
+    image = [image scaledAndCroppedImageWithFinalSize:finalSize];
+    return image;
+}
+
++ (NSImage *)imageWithPreviewOfFileAtURL:(NSURL *)url maxSize:(NSSize)maxSize
+{
+    CGSize coreGraphicsSize = NSSizeToCGSize(maxSize);
+    CFDictionaryRef options = (__bridge CFDictionaryRef)@{(__bridge NSString *)kQLThumbnailOptionIconModeKey: @NO};
+    CGImageRef imageRef = QLThumbnailImageCreate(kCFAllocatorDefault, (__bridge CFURLRef)(url), coreGraphicsSize, options);
+    
+    // CGImageRef --> NSImage
+    NSImage *image = nil;
+    if (imageRef)
+    {
+        image = [[NSImage alloc] initWithCGImage:imageRef size:NSMakeSize(CGImageGetWidth(imageRef), CGImageGetHeight(imageRef))];
+        CFRelease(imageRef);
+    }
+    
+    // fall back on Finder icon and resize
+    else
+    {
+        image = [[NSWorkspace sharedWorkspace] iconForFile:url.path];
+        image = [image scaledImageWithMaxSize:maxSize];
+    }
+    
+    return image;
+}
+
+- (NSImage *)scaledImageWithMaxSize:(NSSize)maxSize
+{
+    if (![self isValid])
+        return nil;
+    
+    // portrait or landscape?
+    BOOL portrait = maxSize.width < maxSize.height;
+    
+    // calculate scaleFactor to resize original image to fit inside `newSize` and maintain the aspect ratio
+    NSSize oldSize = self.size;
+    NSRect oldRect = NSMakeRect(0.0, 0.0, oldSize.width, oldSize.height);
+    CGFloat scaleFactor = portrait ?  maxSize.height / oldSize.height : maxSize.width / oldSize.width;
+    NSSize newSize = NSMakeSize(oldSize.width * scaleFactor, oldSize.height * scaleFactor);
+    NSRect newRect = NSMakeRect(0.0, 0.0, newSize.width, newSize.height);
+    
+    // composite old image into a new image
+    NSImage *newImage = [[NSImage alloc] initWithSize:newSize];
+    [newImage lockFocus];
+    {
+        [[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
+        [self drawInRect:newRect fromRect:oldRect operation:NSCompositeCopy fraction:1.0];
+    }
+    [newImage unlockFocus];
+    
+    return newImage;
+}
+
+- (NSImage *)scaledAndCroppedImageWithFinalSize:(NSSize)finalSize
+{
+    if (![self isValid])
+        return nil;
+    
+    // cropRect = rect necessary to fit the image
+    NSSize imageSize = self.size;
+    NSRect initialRect = NSMakeRect(0.0, 0.0, imageSize.width, imageSize.height);
+    NSRect targetRect  = NSMakeRect(0.0, 0.0, finalSize.width, finalSize.height);
+    NSRect cropRect = MPCroppingRectProportionalToRect(initialRect, targetRect);
+    
+    // composite old image into a new image
+    NSImage *newImage = [[NSImage alloc] initWithSize:finalSize];
+    [newImage lockFocus];
+    {
+        [[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
+        [self drawInRect:targetRect fromRect:cropRect operation:NSCompositeCopy fraction:1.0];
+    }
+    [newImage unlockFocus];
+    
+    return newImage;
+}
+
+NSRect MPCroppingRectProportionalToRect(NSRect initialRect, NSRect targetRect)
+{
+    CGFloat scaleFactor1 = targetRect.size.width  / initialRect.size.width;
+    CGFloat scaleFactor2 = targetRect.size.height / initialRect.size.height;
+    NSRect cropRect;
+    if (scaleFactor1 > scaleFactor2)
+    {
+        // the correct scale factor is scaleFactor1
+        // target height after scaling = targetRect.size.height
+        // --> used height in the initial rect = targetRect.size.height / scaleFactor1 = intialRect.size.height * scaleFactor2 / scaleFactor1;
+        // --> deltaHeight = how much height to crop at the current image size
+        CGFloat cropHeight  = targetRect.size.height / scaleFactor1;
+        CGFloat deltaHeight = initialRect.size.height - cropHeight;
+        cropRect = NSMakeRect(0.0, deltaHeight / 2.0, initialRect.size.width, cropHeight);
+    }
+    else
+    {
+        // same as above, but applied to width instead of height
+        CGFloat cropWidth  = targetRect.size.width / scaleFactor2;
+        CGFloat deltaWidth = initialRect.size.width - cropWidth;
+        cropRect = NSMakeRect(deltaWidth / 2.0, 0.0, cropWidth, initialRect.size.height);
+    }
+    
+    return cropRect;
 }
 
 @end

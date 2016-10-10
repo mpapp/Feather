@@ -72,6 +72,14 @@ typedef struct MPEMUSize
 
 + (nullable NSImage *)resizedImage:(nonnull NSImage *)sourceImage toPixelDimensions:(NSSize)newSize;
 
+- (nonnull NSImage *)scaledImageWithMaxSize:(NSSize)maxSize;
+
+#pragma mark - Previews & thumbnails
+
++ (nonnull NSImage *)imageWithPreviewOfFileAtURL:(nonnull NSURL *)fileURL croppedAndScaledToFinalSize:(NSSize)finalSize;
+
++ (nonnull NSImage *)imageWithPreviewOfFileAtURL:(nonnull NSURL *)fileURL maxSize:(NSSize)maxSize;
+
 @end
 
 // Kindly contributed by Charles Parnot (FDFoundation)
