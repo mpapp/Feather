@@ -60,7 +60,8 @@ typedef enum MPDatabasePackageControllerErrorCode {
     MPDatabasePackageControllerErrorCodeCannotInitializeSharedDatabases = 5,
     MPDatabasePackageControllerErrorCodeDictionaryRepresentationInvalid = 6,
     MPDatabasePackageControllerErrorCodeNoDatabases = 7,
-    MPDatabasePackageControllerErrorCodeOngoingTransaction = 8
+    MPDatabasePackageControllerErrorCodeOngoingTransaction = 8,
+    MPDatabasePackageControllerErrorCodeRootURLMissing = 9
 } MPDatabasePackageControllerErrorCode;
 
 

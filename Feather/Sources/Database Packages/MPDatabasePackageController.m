@@ -594,11 +594,15 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
                                      failIfExists:(BOOL)failIfExists
                                             error:(NSError *__autoreleasing *)error
 {
-    if (!rootURL)
+    if (!rootURL) {
+        if (error) {
+            *error = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
+                                         code:MPDatabasePackageControllerErrorCodeRootURLMissing
+                                     userInfo:@{NSLocalizedDescriptionKey:@"Making a temporary copy of manuscript failed",
+                                                NSLocalizedFailureReasonErrorKey:@"Please contact support@manuscriptsapp.com if you continue to see this."}];
+        }
         return NO;
-
-    if (error)
-        *error = nil;
+    }
     
     NSFileManager *fm = [[NSFileManager alloc] init];
     BOOL isDirectory, exists = [fm fileExistsAtPath:rootURL.path isDirectory:&isDirectory];
@@ -628,8 +632,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     {
         BOOL success = [fm removeItemAtURL:rootURL error:error];
         MPLog(@"Failed to remove existing temporary directory at '%@'", rootURL.path);
-        if (!success)
+        if (!success) {
             return NO;
+        }
         exists = NO;
     }
     
