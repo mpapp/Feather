@@ -500,9 +500,9 @@ NSString * __nonnull const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFea
 }
 
 + (NSString *)canonicalPathExtensionForMIMEType:(nonnull NSString *)mimeType {
-    CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeType, NULL);
+    CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, (__bridge CFStringRef _Nonnull)(mimeType), NULL);
     CFStringRef extension = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassFilenameExtension);
-    return extension;
+    return CFBridgingRelease(extension);
 }
 
 - (NSNumber *)fileSizeAtPath:(NSString *)path {
