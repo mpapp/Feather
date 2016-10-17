@@ -499,6 +499,12 @@ NSString * __nonnull const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFea
     return UTI;
 }
 
++ (NSString *)canonicalPathExtensionForMIMEType:(nonnull NSString *)mimeType {
+    CFStringRef uti = UTTypeCreatePreferredIdentifierForTag(kUTTagClassMIMEType, mimeType, NULL);
+    CFStringRef extension = UTTypeCopyPreferredTagWithClass(uti, kUTTagClassFilenameExtension);
+    return extension;
+}
+
 - (NSNumber *)fileSizeAtPath:(NSString *)path {
     return [[self attributesOfItemAtPath:path error:NULL] objectForKey:NSFileSize];
 }

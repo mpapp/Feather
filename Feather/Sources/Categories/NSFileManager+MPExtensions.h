@@ -72,6 +72,8 @@ extern NS_ENUM(NSUInteger, MPFeatherNSFileManagerExtensionsErrorCode) {
 
 + (nullable NSString *)UTIForPathExtension:(nonnull NSString *)extension;
 
++ (nullable NSString *)canonicalPathExtensionForMIMEType:(nonnull NSString *)mimeType;
+
 - (nullable NSNumber *)fileSizeAtPath:(nonnull NSString *)path;
 
 @end
