@@ -6,13 +6,14 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-@import Feather;
+#import <Feather/Feather.h>
+#import <Feather/MPDatabasePackageController+Protected.h>
+
+#import <FeatherExtensions/FeatherExtensions.h>
 
 #import "FeatherTests.h"
 #import "MPFeatherTestClasses.h"
 
-@import Feather.MPException;
-@import Feather.MPDatabasePackageController_Protected;
 @import FeatherExtensions;
 @import RegexKitLite;
 
@@ -115,8 +116,9 @@
 - (void)createSharedPackageRootDirectory
 {
     NSError *err = nil;
-    [MPShoeboxPackageController createSharedDatabasesPathWithError:&err];
-    XCTAssertTrue(!err, @"No error should happen with creating the shared package root directory");
+    if (![MPShoeboxPackageController createSharedDatabasesPathWithError:&err]) {
+        XCTFail(@"No error should happen with creating the shared package root directory: %@", err);
+    }
 }
 
 - (NSArray *)loadFixturesForManagedObjectClass:(Class)class
