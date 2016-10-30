@@ -154,7 +154,7 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
         if (error)
             *error = [NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
                                        code:MPDatabasePackageControllerErrorCodeFileNotDirectory
-                                   userInfo:@{NSLocalizedDescriptionKey : @"Directory containig the shared databases path does not exist"}];
+                                   userInfo:@{NSLocalizedDescriptionKey : @"Directory containing the shared databases path does not exist"}];
         return NO;
     }
     

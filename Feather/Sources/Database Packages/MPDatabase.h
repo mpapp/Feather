@@ -107,8 +107,7 @@ typedef enum MPDatabaseErrorCode
                    replication:(CBLReplication **)replication
                          error:(NSError **)err;
 
-/** Start a continuous, persistent pull and push replication with a remote database.
-  * @param syncHandler A completion handler run when the request which begins the replication is completed. */
+/** Start a continuous, persistent pull and push replication with a remote database. */
 - (BOOL)syncWithRemote:(NSError **)error;
 
 /** Name of the filter function used to filter pulls to this database from a remote. */

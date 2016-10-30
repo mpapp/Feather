@@ -50,7 +50,7 @@ typedef BOOL (^MPXMLNodeVisitor)(NSXMLNode *__nonnull node);
  
  This implementation filters out invalid characters not allowed by the XML 1.0 specification, as well as sequences that aren't valid UTF-8, prior to parsing the input string.
  
- @param `document` out pointer for storing a reference to the `NSXMLDocument` instance created as a result of parsing and tidying. IMPORTANT: if you plan to evaluate XPath expressions against the returned XML element, you must also hold onto the document object as long as that task is needed to be done — otherwise XPath expressions will usually return zero results.
+ @param document out pointer for storing a reference to the `NSXMLDocument` instance created as a result of parsing and tidying. IMPORTANT: if you plan to evaluate XPath expressions against the returned XML element, you must also hold onto the document object as long as that task is needed to be done — otherwise XPath expressions will usually return zero results.
  
  */
 + (nullable NSXMLElement *)XMLElementFromHTMLString:(nonnull NSString *)HTML
@@ -242,7 +242,8 @@ typedef BOOL (^MPXMLNodeVisitor)(NSXMLNode *__nonnull node);
  
  Return a new XML element otherwise identical to this one, but with all descendant elements with an element name _not_ on the allowed list recursively collapsed to their inner nodes.
  
- @param `allowedAttributeNames` Optionally, also filter attributes by name and/or parent element name. This argument can have two types of strings in it:
+ @param allowedElementNames Allowed element names (required).
+ @param allowedAttributeNames Optionally, also filter attributes by name and/or parent element name. This argument can have two types of strings in it:
  
  - @"name": interpreted as an attribute name to allow on any parent element
  - @"elementName#attributeName": interpreted as an attribute to allow on specific types of element

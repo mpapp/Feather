@@ -19,8 +19,6 @@ typedef void (^MPPullCompletionHandler)(NSDictionary * __nullable errDict);
 @class MPDatabasePackageController;
 @class MPManagedObject;
 
-@class MPSearchIndexController;
-
 /** 
  * A notification that's fired once the database package listener is ready to be used at a port.
  */
@@ -213,7 +211,7 @@ typedef enum MPDatabasePackageControllerErrorCode {
   * @return Return value indicates if the filter with the name pullFilterName should be added when pulling from the remote. Default implementation returns YES always. */
 - (BOOL)applyFilterWhenPullingFromDatabaseAtURL:(nonnull NSURL *)url toDatabase:(nonnull MPDatabase *)database;
 
-/** @param The remote database URL with which content to this database is to be pushed to.
+/** @param url The remote database URL with which content to this database is to be pushed to.
   * @param database The database to push from. One of the databases managed by this object.
   * @return Return value indicates if the filter with the name pushFilterName should be added when pulling from the remote. Default implementation returns YES always. */
 - (BOOL)applyFilterWhenPushingToDatabaseAtURL:(nonnull NSURL *)url fromDatabase:(nonnull MPDatabase *)database;
@@ -287,7 +285,7 @@ typedef enum MPDatabasePackageControllerErrorCode {
 
 /** Create and persist a snapshot of this package.
   * @param name A name for the snapshot. Must be non-nil, but not necessarily unique.
-  * @param An optional error pointer. */
+  * @param err optional error pointer. */
 - (nullable MPSnapshot *)newSnapshotWithName:(nonnull NSString *)name error:(NSError *__nullable *__nullable)err;
 
 /** Restore the state of the database package using a named snapshot.
