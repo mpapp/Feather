@@ -27,13 +27,17 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (NSString *)bundleLoaderName {
+    return NSBundle.appBundle.bundleNameString;
+}
+
 - (void)setUp
 {
     [super setUp];
-    
+
     NSString *sharedPackagePath = [MPShoeboxPackageController.sharedShoeboxPackageControllerClass sharedDatabasesPath];
     
-    BOOL sharedPackageIsForTestBundle = [sharedPackagePath.lastPathComponent isEqualToString:NSBundle.appBundle.bundleNameString];
+    BOOL sharedPackageIsForTestBundle = [sharedPackagePath.lastPathComponent isEqualToString:self.bundleLoaderName];
     XCTAssertTrue(sharedPackageIsForTestBundle,
                  @"Test bundle name is the last path component of the shared package path.");
     
