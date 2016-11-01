@@ -11,10 +11,9 @@
 
 @implementation MPFeatherTestPackageController
 
-+ (void)initialize
++ (void)load
 {
-    if (self == [MPFeatherTestPackageController class]
-        && ![MPShoeboxPackageController sharedShoeboxPackageControllerClass])
+    if (![MPShoeboxPackageController sharedShoeboxPackageControllerClass])
     {
         [self registerShoeboxPackageControllerClass:self];
     }

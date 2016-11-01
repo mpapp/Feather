@@ -69,18 +69,15 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 @dynamic isModerated, isRejected, isAccepted, creator, prototype, sessionID;
 
-+ (void)initialize
++ (void)load
 {
-    if (self == [MPManagedObject class])
-    {
-        [self mixinFrom:[MPCacheableMixin class]];
-        [self mixinFrom:[MPEmbeddedPropertyContainingMixin class]];
+    [self mixinFrom:[MPCacheableMixin class]];
+    [self mixinFrom:[MPEmbeddedPropertyContainingMixin class]];
         
 #if MP_DEBUG_ZOMBIE_MODELS
-        _modelObjectByIdentifierMap = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsStrongMemory
-                                                            valueOptions:NSPointerFunctionsWeakMemory];
+    _modelObjectByIdentifierMap = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsStrongMemory
+                                                        valueOptions:NSPointerFunctionsWeakMemory];
 #endif
-    }
 }
 
 #if MP_DEBUG_ZOMBIE_MODELS

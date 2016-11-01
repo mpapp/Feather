@@ -19,12 +19,9 @@
 @synthesize inEditMode;
 @synthesize identifier = _identifier;
 
-+ (void)initialize
++ (void)load
 {
-    if (self == [MPVirtualSection class])
-    {
-        [self mixinFrom:[MPCacheableMixin class] followInheritance:NO force:NO];
-    }
+    [self mixinFrom:[MPCacheableMixin class] followInheritance:NO force:NO];
 }
 
 + (BOOL)hasMainThreadIsolatedCachedProperties {

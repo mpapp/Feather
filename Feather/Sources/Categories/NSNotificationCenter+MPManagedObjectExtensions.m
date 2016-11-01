@@ -28,9 +28,8 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
 
 @implementation NSNotificationCenter (MPManagedObjectExtensions)
 
-+ (void)initialize
++ (void)load
 {
-    [super initialize];
     [self managedObjectNotificationNameDictionary];
 }
 

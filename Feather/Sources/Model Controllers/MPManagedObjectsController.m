@@ -50,12 +50,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 @implementation MPManagedObjectsController
 
-+ (void)initialize
++ (void)load
 {
-    if (self == [MPManagedObjectsController class])
-    {
-        [self mixinFrom:[MPCacheableMixin class] followInheritance:NO force:NO];
-    }
+    [self mixinFrom:[MPCacheableMixin class] followInheritance:NO force:NO];
 }
 
 + (BOOL)hasMainThreadIsolatedCachedProperties {

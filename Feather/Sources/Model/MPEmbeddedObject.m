@@ -57,12 +57,9 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
 
 #endif
 
-+ (void)initialize
++ (void)load
 {
-    if (self == [MPEmbeddedObject class])
-    {
-        [self mixinFrom:[MPEmbeddedPropertyContainingMixin class] followInheritance:NO force:NO];
-    }
+    [self mixinFrom:[MPEmbeddedPropertyContainingMixin class] followInheritance:NO force:NO];
 }
 
 - (instancetype)init

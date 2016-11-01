@@ -47,10 +47,8 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 @implementation MPDatabase
 
-+ (void)initialize {
-    if (self == [MPDatabase class]) {
-        srand48(arc4random());
-    }
++ (void)load {
+    srand48(arc4random());
 }
 
 - (instancetype)initWithServer:(CBLManager *)server

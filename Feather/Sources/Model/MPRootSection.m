@@ -29,12 +29,9 @@ NSString *const MPPasteboardTypeRootSection = @"com.piipari.root-section.id.plis
     return nil;
 }
 
-+ (void)initialize
++ (void)load
 {
-    if (self == [MPRootSection class])
-    {
-        [self mixinFrom:[MPCacheableMixin class] followInheritance:NO force:NO];
-    }
+    [self mixinFrom:[MPCacheableMixin class] followInheritance:NO force:NO];
 }
 
 + (BOOL)hasMainThreadIsolatedCachedProperties {
