@@ -171,7 +171,7 @@
 		5FDB33271705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB33251705CB950049EBB5 /* InfoPlist.strings */; };
 		5FDB332A1705CB950049EBB5 /* FeatherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33291705CB950049EBB5 /* FeatherTests.m */; };
 		5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33D71705D1380049EBB5 /* libicucore.dylib */; };
-		5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34361705D90A0049EBB5 /* Mixin.h */; };
+		5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34361705D90A0049EBB5 /* Mixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB34391705D90A0049EBB5 /* Mixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34371705D90A0049EBB5 /* Mixin.m */; };
 		5FDB3A05170793550049EBB5 /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3A03170793550049EBB5 /* NSData+Base64.h */; };
 		5FDB3A06170793550049EBB5 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A04170793550049EBB5 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-w"; }; };

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#import "Mixin.h"
+
 #import "MPManagedObject.h"
 #import "MPManagedObjectsController.h"
 #import "MPManagedObject+Mixin.h"
