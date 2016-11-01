@@ -11,7 +11,7 @@
 @protocol MPCacheable <NSObject>
 
 @optional
-+ (nonnull NSDictionary *)cachedPropertiesByClassName;
++ (nonnull NSDictionary<NSString *, NSSet<NSString *> *> *)cachedPropertiesByClassName;
 - (void)clearCachedValues;
 - (void)refreshCachedValues;
 

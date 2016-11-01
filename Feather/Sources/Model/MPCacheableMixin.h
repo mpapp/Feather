@@ -11,4 +11,8 @@
 
 @interface MPCacheableMixin : NSObject <MPCacheable>
 
++ (nonnull NSDictionary<NSString *, NSSet<NSString *> *> *)cachedPropertiesByClassNameForBaseClass:(nonnull Class)cls;
+
++ (void)clearCachedValues:(nonnull id<MPCacheable>)cacheable;
+
 @end
