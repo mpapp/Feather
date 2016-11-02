@@ -169,7 +169,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 @property (readonly, strong, nonnull) NSArray<T> *userContributedObjects;
 
 /** The name of the view which returns all objects managed by this controller. */
-- (nonnull NSString *)allObjectsViewName;
+@property (readonly, copy) NSString *allObjectsViewName;
 
 /** A query which returns all objects managed by this controller. */
 - (nonnull CBLQuery *)allObjectsQuery;
