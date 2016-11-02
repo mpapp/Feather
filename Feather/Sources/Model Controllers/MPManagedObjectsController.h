@@ -104,11 +104,11 @@ typedef enum MPManagedObjectsControllerErrorCode
 - (BOOL)managesObjectsOfClass:(nonnull Class)class;
 
 /** @return A map block emitting [_id, nil] for all documents managed by the controller. */
-@property (readonly, strong, nonnull) CBLMapBlock *allObjectsBlock;
+- (nonnull CBLMapBlock)allObjectsBlock;
 
 /** @return a TDMapBlock emitting [_id, nil]
   * for all documents managed by the controller with bundled = YES. */
-@property (readonly, strong, nonnull) CBLMapBlock *bundledObjectsBlock;
+- (nonnull CBLMapBlock)bundledObjectsBlock;
 
 /** A utility instance method which returns the same value as +managedObjectClassName. Not to be overloaded. */
 @property (readonly, copy, nonnull) NSString *managedObjectClassName;
