@@ -188,7 +188,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 @property (readonly, strong, nonnull) NSArray<T> *allObjects;
 
 /** All objects managed by this controller, queried without wrapping to mp_dispatch_sync, and allowing for an error pointer. */
-- (nonnull NSArray<T> *)allObjects:(NSError *__nonnull *__nonnull)error;
+- (nullable NSArray<T> *)allObjects:(NSError *__nullable *__nullable)error;
 
 @property (readonly, strong, nonnull) NSArray<T> *objects;
 
