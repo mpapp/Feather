@@ -554,6 +554,10 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return objs;
 }
 
+- (NSArray *)objects {
+    return self.allObjects;
+}
+
 - (NSArray *)allObjects
 {
     CBLQuery *q = [self allObjectsQuery];

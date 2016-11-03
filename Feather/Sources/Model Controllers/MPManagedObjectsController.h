@@ -190,6 +190,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** All objects managed by this controller, queried without wrapping to mp_dispatch_sync, and allowing for an error pointer. */
 - (nullable NSArray<T> *)allObjects:(NSError *__nullable *__nullable)error;
 
+/** Synonymous with -allObjects, here just because in Swift -allObjects and -allObjects: are ambiguous. Expect deprecation of the ambiguous APIs will happen eventually. */
 @property (readonly, strong, nonnull) NSArray<T> *objects;
 
 /** An optional resource name for a touchdb typed file in the app's Contents/Resources directory. If overridden with a non-nil value, the resource is loaded upon initialisation. */
