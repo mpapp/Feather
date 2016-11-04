@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Matias Piipari. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
 @protocol MPTitledProtocol <NSObject>
 @property (readwrite, copy, nonnull) NSString *title;
