@@ -59,7 +59,8 @@ typedef enum MPDatabasePackageControllerErrorCode {
     MPDatabasePackageControllerErrorCodeDictionaryRepresentationInvalid = 6,
     MPDatabasePackageControllerErrorCodeNoDatabases = 7,
     MPDatabasePackageControllerErrorCodeOngoingTransaction = 8,
-    MPDatabasePackageControllerErrorCodeRootURLMissing = 9
+    MPDatabasePackageControllerErrorCodeRootURLMissing = 9,
+    MPDatabasePackageControllerErrorCodeBundledDataInitializationFailed = 10
 } MPDatabasePackageControllerErrorCode;
 
 

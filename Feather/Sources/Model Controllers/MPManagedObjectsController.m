@@ -1210,13 +1210,15 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     {
         returnedObjects = [self objectsFromContentsOfArrayJSONAtURL:jsonURL error:err];
 
-        NSAssert(returnedObjects, @"Failed to load data from JSON file at URL %@", jsonURL);
-        if (!returnedObjects && err && *err)
+        if (!returnedObjects)
         {
-            NSLog(@"ERROR! Could not load bundled data from resource %@%@:\n%@", resourceName, extension, *err);
-            [[NSNotificationCenter defaultCenter] postErrorNotification:*err];
+            if (err && *err) {
+                NSLog(@"ERROR! Could not load bundled data from resource %@%@:\n%@", resourceName, extension, *err);
+                [NSNotificationCenter.defaultCenter postErrorNotification:*err];
+            }
+            return NO;
         }
-        else
+        else if (returnedObjects)
         {
             [metadata setValue:md5 ofProperty:dataChecksumKey];
             
