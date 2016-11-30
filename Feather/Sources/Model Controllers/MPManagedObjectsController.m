@@ -738,16 +738,17 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (NSArray *)objectsFromContentsOfArrayJSONAtURL:(NSURL *)url error:(NSError **)err
 {
-    NSData *objData = [NSData dataWithContentsOfURL:url options:NSDataReadingMapped error:err];
-    if (!objData)
+    NSData *objData = [NSData dataWithContentsOfURL:url options:0 error:err];
+    if (!objData) {
         return nil;
+    }
 
     return [self objectsFromArrayJSONData:objData error:err];
 }
 
 - (NSArray *)objectsFromArrayJSONData:(NSData *)objData error:(NSError *__autoreleasing *)err
 {
-    NSArray *objs = [NSJSONSerialization JSONObjectWithData:objData options:0 error:err];
+    NSArray *objs = [NSJSONSerialization JSONObjectWithData:objData options:NSJSONReadingAllowFragments error:err];
     if (!objs) {
         return nil;
     }
