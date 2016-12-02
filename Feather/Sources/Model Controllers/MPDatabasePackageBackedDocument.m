@@ -334,10 +334,6 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
         return NO;
     }
     
-#ifdef MANUSCRIPTS_APP
-    [self postAnonymousUsageInformation];
-#endif
-    
     self.packageAccessError = nil;
     
     NSError *packageControllerInitError = nil;
