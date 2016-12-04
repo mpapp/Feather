@@ -221,6 +221,10 @@ typedef enum MPDatabasePackageControllerErrorCode {
  * Overloadable by subclasses, but not intended to be called manually. Gets called if -pushFilterNameForDatabaseNamed: returns a non-nil filter name for a db. If filterName is non-nil, *must* return a non-nil value. */
 - (nonnull CBLFilterBlock)createPushFilterBlockWithName:(nonnull NSString *)filterName forDatabase:(nonnull MPDatabase *)db;
 
+/** Returns a new filter block with the given name to act as a pull filter for the specified database.
+ * Overloadable by subclasses, but not intended to be called manually. Gets called if -pullFilterNameForDatabaseNamed: returns a non-nil filter name for a db. If filterName is non-nil, *must* return a non-nil value. */
+- (nonnull CBLFilterBlock)createPullFilterBlockWithName:(nonnull NSString *)filterName forDatabase:(nonnull MPDatabase *)db;
+
 /** Name of the pull filter for the given database. Nil return value means that no pull filter is to be used. Default implementation uses no push filter. */
 - (nullable NSString *)pullFilterNameForDatabaseNamed:(nonnull NSString *)dbName;
 
@@ -233,6 +237,8 @@ typedef enum MPDatabasePackageControllerErrorCode {
 @property (strong, readonly, nonnull) NSSet<MPDatabase *> *databases;
 
 @property (copy, readonly, nonnull) NSArray<MPDatabase *> *orderedDatabases;
+
+@property (copy, readonly, nonnull) NSArray<MPDatabase *> *replicatedDatabases;
 
 /** A utility method which returns the names of the databases for this package. As database names are unique per database package, this will match. */
 @property (strong, readonly, nonnull) NSSet<NSString *> *databaseNames;

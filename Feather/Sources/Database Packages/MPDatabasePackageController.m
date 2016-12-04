@@ -178,6 +178,13 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
                     = [self pushFilterBlockWithName:pushFilterName forDatabase:db];
                 [db defineFilterNamed:pushFilterName block:filterBlock];
             }
+            
+            NSString *pullFilterName = [self pullFilterNameForDatabaseNamed:dbName];
+            if (pullFilterName) {
+                CBLFilterBlock filterBlock
+                    = [self pullFilterBlockWithName:pullFilterName forDatabase:db];
+                [db defineFilterNamed:pullFilterName block:filterBlock];
+            }
         }
         
         if (didResetDatabases.count > 0) {
@@ -558,14 +565,15 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (MPManagedObjectsController *)controllerForDocument:(CBLDocument *)document
 {
     NSString *objType = [document propertyForKey:@"objectType"];
-    NSParameterAssert(objType);
+    NSAssert(objType, @"Expecting non-nil object type %@", objType);
     
     Class moClass = NSClassFromString(objType);
-    NSParameterAssert(moClass);
+    NSAssert(moClass, @"Expecting non-nil managed object class for %@.", objType);
     NSAssert([moClass isSubclassOfClass:[MPManagedObject class]] && moClass != [MPManagedObject class], @"Managed object class must be a subclass of MPManagedObject");
     
     MPManagedObjectsController *moc = [self controllerForManagedObjectClass:moClass];
-    NSParameterAssert(moc);
+    NSAssert(moc, @"Expecting non-nil managed objects controller for class %@", moClass);
+    
     NSAssert(moc.db.database == document.database, @"Managed object must belong to this database package controller's database");
     
     return moc;
@@ -696,6 +704,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     }];
 }
 
+- (NSArray *)replicatedDatabases {
+    return self.orderedDatabases;
+}
+
 - (NSSet *)databaseNames
 {
     return [self.databases valueForKey:@"name"];
@@ -802,7 +814,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 - (CBLFilterBlock)pushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db
 {
-    assert(db);
+    NSAssert(db, @"Expecting a non-nil database.");
     CBLFilterBlock block = [db filterWithQualifiedName:filterName];
     if (block)
         return block;
@@ -810,9 +822,26 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return [self createPushFilterBlockWithName:filterName forDatabase:db];
 }
 
+- (CBLFilterBlock)createPullFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db
+{
+    NSAssert(!filterName, @"Expecting filterName (%@, %@)", self, self.class);
+    return nil;
+}
+
+- (CBLFilterBlock)pullFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db
+{
+    NSAssert(db, @"Expecting a non-nil database.");
+    CBLFilterBlock block = [db filterWithQualifiedName:filterName];
+    if (block) {
+        return block;
+    }
+    
+    return [self createPullFilterBlockWithName:filterName forDatabase:db];
+}
+
 - (NSString *)pullFilterNameForDatabaseNamed:(NSString *)dbName
 {
-    return nil;
+    return nil; // override in subclass to change the filter used.
 }
 
 - (BOOL)applyFilterWhenPullingFromDatabaseAtURL:(NSURL *)url toDatabase:(MPDatabase *)database
@@ -956,7 +985,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     });
     blockDelegate.packageController = pkgc;
     
-    for (MPDatabase *db in pkgc.orderedDatabases) {
+    for (MPDatabase *db in pkgc.replicatedDatabases) {
         MPDatabase *ownDB = [self databaseWithName:db.name];
         NSAssert(ownDB, @"Expecting to find database with name '%@'", db.name);
         
@@ -1570,16 +1599,17 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
 - (void)didChangeDocument:(CBLDocument *)document source:(MPManagedObjectChangeSource)source
 {
     // ignore MPMetadata & MPLocalMetadata
-    if (!document.properties[@"objectType"])
+    if (!document.properties[@"objectType"]) {
         return;
+    }
     
     MPManagedObjectsController *moc = [self controllerForDocument:document];
-    assert(moc);
-    assert(moc.db.database == document.database);
+    NSAssert(moc, @"Expecting a non-nil controller for %@", document);
+    NSAssert(moc.db.database == document.database, @"Unexpected database (expecting %@)", document.database, moc.db.database);
     
     MPManagedObject *mo = [[document managedObjectClass] modelForDocument:document];
-    assert(mo);
-    assert([document modelObject] == mo);
+    NSAssert(mo, @"Unexpectedly nil managed object for document %@", document);
+    NSAssert([document modelObject] == mo, @"Unexpected model object %@ (expecting %@)", mo, [document modelObject]);
     
     [moc didChangeDocument:document forObject:(id)document.modelObject source:source];
 }

@@ -641,18 +641,22 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     ^{
         if ((mo = (id)[doc modelObject])) {
             
-            if (![doc isDeleted])
-                NSParameterAssert(mo);
+            if (![doc isDeleted]) {
+                NSAssert(mo, @"Model object could not be recovered / constructed for non-deleted document %@ (%@)", doc, [doc properties]);
+            }
             
-            if (mo)
+            if (mo) {
                 return;
+            }
         }
         
         // this branch may be unnecessary and we should try to do without.
-        mo = [cls modelForDocument:doc];
         
-        if (![doc isDeleted])
-            NSParameterAssert(mo);
+        // if object is deleted, mo is left nil and ultimately returned.
+        if (![doc isDeleted]) {
+            mo = [cls modelForDocument:doc];
+            NSAssert(mo, @"Model object could not be recovered / constructed for non-deleted document %@ (%@)", doc, [doc properties]);
+        }
     });
     
     if (mo) {
@@ -839,7 +843,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         mo = [[moc alloc] initWithNewDocumentForController:self properties:d documentID:docID];
     }
     
-    NSParameterAssert(mo);
+    NSAssert(mo, @"Could not recover model object from JSON dictionary %@", d);
     return mo;
 }
 
