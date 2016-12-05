@@ -12,6 +12,7 @@
 #import "MPSnapshot+Protected.h"
 
 @import FeatherExtensions;
+@import MAKVONotificationCenter;
 
 #import <Feather/MPContributor.h>
 #import <Feather/MPContributorsController.h>
@@ -24,6 +25,7 @@
 
 @import RegexKitLite;
 @import CouchbaseLite;
+
 #import <CouchbaseLiteListener/CBLListener.h>
 
 @import ObjectiveC;
@@ -941,22 +943,23 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     }
 }
 
-- (BOOL)pullFromPackageFileURL:(NSURL *)versionURL error:(NSError *__autoreleasing *)err {
-    
+- (void)pullFromPackageFileURL:(nonnull NSURL *)versionURL
+    allowMismatchingIdentifier:(BOOL)allowMismatchingIdentifier
+           statusUpdateHandler:(void(^_Nullable)(NSUInteger completed, NSUInteger total))statusUpdateHandler
+             completionHandler:(void(^_Nonnull)())completionHandler
+                  errorHandler:(void(^_Nonnull)(NSError *_Nonnull))errorHandler
+{
     MPDatabasePackageControllerBlockBasedDelegate *blockDelegate
-    = [[MPDatabasePackageControllerBlockBasedDelegate alloc] initWithPackageController:nil
-                                                                        rootURLHandler:
-       ^NSURL *
-       {
+    = [[MPDatabasePackageControllerBlockBasedDelegate alloc] initWithPackageController:nil rootURLHandler:
+       ^NSURL *{
            return versionURL;
        } updateChangeCountHandler:
-       ^(NSDocumentChangeType changeType)
-       {
+       ^(NSDocumentChangeType changeType) {
            //NSLog(@"Change type: %lu", changeType);
        }];
     
     
-    NSParameterAssert(![NSThread isMainThread]);
+    NSAssert(!NSThread.isMainThread, @"Called outside main thread: %@", NSStringFromSelector(_cmd));
     
     __block MPDatabasePackageController *pkgc = nil;
     
@@ -964,17 +967,21 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
                              versionURL.path.lastPathComponent.stringByDeletingPathExtension,
                              NSUUID.UUID.UUIDString];
     
-    NSURL *url = [[NSFileManager.defaultManager temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:tempDirName error:err] URLByAppendingPathComponent:[versionURL lastPathComponent]];
+    NSError *err = nil;
+    NSURL *url = [[NSFileManager.defaultManager temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:tempDirName error:&err]
+                  URLByAppendingPathComponent:[versionURL lastPathComponent]];
     
     if (![NSFileManager.defaultManager createDirectoryAtURL:[url URLByDeletingLastPathComponent]
-                                withIntermediateDirectories:YES attributes:nil error:err]) {
+                                withIntermediateDirectories:YES attributes:nil error:&err]) {
         NSLog(@"ERROR: Failed to create directory for temporary copy of %@ for pull replication.", versionURL);
-        return NO;
+        errorHandler(err);
+        return;
     }
     
-    if (![NSFileManager.defaultManager copyItemAtURL:versionURL toURL:url error:err]) {
+    if (![NSFileManager.defaultManager copyItemAtURL:versionURL toURL:url error:&err]) {
         NSLog(@"ERROR: Failed to take a temporary copy of %@ for pull replication.", versionURL);
-        return NO;
+        errorHandler(err);
+        return;
     }
     
     dispatch_sync(dispatch_get_main_queue(), ^{
@@ -985,9 +992,22 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     });
     blockDelegate.packageController = pkgc;
     
+    if (!allowMismatchingIdentifier && ![self.identifier isEqualToString:pkgc.identifier]) {
+        errorHandler([NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
+                                         code:MPDatabasePackageControllerErrorCodeMismatchingPackageIdentifier
+                                     userInfo:@{NSLocalizedDescriptionKey: @"Cannot merge changes with a different source",
+                                                NSLocalizedFailureReasonErrorKey: @"Source identifier does not match that of the target.",
+                                                NSLocalizedRecoverySuggestionErrorKey: @"Please check if pulling from a different source should be rejected."}]);
+        return;
+    }
+    
+    dispatch_group_t grp = dispatch_group_create();
+    
     for (MPDatabase *db in pkgc.replicatedDatabases) {
         MPDatabase *ownDB = [self databaseWithName:db.name];
         NSAssert(ownDB, @"Expecting to find database with name '%@'", db.name);
+        
+        dispatch_group_enter(grp);
         
         NSError *startError = nil;
         CBLReplication *replication = nil;
@@ -995,10 +1015,37 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
                           replication:&replication
                                 error:&startError];
         
-        // TODO: Add pull observer for each database, all of which when complete should sets the block based database package controller delegate to nil.
+        [replication addObserver:self
+                         keyPath:@"completed"
+                         options:NSKeyValueObservingOptionNew block:^(MAKVONotification *notification) {
+                             MPLog(@"Completion state changed when pulling from %@: %@", versionURL.path, notification);
+                             blockDelegate.packageController = nil;
+                             dispatch_group_leave(grp);
+                         }];
+        
+        [replication addObserver:self
+                         keyPath:@"status"
+                         options:NSKeyValueObservingOptionNew block:^(MAKVONotification *notification) {
+                             MPLog(@"Status updated when pulling from %@: %@", versionURL.path, notification);
+                             
+                             if (statusUpdateHandler) {
+                                 statusUpdateHandler(0, 0);
+                             }
+                         }];
+        
+        [replication addObserver:self
+                         keyPath:@"error"
+                         options:NSKeyValueObservingOptionNew block:^(MAKVONotification *notification) {
+                             NSLog(@"Error occurred when pulling from %@: %@", versionURL.path, notification);
+                             
+                             errorHandler(notification.newValue);
+                         }];
+        
     }
     
-    return YES;
+    dispatch_group_async(grp, dispatch_get_main_queue(), ^{
+        completionHandler();
+    });
 }
 
 - (BOOL)syncWithRemote:(NSDictionary<NSString *, NSError *> *__nullable *__nullable)errorDict

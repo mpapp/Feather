@@ -14,5 +14,10 @@ public protocol ErrorPresenter {
 }
 
 extension NSDocument: ErrorPresenter {
-    
+}
+
+extension NSWindowController: ErrorPresenter {
+}
+
+extension NSViewController: ErrorPresenter {
 }
