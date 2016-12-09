@@ -32,7 +32,7 @@
           Class propClass = [obj.class classOfProperty:key];
           
           if ([key hasPrefix:@"effective"]) {
-              continue;
+              return YES;
           }
           
           if (([propClass isSubclassOfClass:MPManagedObject.class]
