@@ -740,7 +740,13 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 {
     NSData *objData = [NSData dataWithContentsOfURL:url options:0 error:err];
     if (!objData) {
+        if (*err) {
+            NSLog(@"Failed to read data from URL %@: %@", url, *err);
+        }
         return nil;
+    }
+    else {
+        NSLog(@"Read data from URL %@: %@\n%@", url, objData, [[NSString alloc] initWithData:objData encoding:NSUTF8StringEncoding]);
     }
 
     return [self objectsFromArrayJSONData:objData error:err];
@@ -750,6 +756,10 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 {
     NSArray *objs = [NSJSONSerialization JSONObjectWithData:objData options:NSJSONReadingAllowFragments error:err];
     if (!objs) {
+        if (*err) {
+            NSLog(@"Failed to deserialize JSON: %@", *err);
+            NSLog(@"Invalid data:\n%@", [[NSString alloc] initWithData:objData encoding:NSUTF8StringEncoding]);
+        }
         return nil;
     }
     
@@ -765,6 +775,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         MPManagedObject *mo = [self objectFromJSONDictionary:d isExisting:&isExisting error:err];
         
         if (!mo) {
+            NSLog(@"Failed to construct managed object from JSON dictionary %@", d);
             return nil;
         }
         
