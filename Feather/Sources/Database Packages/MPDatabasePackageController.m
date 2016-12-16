@@ -12,6 +12,7 @@
 #import "MPSnapshot+Protected.h"
 
 @import FeatherExtensions;
+@import MAKVONotificationCenter;
 
 #import <Feather/MPContributor.h>
 #import <Feather/MPContributorsController.h>
@@ -24,6 +25,7 @@
 
 @import RegexKitLite;
 @import CouchbaseLite;
+
 #import <CouchbaseLiteListener/CBLListener.h>
 
 @import ObjectiveC;
@@ -177,6 +179,13 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
                 CBLFilterBlock filterBlock
                     = [self pushFilterBlockWithName:pushFilterName forDatabase:db];
                 [db defineFilterNamed:pushFilterName block:filterBlock];
+            }
+            
+            NSString *pullFilterName = [self pullFilterNameForDatabaseNamed:dbName];
+            if (pullFilterName) {
+                CBLFilterBlock filterBlock
+                    = [self pullFilterBlockWithName:pullFilterName forDatabase:db];
+                [db defineFilterNamed:pullFilterName block:filterBlock];
             }
         }
         
@@ -558,14 +567,15 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (MPManagedObjectsController *)controllerForDocument:(CBLDocument *)document
 {
     NSString *objType = [document propertyForKey:@"objectType"];
-    NSParameterAssert(objType);
+    NSAssert(objType, @"Expecting non-nil object type %@", objType);
     
     Class moClass = NSClassFromString(objType);
-    NSParameterAssert(moClass);
+    NSAssert(moClass, @"Expecting non-nil managed object class for %@.", objType);
     NSAssert([moClass isSubclassOfClass:[MPManagedObject class]] && moClass != [MPManagedObject class], @"Managed object class must be a subclass of MPManagedObject");
     
     MPManagedObjectsController *moc = [self controllerForManagedObjectClass:moClass];
-    NSParameterAssert(moc);
+    NSAssert(moc, @"Expecting non-nil managed objects controller for class %@", moClass);
+    
     NSAssert(moc.db.database == document.database, @"Managed object must belong to this database package controller's database");
     
     return moc;
@@ -696,6 +706,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     }];
 }
 
+- (NSArray *)replicatedDatabases {
+    return self.orderedDatabases;
+}
+
 - (NSSet *)databaseNames
 {
     return [self.databases valueForKey:@"name"];
@@ -802,7 +816,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 
 - (CBLFilterBlock)pushFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db
 {
-    assert(db);
+    NSAssert(db, @"Expecting a non-nil database.");
     CBLFilterBlock block = [db filterWithQualifiedName:filterName];
     if (block)
         return block;
@@ -810,9 +824,26 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     return [self createPushFilterBlockWithName:filterName forDatabase:db];
 }
 
+- (CBLFilterBlock)createPullFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db
+{
+    NSAssert(!filterName, @"Expecting filterName (%@, %@)", self, self.class);
+    return nil;
+}
+
+- (CBLFilterBlock)pullFilterBlockWithName:(NSString *)filterName forDatabase:(MPDatabase *)db
+{
+    NSAssert(db, @"Expecting a non-nil database.");
+    CBLFilterBlock block = [db filterWithQualifiedName:filterName];
+    if (block) {
+        return block;
+    }
+    
+    return [self createPullFilterBlockWithName:filterName forDatabase:db];
+}
+
 - (NSString *)pullFilterNameForDatabaseNamed:(NSString *)dbName
 {
-    return nil;
+    return nil; // override in subclass to change the filter used.
 }
 
 - (BOOL)applyFilterWhenPullingFromDatabaseAtURL:(NSURL *)url toDatabase:(MPDatabase *)database
@@ -912,22 +943,23 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     }
 }
 
-- (BOOL)pullFromPackageFileURL:(NSURL *)versionURL error:(NSError *__autoreleasing *)err {
-    
+- (void)pullFromPackageFileURL:(nonnull NSURL *)versionURL
+    allowMismatchingIdentifier:(BOOL)allowMismatchingIdentifier
+           statusUpdateHandler:(void(^_Nullable)(NSUInteger completed, NSUInteger total))statusUpdateHandler
+             completionHandler:(void(^_Nonnull)())completionHandler
+                  errorHandler:(void(^_Nonnull)(NSError *_Nonnull))errorHandler
+{
     MPDatabasePackageControllerBlockBasedDelegate *blockDelegate
-    = [[MPDatabasePackageControllerBlockBasedDelegate alloc] initWithPackageController:nil
-                                                                        rootURLHandler:
-       ^NSURL *
-       {
+    = [[MPDatabasePackageControllerBlockBasedDelegate alloc] initWithPackageController:nil rootURLHandler:
+       ^NSURL *{
            return versionURL;
        } updateChangeCountHandler:
-       ^(NSDocumentChangeType changeType)
-       {
+       ^(NSDocumentChangeType changeType) {
            //NSLog(@"Change type: %lu", changeType);
        }];
     
     
-    NSParameterAssert(![NSThread isMainThread]);
+    NSAssert(!NSThread.isMainThread, @"Called outside main thread: %@", NSStringFromSelector(_cmd));
     
     __block MPDatabasePackageController *pkgc = nil;
     
@@ -935,17 +967,21 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
                              versionURL.path.lastPathComponent.stringByDeletingPathExtension,
                              NSUUID.UUID.UUIDString];
     
-    NSURL *url = [[NSFileManager.defaultManager temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:tempDirName error:err] URLByAppendingPathComponent:[versionURL lastPathComponent]];
+    NSError *err = nil;
+    NSURL *url = [[NSFileManager.defaultManager temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:tempDirName error:&err]
+                  URLByAppendingPathComponent:[versionURL lastPathComponent]];
     
     if (![NSFileManager.defaultManager createDirectoryAtURL:[url URLByDeletingLastPathComponent]
-                                withIntermediateDirectories:YES attributes:nil error:err]) {
+                                withIntermediateDirectories:YES attributes:nil error:&err]) {
         NSLog(@"ERROR: Failed to create directory for temporary copy of %@ for pull replication.", versionURL);
-        return NO;
+        errorHandler(err);
+        return;
     }
     
-    if (![NSFileManager.defaultManager copyItemAtURL:versionURL toURL:url error:err]) {
+    if (![NSFileManager.defaultManager copyItemAtURL:versionURL toURL:url error:&err]) {
         NSLog(@"ERROR: Failed to take a temporary copy of %@ for pull replication.", versionURL);
-        return NO;
+        errorHandler(err);
+        return;
     }
     
     dispatch_sync(dispatch_get_main_queue(), ^{
@@ -956,9 +992,22 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     });
     blockDelegate.packageController = pkgc;
     
-    for (MPDatabase *db in pkgc.orderedDatabases) {
+    if (!allowMismatchingIdentifier && ![self.identifier isEqualToString:pkgc.identifier]) {
+        errorHandler([NSError errorWithDomain:MPDatabasePackageControllerErrorDomain
+                                         code:MPDatabasePackageControllerErrorCodeMismatchingPackageIdentifier
+                                     userInfo:@{NSLocalizedDescriptionKey: @"Cannot merge changes with a different source",
+                                                NSLocalizedFailureReasonErrorKey: @"Source identifier does not match that of the target.",
+                                                NSLocalizedRecoverySuggestionErrorKey: @"Please check if pulling from a different source should be rejected."}]);
+        return;
+    }
+    
+    dispatch_group_t grp = dispatch_group_create();
+    
+    for (MPDatabase *db in pkgc.replicatedDatabases) {
         MPDatabase *ownDB = [self databaseWithName:db.name];
         NSAssert(ownDB, @"Expecting to find database with name '%@'", db.name);
+        
+        dispatch_group_enter(grp);
         
         NSError *startError = nil;
         CBLReplication *replication = nil;
@@ -966,10 +1015,37 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
                           replication:&replication
                                 error:&startError];
         
-        // TODO: Add pull observer for each database, all of which when complete should sets the block based database package controller delegate to nil.
+        [replication addObserver:self
+                         keyPath:@"completed"
+                         options:NSKeyValueObservingOptionNew block:^(MAKVONotification *notification) {
+                             MPLog(@"Completion state changed when pulling from %@: %@", versionURL.path, notification);
+                             blockDelegate.packageController = nil;
+                             dispatch_group_leave(grp);
+                         }];
+        
+        [replication addObserver:self
+                         keyPath:@"status"
+                         options:NSKeyValueObservingOptionNew block:^(MAKVONotification *notification) {
+                             MPLog(@"Status updated when pulling from %@: %@", versionURL.path, notification);
+                             
+                             if (statusUpdateHandler) {
+                                 statusUpdateHandler(0, 0);
+                             }
+                         }];
+        
+        [replication addObserver:self
+                         keyPath:@"error"
+                         options:NSKeyValueObservingOptionNew block:^(MAKVONotification *notification) {
+                             NSLog(@"Error occurred when pulling from %@: %@", versionURL.path, notification);
+                             
+                             errorHandler(notification.newValue);
+                         }];
+        
     }
     
-    return YES;
+    dispatch_group_async(grp, dispatch_get_main_queue(), ^{
+        completionHandler();
+    });
 }
 
 - (BOOL)syncWithRemote:(NSDictionary<NSString *, NSError *> *__nullable *__nullable)errorDict
@@ -1570,16 +1646,17 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
 - (void)didChangeDocument:(CBLDocument *)document source:(MPManagedObjectChangeSource)source
 {
     // ignore MPMetadata & MPLocalMetadata
-    if (!document.properties[@"objectType"])
+    if (!document.properties[@"objectType"]) {
         return;
+    }
     
     MPManagedObjectsController *moc = [self controllerForDocument:document];
-    assert(moc);
-    assert(moc.db.database == document.database);
+    NSAssert(moc, @"Expecting a non-nil controller for %@", document);
+    NSAssert(moc.db.database == document.database, @"Unexpected database (expecting %@)", document.database, moc.db.database);
     
     MPManagedObject *mo = [[document managedObjectClass] modelForDocument:document];
-    assert(mo);
-    assert([document modelObject] == mo);
+    NSAssert(mo, @"Unexpectedly nil managed object for document %@", document);
+    NSAssert([document modelObject] == mo, @"Unexpected model object %@ (expecting %@)", mo, [document modelObject]);
     
     [moc didChangeDocument:document forObject:(id)document.modelObject source:source];
 }

@@ -12,7 +12,7 @@
 
 @class MPShoeboxPackageController;
 
-extern NSString *const MPDatabasePackageBackedDocumentErrorDomain;
+extern NSString *_Nonnull const MPDatabasePackageBackedDocumentErrorDomain;
 
 typedef NS_ENUM(NSUInteger, MPDatabasePackageBackedDocumentErrorCode) {
     MPDatabasePackageBackedDocumentErrorCodeUnknown = 0,
@@ -24,42 +24,42 @@ typedef NS_ENUM(NSUInteger, MPDatabasePackageBackedDocumentErrorCode) {
 
 /** Initializes the internal state of the document, optionally creating the document's package directory in the process.
   * There are cases where yuo need to call this instead of relying on the document object initialization itself resulting to it getting called. */
-- (BOOL)initializeStateCreatingDirectoryTree:(BOOL)create error:(NSError **)error;
+- (BOOL)initializeStateCreatingDirectoryTree:(BOOL)create error:(NSError *_Nullable *_Nullable)error;
 
 /** Initializes a directory under the document bundle for storing document metadata.
   * The metadata written by a database backed document is eventually consistent with its current primary state and is intended for 
   * use by external apps and services to index, preview, summarise document contents in a way where consistency with primary state of the document is not essential. */
-- (BOOL)initializeManuscriptMetadataDirectoryCreatingDirectory:(BOOL)create error:(NSError **)outError;
+- (BOOL)initializeManuscriptMetadataDirectoryCreatingDirectory:(BOOL)create error:(NSError *_Nullable *_Nullable)outError;
 
 /** This message is sent to the document when it has created the database package. 
   * The base class implementation is empty so calling super is not necessary.
   * Use this callback to initialize and validate package controller's contents.
   * Return NO if the package controller is in an invalid state.
   * Return YES if the package controller is in a valid state. */
-- (BOOL)initializePackageController:(MPDatabasePackageController *)packageController error:(NSError **)error;
+- (BOOL)initializePackageController:(nonnull MPDatabasePackageController *)packageController error:(NSError *_Nullable *_Nullable)error;
 
 /** YES if package access should not be permitted, NO if package access is permitted. */
 @property (readwrite) BOOL packageAccessDenied;
 
 /** Error occurred when attempting to access document's database package.
  * Set by accessing the lazily populated packageController property and never unset after that. */
-@property (readonly, nonatomic) NSError *packageAccessError;
+@property (readonly, nonatomic, nullable) NSError *packageAccessError;
 
 /** A path where a temporary copy of the document package bundle is created for runtime manipulation. */
-@property (copy, readonly) NSString *temporaryManuscriptPath;
+@property (copy, readonly, nullable) NSString *temporaryManuscriptPath;
 
 /** Directory containing the manuscript JSON used for indexing & recent manuscript metadata. */
-@property (copy) NSString *temporaryManuscriptMetadataDirectoryPath;
+@property (copy, nullable) NSString *temporaryManuscriptMetadataDirectoryPath;
 
 /** Lazily initialized MPDatabasePackageController instance for the document of the class determined by -packageControllerClass.
   * NOTE! Initialized on accessing this property. */
-@property (strong, readonly, nonatomic) __kindof MPDatabasePackageController *packageController;
+@property (strong, readonly, nonatomic, nullable) __kindof MPDatabasePackageController *packageController;
 
 /** Returns YES if packageController is initialized, NO otherwise. */
 @property (readonly) BOOL packageControllerExists;
 
 /** Abstract property that returns the MPDatabasePackageController subclass to use to initialize a package controller for the document. */
-@property (readonly) Class packageControllerClass;
+@property (readonly, nonnull) Class packageControllerClass;
 
 /** YES if bundle's directory structure has been initialized. 
   * Will only return YES once -initializeStateCreatingDirectoryTree:error: has been called without errors. */
@@ -72,13 +72,13 @@ typedef NS_ENUM(NSUInteger, MPDatabasePackageBackedDocumentErrorCode) {
 
 /** YES if the specified type requires a copy of the original file read with -readFromURL:error: to be copied into a temporary working directory, 
   * NO if the type instead requires importing. */
-+ (BOOL)requiresCopyingDocumentOfType:(NSString *)type atOriginalURL:(NSURL *)URL;
++ (BOOL)requiresCopyingDocumentOfType:(nonnull NSString *)type atOriginalURL:(nonnull NSURL *)URL;
 
 /** File URL given to the document when it was read originally from disk. */
-@property (readwrite) NSURL *originalBundleFileURL;
+@property (readwrite, nullable) NSURL *originalBundleFileURL;
 
 /** The type of data that was read into the document. */
-@property (readwrite) NSString *originalType;
+@property (readwrite, nullable) NSString *originalType;
 
 /** Document state has been reverted */
 @property (readonly) BOOL reverted;
@@ -87,7 +87,7 @@ typedef NS_ENUM(NSUInteger, MPDatabasePackageBackedDocumentErrorCode) {
 @property (readonly) BOOL shouldReopenOnRevert;
 
 /** A shorthand for getting the document's primary window controller. */
-@property (readonly) id mainWindowController;
+@property (readonly, nullable) __kindof NSWindowController *mainWindowController;
 
 @end
 
@@ -95,10 +95,11 @@ typedef NS_ENUM(NSUInteger, MPDatabasePackageBackedDocumentErrorCode) {
 
 /** A scripting oriented adapter that allows wrapping 1 shared package controller to n documents without having to introduce a top-level object. */
 @interface MPSharedPackageControllerAdapter : NSObject
-@property (readonly) MPShoeboxPackageController *sharedPackageController;
-@property (readonly, weak) MPDatabasePackageBackedDocument *document;
+@property (readonly, nonnull) MPShoeboxPackageController *sharedPackageController;
+@property (readonly, weak, nullable) MPDatabasePackageBackedDocument *document;
 
-- (instancetype)initWithContainer:(MPDatabasePackageBackedDocument *)document sharedPackageController:(MPShoeboxPackageController *)spkg;
+- (nonnull instancetype)initWithContainer:(nonnull MPDatabasePackageBackedDocument *)document
+                  sharedPackageController:(nonnull MPShoeboxPackageController *)spkg;
 
 @end
 

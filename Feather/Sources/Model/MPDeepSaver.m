@@ -31,6 +31,10 @@
       ^BOOL(__unsafe_unretained Class cls, NSString *key) {
           Class propClass = [obj.class classOfProperty:key];
           
+          if ([key hasPrefix:@"effective"]) {
+              return YES;
+          }
+          
           if (([propClass isSubclassOfClass:MPManagedObject.class]
               || [propClass isSubclassOfClass:MPEmbeddedObject.class])
               && ![key isEqualToString:@"evaluatedObject"]

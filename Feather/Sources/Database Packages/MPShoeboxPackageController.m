@@ -290,20 +290,23 @@ static dispatch_once_t onceToken;
     return nil;
 }
 
+/*
 - (NSString *)pullFilterNameForDatabaseNamed:(NSString *)dbName
 {
     if ([dbName isEqualToString:[[self class] primaryDatabaseName]])
         return @"shared_managed_objects/accepted";
     
     return nil;
-}
+}*/
 
 - (BOOL)applyFilterWhenPullingFromDatabaseAtURL:(NSURL *)url toDatabase:(MPDatabase *)database
 {
     MPDatabase *primaryDB = [self primaryDatabase];
     
     // the primary database is for user only, no filters needed. filter only for the global database.
-    if (database == primaryDB && [url isEqualTo:[primaryDB remoteDatabaseURL]]) return NO;
+    if (database == primaryDB && [url isEqualTo:[primaryDB remoteDatabaseURL]]) {
+        return NO;
+    }
     
     return YES;
 }

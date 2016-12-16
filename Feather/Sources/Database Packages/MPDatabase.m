@@ -234,7 +234,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 - (void)defineFilterNamed:(NSString *)name block:(CBLFilterBlock)block
 {
-    assert(![self.database filterNamed:name]);
+    NSAssert(![self.database filterNamed:name], @"Expecting a filter with name '%@' not to exist in database with name %@", name, self.name);
     [self.database setFilterNamed:name asBlock:block];
 }
 
@@ -424,14 +424,16 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     CBLReplication *oneOffPull = [self.database createPullReplication:url];
     oneOffPull.continuous = NO;
     
-    if ([self.packageController applyFilterWhenPullingFromDatabaseAtURL:url toDatabase:self])
+    if ([self.packageController applyFilterWhenPullingFromDatabaseAtURL:url toDatabase:self]) {
         oneOffPull.filter = self.qualifiedPullFilterName;
+    }
     
     [oneOffPull start];
     [_currentPulls addObject:oneOffPull];
     
-    if (replication)
+    if (replication) {
         *replication = oneOffPull;
+    }
     
     return YES;
 }
@@ -459,6 +461,8 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
     CBLReplication *repl = [db createPushReplication:self.database.internalURL];
     repl.continuous = NO;
     repl.createTarget = NO;
+    
+    repl.filter = [self qualifiedPullFilterName];
     
     [repl start];
     

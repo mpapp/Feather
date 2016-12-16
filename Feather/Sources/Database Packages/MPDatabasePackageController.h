@@ -60,7 +60,8 @@ typedef enum MPDatabasePackageControllerErrorCode {
     MPDatabasePackageControllerErrorCodeNoDatabases = 7,
     MPDatabasePackageControllerErrorCodeOngoingTransaction = 8,
     MPDatabasePackageControllerErrorCodeRootURLMissing = 9,
-    MPDatabasePackageControllerErrorCodeBundledDataInitializationFailed = 10
+    MPDatabasePackageControllerErrorCodeBundledDataInitializationFailed = 10,
+    MPDatabasePackageControllerErrorCodeMismatchingPackageIdentifier = 11
 } MPDatabasePackageControllerErrorCode;
 
 
@@ -195,7 +196,11 @@ typedef enum MPDatabasePackageControllerErrorCode {
 
 /** Pulls from all the databases of the package at the specified file URL. 
   * Returns NO and an error if pulling failed to _start_ (errors may happen during the pull too). */
-- (BOOL)pullFromPackageFileURL:(nonnull NSURL *)url error:(NSError *__nullable *__nullable)error;
+- (void)pullFromPackageFileURL:(nonnull NSURL *)url
+    allowMismatchingIdentifier:(BOOL)allowMismatchingIdentifier
+           statusUpdateHandler:(void(^_Nullable)(NSUInteger completed, NSUInteger total))statusUpdateHandler
+             completionHandler:(void(^_Nonnull)())completionHandler
+                  errorHandler:(void(^_Nonnull)(NSError *_Nonnull))error;
 
 /** Pull and push asynchronously to a remote database package.
    * @param errorDict A dictionary of errors for *starting* replications (i.e. there can be errors during the asynchronous replication that are not captured here), keys being database names. */
@@ -221,6 +226,10 @@ typedef enum MPDatabasePackageControllerErrorCode {
  * Overloadable by subclasses, but not intended to be called manually. Gets called if -pushFilterNameForDatabaseNamed: returns a non-nil filter name for a db. If filterName is non-nil, *must* return a non-nil value. */
 - (nonnull CBLFilterBlock)createPushFilterBlockWithName:(nonnull NSString *)filterName forDatabase:(nonnull MPDatabase *)db;
 
+/** Returns a new filter block with the given name to act as a pull filter for the specified database.
+ * Overloadable by subclasses, but not intended to be called manually. Gets called if -pullFilterNameForDatabaseNamed: returns a non-nil filter name for a db. If filterName is non-nil, *must* return a non-nil value. */
+- (nonnull CBLFilterBlock)createPullFilterBlockWithName:(nonnull NSString *)filterName forDatabase:(nonnull MPDatabase *)db;
+
 /** Name of the pull filter for the given database. Nil return value means that no pull filter is to be used. Default implementation uses no push filter. */
 - (nullable NSString *)pullFilterNameForDatabaseNamed:(nonnull NSString *)dbName;
 
@@ -233,6 +242,8 @@ typedef enum MPDatabasePackageControllerErrorCode {
 @property (strong, readonly, nonnull) NSSet<MPDatabase *> *databases;
 
 @property (copy, readonly, nonnull) NSArray<MPDatabase *> *orderedDatabases;
+
+@property (copy, readonly, nonnull) NSArray<MPDatabase *> *replicatedDatabases;
 
 /** A utility method which returns the names of the databases for this package. As database names are unique per database package, this will match. */
 @property (strong, readonly, nonnull) NSSet<NSString *> *databaseNames;
