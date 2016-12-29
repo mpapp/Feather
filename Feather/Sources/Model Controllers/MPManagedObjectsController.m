@@ -693,7 +693,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     return self.managedObjectClass;
 }
 
-- (id)newObjectWithPrototype:(MPManagedObject *)prototype
+- (id)newObjectWithPrototype:(MPManagedObject *)prototype documentID:(NSString *)documentID
 {
     NSAssert(prototype, @"Expecting a non-nil prototype for object of class %@", self.class);
     NSAssert([prototype isKindOfClass:self.prototypeClass], @"Unexpected prototype class %@. Expected: %@", prototype.class, self.prototypeClass);
@@ -705,7 +705,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                                 ? prototype.class
                                 : self.managedObjectClass;
     
-    MPManagedObject *obj = [[instantiableClass alloc] initWithNewDocumentForController:self prototype:prototype];
+    MPManagedObject *obj = [[instantiableClass alloc] initWithNewDocumentForController:self prototype:prototype documentID:documentID];
     obj.prototype = prototype;
 
     for (NSString *key in prototype.document.userProperties)

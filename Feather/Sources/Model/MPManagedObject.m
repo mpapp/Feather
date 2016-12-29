@@ -144,8 +144,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 // override in subclass if initialising when copying with a prototype should go a different route.
-- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller prototype:(id)prototype {
-    return [self initWithNewDocumentForController:controller];
+- (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller prototype:(id)prototype documentID:(NSString *)documentID {
+    return [self initWithNewDocumentForController:controller properties:nil documentID:documentID];
 }
 
 - (instancetype)initWithNewDocumentForController:(MPManagedObjectsController *)controller properties:(NSDictionary *)properties {

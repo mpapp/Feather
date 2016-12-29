@@ -145,7 +145,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 - (nonnull T)newObjectOfClass:(nullable Class)cls;
 
 /** Returns a new managed object with the specified prototype. */
-- (nonnull T)newObjectWithPrototype:(nonnull MPManagedObject *)prototype;
+- (nonnull T)newObjectWithPrototype:(nonnull MPManagedObject *)prototype documentID:(nullable NSString *)documentID;
 
 /** Objects derived from the specified prototype ID */
 - (nonnull NSArray<T> *)objectsWithPrototypeID:(nonnull NSString *)prototypeID;

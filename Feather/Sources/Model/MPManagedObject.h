@@ -285,7 +285,8 @@ extern NSString * _Nonnull const MPPasteboardTypeManagedObjectIDArray;
 /** Initializer used to when creating a new object with a given prototype.
   * Override in subclass if initialising when copying with a prototype should go a different route. */
 - (nonnull instancetype)initWithNewDocumentForController:(nonnull MPManagedObjectsController *)controller
-                                               prototype:(nullable __kindof MPManagedObject *)prototype;
+                                               prototype:(nullable __kindof MPManagedObject *)prototype
+                                              documentID:(nullable NSString *)documentID;
 
 /** Initialise a managed object with a new document managed by the specified controller.
   * @param managedObject a non-nil managed object of the same class as the object being returned.
