@@ -305,7 +305,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjackSwift.framework; path = "Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac/CocoaLumberjackSwift.framework"; sourceTree = "<group>"; };
+		5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjackSwift.framework; path = Carthage/Build/Mac/CocoaLumberjackSwift.framework; sourceTree = "<group>"; };
 		5F019E291D330C2C00424CDA /* CloudKitDatabasePackageListingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitDatabasePackageListingService.swift; sourceTree = "<group>"; };
 		5F05A3181CD02CC800FE80D8 /* FeatherAppKitExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeatherAppKitExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F05A31A1CD02CC800FE80D8 /* FeatherAppKitExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeatherAppKitExtensions.h; sourceTree = "<group>"; };
@@ -333,7 +333,7 @@
 		5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPEmbeddedObjectsTests.m; sourceTree = "<group>"; };
 		5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPPlaceHolding.h; path = Sources/Model/MPPlaceHolding.h; sourceTree = "<group>"; };
 		5F293C20170E45D4001C2111 /* MPEmbeddedObject+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPEmbeddedObject+Protected.h"; path = "Sources/Model/MPEmbeddedObject+Protected.h"; sourceTree = "<group>"; };
-		5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiffMatchPatch.framework; path = ../../Carthage/Build/Mac/DiffMatchPatch.framework; sourceTree = "<group>"; };
+		5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiffMatchPatch.framework; path = Carthage/Build/Mac/DiffMatchPatch.framework; sourceTree = "<group>"; };
 		5F2CC7731B56E58900D9C714 /* MPFileObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPFileObserver.h; path = Sources/Utilities/MPFileObserver.h; sourceTree = "<group>"; };
 		5F2CC7741B56E58900D9C714 /* MPFileObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPFileObserver.m; path = Sources/Utilities/MPFileObserver.m; sourceTree = "<group>"; };
 		5F2EBAAC1780AA4E00BF3298 /* NSApplication+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSApplication+MPExtensions.h"; path = "../Feather/Sources/Categories/NSApplication+MPExtensions.h"; sourceTree = "<group>"; };
@@ -356,7 +356,7 @@
 		5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLite.framework; path = Carthage/Build/Mac/CouchbaseLite.framework; sourceTree = "<group>"; };
 		5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CouchbaseLiteListener.framework; path = Carthage/Build/Mac/CouchbaseLiteListener.framework; sourceTree = "<group>"; };
 		5F4ED85E1CECDB61003ED0B8 /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
-		5F5084471C551804009D7211 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = "Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac/CocoaLumberjack.framework"; sourceTree = "<group>"; };
+		5F5084471C551804009D7211 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/Mac/CocoaLumberjack.framework; sourceTree = "<group>"; };
 		5F5C5B541D2EC84800CD99BD /* Dictionary+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extensions.swift"; sourceTree = "<group>"; };
 		5F6414BA19A2A876007E5245 /* CBLDocument+MPScriptingSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CBLDocument+MPScriptingSupport.h"; path = "../Feather/Sources/Scripting/CBLDocument+MPScriptingSupport.h"; sourceTree = "<group>"; };
 		5F6414BB19A2A876007E5245 /* CBLDocument+MPScriptingSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CBLDocument+MPScriptingSupport.m"; path = "../Feather/Sources/Scripting/CBLDocument+MPScriptingSupport.m"; sourceTree = "<group>"; };

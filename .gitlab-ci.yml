@@ -11,19 +11,5 @@ build_project:
     - git submodule update --init --recursive
     - carthage bootstrap --use-ssh --use-submodules --platform mac
     - xcodebuild clean build -project Feather.xcodeproj -scheme Feather | xcpretty
-    - xcodebuild clean test -project Sashimi.xcodeproj -scheme Feather | xcpretty
+    - xcodebuild clean test -project Feather.xcodeproj -scheme Feather | xcpretty
 
-#archive_project:
-#  stage: archive
-#  script:
-#    - xcodebuild clean archive -archivePath build/ProjectName -scheme SchemeName
-#    - xcodebuild -exportArchive -exportFormat ipa -archivePath "build/ProjectName.xcarchive" -exportPath "build/ProjectName.ipa" -exportProvisioningProfile "ProvisioningProfileName"
-#  only:
-#    - master
-#  artifacts:
-#    paths:
-#    - build/ProjectName.ipa
-#  tags:
-#    - ios_9-2
-#    - xcode_7-2
-#    - osx_10-11
