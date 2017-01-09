@@ -32,4 +32,6 @@
 	path = Carthage/Checkouts/MPTimer
 	url = ssh://git@github.com/mpapp/MPTimer.git
 [submodule "Carthage/Checkouts/Freddy"]
+        path = Carthage/Checkouts/Freddy
 	url = ssh://git@github.com/mz2/Freddy.git
+
