@@ -35,3 +35,6 @@
         path = Carthage/Checkouts/Freddy
 	url = ssh://git@github.com/mz2/Freddy.git
 
+[submodule "Carthage/Checkouts/CocoaHTTPServer"]
+	path = Carthage/Checkouts/CocoaHTTPServer
+	url = ssh://git@github.com/mz2/CocoaHTTPServer.git

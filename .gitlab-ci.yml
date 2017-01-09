@@ -11,7 +11,7 @@ build_project:
     - git submodule update --init --recursive
     - carthage bootstrap --use-ssh --use-submodules --platform mac
     - xcodebuild clean build -project Feather.xcodeproj -scheme Feather | xcpretty
-    - xcodebuild clean test -project Sashimi.xcodeproj -scheme Sashimi | xcpretty
+    - xcodebuild clean test -project Sashimi.xcodeproj -scheme Feather | xcpretty
 
 #archive_project:
 #  stage: archive
