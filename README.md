@@ -1,4 +1,4 @@
-## About Feather
+## About Feather [![build status](https://gitlab.com/mpapp/Feather/badges/master/build.svg)](https://gitlab.com/mpapp/Feather/commits/master)
 
 Feather is a set of data modeling and persistence classes built on top of Couchbase Lite, intended to provide data model and model controller classes with strong conventions which I've found useful when building a largeish application on top of Couchbase Lite.
 
