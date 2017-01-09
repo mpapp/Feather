@@ -38,3 +38,6 @@
 [submodule "Carthage/Checkouts/CocoaHTTPServer"]
 	path = Carthage/Checkouts/CocoaHTTPServer
 	url = ssh://git@github.com/mz2/CocoaHTTPServer.git
+[submodule "Carthage/Checkouts/MAKVONotificationCenter"]
+	path = Carthage/Checkouts/MAKVONotificationCenter
+	url = ssh://git@github.com/mz2/MAKVONotificationCenter.git

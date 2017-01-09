@@ -107,6 +107,7 @@
     MPFeatherTestPackageController *tpkg = [MPFeatherTestPackageController sharedPackageController];
     MPTestObjectsController *ac = tpkg.testObjectsController;
     
+    
     MPTestObject *a, *b, *c, *d, *e;
     
     XCTAssertTrue(![MPManagedObject isConcrete], @"MPManagedObject is not concrete");

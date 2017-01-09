@@ -12,8 +12,6 @@
 		5F00787C1C95C4D400DDB296 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */; };
 		5F019E2A1D330C2C00424CDA /* CloudKitDatabasePackageListingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F019E291D330C2C00424CDA /* CloudKitDatabasePackageListingService.swift */; };
 		5F05A31B1CD02CC800FE80D8 /* FeatherAppKitExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F05A31A1CD02CC800FE80D8 /* FeatherAppKitExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5F05A3221CD02CC800FE80D8 /* FeatherAppKitExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F05A3181CD02CC800FE80D8 /* FeatherAppKitExtensions.framework */; };
-		5F05A3271CD02CC900FE80D8 /* FeatherAppKitExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F05A3261CD02CC900FE80D8 /* FeatherAppKitExtensionsTests.swift */; };
 		5F05A3371CD02D1200FE80D8 /* NSApplication+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F2EBAAC1780AA4E00BF3298 /* NSApplication+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F05A3381CD02D1200FE80D8 /* NSApplication+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2EBAAD1780AA4E00BF3298 /* NSApplication+MPExtensions.m */; };
 		5F05A3391CD02D1200FE80D8 /* NSEvent+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FFD61991AFF984C00483D9C /* NSEvent+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -48,8 +46,6 @@
 		5F293BF5170DFD4E001C2111 /* UICKeyChainStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293BF3170DFD4E001C2111 /* UICKeyChainStore.h */; };
 		5F293BF6170DFD4E001C2111 /* UICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293BF4170DFD4E001C2111 /* UICKeyChainStore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5F293BF8170DFD77001C2111 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F293BF7170DFD77001C2111 /* Security.framework */; };
-		5F293C00170E1935001C2111 /* MPExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293BFD170E191F001C2111 /* MPExtensionTests.m */; };
-		5F293C07170E2980001C2111 /* MPEmbeddedObjectsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */; };
 		5F293C1F170E3B62001C2111 /* MPPlaceHolding.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F2AFA691C3DE8C900B37435 /* DiffMatchPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */; };
 		5F2AFA6A1C3DE8E000B37435 /* DiffMatchPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */; };
@@ -73,15 +69,7 @@
 		5F4A48BF1C34079C0029DB3E /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; };
 		5F4A48C21C3407C30029DB3E /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
 		5F4ED85F1CECDB61003ED0B8 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4ED85E1CECDB61003ED0B8 /* String+Extensions.swift */; };
-		5F5084411C55119A009D7211 /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
-		5F5084421C55119D009D7211 /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; };
-		5F5084451C551503009D7211 /* CouchbaseLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5F5084461C551504009D7211 /* CouchbaseLiteListener.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5F5084481C551804009D7211 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5084471C551804009D7211 /* CocoaLumberjack.framework */; };
-		5F5084491C551810009D7211 /* CocoaLumberjack.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5084471C551804009D7211 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5F50844A1C5518A0009D7211 /* DiffMatchPatch.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5F50844B1C5518A7009D7211 /* DiffMatchPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */; };
-		5F50844C1C5518AA009D7211 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5084471C551804009D7211 /* CocoaLumberjack.framework */; };
 		5F5C5B551D2EC84800CD99BD /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5C5B541D2EC84800CD99BD /* Dictionary+Extensions.swift */; };
 		5F6857A01727C38900FE06B0 /* MPVirtualSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F68579D1727C38900FE06B0 /* MPVirtualSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F68579E1727C38900FE06B0 /* MPVirtualSection.m */; };
@@ -113,8 +101,6 @@
 		5FAF535A1D7F397600372EF5 /* RegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDED07E1C67A09A00769001 /* RegexKitLite.framework */; };
 		5FBDCBF41CE9D691002DEAA7 /* ErrorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBDCBF31CE9D691002DEAA7 /* ErrorPresenter.swift */; };
 		5FC423131AFF8719002234FB /* FeatherExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC423121AFF8719002234FB /* FeatherExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5FC423191AFF8719002234FB /* FeatherExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; };
-		5FC423201AFF8719002234FB /* FeatherExtensionsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC4231F1AFF8719002234FB /* FeatherExtensionsTests.m */; };
 		5FC4233C1AFF872E002234FB /* NSArray+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB382B170702CD0049EBB5 /* NSArray+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC4233D1AFF872E002234FB /* NSArray+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB382C170702CD0049EBB5 /* NSArray+MPExtensions.m */; };
 		5FC423401AFF872E002234FB /* NSNotificationCenter+ErrorNotification.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3A9917079EA80049EBB5 /* NSNotificationCenter+ErrorNotification.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -152,8 +138,6 @@
 		5FC423901AFF8BE3002234FB /* NSNotificationCenter+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3840170703EC0049EBB5 /* NSNotificationCenter+MPManagedObjectExtensions.m */; };
 		5FC423911AFF8CCA002234FB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB3A07170793B20049EBB5 /* libz.dylib */; };
 		5FC4239C1AFF8CF5002234FB /* FeatherScripting.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC4239B1AFF8CF5002234FB /* FeatherScripting.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5FC423A21AFF8CF5002234FB /* FeatherScripting.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC423971AFF8CF5002234FB /* FeatherScripting.framework */; };
-		5FC423A91AFF8CF6002234FB /* FeatherScriptingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC423A81AFF8CF6002234FB /* FeatherScriptingTests.m */; };
 		5FC423B51AFF8D04002234FB /* MPScriptingDefinitionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FAC23B919ABFA94000F188C /* MPScriptingDefinitionManager.m */; };
 		5FC423B61AFF8D07002234FB /* MPScriptingDefinitionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FAC23B819ABFA94000F188C /* MPScriptingDefinitionManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC423B91AFF8D1B002234FB /* FeatherExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; };
@@ -164,12 +148,40 @@
 		5FC753001746E294007818A0 /* NSString+MPSearchIndex.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC752FE1746E294007818A0 /* NSString+MPSearchIndex.m */; };
 		5FC802271B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC802251B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC802281B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FC802261B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.m */; };
+		5FD0A4521E2424C40012B195 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4511E2424C40012B195 /* MAKVONotificationCenter.framework */; };
+		5FD0A45C1E2425CA0012B195 /* Feather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33031705CB950049EBB5 /* Feather.framework */; };
+		5FD0A4691E2425E90012B195 /* FeatherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD0A4681E2425E90012B195 /* FeatherTests.m */; };
+		5FD0A4721E2425F30012B195 /* MPEmbeddedObjectsTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD0A46B1E2425F30012B195 /* MPEmbeddedObjectsTests.m */; };
+		5FD0A4731E2425F30012B195 /* MPExtensionTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD0A46D1E2425F30012B195 /* MPExtensionTests.m */; };
+		5FD0A4741E2425F30012B195 /* MPFeatherTestClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD0A46F1E2425F30012B195 /* MPFeatherTestClasses.m */; };
+		5FD0A4751E2425F30012B195 /* MPModelFoundationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD0A4711E2425F30012B195 /* MPModelFoundationTests.m */; };
+		5FD0A4761E2426060012B195 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4511E2424C40012B195 /* MAKVONotificationCenter.framework */; };
+		5FD0A4771E2426060012B195 /* Freddy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAA0A691D2EA96500F18A2D /* Freddy.framework */; };
+		5FD0A4781E2426090012B195 /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
+		5FD0A4791E2426090012B195 /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; };
+		5FD0A47B1E2426EF0012B195 /* MAKVONotificationCenter.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4511E2424C40012B195 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FD0A47C1E2426EF0012B195 /* Freddy.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAA0A691D2EA96500F18A2D /* Freddy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FD0A47D1E2426EF0012B195 /* CloudKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF745C31D26FD0A00B493D0 /* CloudKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FD0A47E1E2426EF0012B195 /* CouchbaseLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FD0A47F1E2426EF0012B195 /* CouchbaseLiteListener.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FD0A4801E2426F60012B195 /* Feather.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33031705CB950049EBB5 /* Feather.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FD0A4811E2426F60012B195 /* FeatherExtensions.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FD0A4841E2428F20012B195 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4821E2428F20012B195 /* CocoaLumberjack.framework */; };
+		5FD0A4851E2428F20012B195 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4831E2428F20012B195 /* CocoaLumberjackSwift.framework */; };
+		5FD0A4861E2428F70012B195 /* CocoaLumberjack.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4821E2428F20012B195 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FD0A4871E2428F70012B195 /* CocoaLumberjackSwift.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4831E2428F20012B195 /* CocoaLumberjackSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FD0A4891E242A4E0012B195 /* RegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4881E242A4E0012B195 /* RegexKitLite.framework */; };
+		5FD0A48A1E242A500012B195 /* RegexKitLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4881E242A4E0012B195 /* RegexKitLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FD0A48C1E242A770012B195 /* MPTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A48B1E242A770012B195 /* MPTimer.framework */; };
+		5FD0A48D1E242A7D0012B195 /* MPTimer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A48B1E242A770012B195 /* MPTimer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FD0A48F1E242A9E0012B195 /* MPRateLimiter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A48E1E242A9E0012B195 /* MPRateLimiter.framework */; };
+		5FD0A4901E242AA50012B195 /* MPRateLimiter.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A48E1E242A9E0012B195 /* MPRateLimiter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FD0A4921E242AB70012B195 /* DiffMatchPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4911E242AB70012B195 /* DiffMatchPatch.framework */; };
+		5FD0A4931E242AB90012B195 /* DiffMatchPatch.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4911E242AB70012B195 /* DiffMatchPatch.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5FD0A4951E242ACC0012B195 /* CocoaHTTPServerKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4941E242ACC0012B195 /* CocoaHTTPServerKit.framework */; };
+		5FD0A4961E242ACE0012B195 /* CocoaHTTPServerKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4941E242ACC0012B195 /* CocoaHTTPServerKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
 		5FDB33111705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB330F1705CB950049EBB5 /* InfoPlist.strings */; };
-		5FDB331E1705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
-		5FDB33211705CB950049EBB5 /* Feather.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33031705CB950049EBB5 /* Feather.framework */; };
-		5FDB33271705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB33251705CB950049EBB5 /* InfoPlist.strings */; };
-		5FDB332A1705CB950049EBB5 /* FeatherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB33291705CB950049EBB5 /* FeatherTests.m */; };
 		5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33D71705D1380049EBB5 /* libicucore.dylib */; };
 		5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34361705D90A0049EBB5 /* Mixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB34391705D90A0049EBB5 /* Mixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34371705D90A0049EBB5 /* Mixin.m */; };
@@ -205,14 +217,11 @@
 		5FDB3AA017079ED80049EBB5 /* MPShoeboxPackageController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A9E17079ED70049EBB5 /* MPShoeboxPackageController.m */; };
 		5FDB3AA81707A36D0049EBB5 /* Feather.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB33131705CB950049EBB5 /* Feather.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3AA91707ABBE0049EBB5 /* MPTreeItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5FDCF2EE171045990039DAED /* MPFeatherTestClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2ED171045990039DAED /* MPFeatherTestClasses.m */; };
 		5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */; };
-		5FDCF34D1710CA600039DAED /* MPModelFoundationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */; };
 		5FDED07F1C67A09A00769001 /* RegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDED07E1C67A09A00769001 /* RegexKitLite.framework */; };
 		5FE2C0EB1B256B4C001DB163 /* MPTreeItemUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FE2C0E91B256B4C001DB163 /* MPTreeItemUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FE2C0EC1B256B4C001DB163 /* MPTreeItemUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FE2C0EA1B256B4C001DB163 /* MPTreeItemUtility.m */; };
-		5FEA8B5018A81E0100A7C14B /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FEA8B4F18A81E0100A7C14B /* XCTest.framework */; };
 		5FEE14CE1D89552F0087924A /* MPContributorChangeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEE14CD1D89552F0087924A /* MPContributorChangeObserver.swift */; };
 		5FF745AB1D25518300B493D0 /* MPManagedObject-CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF745AA1D25518300B493D0 /* MPManagedObject-CloudKit.swift */; };
 		5FF745B81D259BD100B493D0 /* CloudKitSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF745B71D259BD100B493D0 /* CloudKitSyncService.swift */; };
@@ -224,26 +233,11 @@
 		5FFC37711AEEF7AF0041FBED /* MPCountryList.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFC376F1AEEF7AF0041FBED /* MPCountryList.m */; };
 		5FFD61B31AFFAF4000483D9C /* NSArray+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */; };
 		5FFD61B41AFFAF4400483D9C /* NSArray+MPManagedObjectExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D932296617268E37006880C2 /* NSTask+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D932296317268E37006880C2 /* NSTask+MPExtensions.m */; };
 		D9FE2FFD19D6F0A000CD224D /* MPAssert.h in Headers */ = {isa = PBXBuildFile; fileRef = D9FE2FFC19D6F0A000CD224D /* MPAssert.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		5F05A3231CD02CC800FE80D8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FDB32F91705CB950049EBB5 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5F05A3171CD02CC800FE80D8;
-			remoteInfo = FeatherAppKitExtensions;
-		};
 		5F8942681CD04E4900A9DC07 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FDB32F91705CB950049EBB5 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5FC4230D1AFF8719002234FB;
-			remoteInfo = FeatherExtensions;
-		};
-		5FC4231A1AFF8719002234FB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5FDB32F91705CB950049EBB5 /* Project object */;
 			proxyType = 1;
@@ -257,13 +251,6 @@
 			remoteGlobalIDString = 5FC4230D1AFF8719002234FB;
 			remoteInfo = FeatherExtensions;
 		};
-		5FC423A31AFF8CF5002234FB /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5FDB32F91705CB950049EBB5 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5FC423961AFF8CF5002234FB;
-			remoteInfo = FeatherScripting;
-		};
 		5FC423B71AFF8D15002234FB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5FDB32F91705CB950049EBB5 /* Project object */;
@@ -271,7 +258,7 @@
 			remoteGlobalIDString = 5FC4230D1AFF8719002234FB;
 			remoteInfo = FeatherExtensions;
 		};
-		5FDB331F1705CB950049EBB5 /* PBXContainerItemProxy */ = {
+		5FD0A45D1E2425CA0012B195 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5FDB32F91705CB950049EBB5 /* Project object */;
 			proxyType = 1;
@@ -288,16 +275,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		5F5084431C5514F8009D7211 /* Copy Frameworks */ = {
+		5FD0A47A1E2426E20012B195 /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				5F50844A1C5518A0009D7211 /* DiffMatchPatch.framework in Copy Frameworks */,
-				5F5084491C551810009D7211 /* CocoaLumberjack.framework in Copy Frameworks */,
-				5F5084451C551503009D7211 /* CouchbaseLite.framework in Copy Frameworks */,
-				5F5084461C551504009D7211 /* CouchbaseLiteListener.framework in Copy Frameworks */,
+				5FD0A4961E242ACE0012B195 /* CocoaHTTPServerKit.framework in Copy Frameworks */,
+				5FD0A4931E242AB90012B195 /* DiffMatchPatch.framework in Copy Frameworks */,
+				5FD0A4901E242AA50012B195 /* MPRateLimiter.framework in Copy Frameworks */,
+				5FD0A48D1E242A7D0012B195 /* MPTimer.framework in Copy Frameworks */,
+				5FD0A48A1E242A500012B195 /* RegexKitLite.framework in Copy Frameworks */,
+				5FD0A4861E2428F70012B195 /* CocoaLumberjack.framework in Copy Frameworks */,
+				5FD0A4871E2428F70012B195 /* CocoaLumberjackSwift.framework in Copy Frameworks */,
+				5FD0A4801E2426F60012B195 /* Feather.framework in Copy Frameworks */,
+				5FD0A4811E2426F60012B195 /* FeatherExtensions.framework in Copy Frameworks */,
+				5FD0A47B1E2426EF0012B195 /* MAKVONotificationCenter.framework in Copy Frameworks */,
+				5FD0A47C1E2426EF0012B195 /* Freddy.framework in Copy Frameworks */,
+				5FD0A47D1E2426EF0012B195 /* CloudKit.framework in Copy Frameworks */,
+				5FD0A47E1E2426EF0012B195 /* CouchbaseLite.framework in Copy Frameworks */,
+				5FD0A47F1E2426EF0012B195 /* CouchbaseLiteListener.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -310,9 +307,6 @@
 		5F05A3181CD02CC800FE80D8 /* FeatherAppKitExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeatherAppKitExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F05A31A1CD02CC800FE80D8 /* FeatherAppKitExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeatherAppKitExtensions.h; sourceTree = "<group>"; };
 		5F05A31C1CD02CC800FE80D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5F05A3211CD02CC800FE80D8 /* FeatherAppKitExtensionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeatherAppKitExtensionsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5F05A3261CD02CC900FE80D8 /* FeatherAppKitExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeatherAppKitExtensionsTests.swift; sourceTree = "<group>"; };
-		5F05A3281CD02CC900FE80D8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F05A3641CD0323900FE80D8 /* NSMenuItem+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSMenuItem+MPExtensions.h"; sourceTree = "<group>"; };
 		5F05A3651CD0323900FE80D8 /* NSMenuItem+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMenuItem+MPExtensions.m"; sourceTree = "<group>"; };
 		5F05A3681CD0332A00FE80D8 /* NSXMLElement+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSXMLElement+MPExtensions.h"; path = "FeatherAppKitExtensions/NSXMLElement+MPExtensions.h"; sourceTree = SOURCE_ROOT; };
@@ -327,10 +321,6 @@
 		5F293BF3170DFD4E001C2111 /* UICKeyChainStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UICKeyChainStore.h; path = External/UICKeyChainStore/Lib/UICKeyChainStore.h; sourceTree = SOURCE_ROOT; };
 		5F293BF4170DFD4E001C2111 /* UICKeyChainStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UICKeyChainStore.m; path = External/UICKeyChainStore/Lib/UICKeyChainStore.m; sourceTree = SOURCE_ROOT; };
 		5F293BF7170DFD77001C2111 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		5F293BFC170E191F001C2111 /* MPExtensionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPExtensionTests.h; sourceTree = "<group>"; };
-		5F293BFD170E191F001C2111 /* MPExtensionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPExtensionTests.m; sourceTree = "<group>"; };
-		5F293C05170E2980001C2111 /* MPEmbeddedObjectsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPEmbeddedObjectsTests.h; sourceTree = "<group>"; };
-		5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPEmbeddedObjectsTests.m; sourceTree = "<group>"; };
 		5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPPlaceHolding.h; path = Sources/Model/MPPlaceHolding.h; sourceTree = "<group>"; };
 		5F293C20170E45D4001C2111 /* MPEmbeddedObject+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPEmbeddedObject+Protected.h"; path = "Sources/Model/MPEmbeddedObject+Protected.h"; sourceTree = "<group>"; };
 		5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiffMatchPatch.framework; path = Carthage/Build/Mac/DiffMatchPatch.framework; sourceTree = "<group>"; };
@@ -398,15 +388,9 @@
 		5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeatherExtensions.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FC423111AFF8719002234FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5FC423121AFF8719002234FB /* FeatherExtensions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeatherExtensions.h; sourceTree = "<group>"; };
-		5FC423181AFF8719002234FB /* FeatherExtensionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeatherExtensionsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5FC4231E1AFF8719002234FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5FC4231F1AFF8719002234FB /* FeatherExtensionsTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeatherExtensionsTests.m; sourceTree = "<group>"; };
 		5FC423971AFF8CF5002234FB /* FeatherScripting.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = FeatherScripting.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FC4239A1AFF8CF5002234FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5FC4239B1AFF8CF5002234FB /* FeatherScripting.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeatherScripting.h; sourceTree = "<group>"; };
-		5FC423A11AFF8CF5002234FB /* FeatherScriptingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeatherScriptingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5FC423A71AFF8CF6002234FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5FC423A81AFF8CF6002234FB /* FeatherScriptingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeatherScriptingTests.m; sourceTree = "<group>"; };
 		5FC423C71AFF8E28002234FB /* NSDictionary+MPScriptingSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+MPScriptingSupport.h"; sourceTree = "<group>"; };
 		5FC423C81AFF8E28002234FB /* NSDictionary+MPScriptingSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+MPScriptingSupport.m"; sourceTree = "<group>"; };
 		5FC752E51746E287007818A0 /* NSDate+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSDate+MPExtensions.h"; path = "Sources/Categories/NSDate+MPExtensions.h"; sourceTree = "<group>"; };
@@ -418,6 +402,27 @@
 		5FC802261B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPDatabasePackageBackedDocument.m; path = "Sources/Model Controllers/MPDatabasePackageBackedDocument.m"; sourceTree = "<group>"; };
 		5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+MPManagedObjectExtensions.h"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.h"; sourceTree = "<group>"; };
 		5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MPManagedObjectExtensions.m"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.m"; sourceTree = "<group>"; };
+		5FD0A4511E2424C40012B195 /* MAKVONotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MAKVONotificationCenter.framework; path = Carthage/Build/Mac/MAKVONotificationCenter.framework; sourceTree = "<group>"; };
+		5FD0A4571E2425C90012B195 /* FeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5FD0A45B1E2425CA0012B195 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5FD0A4661E2425E80012B195 /* FeatherTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FeatherTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		5FD0A4671E2425E90012B195 /* FeatherTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeatherTests.h; sourceTree = "<group>"; };
+		5FD0A4681E2425E90012B195 /* FeatherTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeatherTests.m; sourceTree = "<group>"; };
+		5FD0A46A1E2425F30012B195 /* MPEmbeddedObjectsTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPEmbeddedObjectsTests.h; sourceTree = "<group>"; };
+		5FD0A46B1E2425F30012B195 /* MPEmbeddedObjectsTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPEmbeddedObjectsTests.m; sourceTree = "<group>"; };
+		5FD0A46C1E2425F30012B195 /* MPExtensionTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPExtensionTests.h; sourceTree = "<group>"; };
+		5FD0A46D1E2425F30012B195 /* MPExtensionTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPExtensionTests.m; sourceTree = "<group>"; };
+		5FD0A46E1E2425F30012B195 /* MPFeatherTestClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPFeatherTestClasses.h; sourceTree = "<group>"; };
+		5FD0A46F1E2425F30012B195 /* MPFeatherTestClasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPFeatherTestClasses.m; sourceTree = "<group>"; };
+		5FD0A4701E2425F30012B195 /* MPModelFoundationTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPModelFoundationTests.h; sourceTree = "<group>"; };
+		5FD0A4711E2425F30012B195 /* MPModelFoundationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPModelFoundationTests.m; sourceTree = "<group>"; };
+		5FD0A4821E2428F20012B195 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/Mac/CocoaLumberjack.framework; sourceTree = "<group>"; };
+		5FD0A4831E2428F20012B195 /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjackSwift.framework; path = Carthage/Build/Mac/CocoaLumberjackSwift.framework; sourceTree = "<group>"; };
+		5FD0A4881E242A4E0012B195 /* RegexKitLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RegexKitLite.framework; path = Carthage/Build/Mac/RegexKitLite.framework; sourceTree = "<group>"; };
+		5FD0A48B1E242A770012B195 /* MPTimer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MPTimer.framework; path = Carthage/Build/Mac/MPTimer.framework; sourceTree = "<group>"; };
+		5FD0A48E1E242A9E0012B195 /* MPRateLimiter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MPRateLimiter.framework; path = Carthage/Build/Mac/MPRateLimiter.framework; sourceTree = "<group>"; };
+		5FD0A4911E242AB70012B195 /* DiffMatchPatch.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DiffMatchPatch.framework; path = Carthage/Build/Mac/DiffMatchPatch.framework; sourceTree = "<group>"; };
+		5FD0A4941E242ACC0012B195 /* CocoaHTTPServerKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaHTTPServerKit.framework; path = Carthage/Build/Mac/CocoaHTTPServerKit.framework; sourceTree = "<group>"; };
 		5FD0E13118F082BD00789CC9 /* NSUUID+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUUID+MPExtensions.h"; sourceTree = "<group>"; };
 		5FD0E13218F082BD00789CC9 /* NSUUID+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUUID+MPExtensions.m"; sourceTree = "<group>"; };
 		5FDB1F4918F8C84800B3290D /* NSAttributedString+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributedString+MPExtensions.h"; path = "Sources/Categories/NSAttributedString+MPExtensions.h"; sourceTree = "<group>"; };
@@ -431,11 +436,6 @@
 		5FDB33101705CB950049EBB5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5FDB33121705CB950049EBB5 /* Feather-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Feather-Prefix.pch"; sourceTree = "<group>"; };
 		5FDB33131705CB950049EBB5 /* Feather.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Feather.h; sourceTree = "<group>"; };
-		5FDB331B1705CB950049EBB5 /* FeatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FeatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5FDB33241705CB950049EBB5 /* FeatherTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FeatherTests-Info.plist"; sourceTree = "<group>"; };
-		5FDB33261705CB950049EBB5 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		5FDB33281705CB950049EBB5 /* FeatherTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FeatherTests.h; sourceTree = "<group>"; };
-		5FDB33291705CB950049EBB5 /* FeatherTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FeatherTests.m; sourceTree = "<group>"; };
 		5FDB33C21705CF260049EBB5 /* libcommonCrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcommonCrypto.dylib; path = usr/lib/system/libcommonCrypto.dylib; sourceTree = SDKROOT; };
 		5FDB33D71705D1380049EBB5 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
 		5FDB34361705D90A0049EBB5 /* Mixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mixin.h; path = External/ObjectiveMixin/ObjectiveMixin/Mixin.h; sourceTree = SOURCE_ROOT; };
@@ -495,12 +495,8 @@
 		5FDB3A9D17079ED60049EBB5 /* MPShoeboxPackageController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPShoeboxPackageController.h; path = "Sources/Database Packages/MPShoeboxPackageController.h"; sourceTree = "<group>"; };
 		5FDB3A9E17079ED70049EBB5 /* MPShoeboxPackageController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPShoeboxPackageController.m; path = "Sources/Database Packages/MPShoeboxPackageController.m"; sourceTree = "<group>"; };
 		5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MPTreeItem.h; path = Sources/Model/MPTreeItem.h; sourceTree = "<group>"; };
-		5FDCF2EC171045990039DAED /* MPFeatherTestClasses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPFeatherTestClasses.h; sourceTree = "<group>"; };
-		5FDCF2ED171045990039DAED /* MPFeatherTestClasses.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPFeatherTestClasses.m; sourceTree = "<group>"; };
 		5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPEmbeddedPropertyContainingMixin.h; path = Sources/Model/MPEmbeddedPropertyContainingMixin.h; sourceTree = "<group>"; };
 		5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPEmbeddedPropertyContainingMixin.m; path = Sources/Model/MPEmbeddedPropertyContainingMixin.m; sourceTree = "<group>"; };
-		5FDCF34B1710CA600039DAED /* MPModelFoundationTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPModelFoundationTests.h; sourceTree = "<group>"; };
-		5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPModelFoundationTests.m; sourceTree = "<group>"; };
 		5FDED07E1C67A09A00769001 /* RegexKitLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RegexKitLite.framework; path = Carthage/Build/Mac/RegexKitLite.framework; sourceTree = "<group>"; };
 		5FE2C0E91B256B4C001DB163 /* MPTreeItemUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPTreeItemUtility.h; path = Sources/Utilities/MPTreeItemUtility.h; sourceTree = "<group>"; };
 		5FE2C0EA1B256B4C001DB163 /* MPTreeItemUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPTreeItemUtility.m; path = Sources/Utilities/MPTreeItemUtility.m; sourceTree = "<group>"; };
@@ -541,14 +537,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5F05A31E1CD02CC800FE80D8 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5F05A3221CD02CC800FE80D8 /* FeatherAppKitExtensions.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5FC4230A1AFF8719002234FB /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -558,14 +546,6 @@
 				5F2AFA6A1C3DE8E000B37435 /* DiffMatchPatch.framework in Frameworks */,
 				5FAF535A1D7F397600372EF5 /* RegexKitLite.framework in Frameworks */,
 				5FC423751AFF87FC002234FB /* Cocoa.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5FC423151AFF8719002234FB /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5FC423191AFF8719002234FB /* FeatherExtensions.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,11 +560,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5FC4239E1AFF8CF5002234FB /* Frameworks */ = {
+		5FD0A4541E2425C90012B195 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FC423A21AFF8CF5002234FB /* FeatherScripting.framework in Frameworks */,
+				5FD0A4951E242ACC0012B195 /* CocoaHTTPServerKit.framework in Frameworks */,
+				5FD0A48C1E242A770012B195 /* MPTimer.framework in Frameworks */,
+				5FD0A45C1E2425CA0012B195 /* Feather.framework in Frameworks */,
+				5FD0A48F1E242A9E0012B195 /* MPRateLimiter.framework in Frameworks */,
+				5FD0A4761E2426060012B195 /* MAKVONotificationCenter.framework in Frameworks */,
+				5FD0A4771E2426060012B195 /* Freddy.framework in Frameworks */,
+				5FD0A4891E242A4E0012B195 /* RegexKitLite.framework in Frameworks */,
+				5FD0A4781E2426090012B195 /* CouchbaseLite.framework in Frameworks */,
+				5FD0A4851E2428F20012B195 /* CocoaLumberjackSwift.framework in Frameworks */,
+				5FD0A4841E2428F20012B195 /* CocoaLumberjack.framework in Frameworks */,
+				5FD0A4921E242AB70012B195 /* DiffMatchPatch.framework in Frameworks */,
+				5FD0A4791E2426090012B195 /* CouchbaseLiteListener.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -593,6 +584,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FAA0A6A1D2EA96500F18A2D /* Freddy.framework in Frameworks */,
+				5FD0A4521E2424C40012B195 /* MAKVONotificationCenter.framework in Frameworks */,
 				5FF745C41D26FD0A00B493D0 /* CloudKit.framework in Frameworks */,
 				5F4A48BE1C34079C0029DB3E /* CouchbaseLite.framework in Frameworks */,
 				5F5084481C551804009D7211 /* CocoaLumberjack.framework in Frameworks */,
@@ -613,20 +605,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5FDB33171705CB950049EBB5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5F5084411C55119A009D7211 /* CouchbaseLite.framework in Frameworks */,
-				5F5084421C55119D009D7211 /* CouchbaseLiteListener.framework in Frameworks */,
-				5FEA8B5018A81E0100A7C14B /* XCTest.framework in Frameworks */,
-				5FDB331E1705CB950049EBB5 /* Cocoa.framework in Frameworks */,
-				5FDB33211705CB950049EBB5 /* Feather.framework in Frameworks */,
-				5F50844B1C5518A7009D7211 /* DiffMatchPatch.framework in Frameworks */,
-				5F50844C1C5518AA009D7211 /* CocoaLumberjack.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -640,15 +618,6 @@
 				5FBDCBF31CE9D691002DEAA7 /* ErrorPresenter.swift */,
 			);
 			path = FeatherAppKitExtensions;
-			sourceTree = "<group>";
-		};
-		5F05A3251CD02CC800FE80D8 /* FeatherAppKitExtensionsTests */ = {
-			isa = PBXGroup;
-			children = (
-				5F05A3261CD02CC900FE80D8 /* FeatherAppKitExtensionsTests.swift */,
-				5F05A3281CD02CC900FE80D8 /* Info.plist */,
-			);
-			path = FeatherAppKitExtensionsTests;
 			sourceTree = "<group>";
 		};
 		5F05A3451CD02D7D00FE80D8 /* AppKit Categories */ = {
@@ -750,23 +719,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		5FC4231C1AFF8719002234FB /* FeatherExtensionsTests */ = {
-			isa = PBXGroup;
-			children = (
-				5FC4231F1AFF8719002234FB /* FeatherExtensionsTests.m */,
-				5FC4231D1AFF8719002234FB /* Supporting Files */,
-			);
-			path = FeatherExtensionsTests;
-			sourceTree = "<group>";
-		};
-		5FC4231D1AFF8719002234FB /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				5FC4231E1AFF8719002234FB /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
 		5FC423981AFF8CF5002234FB /* FeatherScripting */ = {
 			isa = PBXGroup;
 			children = (
@@ -787,23 +739,6 @@
 			isa = PBXGroup;
 			children = (
 				5FC4239A1AFF8CF5002234FB /* Info.plist */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		5FC423A51AFF8CF6002234FB /* FeatherScriptingTests */ = {
-			isa = PBXGroup;
-			children = (
-				5FC423A81AFF8CF6002234FB /* FeatherScriptingTests.m */,
-				5FC423A61AFF8CF6002234FB /* Supporting Files */,
-			);
-			path = FeatherScriptingTests;
-			sourceTree = "<group>";
-		};
-		5FC423A61AFF8CF6002234FB /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				5FC423A71AFF8CF6002234FB /* Info.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -830,17 +765,33 @@
 			name = "Document Classes";
 			sourceTree = "<group>";
 		};
+		5FD0A4581E2425CA0012B195 /* FeatherTests */ = {
+			isa = PBXGroup;
+			children = (
+				5FD0A4671E2425E90012B195 /* FeatherTests.h */,
+				5FD0A4681E2425E90012B195 /* FeatherTests.m */,
+				5FD0A46A1E2425F30012B195 /* MPEmbeddedObjectsTests.h */,
+				5FD0A46B1E2425F30012B195 /* MPEmbeddedObjectsTests.m */,
+				5FD0A46C1E2425F30012B195 /* MPExtensionTests.h */,
+				5FD0A46D1E2425F30012B195 /* MPExtensionTests.m */,
+				5FD0A46E1E2425F30012B195 /* MPFeatherTestClasses.h */,
+				5FD0A46F1E2425F30012B195 /* MPFeatherTestClasses.m */,
+				5FD0A4701E2425F30012B195 /* MPModelFoundationTests.h */,
+				5FD0A4711E2425F30012B195 /* MPModelFoundationTests.m */,
+				5FD0A45B1E2425CA0012B195 /* Info.plist */,
+				5FD0A4661E2425E80012B195 /* FeatherTests-Bridging-Header.h */,
+			);
+			path = FeatherTests;
+			sourceTree = "<group>";
+		};
 		5FDB32F71705CB950049EBB5 = {
 			isa = PBXGroup;
 			children = (
 				5FDB330C1705CB950049EBB5 /* Feather */,
 				5F05A3191CD02CC800FE80D8 /* FeatherAppKitExtensions */,
-				5F05A3251CD02CC800FE80D8 /* FeatherAppKitExtensionsTests */,
 				5FC4230F1AFF8719002234FB /* FeatherExtensions */,
-				5FC4231C1AFF8719002234FB /* FeatherExtensionsTests */,
 				5FC423981AFF8CF5002234FB /* FeatherScripting */,
-				5FC423A51AFF8CF6002234FB /* FeatherScriptingTests */,
-				5FDB33221705CB950049EBB5 /* FeatherTests */,
+				5FD0A4581E2425CA0012B195 /* FeatherTests */,
 				5FDB33051705CB950049EBB5 /* Frameworks */,
 				5FDB33041705CB950049EBB5 /* Products */,
 			);
@@ -850,13 +801,10 @@
 			isa = PBXGroup;
 			children = (
 				5FDB33031705CB950049EBB5 /* Feather.framework */,
-				5FDB331B1705CB950049EBB5 /* FeatherTests.xctest */,
 				5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */,
-				5FC423181AFF8719002234FB /* FeatherExtensionsTests.xctest */,
 				5FC423971AFF8CF5002234FB /* FeatherScripting.framework */,
-				5FC423A11AFF8CF5002234FB /* FeatherScriptingTests.xctest */,
 				5F05A3181CD02CC800FE80D8 /* FeatherAppKitExtensions.framework */,
-				5F05A3211CD02CC800FE80D8 /* FeatherAppKitExtensionsTests.xctest */,
+				5FD0A4571E2425C90012B195 /* FeatherTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -864,6 +812,14 @@
 		5FDB33051705CB950049EBB5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5FD0A4941E242ACC0012B195 /* CocoaHTTPServerKit.framework */,
+				5FD0A4911E242AB70012B195 /* DiffMatchPatch.framework */,
+				5FD0A48E1E242A9E0012B195 /* MPRateLimiter.framework */,
+				5FD0A48B1E242A770012B195 /* MPTimer.framework */,
+				5FD0A4881E242A4E0012B195 /* RegexKitLite.framework */,
+				5FD0A4821E2428F20012B195 /* CocoaLumberjack.framework */,
+				5FD0A4831E2428F20012B195 /* CocoaLumberjackSwift.framework */,
+				5FD0A4511E2424C40012B195 /* MAKVONotificationCenter.framework */,
 				5FAA0A691D2EA96500F18A2D /* Freddy.framework */,
 				5FF745C31D26FD0A00B493D0 /* CloudKit.framework */,
 				5FF745BB1D25A8F700B493D0 /* MPTimer.framework */,
@@ -925,33 +881,6 @@
 				5FDB330E1705CB950049EBB5 /* Feather-Info.plist */,
 				5FDB330F1705CB950049EBB5 /* InfoPlist.strings */,
 				5FDB33121705CB950049EBB5 /* Feather-Prefix.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		5FDB33221705CB950049EBB5 /* FeatherTests */ = {
-			isa = PBXGroup;
-			children = (
-				5FDB33231705CB950049EBB5 /* Supporting Files */,
-				5FDB33281705CB950049EBB5 /* FeatherTests.h */,
-				5FDB33291705CB950049EBB5 /* FeatherTests.m */,
-				5F293BFC170E191F001C2111 /* MPExtensionTests.h */,
-				5F293BFD170E191F001C2111 /* MPExtensionTests.m */,
-				5F293C05170E2980001C2111 /* MPEmbeddedObjectsTests.h */,
-				5F293C06170E2980001C2111 /* MPEmbeddedObjectsTests.m */,
-				5FDCF2EC171045990039DAED /* MPFeatherTestClasses.h */,
-				5FDCF2ED171045990039DAED /* MPFeatherTestClasses.m */,
-				5FDCF34B1710CA600039DAED /* MPModelFoundationTests.h */,
-				5FDCF34C1710CA600039DAED /* MPModelFoundationTests.m */,
-			);
-			path = FeatherTests;
-			sourceTree = "<group>";
-		};
-		5FDB33231705CB950049EBB5 /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				5FDB33241705CB950049EBB5 /* FeatherTests-Info.plist */,
-				5FDB33251705CB950049EBB5 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1279,24 +1208,6 @@
 			productReference = 5F05A3181CD02CC800FE80D8 /* FeatherAppKitExtensions.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		5F05A3201CD02CC800FE80D8 /* FeatherAppKitExtensionsTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5F05A3361CD02CC900FE80D8 /* Build configuration list for PBXNativeTarget "FeatherAppKitExtensionsTests" */;
-			buildPhases = (
-				5F05A31D1CD02CC800FE80D8 /* Sources */,
-				5F05A31E1CD02CC800FE80D8 /* Frameworks */,
-				5F05A31F1CD02CC800FE80D8 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				5F05A3241CD02CC800FE80D8 /* PBXTargetDependency */,
-			);
-			name = FeatherAppKitExtensionsTests;
-			productName = FeatherAppKitExtensionsTests;
-			productReference = 5F05A3211CD02CC800FE80D8 /* FeatherAppKitExtensionsTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 		5FC4230D1AFF8719002234FB /* FeatherExtensions */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5FC423371AFF8719002234FB /* Build configuration list for PBXNativeTarget "FeatherExtensions" */;
@@ -1314,24 +1225,6 @@
 			productName = FeatherExtensions;
 			productReference = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */;
 			productType = "com.apple.product-type.framework";
-		};
-		5FC423171AFF8719002234FB /* FeatherExtensionsTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5FC423381AFF8719002234FB /* Build configuration list for PBXNativeTarget "FeatherExtensionsTests" */;
-			buildPhases = (
-				5FC423141AFF8719002234FB /* Sources */,
-				5FC423151AFF8719002234FB /* Frameworks */,
-				5FC423161AFF8719002234FB /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				5FC4231B1AFF8719002234FB /* PBXTargetDependency */,
-			);
-			name = FeatherExtensionsTests;
-			productName = FeatherExtensionsTests;
-			productReference = 5FC423181AFF8719002234FB /* FeatherExtensionsTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		5FC423961AFF8CF5002234FB /* FeatherScripting */ = {
 			isa = PBXNativeTarget;
@@ -1353,22 +1246,23 @@
 			productReference = 5FC423971AFF8CF5002234FB /* FeatherScripting.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		5FC423A01AFF8CF5002234FB /* FeatherScriptingTests */ = {
+		5FD0A4561E2425C90012B195 /* FeatherTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5FC423AF1AFF8CF6002234FB /* Build configuration list for PBXNativeTarget "FeatherScriptingTests" */;
+			buildConfigurationList = 5FD0A45F1E2425CA0012B195 /* Build configuration list for PBXNativeTarget "FeatherTests" */;
 			buildPhases = (
-				5FC4239D1AFF8CF5002234FB /* Sources */,
-				5FC4239E1AFF8CF5002234FB /* Frameworks */,
-				5FC4239F1AFF8CF5002234FB /* Resources */,
+				5FD0A4531E2425C90012B195 /* Sources */,
+				5FD0A4541E2425C90012B195 /* Frameworks */,
+				5FD0A4551E2425C90012B195 /* Resources */,
+				5FD0A47A1E2426E20012B195 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				5FC423A41AFF8CF5002234FB /* PBXTargetDependency */,
+				5FD0A45E1E2425CA0012B195 /* PBXTargetDependency */,
 			);
-			name = FeatherScriptingTests;
-			productName = FeatherScriptingTests;
-			productReference = 5FC423A11AFF8CF5002234FB /* FeatherScriptingTests.xctest */;
+			name = FeatherTests;
+			productName = FeatherTests;
+			productReference = 5FD0A4571E2425C90012B195 /* FeatherTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		5FDB33021705CB950049EBB5 /* Feather */ = {
@@ -1391,33 +1285,13 @@
 			productReference = 5FDB33031705CB950049EBB5 /* Feather.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		5FDB331A1705CB950049EBB5 /* FeatherTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 5FDB33301705CB950049EBB5 /* Build configuration list for PBXNativeTarget "FeatherTests" */;
-			buildPhases = (
-				5FDB33161705CB950049EBB5 /* Sources */,
-				5FDB33171705CB950049EBB5 /* Frameworks */,
-				5FDB33181705CB950049EBB5 /* Resources */,
-				5FDB33191705CB950049EBB5 /* ShellScript */,
-				5F5084431C5514F8009D7211 /* Copy Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				5FDB33201705CB950049EBB5 /* PBXTargetDependency */,
-			);
-			name = FeatherTests;
-			productName = FeatherTests;
-			productReference = 5FDB331B1705CB950049EBB5 /* FeatherTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		5FDB32F91705CB950049EBB5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0730;
+				LastSwiftUpdateCheck = 0820;
 				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Matias Piipari";
 				TargetAttributes = {
@@ -1425,28 +1299,22 @@
 						CreatedOnToolsVersion = 7.3;
 						LastSwiftMigration = 0800;
 					};
-					5F05A3201CD02CC800FE80D8 = {
-						CreatedOnToolsVersion = 7.3;
-					};
 					5FC4230D1AFF8719002234FB = {
 						CreatedOnToolsVersion = 6.1;
 						LastSwiftMigration = 0800;
-					};
-					5FC423171AFF8719002234FB = {
-						CreatedOnToolsVersion = 6.1;
 					};
 					5FC423961AFF8CF5002234FB = {
 						CreatedOnToolsVersion = 6.1;
 						LastSwiftMigration = 0800;
 					};
-					5FC423A01AFF8CF5002234FB = {
-						CreatedOnToolsVersion = 6.1;
+					5FD0A4561E2425C90012B195 = {
+						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = SJK358RN87;
+						LastSwiftMigration = 0820;
+						ProvisioningStyle = Automatic;
 					};
 					5FDB33021705CB950049EBB5 = {
 						LastSwiftMigration = 0800;
-					};
-					5FDB331A1705CB950049EBB5 = {
-						TestTargetID = 5FDB33021705CB950049EBB5;
 					};
 				};
 			};
@@ -1463,26 +1331,16 @@
 			projectRoot = "";
 			targets = (
 				5FDB33021705CB950049EBB5 /* Feather */,
-				5FDB331A1705CB950049EBB5 /* FeatherTests */,
 				5FC4230D1AFF8719002234FB /* FeatherExtensions */,
-				5FC423171AFF8719002234FB /* FeatherExtensionsTests */,
 				5FC423961AFF8CF5002234FB /* FeatherScripting */,
-				5FC423A01AFF8CF5002234FB /* FeatherScriptingTests */,
 				5F05A3171CD02CC800FE80D8 /* FeatherAppKitExtensions */,
-				5F05A3201CD02CC800FE80D8 /* FeatherAppKitExtensionsTests */,
+				5FD0A4561E2425C90012B195 /* FeatherTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		5F05A3161CD02CC800FE80D8 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5F05A31F1CD02CC800FE80D8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1496,13 +1354,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5FC423161AFF8719002234FB /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5FC423951AFF8CF5002234FB /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1510,7 +1361,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5FC4239F1AFF8CF5002234FB /* Resources */ = {
+		5FD0A4551E2425C90012B195 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1522,14 +1373,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FDB33111705CB950049EBB5 /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5FDB33181705CB950049EBB5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5FDB33271705CB950049EBB5 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1549,19 +1392,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "${SRCROOT}/Extras/set-bundle-version.sh";
-		};
-		5FDB33191705CB950049EBB5 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1585,14 +1415,6 @@
 				5FA29AC11D71ACF2000DB8C1 /* NSOutlineView+MPExtensions.swift in Sources */,
 				5F05A3381CD02D1200FE80D8 /* NSApplication+MPExtensions.m in Sources */,
 				5F05A3471CD02DC200FE80D8 /* NSPopover+MPExtensions.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		5F05A31D1CD02CC800FE80D8 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5F05A3271CD02CC900FE80D8 /* FeatherAppKitExtensionsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1624,14 +1446,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5FC423141AFF8719002234FB /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5FC423201AFF8719002234FB /* FeatherExtensionsTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		5FC423921AFF8CF5002234FB /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1643,11 +1457,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5FC4239D1AFF8CF5002234FB /* Sources */ = {
+		5FD0A4531E2425C90012B195 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FC423A91AFF8CF6002234FB /* FeatherScriptingTests.m in Sources */,
+				5FD0A4691E2425E90012B195 /* FeatherTests.m in Sources */,
+				5FD0A4721E2425F30012B195 /* MPEmbeddedObjectsTests.m in Sources */,
+				5FD0A4731E2425F30012B195 /* MPExtensionTests.m in Sources */,
+				5FD0A4751E2425F30012B195 /* MPModelFoundationTests.m in Sources */,
+				5FD0A4741E2425F30012B195 /* MPFeatherTestClasses.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1699,56 +1517,28 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		5FDB33161705CB950049EBB5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				5FDB332A1705CB950049EBB5 /* FeatherTests.m in Sources */,
-				5F293C00170E1935001C2111 /* MPExtensionTests.m in Sources */,
-				5F293C07170E2980001C2111 /* MPEmbeddedObjectsTests.m in Sources */,
-				5FDCF2EE171045990039DAED /* MPFeatherTestClasses.m in Sources */,
-				5FDCF34D1710CA600039DAED /* MPModelFoundationTests.m in Sources */,
-				D932296617268E37006880C2 /* NSTask+MPExtensions.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		5F05A3241CD02CC800FE80D8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5F05A3171CD02CC800FE80D8 /* FeatherAppKitExtensions */;
-			targetProxy = 5F05A3231CD02CC800FE80D8 /* PBXContainerItemProxy */;
-		};
 		5F8942691CD04E4900A9DC07 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5FC4230D1AFF8719002234FB /* FeatherExtensions */;
 			targetProxy = 5F8942681CD04E4900A9DC07 /* PBXContainerItemProxy */;
-		};
-		5FC4231B1AFF8719002234FB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5FC4230D1AFF8719002234FB /* FeatherExtensions */;
-			targetProxy = 5FC4231A1AFF8719002234FB /* PBXContainerItemProxy */;
 		};
 		5FC423691AFF8768002234FB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5FC4230D1AFF8719002234FB /* FeatherExtensions */;
 			targetProxy = 5FC423681AFF8768002234FB /* PBXContainerItemProxy */;
 		};
-		5FC423A41AFF8CF5002234FB /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5FC423961AFF8CF5002234FB /* FeatherScripting */;
-			targetProxy = 5FC423A31AFF8CF5002234FB /* PBXContainerItemProxy */;
-		};
 		5FC423B81AFF8D15002234FB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5FC4230D1AFF8719002234FB /* FeatherExtensions */;
 			targetProxy = 5FC423B71AFF8D15002234FB /* PBXContainerItemProxy */;
 		};
-		5FDB33201705CB950049EBB5 /* PBXTargetDependency */ = {
+		5FD0A45E1E2425CA0012B195 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5FDB33021705CB950049EBB5 /* Feather */;
-			targetProxy = 5FDB331F1705CB950049EBB5 /* PBXContainerItemProxy */;
+			targetProxy = 5FD0A45D1E2425CA0012B195 /* PBXContainerItemProxy */;
 		};
 		5FDED0831C67A18400769001 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -1762,14 +1552,6 @@
 			isa = PBXVariantGroup;
 			children = (
 				5FDB33101705CB950049EBB5 /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		5FDB33251705CB950049EBB5 /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				5FDB33261705CB950049EBB5 /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -2082,194 +1864,6 @@
 			};
 			name = AppStoreRelease;
 		};
-		5F05A32F1CD02CC900FE80D8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				DEBUG_INFORMATION_FORMAT = dwarf;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherAppKitExtensionsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = com.manuscriptsapp.FeatherAppKitExtensionsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-			};
-			name = Debug;
-		};
-		5F05A3301CD02CC900FE80D8 /* AppStoreDebug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherAppKitExtensionsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.manuscriptsapp.FeatherAppKitExtensionsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = AppStoreDebug;
-		};
-		5F05A3311CD02CC900FE80D8 /* Internal */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherAppKitExtensionsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.manuscriptsapp.FeatherAppKitExtensionsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Internal;
-		};
-		5F05A3321CD02CC900FE80D8 /* Testing */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherAppKitExtensionsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.manuscriptsapp.FeatherAppKitExtensionsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Testing;
-		};
-		5F05A3331CD02CC900FE80D8 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherAppKitExtensionsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.manuscriptsapp.FeatherAppKitExtensionsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-			};
-			name = Release;
-		};
-		5F05A3341CD02CC900FE80D8 /* AppStoreRelease */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ANALYZER_NONNULL = YES;
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CODE_SIGN_IDENTITY = "-";
-				COMBINE_HIDPI_IMAGES = YES;
-				COPY_PHASE_STRIP = NO;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_NO_COMMON_BLOCKS = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherAppKitExtensionsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.manuscriptsapp.FeatherAppKitExtensionsTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-			};
-			name = AppStoreRelease;
-		};
 		5F4DF37918E7834800E7D65A /* Testing */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2356,34 +1950,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 2.3;
 				WRAPPER_EXTENSION = framework;
-			};
-			name = Testing;
-		};
-		5F4DF37B18E7834800E7D65A /* Testing */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"${DEVELOPER_FRAMEWORKS_DIR}",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-					"MP_UNIT_TEST=1",
-				);
-				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.piipari.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Testing;
 		};
@@ -2477,29 +2043,6 @@
 			};
 			name = AppStoreDebug;
 		};
-		5F51199F1BB7448E005E4A2E /* AppStoreDebug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"${DEVELOPER_FRAMEWORKS_DIR}",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
-				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.piipari.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = AppStoreDebug;
-		};
 		5F5119A01BB7448E005E4A2E /* AppStoreDebug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2556,40 +2099,6 @@
 			};
 			name = AppStoreDebug;
 		};
-		5F5119A11BB7448E005E4A2E /* AppStoreDebug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherExtensionsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = AppStoreDebug;
-		};
 		5F5119A21BB7448E005E4A2E /* AppStoreDebug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2638,40 +2147,6 @@
 				SWIFT_VERSION = 2.3;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
-			};
-			name = AppStoreDebug;
-		};
-		5F5119A31BB7448E005E4A2E /* AppStoreDebug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherScriptingTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = AppStoreDebug;
 		};
@@ -2758,29 +2233,6 @@
 			};
 			name = AppStoreRelease;
 		};
-		5F5119A61BB74495005E4A2E /* AppStoreRelease */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"${DEVELOPER_FRAMEWORKS_DIR}",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
-				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.piipari.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = AppStoreRelease;
-		};
 		5F5119A71BB74495005E4A2E /* AppStoreRelease */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2834,37 +2286,6 @@
 			};
 			name = AppStoreRelease;
 		};
-		5F5119A81BB74495005E4A2E /* AppStoreRelease */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherExtensionsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = AppStoreRelease;
-		};
 		5F5119A91BB74495005E4A2E /* AppStoreRelease */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2910,37 +2331,6 @@
 				SWIFT_VERSION = 2.3;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
-			};
-			name = AppStoreRelease;
-		};
-		5F5119AA1BB74495005E4A2E /* AppStoreRelease */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherScriptingTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = AppStoreRelease;
 		};
@@ -3030,29 +2420,6 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 2.3;
 				WRAPPER_EXTENSION = framework;
-			};
-			name = Internal;
-		};
-		5F5865831AC86417000DC9D4 /* Internal */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"${DEVELOPER_FRAMEWORKS_DIR}",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
-				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.piipari.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Internal;
 		};
@@ -3271,133 +2638,6 @@
 			};
 			name = Release;
 		};
-		5FC423251AFF8719002234FB /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherExtensionsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Debug;
-		};
-		5FC423261AFF8719002234FB /* Internal */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherExtensionsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Internal;
-		};
-		5FC423271AFF8719002234FB /* Testing */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherExtensionsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Testing;
-		};
-		5FC423281AFF8719002234FB /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-					"$(inherited)",
-				);
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherExtensionsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
-				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-			};
-			name = Release;
-		};
 		5FC423AB1AFF8CF6002234FB /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -3593,132 +2833,219 @@
 			};
 			name = Release;
 		};
-		5FC423B01AFF8CF6002234FB /* Debug */ = {
+		5FD0A4601E2425CA0012B195 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_OBJC_INCOMP_METHOD_TYPES = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = SJK358RN87;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
-				);
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherScriptingTests/Info.plist;
+				INFOPLIST_FILE = FeatherTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.piipari.FeatherTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "FeatherTests/FeatherTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
-		5FC423B11AFF8CF6002234FB /* Internal */ = {
+		5FD0A4611E2425CA0012B195 /* AppStoreDebug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_OBJC_INCOMP_METHOD_TYPES = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = SJK358RN87;
 				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherScriptingTests/Info.plist;
+				INFOPLIST_FILE = FeatherTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.piipari.FeatherTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FeatherTests/FeatherTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+			};
+			name = AppStoreDebug;
+		};
+		5FD0A4621E2425CA0012B195 /* Internal */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_OBJC_INCOMP_METHOD_TYPES = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = SJK358RN87;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = FeatherTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.piipari.FeatherTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FeatherTests/FeatherTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Internal;
 		};
-		5FC423B21AFF8CF6002234FB /* Testing */ = {
+		5FD0A4631E2425CA0012B195 /* Testing */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_OBJC_INCOMP_METHOD_TYPES = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = SJK358RN87;
+				ENABLE_NS_ASSERTIONS = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherScriptingTests/Info.plist;
+				INFOPLIST_FILE = FeatherTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.piipari.FeatherTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FeatherTests/FeatherTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Testing;
 		};
-		5FC423B31AFF8CF6002234FB /* Release */ = {
+		5FD0A4641E2425CA0012B195 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_OBJC_INCOMP_METHOD_TYPES = YES;
 				CLANG_ENABLE_MODULES = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = SJK358RN87;
 				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
 					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				INFOPLIST_FILE = FeatherScriptingTests/Info.plist;
+				INFOPLIST_FILE = FeatherTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.piipari.FeatherTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FeatherTests/FeatherTests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
+		};
+		5FD0A4651E2425CA0012B195 /* AppStoreRelease */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_OBJC_INCOMP_METHOD_TYPES = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEVELOPMENT_TEAM = SJK358RN87;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/Mac",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_STRICT_SELECTOR_MATCH = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				INFOPLIST_FILE = FeatherTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.piipari.FeatherTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "FeatherTests/FeatherTests-Bridging-Header.h";
+				SWIFT_VERSION = 3.0;
+			};
+			name = AppStoreRelease;
 		};
 		5FDB332B1705CB950049EBB5 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -3893,52 +3220,6 @@
 			};
 			name = Release;
 		};
-		5FDB33311705CB950049EBB5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"${DEVELOPER_FRAMEWORKS_DIR}",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
-				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.piipari.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		5FDB33321705CB950049EBB5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"${DEVELOPER_FRAMEWORKS_DIR}",
-					"$(PROJECT_DIR)/Carthage/Build/Mac",
-					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Feather/Feather-Prefix.pch";
-				INFOPLIST_FILE = "FeatherTests/FeatherTests-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks @loader_path/../Frameworks";
-				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_LDFLAGS = "-Wl,-rpath,@loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.piipari.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -3951,19 +3232,6 @@
 				5F05A32C1CD02CC900FE80D8 /* Testing */,
 				5F05A32D1CD02CC900FE80D8 /* Release */,
 				5F05A32E1CD02CC900FE80D8 /* AppStoreRelease */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		5F05A3361CD02CC900FE80D8 /* Build configuration list for PBXNativeTarget "FeatherAppKitExtensionsTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5F05A32F1CD02CC900FE80D8 /* Debug */,
-				5F05A3301CD02CC900FE80D8 /* AppStoreDebug */,
-				5F05A3311CD02CC900FE80D8 /* Internal */,
-				5F05A3321CD02CC900FE80D8 /* Testing */,
-				5F05A3331CD02CC900FE80D8 /* Release */,
-				5F05A3341CD02CC900FE80D8 /* AppStoreRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -3981,19 +3249,6 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5FC423381AFF8719002234FB /* Build configuration list for PBXNativeTarget "FeatherExtensionsTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5FC423251AFF8719002234FB /* Debug */,
-				5F5119A11BB7448E005E4A2E /* AppStoreDebug */,
-				5FC423261AFF8719002234FB /* Internal */,
-				5FC423271AFF8719002234FB /* Testing */,
-				5FC423281AFF8719002234FB /* Release */,
-				5F5119A81BB74495005E4A2E /* AppStoreRelease */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		5FC423AA1AFF8CF6002234FB /* Build configuration list for PBXNativeTarget "FeatherScripting" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -4007,18 +3262,17 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5FC423AF1AFF8CF6002234FB /* Build configuration list for PBXNativeTarget "FeatherScriptingTests" */ = {
+		5FD0A45F1E2425CA0012B195 /* Build configuration list for PBXNativeTarget "FeatherTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5FC423B01AFF8CF6002234FB /* Debug */,
-				5F5119A31BB7448E005E4A2E /* AppStoreDebug */,
-				5FC423B11AFF8CF6002234FB /* Internal */,
-				5FC423B21AFF8CF6002234FB /* Testing */,
-				5FC423B31AFF8CF6002234FB /* Release */,
-				5F5119AA1BB74495005E4A2E /* AppStoreRelease */,
+				5FD0A4601E2425CA0012B195 /* Debug */,
+				5FD0A4611E2425CA0012B195 /* AppStoreDebug */,
+				5FD0A4621E2425CA0012B195 /* Internal */,
+				5FD0A4631E2425CA0012B195 /* Testing */,
+				5FD0A4641E2425CA0012B195 /* Release */,
+				5FD0A4651E2425CA0012B195 /* AppStoreRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
 		};
 		5FDB32FC1705CB950049EBB5 /* Build configuration list for PBXProject "Feather" */ = {
 			isa = XCConfigurationList;
@@ -4042,19 +3296,6 @@
 				5F4DF37A18E7834800E7D65A /* Testing */,
 				5FDB332F1705CB950049EBB5 /* Release */,
 				5F5119A51BB74495005E4A2E /* AppStoreRelease */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		5FDB33301705CB950049EBB5 /* Build configuration list for PBXNativeTarget "FeatherTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				5FDB33311705CB950049EBB5 /* Debug */,
-				5F51199F1BB7448E005E4A2E /* AppStoreDebug */,
-				5F5865831AC86417000DC9D4 /* Internal */,
-				5F4DF37B18E7834800E7D65A /* Testing */,
-				5FDB33321705CB950049EBB5 /* Release */,
-				5F5119A61BB74495005E4A2E /* AppStoreRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

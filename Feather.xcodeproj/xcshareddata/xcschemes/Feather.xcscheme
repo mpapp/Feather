@@ -32,7 +32,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "5FDB331A1705CB950049EBB5"
+               BlueprintIdentifier = "5FD0A4561E2425C90012B195"
                BuildableName = "FeatherTests.xctest"
                BlueprintName = "FeatherTests"
                ReferencedContainer = "container:Feather.xcodeproj">
@@ -43,6 +43,11 @@
          <EnvironmentVariable
             key = "MPUnitTest"
             value = "1"
+            isEnabled = "YES">
+         </EnvironmentVariable>
+         <EnvironmentVariable
+            key = "MPSharedApplicationSecurityGroupIdentifier"
+            value = "FeatherTestsGroup"
             isEnabled = "YES">
          </EnvironmentVariable>
          <EnvironmentVariable

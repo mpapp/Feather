@@ -172,8 +172,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
                                       properties:(NSDictionary *)properties
                                       documentID:(NSString *)identifier
 {
-    if (![self.class isConcrete])
+    if (![self.class isConcrete]) {
         @throw [NSException exceptionWithName:@"MPAbstractClassException" reason:nil userInfo:nil];
+    }
     
     NSParameterAssert(controller);
     NSParameterAssert(controller.db);

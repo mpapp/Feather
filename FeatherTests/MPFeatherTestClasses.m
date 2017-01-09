@@ -7,7 +7,8 @@
 //
 
 #import "MPFeatherTestClasses.h"
-#import <Feather/MPDatabasePackageController+Protected.h>
+
+@import Feather.MPDatabasePackageController_Protected;
 
 @implementation MPFeatherTestPackageController
 
