@@ -1,9 +1,7 @@
-# This file is a template, and might need editing before it works on your project.
 # Lifted from: https://about.gitlab.com/2016/03/10/setting-up-gitlab-ci-for-ios-projects/
 # This file assumes an own GitLab CI runner, setup on an OS X system.
 stages:
   - build
-#  - archive
 
 build_project:
   stage: build
