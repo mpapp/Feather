@@ -7,8 +7,11 @@ build_project:
   stage: build
   script:
     - ssh-keyscan github.com | sort -u - ~/.ssh/known_hosts -o ~/.ssh/known_hosts
+    - git submodule sync
     - git submodule update --init --recursive
     - carthage bootstrap --use-ssh --use-submodules --platform mac
     - xcodebuild clean build -project Feather.xcodeproj -scheme Feather | xcpretty
     - xcodebuild clean test -project Feather.xcodeproj -scheme Feather | xcpretty
-
+  tags:
+    - xcode-8.2
+    - macos-10.11
