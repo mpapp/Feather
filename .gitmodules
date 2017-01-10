@@ -9,35 +9,35 @@
 	url = git@github.com:mpapp/NSBundle-OBCodeSigningInfo.git
 [submodule "Carthage/Checkouts/couchbase-lite-ios"]
 	path = Carthage/Checkouts/couchbase-lite-ios
-	url = ssh://git@github.com/mz2/couchbase-lite-ios.git
+	url = git@github.com:mz2/couchbase-lite-ios.git
 [submodule "Carthage/Checkouts/google-diff-match-patch-Objective-C"]
 	path = Carthage/Checkouts/google-diff-match-patch-Objective-C
-	url = ssh://git@github.com/mpapp/google-diff-match-patch-Objective-C.git
+	url = git@github.com:mpapp/google-diff-match-patch-Objective-C.git
 [submodule "Carthage/Checkouts/RegexKitLite"]
 	path = Carthage/Checkouts/RegexKitLite
-	url = ssh://git@github.com/mpapp/RegexKitLite.git
+	url = git@github.com:mpapp/RegexKitLite.git
 [submodule "Carthage/Checkouts/CocoaLumberjack"]
 	path = Carthage/Checkouts/CocoaLumberjack
-	url = ssh://git@github.com/mpapp/CocoaLumberjack.git
+	url = git@github.com:mpapp/CocoaLumberjack.git
 [submodule "Carthage/Checkouts/libextobjc"]
 	path = Carthage/Checkouts/libextobjc
-	url = ssh://git@github.com/mz2/libextobjc.git
+	url = git@github.com:mz2/libextobjc.git
 [submodule "Carthage/Checkouts/P2Core"]
 	path = Carthage/Checkouts/P2Core
-	url = ssh://git@github.com/mpapp/P2Core.git
+	url = git@github.com:mpapp/P2Core.git
 [submodule "Carthage/Checkouts/MPRateLimiter"]
 	path = Carthage/Checkouts/MPRateLimiter
-	url = ssh://git@github.com/mz2/MPRateLimiter.git
+	url = git@github.com:mz2/MPRateLimiter.git
 [submodule "Carthage/Checkouts/MPTimer"]
 	path = Carthage/Checkouts/MPTimer
-	url = ssh://git@github.com/mpapp/MPTimer.git
+	url = git@github.com:mpapp/MPTimer.git
 [submodule "Carthage/Checkouts/Freddy"]
         path = Carthage/Checkouts/Freddy
-	url = ssh://git@github.com/mz2/Freddy.git
+	url = git@github.com:mz2/Freddy.git
 
 [submodule "Carthage/Checkouts/CocoaHTTPServer"]
 	path = Carthage/Checkouts/CocoaHTTPServer
-	url = ssh://git@github.com/mz2/CocoaHTTPServer.git
+	url = git@github.com:mz2/CocoaHTTPServer.git
 [submodule "Carthage/Checkouts/MAKVONotificationCenter"]
 	path = Carthage/Checkouts/MAKVONotificationCenter
-	url = ssh://git@github.com/mz2/MAKVONotificationCenter.git
+	url = git@github.com:mz2/MAKVONotificationCenter.git

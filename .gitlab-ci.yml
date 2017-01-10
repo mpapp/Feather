@@ -6,6 +6,7 @@ stages:
 build_project:
   stage: build
   script:
+    - ssh-keyscan github.com | sort -u - ~/.ssh/known_hosts -o ~/.ssh/known_hosts
     - git submodule update --init --recursive
     - carthage bootstrap --use-ssh --use-submodules --platform mac
     - xcodebuild clean build -project Feather.xcodeproj -scheme Feather | xcpretty
