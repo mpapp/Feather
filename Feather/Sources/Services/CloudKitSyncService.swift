@@ -245,6 +245,8 @@ public struct CloudKitSyncService {
         var completeFailures = [Error]()
         //var allFailedDeletions = [(recordID:CKRecordID, error:ErrorType)]()
         
+        var completionHandlerCalled = false
+        
         for recordChunk in records.chunks(withDistance: 100) {
        
             dispatch_group_enter(grp)
@@ -260,7 +262,11 @@ public struct CloudKitSyncService {
                 guard let err = error else {
                     allSuccessfulSaves.appendContentsOf(savedRecords ?? [])
                     allSuccessfulDeletions.appendContentsOf(deletedRecordIDs ?? [])
-                    completionHandler(savedRecords: savedRecords ?? [], saveFailures: nil, deletedRecordIDs: deletedRecordIDs ?? [], deletionFailures: nil, errorHandler: nil)
+                    completionHandler(savedRecords: savedRecords ?? [],
+                                      saveFailures: nil,
+                                      deletedRecordIDs: deletedRecordIDs ?? [],
+                                      deletionFailures: nil, errorHandler: nil)
+                    completionHandlerCalled = true
                     dispatch_group_leave(grp)
                     return
                 }
@@ -290,8 +296,14 @@ public struct CloudKitSyncService {
             }
         }
         
-        dispatch_group_notify(grp, dispatch_get_main_queue()) { 
-            completionHandler(savedRecords: allSuccessfulSaves, saveFailures: allFailedSaves, deletedRecordIDs: allSuccessfulDeletions, deletionFailures: nil, errorHandler: completeFailures.count > 0 ? Error.CompoundError(completeFailures) : nil)
+        if !completionHandlerCalled {
+            dispatch_group_notify(grp, dispatch_get_main_queue()) {
+                completionHandler(savedRecords: allSuccessfulSaves,
+                                  saveFailures: allFailedSaves,
+                                  deletedRecordIDs: allSuccessfulDeletions,
+                                  deletionFailures: nil,
+                                  errorHandler: completeFailures.count > 0 ? Error.CompoundError(completeFailures) : nil)
+            }
         }
     }
     
