@@ -749,9 +749,6 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         }
         return nil;
     }
-    else {
-        NSLog(@"Read data from URL %@: %@\n%@", url, objData, [[NSString alloc] initWithData:objData encoding:NSUTF8StringEncoding]);
-    }
 
     return [self objectsFromArrayJSONData:objData error:err];
 }
