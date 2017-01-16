@@ -31,10 +31,6 @@
 [submodule "Carthage/Checkouts/MPTimer"]
 	path = Carthage/Checkouts/MPTimer
 	url = git@github.com:mpapp/MPTimer.git
-[submodule "Carthage/Checkouts/Freddy"]
-        path = Carthage/Checkouts/Freddy
-	url = git@github.com:mz2/Freddy.git
-
 [submodule "Carthage/Checkouts/CocoaHTTPServer"]
 	path = Carthage/Checkouts/CocoaHTTPServer
 	url = git@github.com:mz2/CocoaHTTPServer.git
