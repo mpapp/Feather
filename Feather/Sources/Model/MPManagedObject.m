@@ -556,6 +556,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
             success = NO;
         }
     });
+    
+    [self clearCachedValues];
+    
     return success;
 }
 
@@ -577,6 +580,8 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
         
         success = [self _deleteDocument:error];
     });
+    
+    [self clearCachedValues];
     
     return success;
 }
