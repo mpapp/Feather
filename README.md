@@ -1,4 +1,4 @@
-## About Feather [![build status](https://gitlab.com/mpapp/Feather/badges/master/build.svg)](https://gitlab.com/mpapp/Feather/commits/master) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+## About Feather [![build status](https://gitlab.com/mpapp-public/Feather/badges/master/build.svg)](https://gitlab.com/mpapp/Feather/commits/master) [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 Feather is a set of data modeling and persistence classes built on top of Couchbase Lite, intended to provide data model and model controller classes with strong conventions which I've found useful when building a largeish application on top of Couchbase Lite.
 
