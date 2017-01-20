@@ -61,6 +61,9 @@ typedef struct MPEMUSize
 /** A framed version of the image */
 - (nonnull NSImage *)framedWithSize:(NSSize)size;
 
+/** Create an image with the size of the input image rep, with it as its only representation. */
+- (nonnull NSImage *)initWithImageRep:(NSImageRep *)rep;
+
 /** Copy a representation of the image as data with data writing and bitmap type options. */
 - (nullable NSData *)imageDataWithOptions:(NSDataWritingOptions)options
                                      type:(NSBitmapImageFileType)type

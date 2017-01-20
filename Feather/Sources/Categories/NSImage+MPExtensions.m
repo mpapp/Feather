@@ -17,6 +17,17 @@ NSString *_Nonnull const MPPasteboardTypeEPS = @"MPPasteboardTypeEPS";
 
 @implementation NSImage (RoundCorner)
 
+- (instancetype)initWithImageRep:(NSImageRep *)imageRep {
+    self = [self initWithSize:imageRep.size];
+    
+    if (self) {
+        [self addRepresentation:rep];
+    }
+    
+    return self;
+        
+}
+
 void addRoundedRectToPath(CGContextRef context, CGRect rect, float ovalWidth, float ovalHeight)
 {
     float fw, fh;
