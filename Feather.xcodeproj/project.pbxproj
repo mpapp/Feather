@@ -87,6 +87,7 @@
 		5F8119481CEE32C3007018B8 /* TreeItemPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F8119471CEE32C3007018B8 /* TreeItemPool.swift */; };
 		5F81194B1CEE36A5007018B8 /* MPObjectWrappingSection.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F8119491CEE36A5007018B8 /* MPObjectWrappingSection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F81194C1CEE36A5007018B8 /* MPObjectWrappingSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F81194A1CEE36A5007018B8 /* MPObjectWrappingSection.m */; };
+		5F8192201E3279710033B843 /* NSImage+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FADC70118FAFBAD006F4119 /* NSImage+MPExtensions.m */; };
 		5F89426A1CD04E4E00A9DC07 /* FeatherExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; };
 		5F89426B1CD0531100A9DC07 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */; };
 		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
@@ -127,7 +128,6 @@
 		5FC4235B1AFF872E002234FB /* NSTask+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = D932296317268E37006880C2 /* NSTask+MPExtensions.m */; };
 		5FC4235E1AFF872E002234FB /* NSUUID+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FD0E13118F082BD00789CC9 /* NSUUID+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC4235F1AFF872E002234FB /* NSUUID+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD0E13218F082BD00789CC9 /* NSUUID+MPExtensions.m */; };
-		5FC423631AFF872E002234FB /* NSImage+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FADC70118FAFBAD006F4119 /* NSImage+MPExtensions.m */; };
 		5FC423641AFF872E002234FB /* NSIndexSet+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FA0D11319012D19005BC968 /* NSIndexSet+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC423651AFF872E002234FB /* NSIndexSet+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FA0D11419012D19005BC968 /* NSIndexSet+MPExtensions.m */; };
 		5FC4236A1AFF8775002234FB /* FeatherExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; };
@@ -1413,6 +1413,7 @@
 				5F05A33A1CD02D1200FE80D8 /* NSEvent+MPExtensions.m in Sources */,
 				5F05A3421CD02D1200FE80D8 /* NSViewController+MPExtensions.m in Sources */,
 				5FA29AC11D71ACF2000DB8C1 /* NSOutlineView+MPExtensions.swift in Sources */,
+				5F8192201E3279710033B843 /* NSImage+MPExtensions.m in Sources */,
 				5F05A3381CD02D1200FE80D8 /* NSApplication+MPExtensions.m in Sources */,
 				5F05A3471CD02DC200FE80D8 /* NSPopover+MPExtensions.m in Sources */,
 			);
@@ -1436,7 +1437,6 @@
 				5FC423651AFF872E002234FB /* NSIndexSet+MPExtensions.m in Sources */,
 				5FC4233D1AFF872E002234FB /* NSArray+MPExtensions.m in Sources */,
 				5FC4234F1AFF872E002234FB /* NSBundle+MPExtensions.m in Sources */,
-				5FC423631AFF872E002234FB /* NSImage+MPExtensions.m in Sources */,
 				5F6C563C1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift in Sources */,
 				5F18F20E1CD968D5008CE38D /* NSDateFormatter+MPExtensions.swift in Sources */,
 				5F5C5B551D2EC84800CD99BD /* Dictionary+Extensions.swift in Sources */,
@@ -3273,6 +3273,7 @@
 				5FD0A4651E2425CA0012B195 /* AppStoreRelease */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5FDB32FC1705CB950049EBB5 /* Build configuration list for PBXProject "Feather" */ = {
 			isa = XCConfigurationList;

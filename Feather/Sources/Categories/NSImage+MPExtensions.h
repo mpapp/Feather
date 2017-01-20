@@ -10,6 +10,8 @@
 
 extern NSString *_Nonnull const MPImageExtensionsErrorDomain;
 
+extern NSString *_Nonnull const MPPasteboardTypeEPS;
+
 typedef NS_ENUM(NSUInteger, MPImageExtensionsErrorCode) {
     MPImageExtensionsErrorCodeUnknown = 0,
     MPImageExtensionsErrorCodeFailedToCreateRepresentation = 1

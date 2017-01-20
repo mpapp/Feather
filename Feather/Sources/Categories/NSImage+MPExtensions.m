@@ -11,6 +11,8 @@
 #define RGB(R,G,B) [NSColor colorWithCalibratedRed:(R)/255. green:(G)/255. blue:(B)/255. alpha:1]
 #define RGBA(R,G,B,A) [NSColor colorWithCalibratedRed:(R)/255. green:(G)/255. blue:(B)/255. alpha:(A)]
 
+NSString *_Nonnull const MPPasteboardTypeEPS = @"MPPasteboardTypeEPS";
+
 @import QuickLook;
 
 @implementation NSImage (RoundCorner)
