@@ -21,7 +21,7 @@ NSString *_Nonnull const MPPasteboardTypeEPS = @"MPPasteboardTypeEPS";
     self = [self initWithSize:imageRep.size];
     
     if (self) {
-        [self addRepresentation:rep];
+        [self addRepresentation:imageRep];
     }
     
     return self;

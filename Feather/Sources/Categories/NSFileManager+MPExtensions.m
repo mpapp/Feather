@@ -49,7 +49,9 @@ NSString * __nonnull const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFea
 - (NSString *)mimeTypeForFileAtURL:(NSURL *)url error:(NSError **)err
 {
     NSString *type = [[NSWorkspace sharedWorkspace] typeOfFile:[url path] error:err];
-    if (!type) return nil;
+    if (!type) {
+        return nil;
+    }
     
     CFStringRef mimeType = UTTypeCopyPreferredTagWithClass((__bridge CFStringRef)type, kUTTagClassMIMEType);
     return (__bridge_transfer NSString *)mimeType;
