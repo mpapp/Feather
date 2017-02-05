@@ -10,6 +10,6 @@
 
 @protocol MPPlaceHolding <NSObject>
 
-@property (readonly, copy, nonnull) NSString *placeholderString;
+@property (readwrite, copy, nonnull) NSString *placeholderString;
 
 @end
