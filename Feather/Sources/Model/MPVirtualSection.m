@@ -138,6 +138,7 @@
     @throw [MPAbstractMethodException exceptionWithSelector:_cmd];
     return nil;
 }
+
 - (NSString *)placeholderString {
     return @"Untitled";
 }

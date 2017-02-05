@@ -28,6 +28,7 @@
 @dynamic category, role, contribution;
 @dynamic addressBookIDs;
 @dynamic appInvitationDate;
+@dynamic placeholderString;
 
 // FIXME: Make abstract method in an abstract base class.
 #ifndef MPAPP
@@ -121,7 +122,15 @@
     return nil;
 }
 
+- (void)setPlaceholderString:(NSString *)placeholder {
+    [self setValue: placeholder ofProperty:@"placeholderString"];
+}
+
 - (NSString *)placeholderString {
+    NSString *placeholder;
+    if ((placeholder = [self getValueOfProperty:@"placeholderString"])) {
+        return placeholder;
+    }
     return @"First Last";
 }
 
