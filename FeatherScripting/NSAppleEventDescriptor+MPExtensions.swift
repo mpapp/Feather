@@ -8,26 +8,26 @@
 
 import Foundation
 
-enum AppleEventConversionError:ErrorType {
+enum AppleEventConversionError:Swift.Error {
     case UnexpectedDescriptorType(NSAppleEventDescriptor?)
 }
 
 public extension NSAppleEventDescriptor {
     
     // from https://github.com/yangyubo/AppleScriptToolkit/blob/master/NSAppleEventDescriptor%2BArray.m
-    func arrayValue() throws -> [AnyObject] {
+    func arrayValue() throws -> [Any] {
         var count = self.numberOfItems
         
         var workingDesc = self
         if count == 0 {
-            if let d = self.coerceToDescriptorType(unsafeBitCast(typeAEList, DescType.self)) {
+            if let d = self.coerce(toDescriptorType:unsafeBitCast(typeAEList, to: DescType.self)) {
                 workingDesc = d
                 count = workingDesc.numberOfItems
             }
         }
         
-        let items = try (1...count).map { i -> AnyObject in
-            let desc = workingDesc.descriptorAtIndex(i)
+        let items = try (1...count).map { i -> Any in
+            let desc = workingDesc.atIndex(i)
             
             guard let value = desc?.objectSpecifier?.objectsByEvaluatingSpecifier else {
                 throw AppleEventConversionError.UnexpectedDescriptorType(desc)
