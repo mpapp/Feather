@@ -12,22 +12,22 @@ import FeatherExtensions
 
 public struct CloudKitDatabasePackageListingService {
     
-    public enum Error:ErrorType {
-        case NoPackageListSerializationURL
-        case UnderlyingError(ErrorType)
-        case UnexpectedNilResponseData
+    public indirect enum Error:Error {
+        case noPackageListSerializationURL
+        case underlyingError(Error)
+        case unexpectedNilResponseData
     }
     
     public typealias DatabasePackageMetadataListHandler = ([DatabasePackageMetadata]) -> Void
     
-    private(set) public var packageList:CloudKitDatabasePackageList?
-    private var databasePackageChangeToken:CKServerChangeToken?
+    fileprivate(set) public var packageList:CloudKitDatabasePackageList?
+    fileprivate var databasePackageChangeToken:CKServerChangeToken?
     
     public let container:CKContainer
     public let database:CKDatabase
-    private let operationQueue = NSOperationQueue()
+    fileprivate let operationQueue = OperationQueue()
     
-    public init(container:CKContainer = CKContainer.defaultContainer(), database:CKDatabase = CKContainer.defaultContainer().privateCloudDatabase) {
+    public init(container:CKContainer = CKContainer.default(), database:CKDatabase = CKContainer.default().privateCloudDatabase) {
         self.container = container
         self.database = database
         
@@ -38,29 +38,29 @@ public struct CloudKitDatabasePackageListingService {
         return "DatabasePackageMetadata"
     }
     
-    public static func packageMetadataZoneID(ownerName:String) -> CKRecordZoneID {
+    public static func packageMetadataZoneID(_ ownerName:String) -> CKRecordZoneID {
         return CKRecordZoneID(zoneName: self.packageMetadataZoneName, ownerName: ownerName)
     }
 
-    public mutating func availableDatabasePackages(completionHandler:DatabasePackageMetadataListHandler, errorHandler:CloudKitSyncService.ErrorHandler) {
+    public mutating func availableDatabasePackages(_ completionHandler:@escaping DatabasePackageMetadataListHandler, errorHandler:@escaping CloudKitSyncService.ErrorHandler) {
         CloudKitSyncService.ensureUserAuthenticated(container, completionHandler: { ownerID in
             self._availableDatabasePackages(ownerID.recordName, completionHandler: completionHandler, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
-    public func purgeAllRecordZones(completionHandler:(deletedZoneIDs:[CKRecordZoneID], errors:[Error]) -> Void) {
+    public func purgeAllRecordZones(_ completionHandler:@escaping (_ deletedZoneIDs:[CKRecordZoneID], _ errors:[Error]) -> Void) {
         CloudKitSyncService.ensureUserAuthenticated(container, completionHandler: { ownerID in
             let op = CKFetchRecordZonesOperation.fetchAllRecordZonesOperation()
             self.operationQueue.addOperation(op)
             
             op.fetchRecordZonesCompletionBlock = { zoneMap, error in
                 if let error = error {
-                    completionHandler(deletedZoneIDs: [], errors:[.UnderlyingError(error)])
+                    completionHandler(deletedZoneIDs: [], errors:[.underlyingError(error)])
                     return
                 }
                 
                 guard let map = zoneMap else {
-                    completionHandler(deletedZoneIDs: [], errors:[.UnexpectedNilResponseData])
+                    completionHandler(deletedZoneIDs: [], errors:[.unexpectedNilResponseData])
                     return
                 }
                 
@@ -69,49 +69,49 @@ public struct CloudKitDatabasePackageListingService {
                 var allDeletedIDs = [CKRecordZoneID]()
                 var allErrors = [Error]()
                 
-                let grp = dispatch_group_create()
+                let grp = DispatchGroup()
                 for zoneChunk in zonesToDelete.chunks(withDistance: 10) {
-                    dispatch_group_enter(grp)
+                    grp.enter()
                     
                     let deleteOp = CKModifyRecordZonesOperation(recordZonesToSave: nil, recordZoneIDsToDelete: zoneChunk)
                     self.operationQueue.addOperation(deleteOp)
                     
                     deleteOp.modifyRecordZonesCompletionBlock = { _, deletedZoneIDs, error in
                         if let error = error {
-                            allErrors.append(.UnderlyingError(error))
-                            dispatch_group_leave(grp)
+                            allErrors.append(.underlyingError(error))
+                            grp.leave()
                             return
                         }
                         
                         guard let deletedIDs = deletedZoneIDs else {
-                            allErrors.append(Error.UnexpectedNilResponseData)
-                            dispatch_group_leave(grp)
+                            allErrors.append(Error.unexpectedNilResponseData)
+                            grp.leave()
                             return
                         }
                         
-                        allDeletedIDs.appendContentsOf(deletedIDs)
-                        dispatch_group_leave(grp)
+                        allDeletedIDs.append(contentsOf: deletedIDs)
+                        grp.leave()
                     }
                 }
                 
-                dispatch_group_notify(grp, dispatch_get_main_queue()) {
+                grp.notify(queue: DispatchQueue.main) {
                     completionHandler(deletedZoneIDs: allDeletedIDs, errors: allErrors)
                 }
             }
         }) { error in
-            completionHandler(deletedZoneIDs:[], errors: [.UnderlyingError(error)])
+            completionHandler(deletedZoneIDs:[], errors: [.underlyingError(error)])
         }
     }
     
-    private var packageListSerializationURL:NSURL? {
-        guard let appSupportFolder = NSFileManager.defaultManager().applicationSupportFolder else {
+    fileprivate var packageListSerializationURL:URL? {
+        guard let appSupportFolder = FileManager.default.applicationSupportFolder else {
             return nil
         }
         
-        return NSURL(fileURLWithPath:((appSupportFolder as NSString).stringByAppendingPathComponent(NSBundle.mainBundle().bundleIdentifier!) as NSString).stringByAppendingPathComponent("database-package-list-\(self.container.containerIdentifier!)-\(self.container.privateCloudDatabase === self.database ? "private" : "public").json"))
+        return URL(fileURLWithPath:((appSupportFolder as NSString).appendingPathComponent(Bundle.main.bundleIdentifier!) as NSString).appendingPathComponent("database-package-list-\(self.container.containerIdentifier!)-\(self.container.privateCloudDatabase === self.database ? "private" : "public").json"))
     }
     
-    public mutating func _availableDatabasePackages(ownerName:String, completionHandler:DatabasePackageMetadataListHandler, errorHandler:CloudKitSyncService.ErrorHandler) {
+    public mutating func _availableDatabasePackages(_ ownerName:String, completionHandler:@escaping DatabasePackageMetadataListHandler, errorHandler:@escaping CloudKitSyncService.ErrorHandler) {
         
         var packages:[DatabasePackageMetadata]
         
@@ -132,28 +132,28 @@ public struct CloudKitDatabasePackageListingService {
             packages = [DatabasePackageMetadata]()
         }
         
-        func recordChanged(record:CKRecord) {
+        func recordChanged(_ record:CKRecord) {
             let package = DatabasePackageMetadata(recordID: record.recordID, title: record["title"] as? String ?? nil, changeTag: record.recordChangeTag)
             
             // Replace if existing item found.
             // Maintaining sort order is not important.
-            if let index = packages.indexOf({ pkg in pkg.recordID == package.recordID }) {
-                packages.removeAtIndex(index)
+            if let index = packages.index(where: { pkg in pkg.recordID == package.recordID }) {
+                packages.remove(at: index)
             }
             packages.append(package)
         }
         
-        func recordWithIDWasDeleted(record:CKRecordID) {
-            if let index = packages.indexOf({ $0.recordID.recordName == record.recordName }) {
-                packages.removeAtIndex(index)
+        func recordWithIDWasDeleted(_ record:CKRecordID) {
+            if let index = packages.index(where: { $0.recordID.recordName == record.recordName }) {
+                packages.remove(at: index)
             }
         }
         
         let op = CKFetchRecordChangesOperation(recordZoneID: CloudKitDatabasePackageListingService.packageMetadataZoneID(ownerName), previousServerChangeToken: databasePackageChangeToken)
         
-        func fetchRecordChangesCompletion(serverChangeToken:CKServerChangeToken?, clientTokenData:NSData?, error:NSError?) {
+        func fetchRecordChangesCompletion(_ serverChangeToken:CKServerChangeToken?, clientTokenData:Data?, error:NSError?) {
             if let error = error {
-                errorHandler(.UnderlyingError(error))
+                errorHandler(.underlyingError(error))
                 return
             }
             
@@ -165,12 +165,12 @@ public struct CloudKitDatabasePackageListingService {
                 op.recordWithIDWasDeletedBlock = recordWithIDWasDeleted
                 op.fetchRecordChangesCompletionBlock = fetchRecordChangesCompletion
                 
-                NSOperationQueue.mainQueue().addOperation(op)
+                OperationQueue.main.addOperation(op)
             }
             else {
                 do {
                     guard let packageListSerializationURL = self.packageListSerializationURL else {
-                        throw Error.NoPackageListSerializationURL
+                        throw Error.noPackageListSerializationURL
                     }
                     
                     let packageList = CloudKitDatabasePackageList(packages: packages)
@@ -178,7 +178,7 @@ public struct CloudKitDatabasePackageListingService {
                     self.packageList = packageList
                 }
                 catch {
-                    errorHandler(.UnderlyingError(error))
+                    errorHandler(.underlyingError(error))
                     return
                 }
                 
@@ -192,7 +192,7 @@ public struct CloudKitDatabasePackageListingService {
         op.recordWithIDWasDeletedBlock = recordWithIDWasDeleted
         op.fetchRecordChangesCompletionBlock = fetchRecordChangesCompletion
         
-        NSOperationQueue.mainQueue().addOperation(op)
+        OperationQueue.main.addOperation(op)
     }
     
 }

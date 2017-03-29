@@ -11,14 +11,14 @@ import CloudKit
 
 public struct CloudKitRecordRepository {
     
-    private var recordMap:[CKRecordID: CKRecord] = [CKRecordID: CKRecord]()
+    fileprivate var recordMap:[CKRecordID: CKRecord] = [CKRecordID: CKRecord]()
     
     public mutating func add(record r:CKRecord) {
         recordMap[r.recordID] = r
     }
     
     public mutating func remove(record r:CKRecord) {
-        recordMap.removeValueForKey(r.recordID)
+        recordMap.removeValue(forKey: r.recordID)
     }
     
     public func record(ID rID:CKRecordID) -> CKRecord? {
@@ -32,26 +32,26 @@ public struct CloudKitRecordRepository {
     }
 }
 
-@objc public class CloudKitRecordZoneRepository: NSObject {
+@objc open class CloudKitRecordZoneRepository: NSObject {
     
-    private var recordZoneMap:[CKRecordZoneID: CKRecordZone] = [CKRecordZoneID: CKRecordZone]()
-    private(set) public var recordRepository:CloudKitRecordRepository = CloudKitRecordRepository()
-    public let zoneSuffix:String
+    fileprivate var recordZoneMap:[CKRecordZoneID: CKRecordZone] = [CKRecordZoneID: CKRecordZone]()
+    fileprivate(set) open var recordRepository:CloudKitRecordRepository = CloudKitRecordRepository()
+    open let zoneSuffix:String
     
     public init(zoneSuffix:String) {
         self.zoneSuffix = zoneSuffix
         super.init()
     }
     
-    public func add(recordZone rz:CKRecordZone) {
+    open func add(recordZone rz:CKRecordZone) {
         recordZoneMap[rz.zoneID] = rz
     }
     
-    public func remove(record rz:CKRecordZone) {
-        recordZoneMap.removeValueForKey(rz.zoneID)
+    open func remove(record rz:CKRecordZone) {
+        recordZoneMap.removeValue(forKey: rz.zoneID)
     }
     
-    public func recordZone(ID rID:CKRecordZoneID) -> CKRecordZone? {
+    open func recordZone(ID rID:CKRecordZoneID) -> CKRecordZone? {
         return recordZoneMap[rID]
     }
     
@@ -61,31 +61,31 @@ public struct CloudKitRecordRepository {
         }
     }
     
-    public func recordZoneID(objectType ot:MPManagedObject.Type, ownerName:String) -> CKRecordZoneID {
+    open func recordZoneID(objectType ot:MPManagedObject.Type, ownerName:String) -> CKRecordZoneID {
         return CKRecordZoneID(zoneName: ot.recordZoneName() + "-" + self.zoneSuffix, ownerName: ownerName)
     }
     
-    public func recordID(forObject object:MPManagedObject, ownerName:String) throws -> CKRecordID {
+    open func recordID(forObject object:MPManagedObject, ownerName:String) throws -> CKRecordID {
         guard let recordName = object.documentID else {
-            throw CloudKitSerializer.Error.ObjectDeleted(object)
+            throw CloudKitSerializer.Error.objectDeleted(object)
         }
-        return CKRecordID(recordName: recordName, zoneID: self.recordZoneID(objectType:object.dynamicType, ownerName: ownerName))
+        return CKRecordID(recordName: recordName, zoneID: self.recordZoneID(objectType:type(of: object), ownerName: ownerName))
     }
     
-    public func record(object o:MPManagedObject, ownerName:String) throws -> CKRecord {
+    open func record(object o:MPManagedObject, ownerName:String) throws -> CKRecord {
         let recordID = try self.recordID(forObject:o, ownerName: ownerName)
         
         if let existingRecord = self.recordRepository[recordID] {
             return existingRecord
         }
         
-        let record = CKRecord(recordType: o.dynamicType.recordType(), recordID: recordID)
+        let record = CKRecord(recordType: type(of: o).recordType(), recordID: recordID)
         self.recordRepository.add(record: record)
         
         return record
     }
     
-    public func recordZone(objectType ot:MPManagedObject.Type, ownerName:String) throws -> CKRecordZone {
+    open func recordZone(objectType ot:MPManagedObject.Type, ownerName:String) throws -> CKRecordZone {
         let recordZoneID = self.recordZoneID(objectType:ot, ownerName: ownerName)
         
         if let existingZone = self[recordZoneID] {

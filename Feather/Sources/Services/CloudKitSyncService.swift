@@ -15,19 +15,19 @@ import FeatherExtensions
 
 public struct CloudKitSyncService {
     
-    public enum Error: ErrorType {
-        case NilState
-        case OwnerUnknown
-        case PartialError(CKErrorCode)
-        case NoRecordToDeleteWithID(CKRecordID)
-        case UnderlyingError(ErrorType)
-        case MissingServerChangeToken(CKRecordZone)
-        case UnexpectedRecords([CKRecord]?)
-        case UnexpectedRecordZoneIDs([CKRecordZoneID]?)
-        case CompoundError([Error])
+    public indirect enum Error: Error {
+        case nilState
+        case ownerUnknown
+        case partialError(CKError)
+        case noRecordToDeleteWithID(CKRecordID)
+        case underlyingError(Error)
+        case missingServerChangeToken(CKRecordZone)
+        case unexpectedRecords([CKRecord]?)
+        case unexpectedRecordZoneIDs([CKRecordZoneID]?)
+        case compoundError([Error])
     }
     
-    private(set) public static var ownerID:CKRecordID?
+    fileprivate(set) public static var ownerID:CKRecordID?
     public let container:CKContainer
     public let database:CKDatabase
     public let recordZoneRepository:CloudKitRecordZoneRepository
@@ -35,9 +35,9 @@ public struct CloudKitSyncService {
     public typealias PackageIdentifier = String
     var state:[PackageIdentifier:CloudKitState] = [PackageIdentifier:CloudKitState]()
     
-    private let operationQueue:NSOperationQueue = NSOperationQueue()
+    fileprivate let operationQueue:OperationQueue = OperationQueue()
     
-    public init(container:CKContainer = CKContainer.defaultContainer(), database:CKDatabase = CKContainer.defaultContainer().privateCloudDatabase, packageIdentifier:PackageIdentifier) throws {
+    public init(container:CKContainer = CKContainer.default(), database:CKDatabase = CKContainer.default().privateCloudDatabase, packageIdentifier:PackageIdentifier) throws {
         self.recordZoneRepository = CloudKitRecordZoneRepository(zoneSuffix: packageIdentifier)
         self.operationQueue.maxConcurrentOperationCount = 1
         self.container = container
@@ -46,15 +46,15 @@ public struct CloudKitSyncService {
         precondition(self.database == self.container.privateCloudDatabase || self.database == self.container.publicCloudDatabase, "Database should be the container's public or private database but is not.")
         
         if #available(OSX 10.11, *) {
-            NSNotificationCenter.defaultCenter().addObserverForName(CKAccountChangedNotification, object: nil, queue: NSOperationQueue.mainQueue()) { notification in
+            NotificationCenter.default.addObserver(forName: NSNotification.Name.CKAccountChanged, object: nil, queue: OperationQueue.main) { notification in
                 DDLogInfo("Account changed: \(notification)")
             }
         }
     }
     
-    public func allRecords(packageController:MPDatabasePackageController) throws -> [CKRecord] {
-        guard let ownerName = self.dynamicType.ownerID?.recordName else {
-            throw Error.OwnerUnknown
+    public func allRecords(_ packageController:MPDatabasePackageController) throws -> [CKRecord] {
+        guard let ownerName = type(of: self).ownerID?.recordName else {
+            throw Error.ownerUnknown
         }
 
         let serializer = CloudKitSerializer(ownerName:ownerName, recordZoneRepository: self.recordZoneRepository)
@@ -73,21 +73,21 @@ public struct CloudKitSyncService {
         return records
     }
     
-    public typealias UserAuthenticationCompletionHandler = (ownerID:CKRecordID)->Void
-    public static func ensureUserAuthenticated(container:CKContainer, completionHandler:UserAuthenticationCompletionHandler, errorHandler:ErrorHandler) {
+    public typealias UserAuthenticationCompletionHandler = (_ ownerID:CKRecordID)->Void
+    public static func ensureUserAuthenticated(_ container:CKContainer, completionHandler:@escaping UserAuthenticationCompletionHandler, errorHandler:@escaping ErrorHandler) {
         if let ownerID = self.ownerID {
-            completionHandler(ownerID:ownerID)
+            completionHandler(ownerID)
             return
         }
         
-        container.fetchUserRecordIDWithCompletionHandler() { recordID, error in
+        container.fetchUserRecordID() { recordID, error in
             if let error = error {
-                errorHandler(Error.UnderlyingError(error))
+                errorHandler(Error.underlyingError(error))
                 return
             }
             else if let recordID = recordID {
                 self.ownerID = recordID
-                completionHandler(ownerID:recordID)
+                completionHandler(recordID)
                 return
             }
             else {
@@ -96,31 +96,31 @@ public struct CloudKitSyncService {
         }
     }
  
-    public func recordZoneNames(packageController:MPDatabasePackageController) -> [String] {
+    public func recordZoneNames(_ packageController:MPDatabasePackageController) -> [String] {
         let zoneNames = MPManagedObject.subclasses().flatMap { cls -> String? in
             let moClass = cls as! MPManagedObject.Type
-            if String(moClass).containsString("Mixin") {
+            if String(moClass).contains("Mixin") {
                 return nil
             }
             
-            if packageController.controllerForManagedObjectClass(moClass) == nil {
+            if packageController.controller(forManagedObjectClass: moClass) == nil {
                 return nil
             }
             
-            return (MPManagedObjectsController.equivalenceClassForManagedObjectClass(moClass) as! MPManagedObject.Type).recordZoneName()
+            return (MPManagedObjectsController.equivalenceClass(forManagedObjectClass: moClass) as! MPManagedObject.Type).recordZoneName()
         }
         
         return NSOrderedSet(array: zoneNames + [CloudKitDatabasePackageListingService.packageMetadataZoneName]).array as! [String]
     }
     
-    public func recordZones(packageController:MPDatabasePackageController, ownerName:String) throws -> [CKRecordZone] {
+    public func recordZones(_ packageController:MPDatabasePackageController, ownerName:String) throws -> [CKRecordZone] {
         let zones = try MPManagedObject.subclasses().flatMap { cls -> CKRecordZone? in
             let moClass = cls as! MPManagedObject.Type
-            if String(moClass).containsString("Mixin") {
+            if String(moClass).contains("Mixin") {
                 return nil
             }
             
-            guard let _ = packageController.controllerForManagedObjectClass(moClass) else {
+            guard let _ = packageController.controller(forManagedObjectClass: moClass) else {
                 return nil
             }
             
@@ -132,30 +132,30 @@ public struct CloudKitSyncService {
         return NSOrderedSet(array: zones + [packageMetadataZone]).array as! [CKRecordZone]
     }
     
-    private var recordZonesChecked:[CKRecordZone]? = nil // Record zones created by the app won't change during app runtime. You may as well just check them once.
+    fileprivate var recordZonesChecked:[CKRecordZone]? = nil // Record zones created by the app won't change during app runtime. You may as well just check them once.
     
-    public mutating func ensureRecordZonesExist(packageController:MPDatabasePackageController, completionHandler:(ownerID:CKRecordID, recordZones:[CKRecordZone])->Void, errorHandler:ErrorHandler) {
+    public mutating func ensureRecordZonesExist(_ packageController:MPDatabasePackageController, completionHandler:@escaping (_ ownerID:CKRecordID, _ recordZones:[CKRecordZone])->Void, errorHandler:ErrorHandler) {
         CloudKitSyncService.ensureUserAuthenticated(self.container, completionHandler: { ownerID in
             if let recordZonesChecked = self.recordZonesChecked {
-                completionHandler(ownerID: ownerID, recordZones: recordZonesChecked)
+                completionHandler(ownerID, recordZonesChecked)
                 return
             }
             
             self._ensureRecordZonesExist(packageController, ownerName:ownerID.recordName, completionHandler:{ recordZones in
                 self.recordZonesChecked = recordZones
-                completionHandler(ownerID:ownerID, recordZones: recordZones)
+                completionHandler(ownerID, recordZones)
             }, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
-    private func _ensureRecordZonesExist(packageController:MPDatabasePackageController, ownerName:String, completionHandler:(recordZones:[CKRecordZone])->Void, errorHandler:ErrorHandler) {
+    fileprivate func _ensureRecordZonesExist(_ packageController:MPDatabasePackageController, ownerName:String, completionHandler:@escaping (_ recordZones:[CKRecordZone])->Void, errorHandler:@escaping ErrorHandler) {
         let op:CKModifyRecordZonesOperation
         do {
             op = CKModifyRecordZonesOperation(recordZonesToSave: try self.recordZones(packageController, ownerName:ownerName), recordZoneIDsToDelete: [])
             op.database = self.database
         }
         catch {
-            errorHandler(.UnderlyingError(error))
+            errorHandler(.underlyingError(error))
             return
         }
         
@@ -163,7 +163,7 @@ public struct CloudKitSyncService {
         
         op.modifyRecordZonesCompletionBlock = { savedRecordZones, deletedRecordZones, error in
             if let error = error {
-                errorHandler(.UnderlyingError(error))
+                errorHandler(.underlyingError(error))
                 return
             }
             
@@ -171,14 +171,14 @@ public struct CloudKitSyncService {
                 preconditionFailure("Unexpectedly no saved record zones although no error occurred.")
             }
             
-            completionHandler(recordZones:recordZones)
+            completionHandler(recordZones)
         }
     }
     
     public typealias ErrorHandler = (CloudKitSyncService.Error)->Void
-    public typealias SubscriptionCompletionHandler = (savedSubscriptions:[CKSubscription], failedSubscriptions:[(subscription:CKSubscription, error:ErrorType)]?, error:ErrorType?) -> Void
+    public typealias SubscriptionCompletionHandler = (_ savedSubscriptions:[CKSubscription], _ failedSubscriptions:[(subscription:CKSubscription, error:Error)]?, _ error:Error?) -> Void
     
-    public mutating func ensureSubscriptionsExist(packageController:MPDatabasePackageController, completionHandler:SubscriptionCompletionHandler) {
+    public mutating func ensureSubscriptionsExist(_ packageController:MPDatabasePackageController, completionHandler:@escaping SubscriptionCompletionHandler) {
         self.ensureRecordZonesExist(packageController, completionHandler: { ownerID, _ in
             self._ensureSubscriptionsExist(packageController, ownerName:ownerID.recordName, completionHandler: completionHandler)
         }) { err in
@@ -186,7 +186,7 @@ public struct CloudKitSyncService {
         }
     }
     
-    private func _ensureSubscriptionsExist(packageController:MPDatabasePackageController, ownerName:String, completionHandler:SubscriptionCompletionHandler) {
+    fileprivate func _ensureSubscriptionsExist(_ packageController:MPDatabasePackageController, ownerName:String, completionHandler:@escaping SubscriptionCompletionHandler) {
         let subscriptions:[CKSubscription]
         do {
             subscriptions = try self.recordZones(packageController, ownerName:ownerName).map { zone -> CKSubscription in
@@ -194,7 +194,7 @@ public struct CloudKitSyncService {
             }
         }
         catch {
-            completionHandler(savedSubscriptions: [], failedSubscriptions: nil, error: error)
+            completionHandler([], nil, error)
             return
         }
         
@@ -205,17 +205,17 @@ public struct CloudKitSyncService {
         save.modifySubscriptionsCompletionBlock = { savedSubscriptions, deletedSubscriptions, error in
             if let error = error {
                 print(error)
-                completionHandler(savedSubscriptions: savedSubscriptions ?? [], failedSubscriptions: nil, error: error)
+                completionHandler(savedSubscriptions ?? [], nil, error)
             }
             else {
-                completionHandler(savedSubscriptions: savedSubscriptions ?? [], failedSubscriptions: nil, error: nil)
+                completionHandler(savedSubscriptions ?? [], nil, nil)
             }
         }
     }
     
-    public typealias PushCompletionHandler = (savedRecords:[CKRecord], saveFailures:[(record:CKRecord, error:ErrorType)]?, deletedRecordIDs:[CKRecordID], deletionFailures:[(recordID:CKRecordID, error:ErrorType)]?, errorHandler:ErrorType?)->Void
+    public typealias PushCompletionHandler = (_ savedRecords:[CKRecord], _ saveFailures:[(record:CKRecord, error:Error)]?, _ deletedRecordIDs:[CKRecordID], _ deletionFailures:[(recordID:CKRecordID, error:Error)]?, _ errorHandler:Error?)->Void
     
-    public mutating func push(packageController:MPDatabasePackageController, completionHandler:PushCompletionHandler, errorHandler:ErrorHandler) {
+    public mutating func push(_ packageController:MPDatabasePackageController, completionHandler:@escaping PushCompletionHandler, errorHandler:@escaping ErrorHandler) {
         CloudKitSyncService.ensureUserAuthenticated(self.container, completionHandler: { ownerID in
             self._ensureRecordZonesExist(packageController, ownerName:ownerID.recordName, completionHandler: { recordZones in
                 self._push(packageController, completionHandler:completionHandler, errorHandler: errorHandler)
@@ -223,7 +223,7 @@ public struct CloudKitSyncService {
         }, errorHandler: errorHandler)
     }
     
-    private func _push(packageController:MPDatabasePackageController, completionHandler:PushCompletionHandler, errorHandler:ErrorHandler) {
+    fileprivate func _push(_ packageController:MPDatabasePackageController, completionHandler:@escaping PushCompletionHandler, errorHandler:ErrorHandler) {
         var recordsMap = [CKRecordID:CKRecord]()
         let records:[CKRecord]
         do {
@@ -231,16 +231,16 @@ public struct CloudKitSyncService {
             for record in records { recordsMap[record.recordID] = record }
         }
         catch {
-            errorHandler(.UnderlyingError(error))
+            errorHandler(.underlyingError(error))
             return
         }
         
         // FIXME: propagate deletions made since last sync.
         
-        let grp = dispatch_group_create()
+        let grp = DispatchGroup()
         
         var allSuccessfulSaves = [CKRecord]()
-        var allFailedSaves = [(record:CKRecord, error:ErrorType)]()
+        var allFailedSaves = [(record:CKRecord, error:Error)]()
         var allSuccessfulDeletions = [CKRecordID]()
         var completeFailures = [Error]()
         //var allFailedDeletions = [(recordID:CKRecordID, error:ErrorType)]()
@@ -249,10 +249,10 @@ public struct CloudKitSyncService {
         
         for recordChunk in records.chunks(withDistance: 100) {
        
-            dispatch_group_enter(grp)
+            grp.enter()
             
             let save = CKModifyRecordsOperation(recordsToSave: recordChunk, recordIDsToDelete: [])
-            save.savePolicy = CKRecordSavePolicy.AllKeys
+            save.savePolicy = CKRecordSavePolicy.allKeys
             save.database = self.database
             
             self.operationQueue.addOperation(save)
@@ -260,14 +260,14 @@ public struct CloudKitSyncService {
             // This block reports an error of type partialFailure when it saves or deletes only some of the records successfully. The userInfo dictionary of the error contains a CKPartialErrorsByItemIDKey key whose value is an NSDictionary object. The keys of that dictionary are the IDs of the records that were not saved or deleted, and the corresponding values are error objects containing information about what happened.
             save.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
                 guard let err = error else {
-                    allSuccessfulSaves.appendContentsOf(savedRecords ?? [])
-                    allSuccessfulDeletions.appendContentsOf(deletedRecordIDs ?? [])
+                    allSuccessfulSaves.append(contentsOf: savedRecords ?? [])
+                    allSuccessfulDeletions.append(contentsOf: deletedRecordIDs ?? [])
                     completionHandler(savedRecords: savedRecords ?? [],
                                       saveFailures: nil,
                                       deletedRecordIDs: deletedRecordIDs ?? [],
                                       deletionFailures: nil, errorHandler: nil)
                     completionHandlerCalled = true
-                    dispatch_group_leave(grp)
+                    grp.leave()
                     return
                 }
                 
@@ -276,45 +276,45 @@ public struct CloudKitSyncService {
                     
                     print("Partial error info: \(partialErrorInfo)")
                     
-                    let failedSaves = partialErrorInfo.flatMap { (recordID, errorInfo) -> (record:CKRecord, error:ErrorType)? in
+                    let failedSaves = partialErrorInfo.flatMap { (recordID, errorInfo) -> (record:CKRecord, error:ErrorProtocol)? in
                         // TODO: filter by error type
                         if let record = recordsMap[recordID] {
-                            return (record:record, error:Error.UnderlyingError(errorInfo))
+                            return (record:record, error:Error.underlyingError(errorInfo))
                         }
                         return nil
                     }
                     
-                    allFailedSaves.appendContentsOf(failedSaves)
+                    allFailedSaves.append(contentsOf: failedSaves)
                     // TODO: handle also deletion failures.
                     // TODO: handle partial failures by retrying them in case the issue is due to something recoverable.
                 }
                 else {
-                    completeFailures.append(.UnderlyingError(err))
+                    completeFailures.append(.underlyingError(err))
                 }
                 
-                dispatch_group_leave(grp)
+                grp.leave()
             }
         }
         
         if !completionHandlerCalled {
-            dispatch_group_notify(grp, dispatch_get_main_queue()) {
-                completionHandler(savedRecords: allSuccessfulSaves,
-                                  saveFailures: allFailedSaves,
-                                  deletedRecordIDs: allSuccessfulDeletions,
-                                  deletionFailures: nil,
-                                  errorHandler: completeFailures.count > 0 ? Error.CompoundError(completeFailures) : nil)
+            grp.notify(queue: DispatchQueue.main) {
+                completionHandler(allSuccessfulSaves,
+                                  allFailedSaves,
+                                  allSuccessfulDeletions,
+                                  nil,
+                                  completeFailures.count > 0 ? Error.compoundError(completeFailures) : nil)
             }
         }
     }
     
-    public typealias PullCompletionHandler = (failedChanges:[(record:CKRecord, error:Error)]?, failedDeletions:[(recordID:CKRecordID, error:Error)]?)->Void
+    public typealias PullCompletionHandler = (_ failedChanges:[(record:CKRecord, error:Error)]?, _ failedDeletions:[(recordID:CKRecordID, error:Error)]?)->Void
     
-    public mutating func pull(packageController:MPDatabasePackageController, completionHandler:([Error])->Void) {
-        let grp = dispatch_group_create()
+    public mutating func pull(_ packageController:MPDatabasePackageController, completionHandler:@escaping ([Error])->Void) {
+        let grp = DispatchGroup()
         
-        dispatch_group_enter(grp) // 1 enter
+        grp.enter() // 1 enter
         
-        let errorQ = dispatch_queue_create("push-error-queue", nil)
+        let errorQ = DispatchQueue(label: "push-error-queue", attributes: [])
         
         var errors = [Error]()
         
@@ -323,54 +323,54 @@ public struct CloudKitSyncService {
             
             DDLogDebug("Pulling from record zones: \(recordZoneNames)")
             for recordZone in recordZones {
-                dispatch_group_enter(grp) // 2 enter
+                grp.enter() // 2 enter
                 self.pull(packageController, recordZone:recordZone, completionHandler: { failedChanges, failedDeletions in
                     for failedChange in failedChanges ?? [] {
-                        dispatch_sync(errorQ) {
+                        errorQ.sync {
                             errors.append(failedChange.error)
                         }
                     }
                 
                     for failedDeletion in failedDeletions ?? [] {
-                        dispatch_sync(errorQ) {
+                        errorQ.sync {
                             errors.append(failedDeletion.error)
                         }
                     }
                     
-                    dispatch_group_leave(grp) // 2A leave
+                    grp.leave() // 2A leave
                     }, errorHandler: { error in
-                        dispatch_sync(errorQ) {
+                        errorQ.sync {
                             errors.append(error)
                         }
-                    dispatch_group_leave(grp) // 2B leave
+                    grp.leave() // 2B leave
                 })
             }
             
-            dispatch_group_leave(grp) // 1A leave
+            grp.leave() // 1A leave
 
         }) { error in
-            dispatch_sync(errorQ) {
-                errors.append(.UnderlyingError(error))
+            errorQ.sync {
+                errors.append(.underlyingError(error))
             }
-            dispatch_group_leave(grp) // 1B leave
+            grp.leave() // 1B leave
             return
         }
         
-        dispatch_group_notify(grp, dispatch_get_main_queue()) { 
+        grp.notify(queue: DispatchQueue.main) { 
             completionHandler(errors)
         }
     }
     
-    public mutating func pull(packageController:MPDatabasePackageController, recordZone:CKRecordZone, useServerToken:Bool = true, completionHandler:PullCompletionHandler, errorHandler:ErrorHandler) {
+    public mutating func pull(_ packageController:MPDatabasePackageController, recordZone:CKRecordZone, useServerToken:Bool = true, completionHandler:@escaping PullCompletionHandler, errorHandler:ErrorHandler) {
         self.ensureRecordZonesExist(packageController, completionHandler: { ownerID, _ in
             self._pull(packageController, ownerName:ownerID.recordName, recordZone: recordZone, useServerToken: useServerToken, completionHandler: completionHandler, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
-    private mutating func ensureStateInitialized(packageController:MPDatabasePackageController, ownerName:String, allowInitializing:Bool) throws {
+    fileprivate mutating func ensureStateInitialized(_ packageController:MPDatabasePackageController, ownerName:String, allowInitializing:Bool) throws {
         if self.state[packageController.identifier] == nil {
             if !allowInitializing {
-                throw Error.NilState
+                throw Error.nilState
             }
             
             let state = CloudKitState(ownerName: ownerName, packageController: packageController)
@@ -383,7 +383,7 @@ public struct CloudKitSyncService {
         }
     }
     
-    public mutating func _pull(packageController:MPDatabasePackageController, ownerName:String, recordZone:CKRecordZone, useServerToken:Bool, completionHandler:PullCompletionHandler, errorHandler:ErrorHandler) {
+    public mutating func _pull(_ packageController:MPDatabasePackageController, ownerName:String, recordZone:CKRecordZone, useServerToken:Bool, completionHandler:@escaping PullCompletionHandler, errorHandler:@escaping ErrorHandler) {
         let fetchRecords = CKFetchRecordsOperation()
         fetchRecords.database = self.database
         
@@ -395,7 +395,7 @@ public struct CloudKitSyncService {
             try self.ensureStateInitialized(packageController, ownerName:ownerName, allowInitializing: true)
         }
         catch {
-            errorHandler(.UnderlyingError(error))
+            errorHandler(.underlyingError(error))
         }
         
         let prevChangeToken = useServerToken ? self.state[packageController.identifier]?.serverChangeToken(forZoneID: recordZone.zoneID) : nil
@@ -405,35 +405,35 @@ public struct CloudKitSyncService {
         var changeFails = [(record:CKRecord, error:Error)]()
         var deletionFails = [(recordID:CKRecordID, error:Error)]()
         
-        func recordChanged(record:CKRecord) {
+        func recordChanged(_ record:CKRecord) {
             do {
                 try deserializer.deserialize(record, applyOnlyChangedFields: false)
             }
             catch {
-                changeFails.append((record:record, error:.UnderlyingError(error)))
+                changeFails.append((record:record, error:.underlyingError(error as! CloudKitSyncService.Error)))
                 return
             }
         }
         
-        func recordWithIDWasDeleted(deletedID:CKRecordID) {
+        func recordWithIDWasDeleted(_ deletedID:CKRecordID) {
             if let record = self.recordZoneRepository.recordRepository.record(ID:deletedID),
-               let deletedObj = packageController.objectWithIdentifier(record.recordID.recordName),
-               let pkgC = deletedObj.controller?.packageController where pkgC == packageController { // package controller check is done because objectWithIdentifier can return an object from the shared database
-                    deletedObj.deleteObject()
+               let deletedObj = packageController.object(withIdentifier: record.recordID.recordName),
+               let pkgC = deletedObj.controller?.packageController, pkgC == packageController { // package controller check is done because objectWithIdentifier can return an object from the shared database
+                    deletedObj.delete()
                }
             else {
-                deletionFails.append((recordID:deletedID, Error.NoRecordToDeleteWithID(deletedID)))
+                deletionFails.append((recordID:deletedID, Error.noRecordToDeleteWithID(deletedID)))
             }
         }
         
-        func fetchRecordChangesCompletion(serverChangeToken:CKServerChangeToken?, clientChangeTokenData:NSData?, error:NSError?) {
+        func fetchRecordChangesCompletion(_ serverChangeToken:CKServerChangeToken?, clientChangeTokenData:Data?, error:NSError?) {
             if let error = error {
-                errorHandler(.UnderlyingError(error))
+                errorHandler(.underlyingError(error))
                 return
             }
             
             guard let changeToken = serverChangeToken else {
-                errorHandler(.MissingServerChangeToken(recordZone))
+                errorHandler(.missingServerChangeToken(recordZone))
                 return
             }
             
@@ -455,12 +455,12 @@ public struct CloudKitSyncService {
                 try self.state[packageController.identifier]?.serialize()
             }
             catch {
-                errorHandler(.UnderlyingError(error))
+                errorHandler(.underlyingError(error))
                 return
             }
             
             if !op.moreComing {
-                completionHandler(failedChanges: changeFails, failedDeletions: deletionFails)
+                completionHandler(changeFails, deletionFails)
             }
         }
         
@@ -471,33 +471,33 @@ public struct CloudKitSyncService {
         self.operationQueue.addOperation(op)
     }
     
-    public typealias DatabasePackageMetadataHandler = (packageMetadata:CKRecord) -> Void
+    public typealias DatabasePackageMetadataHandler = (_ packageMetadata:CKRecord) -> Void
         
-    public mutating func ensureDatabasePackageMetadataExists(packageController:MPDatabasePackageController, completionHandler:DatabasePackageMetadataHandler, errorHandler:ErrorHandler) {
+    public mutating func ensureDatabasePackageMetadataExists(_ packageController:MPDatabasePackageController, completionHandler:@escaping DatabasePackageMetadataHandler, errorHandler:ErrorHandler) {
         CloudKitSyncService.ensureUserAuthenticated(self.container, completionHandler: { ownerID in
             self._ensureDatabasePackageMetadataExists(packageController, ownerName:ownerID.recordName, completionHandler: completionHandler, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
-    public func _ensureDatabasePackageMetadataExists(packageController:MPDatabasePackageController, ownerName:String, completionHandler:DatabasePackageMetadataHandler, errorHandler:ErrorHandler) {
+    public func _ensureDatabasePackageMetadataExists(_ packageController:MPDatabasePackageController, ownerName:String, completionHandler:@escaping DatabasePackageMetadataHandler, errorHandler:@escaping ErrorHandler) {
         let identifier = packageController.identifier
         let packageMetadata = CKRecord(recordType: "DatabasePackageMetadata", recordID: CKRecordID(recordName: identifier, zoneID: CloudKitDatabasePackageListingService.packageMetadataZoneID(ownerName)))
         packageMetadata["title"] = packageController.title
         
         let saveMetadata = CKModifyRecordsOperation(recordsToSave: [packageMetadata], recordIDsToDelete: nil)
         saveMetadata.database = self.database
-        saveMetadata.savePolicy = .AllKeys
+        saveMetadata.savePolicy = .allKeys
         
         self.operationQueue.addOperation(saveMetadata)
         
         saveMetadata.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
             if let error = error {
-                errorHandler(.UnderlyingError(error))
+                errorHandler(.underlyingError(error))
                 return
             }
             
-            guard let records = savedRecords, firstRecord = records.first where records.count == 1 else {
-                errorHandler(Error.UnexpectedRecords(savedRecords))
+            guard let records = savedRecords, let firstRecord = records.first, records.count == 1 else {
+                errorHandler(Error.unexpectedRecords(savedRecords))
                 return
             }
             
@@ -505,19 +505,19 @@ public struct CloudKitSyncService {
         }
     }
     
-    public typealias DeletedRecordZonesHandler = (deletedZoneIDs:[CKRecordZoneID])->Void
+    public typealias DeletedRecordZonesHandler = (_ deletedZoneIDs:[CKRecordZoneID])->Void
     
-    public mutating func purge(packageController:MPDatabasePackageController, recordIDs:[CKRecordID], completionHandler:DeletedRecordZonesHandler, errorHandler:ErrorHandler) {
+    public mutating func purge(_ packageController:MPDatabasePackageController, recordIDs:[CKRecordID], completionHandler:@escaping DeletedRecordZonesHandler, errorHandler:ErrorHandler) {
         CloudKitSyncService.ensureUserAuthenticated(container, completionHandler: { ownerID in
             self._purge(packageController, ownerName:ownerID.recordName, recordIDs:recordIDs, completionHandler: completionHandler, errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
-    public mutating func _purge(packageController:MPDatabasePackageController, ownerName:String, recordIDs:[CKRecordID], completionHandler:DeletedRecordZonesHandler, errorHandler:ErrorHandler) {
+    public mutating func _purge(_ packageController:MPDatabasePackageController, ownerName:String, recordIDs:[CKRecordID], completionHandler:@escaping DeletedRecordZonesHandler, errorHandler:@escaping ErrorHandler) {
         
         self.pull(packageController) { errors in
             if errors.count > 0 {
-                errorHandler(Error.CompoundError(errors))
+                errorHandler(Error.compoundError(errors))
                 return
             }
             
@@ -527,7 +527,7 @@ public struct CloudKitSyncService {
                 deleteZones = CKModifyRecordZonesOperation(recordZonesToSave: nil, recordZoneIDsToDelete: try self.recordZones(packageController, ownerName:ownerName).map { $0.zoneID })
             }
             catch {
-                errorHandler(.UnderlyingError(error))
+                errorHandler(.underlyingError(error))
                 return
             }
             
@@ -535,24 +535,24 @@ public struct CloudKitSyncService {
             
             deleteZones.modifyRecordZonesCompletionBlock = { _, deletedIDs, error in
                 if let error = error {
-                    errorHandler(.UnderlyingError(error))
+                    errorHandler(.underlyingError(error))
                     return
                 }
                 
                 guard let deletedZoneIDs = deletedIDs else {
-                    errorHandler(Error.UnexpectedRecordZoneIDs(deletedIDs))
+                    errorHandler(Error.unexpectedRecordZoneIDs(deletedIDs))
                     return
                 }
                 
-                completionHandler(deletedZoneIDs: deletedZoneIDs)
+                completionHandler(deletedZoneIDs)
             }
         }
     }
     
-    public mutating func synchronize(packageController:MPDatabasePackageController, completionHandler:(errors:[Error])->Void) {
+    public mutating func synchronize(_ packageController:MPDatabasePackageController, completionHandler:@escaping (_ errors:[Error])->Void) {
         self.pull(packageController) { pullErrors in
             if (pullErrors.count > 0) {
-                completionHandler(errors: pullErrors)
+                completionHandler(pullErrors)
                 return
             }
             
@@ -560,15 +560,15 @@ public struct CloudKitSyncService {
                 var errors = [Error]()
                 
                 if let completeFailure = completeFailure {
-                    errors.append(.UnderlyingError(completeFailure))
+                    errors.append(.underlyingError(completeFailure))
                 }
                 
                 if let saveFailures = saveFailures {
-                    errors.appendContentsOf(saveFailures.map { Error.UnderlyingError($0.error) })
+                    errors.append(contentsOf: saveFailures.map { Error.underlyingError($0.error) })
                 }
                 
                 if let deletionFailures = deletionFailures {
-                    errors.appendContentsOf(deletionFailures.map { Error.UnderlyingError($0.error) })
+                    errors.append(contentsOf: deletionFailures.map { Error.underlyingError($0.error) })
                 }
                 
                 if errors.count > 0 {

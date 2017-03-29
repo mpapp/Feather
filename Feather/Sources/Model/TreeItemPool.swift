@@ -10,7 +10,7 @@ import Foundation
 
 @objc public final class TreeItemPool: NSObject {
     
-    private var items = [String:MPTreeItem]()
+    fileprivate var items = [String:MPTreeItem]()
     
     // exchanges the incoming item for an existing item with the same fully qualified identifier, or returns the same item.
     // for virtual sections such as root sections and object wrapping sections, you should no longer point at the item you passed to item(forItem:…) in the method where you did so. 

@@ -16,13 +16,13 @@ import Foundation
  */
 
 @objc(MPContributorChangeObserver) public protocol ContributorChangeObserver: MPManagedObjectChangeObserver {
-    func didAddContributor(notification:NSNotification)
-    func didUpdateContributor(notification:NSNotification)
-    func didRemoveContributor(notification:NSNotification)
+    func didAddContributor(_ notification:Notification)
+    func didUpdateContributor(_ notification:Notification)
+    func didRemoveContributor(_ notification:Notification)
 }
 
 @objc(MPContributorRecentChangeObserver) public protocol ContributorRecentChangeObserver: MPManagedObjectRecentChangeObserver {
-    func hasAddedContributor(notification:NSNotification)
-    func hasUpdatedContributor(notification:NSNotification)
-    func hasRemovedContributor(notification:NSNotification)
+    func hasAddedContributor(_ notification:Notification)
+    func hasUpdatedContributor(_ notification:Notification)
+    func hasRemovedContributor(_ notification:Notification)
 }

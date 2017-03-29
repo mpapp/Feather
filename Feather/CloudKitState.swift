@@ -20,8 +20,8 @@ public struct DatabasePackageMetadata {
 public struct CloudKitDatabasePackageList: JSONEncodable, JSONDecodable {
     public let packages:[DatabasePackageMetadata]
     
-    public init(contentsOfURL url:NSURL) throws {
-        let data = try NSData(contentsOfURL: url, options: [])
+    public init(contentsOfURL url:URL) throws {
+        let data = try Data(contentsOf: url, options: [])
         try self.init(json: try JSON(data:data))
     }
     
@@ -57,13 +57,13 @@ public struct CloudKitDatabasePackageList: JSONEncodable, JSONDecodable {
                 "changeTag":.String(package.changeTag ?? "")] })
     }
     
-    public func serialize(toURL url:NSURL) throws {
+    public func serialize(toURL url:URL) throws {
         let data = try self.toJSON().serialize()
         
         // ensure the containing directory exists.
-        let containingDir = (url.path! as NSString).stringByDeletingLastPathComponent
-        if !NSFileManager.defaultManager().fileExistsAtPath(containingDir) {
-            try NSFileManager.defaultManager().createDirectoryAtURL(NSURL(fileURLWithPath:containingDir), withIntermediateDirectories: true, attributes: [:])
+        let containingDir = (url.path as NSString).deletingLastPathComponent
+        if !FileManager.default.fileExists(atPath: containingDir) {
+            try FileManager.default.createDirectory(at: URL(fileURLWithPath:containingDir), withIntermediateDirectories: true, attributes: [:])
         }
         
         try data.writeToURL(url, options: [])
@@ -72,16 +72,16 @@ public struct CloudKitDatabasePackageList: JSONEncodable, JSONDecodable {
 
 public struct CloudKitState: JSONEncodable, JSONDecodable {
     
-    enum Error:ErrorType {
-        case NoSavedState(MPDatabasePackageController)
-        case NoPackageController
+    enum Error:Error {
+        case noSavedState(MPDatabasePackageController)
+        case noPackageController
     }
     
-    private var recordZones:[CKRecordZoneID:CKServerChangeToken] = [CKRecordZoneID:CKServerChangeToken]()
+    fileprivate var recordZones:[CKRecordZoneID:CKServerChangeToken] = [CKRecordZoneID:CKServerChangeToken]()
     
-    private let ownerName:String
+    fileprivate let ownerName:String
     
-    private(set) public weak var packageController:MPDatabasePackageController?
+    fileprivate(set) public weak var packageController:MPDatabasePackageController?
     
     public init(ownerName:String, packageController: MPDatabasePackageController) {
         self.ownerName = ownerName
@@ -90,15 +90,15 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
     
     public func deserialize() throws -> CloudKitState {
         guard let packageController = self.packageController else {
-            throw Error.NoPackageController
+            throw Error.noPackageController
         }
         
-        guard let stateURL = NSURL(fileURLWithPath: packageController.path).URLByAppendingPathComponent("cloudkit-state.json"),
-            let statePath = stateURL.path where NSFileManager.defaultManager().fileExistsAtPath(statePath) else {
-                throw Error.NoSavedState(packageController)
+        guard let stateURL = URL(fileURLWithPath: packageController.path).appendingPathComponent("cloudkit-state.json"),
+            let statePath = stateURL.path, FileManager.default.fileExists(atPath: statePath) else {
+                throw Error.noSavedState(packageController)
         }
         
-        var state = try CloudKitState(json:try JSON(data: try NSData(contentsOfURL: stateURL, options:[])))
+        var state = try CloudKitState(json:try JSON(data: try Data(contentsOfURL: stateURL, options:[])))
         state.packageController = packageController
         
         return state
@@ -106,10 +106,10 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
     
     public func serialize() throws {
         guard let packageController = self.packageController else {
-            throw Error.NoPackageController
+            throw Error.noPackageController
         }
         
-        guard let url = NSURL(fileURLWithPath: packageController.path).URLByAppendingPathComponent("cloudkit-state.json") else {
+        guard let url = URL(fileURLWithPath: packageController.path).appendingPathComponent("cloudkit-state.json") else {
             preconditionFailure("File URL \(packageController.path) can't be appended to to create a file URL.")
         }
         
@@ -121,7 +121,7 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
         return self.recordZones[recordZoneID]
     }
     
-    public mutating func setServerChangeToken(token:CKServerChangeToken, forZoneID recordZoneID:CKRecordZoneID) {
+    public mutating func setServerChangeToken(_ token:CKServerChangeToken, forZoneID recordZoneID:CKRecordZoneID) {
         self.recordZones[recordZoneID] = token
     }
     

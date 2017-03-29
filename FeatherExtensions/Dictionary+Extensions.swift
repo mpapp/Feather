@@ -36,10 +36,10 @@ public extension NSDictionary {
         let dict = NSMutableDictionary()
         
         for key in self.allKeys {
-            let value = self.objectForKey(key)!
+            let value = self.object(forKey: key)!
             
             guard let copyableValue = value as? NSCopying else {
-                preconditionFailure("Value \(value) (of type \(value.dynamicType)) does not conform to NSCopying.")
+                preconditionFailure("Value \(value) (of type \(type(of: (value) as AnyObject))) does not conform to NSCopying.")
             }
             dict[copyableValue] = key
         }

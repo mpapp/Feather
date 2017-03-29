@@ -9,15 +9,15 @@
 import Foundation
 
 public extension NSArray {
-    public var uniqueValues:NSArray {
-        return NSOrderedSet(array: self as [AnyObject]).array as [AnyObject]
+    public var uniqueValues: NSArray {
+        return NSOrderedSet(array: self as [AnyObject]).array as NSArray
     }
         
     public func containsAny(ofObjects objects:[AnyObject]) -> Bool {
         let setSelf = NSSet(array:self as [AnyObject])
         
         for o in objects {
-            if setSelf.containsObject(o) {
+            if setSelf.contains(o) {
                 return true
             }
         }

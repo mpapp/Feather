@@ -12,47 +12,47 @@ import CocoaLumberjackSwift
 
 public struct CloudKitSerializer {
     
-    public enum Error: ErrorType {
-        case ObjectDeleted(MPManagedObject)
-        case OwnerDeleted(MPContributor)
-        case DocumentUnavailable(MPManagedObject)
-        case UnexpectedKey(NSObject)
-        case UnexpectedPropertyValue(key:String, propertyKey:String, value:AnyObject, valueType:AnyClass)
-        case MissingController(MPManagedObject)
-        case UnexpectedReferenceValue(String)
+    public enum Error: Error {
+        case objectDeleted(MPManagedObject)
+        case ownerDeleted(MPContributor)
+        case documentUnavailable(MPManagedObject)
+        case unexpectedKey(NSObject)
+        case unexpectedPropertyValue(key:String, propertyKey:String, value:AnyObject, valueType:AnyClass)
+        case missingController(MPManagedObject)
+        case unexpectedReferenceValue(String)
     }
     
     public let ownerName:String
     public let recordZoneRepository:CloudKitRecordZoneRepository
     
-    public func serialize(object:MPManagedObject, serializingKey:String? = nil) throws -> CKRecord {
+    public func serialize(_ object:MPManagedObject, serializingKey:String? = nil) throws -> CKRecord {
         let record = try self.recordZoneRepository.record(object:object, ownerName: ownerName)
         
         
         guard let doc = object.document else {
-            throw Error.DocumentUnavailable(object)
+            throw Error.documentUnavailable(object)
         }
         
         for (key, value) in doc.userProperties {
             guard let keyString = key as? String else {
-                throw Error.UnexpectedKey(key)
+                throw Error.unexpectedKey(key as NSObject)
             }
             
-            if object.dynamicType.cloudKitIgnoredKeys().contains(keyString) {
+            if type(of: object).cloudKitIgnoredKeys().contains(keyString) {
                 continue
             }
             
-            try self.refresh(record:record, withObject: object, key: keyString, value:value)
+            try self.refresh(record:record, withObject: object, key: keyString, value:value as AnyObject)
         }
         
         return record
     }
     
-    private func refresh(record record:CKRecord, withObject object:MPManagedObject, key keyString:String, value:AnyObject) throws {
+    fileprivate func refresh(record:CKRecord, withObject object:MPManagedObject, key keyString:String, value:AnyObject) throws {
         
-        let kvcKey = object.valueCodingKeyForPersistedPropertyKey(keyString)
+        let kvcKey = object.valueCodingKey(forPersistedPropertyKey: keyString)
         
-        let val = object.valueForKey(kvcKey)
+        let val = object.value(forKey: kvcKey)
         
         switch val {
             
@@ -61,29 +61,29 @@ public struct CloudKitSerializer {
                 break
             }
             
-            let zone = try self.recordZoneRepository.recordZone(objectType: valObj.dynamicType, ownerName: ownerName)
+            let zone = try self.recordZoneRepository.recordZone(objectType: type(of: valObj), ownerName: ownerName)
             let valRecordID = CKRecordID(recordName: valDocID, zoneID:zone.zoneID)
-            let valRef = CKReference(recordID: valRecordID, action: .None)
+            let valRef = CKReference(recordID: valRecordID, action: .none)
             record.setObject(valRef, forKey: kvcKey)
             
         // unresolvable references (where object being referenced is nil at the moment) should still be stored as a CKReference.
-        case nil where value is String && object.dynamicType.classOfProperty(kvcKey) is MPManagedObject.Type:
+        case nil where value is String && type(of: object).class(ofProperty: kvcKey) is MPManagedObject.Type:
             guard let valueString = value as? String else {
                 preconditionFailure("Logic error: value should be guaranteed to be a string in this case.")
             }
             
-            guard let objType = MPManagedObject.managedObjectClassFromDocumentID(valueString) as? MPManagedObject.Type else {
-                throw Error.UnexpectedReferenceValue(valueString)
+            guard let objType = MPManagedObject.managedObjectClass(fromDocumentID: valueString) as? MPManagedObject.Type else {
+                throw Error.unexpectedReferenceValue(valueString)
             }
             
             let zone = try self.recordZoneRepository.recordZone(objectType: objType, ownerName: ownerName)
             let recordID = CKRecordID(recordName: valueString, zoneID: zone.zoneID)
-            let reference = CKReference(recordID: recordID, action: .None)
+            let reference = CKReference(recordID: recordID, action: .none)
             record.setObject(reference, forKey: keyString)
             
         case let embObj as MPEmbeddedObject:
-            let embObjString = try embObj.JSONStringRepresentation()
-            record.setObject(embObjString, forKey: kvcKey)
+            let embObjString = try embObj.jsonStringRepresentation()
+            record.setObject(embObjString as CKRecordValue?, forKey: kvcKey)
             
         case let valObjArray as [MPManagedObject]:
             let references = try valObjArray.map { vObj -> CKReference in
@@ -96,34 +96,34 @@ public struct CloudKitSerializer {
                     recordItem = try self.serialize(vObj, serializingKey:kvcKey)
                 }
                 
-                return CKReference(record: recordItem, action: CKReferenceAction.None)
+                return CKReference(record: recordItem, action: CKReferenceAction.none)
             }
-            record.setObject(references, forKey: kvcKey)
+            record.setObject(references as CKRecordValue?, forKey: kvcKey)
             
         case let embeddedValues as [MPEmbeddedObject]:
             //print("\(kvcKey) => \(embeddedValues) (class:\(embeddedValues.dynamicType))")
-            let embeddedValuesString = try (embeddedValues as NSArray).JSONStringRepresentation()
+            let embeddedValuesString = try (embeddedValues as NSArray).jsonStringRepresentation()
             record.setObject(embeddedValuesString, forKey: kvcKey)
             
         case let embeddedValueDict as [String:MPEmbeddedObject]:
             //print("\(kvcKey) => \(embeddedValueDict) (class:\(embeddedValueDict.dynamicType))")
-            let embeddedValueDictString = try (embeddedValueDict as NSDictionary).JSONStringRepresentation()
+            let embeddedValueDictString = try (embeddedValueDict as NSDictionary).jsonStringRepresentation()
             record.setObject(embeddedValueDictString, forKey: kvcKey)
             
         case let numberMap as [String:NSNumber]: // e.g. embeddedElementCounts, a map of document IDs to numbers
-            let numberMapString = try (numberMap as NSDictionary).JSONStringRepresentation()
+            let numberMapString = try (numberMap as NSDictionary).jsonStringRepresentation()
             record.setObject(numberMapString, forKey: kvcKey)
             
         case let valRecordValue as CKRecordValue:
             //print("\(kvcKey) => \(valRecordValue) (class:\(valRecordValue.dynamicType))")
             record.setObject(valRecordValue, forKey: kvcKey)
             
-        case _ as NSURL where object.dynamicType.classOfProperty(kvcKey) is NSURL.Type:
+        case _ as URL where type(of: object).class(ofProperty: kvcKey) is NSURL.Type:
             guard let valueString = value as? String else {
-                throw Error.UnexpectedPropertyValue(key: kvcKey, propertyKey: keyString, value: value, valueType: value.dynamicType)
+                throw Error.unexpectedPropertyValue(key: kvcKey, propertyKey: keyString, value: value, valueType: type(of: value))
             }
             
-            record.setObject(valueString, forKey: kvcKey)
+            record.setObject(valueString as CKRecordValue?, forKey: kvcKey)
             
         default:
             if kvcKey == "prototype" {
@@ -131,9 +131,9 @@ public struct CloudKitSerializer {
                     precondition(val is MPManagedObject)
                 }
             }
-            print("object:\(object), keyString:\(keyString) value:\(value) (\(value.dynamicType)), val:\(val) (\(val.dynamicType))")
+            print("object:\(object), keyString:\(keyString) value:\(value) (\(type(of: value))), val:\(val) (\(type(of: val)))")
 
-            throw Error.UnexpectedPropertyValue(key:kvcKey, propertyKey: keyString, value:value, valueType:value.dynamicType)
+            throw Error.unexpectedPropertyValue(key:kvcKey, propertyKey: keyString, value:value, valueType:type(of: value))
         }
     }
 }

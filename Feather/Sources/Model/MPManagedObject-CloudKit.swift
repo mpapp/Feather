@@ -13,18 +13,18 @@ import CocoaLumberjackSwift
 extension MPManagedObject {
     
     public class func recordType() -> String {
-        return (NSStringFromClass(self) as NSString).stringByReplacingOccurrencesOfRegex("^MP", withString: "")
+        return (NSStringFromClass(self) as NSString).replacingOccurrences(ofRegex: "^MP", with: "")
     }
     
     public class func recordZoneName() -> String {
-        let equivalenceAnyClass:AnyClass = MPManagedObjectsController.equivalenceClassForManagedObjectClass(self)
+        let equivalenceAnyClass:AnyClass = MPManagedObjectsController.equivalenceClass(forManagedObjectClass: self)
 
         guard let equivalenceClass = equivalenceAnyClass as? MPManagedObject.Type else {
-            preconditionFailure("Equivalence class of \(self.dynamicType) should be subclass of MPManagedObject: \(equivalenceAnyClass)")
+            preconditionFailure("Equivalence class of \(type(of: self)) should be subclass of MPManagedObject: \(equivalenceAnyClass)")
         }
         
         // TODO: Find a more robust way to get rid of the NSKVONotifying_ prefix.
-        let zoneName = (String(equivalenceClass) as NSString).stringByReplacingOccurrencesOfRegex("^MP", withString: "").stringByReplacingOccurrencesOfString("NSKVONotifying_", withString: "")
+        let zoneName = (String(describing: equivalenceClass) as NSString).replacingOccurrences(ofRegex: "^MP", with: "").replacingOccurrences(of: "NSKVONotifying_", with: "")
         return zoneName
     }
 }
