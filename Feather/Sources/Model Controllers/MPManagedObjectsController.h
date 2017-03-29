@@ -221,7 +221,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 /** Gets an object managed by this managed objects controller from its cache, or from database, 
   * or in case it's not part of the shared package, 
   * from the shared package controller's database from its corresponding managed objects controller if one exists. */
-- (nullable MPManagedObject *)objectWithIdentifier:(nonnull NSString *)identifier;
+- (nullable __kindof MPManagedObject *)objectWithIdentifier:(nonnull NSString *)identifier;
 
 /** Gets a document by documentID, allowing for depending on the allDocsMode argument for already deleted objects to be returned. */
 - (nullable CBLDocument *)documentWithIdentifier:(nonnull NSString *)identifier allDocsMode:(CBLAllDocsMode)allDocsMode;
