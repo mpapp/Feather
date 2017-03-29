@@ -1,6 +1,6 @@
 github "mpapp/CocoaLumberjack" "1ab6ca3bbf89e15bf5a506e7d3ef51f5350dbaf0"
 github "mpapp/MPTimer" "9b867d6cffdbf56e05ddb36d8d12c0a5b9215ef3"
-github "mpapp/P2Core" "a6387212eaad1c1e78a97545d4fd421f6d638e2c"
+github "mpapp/P2Core" "d319195dbd48764209982c84b7178bc0b18f8ce5"
 github "mpapp/RegexKitLite" "92be66c0b2310ad481f0373c6a28e14b18540ff9"
 github "mz2/couchbase-lite-ios" "27a560f1742399a082cc3c0e202958efeb8dc2e7"
 github "mpapp/google-diff-match-patch-Objective-C" "a271c05cee3c49d63e99c9b7cac38d42d058d6e7"
