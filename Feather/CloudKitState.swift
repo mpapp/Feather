@@ -30,16 +30,17 @@ public struct CloudKitDatabasePackageList: JSONEncodable, JSONDecodable {
     }
     
     public init(json: JSON) throws {
-        self.packages = try json.array("packages").map { package -> DatabasePackageMetadata in
-            let packageMetadataZoneID = CKRecordZoneID(zoneName: try package.string("zoneName"), ownerName: try package.string("ownerName"))
-            let recordID = CKRecordID(recordName: try package.string("recordName"), zoneID: packageMetadataZoneID)
+        self.packages = try json.getArray(at: "packages").map { package -> DatabasePackageMetadata in
+            let packageMetadataZoneID = CKRecordZoneID(zoneName: try package.getString(at: "zoneName"),
+                                                       ownerName: try package.getString(at: "ownerName"))
+            let recordID = CKRecordID(recordName: try package.getString(at: "recordName"), zoneID: packageMetadataZoneID)
             
-            var title:String? = try package.string("title", alongPath: [.MissingKeyBecomesNil])
+            var title:String? = try package.getString(at: "title", alongPath: [.missingKeyBecomesNil])
             if title == "" {
                 title = nil
             }
             
-            var changeTag:String? = try package.string("changeTag", alongPath: [.MissingKeyBecomesNil])
+            var changeTag:String? = try package.getString(at: "changeTag", alongPath: [.missingKeyBecomesNil])
             if changeTag == "" {
                 changeTag = nil
             }
@@ -49,12 +50,12 @@ public struct CloudKitDatabasePackageList: JSONEncodable, JSONDecodable {
     }
     
     public func toJSON() -> JSON {
-        return .Array(self.packages.map { package -> JSON in
-             [ "recordName":.String(package.recordID.recordName),
-                    "title":.String(package.title ?? ""),
-                 "zoneName":.String(package.recordID.zoneID.zoneName),
-                "ownerName":.String(package.recordID.zoneID.ownerName),
-                "changeTag":.String(package.changeTag ?? "")] })
+        return .array(self.packages.map { package -> JSON in
+             [ "recordName":.string(package.recordID.recordName),
+                    "title":.string(package.title ?? ""),
+                 "zoneName":.string(package.recordID.zoneID.zoneName),
+                "ownerName":.string(package.recordID.zoneID.ownerName),
+                "changeTag":.string(package.changeTag ?? "")] })
     }
     
     public func serialize(toURL url:URL) throws {
@@ -66,13 +67,13 @@ public struct CloudKitDatabasePackageList: JSONEncodable, JSONDecodable {
             try FileManager.default.createDirectory(at: URL(fileURLWithPath:containingDir), withIntermediateDirectories: true, attributes: [:])
         }
         
-        try data.writeToURL(url, options: [])
+        try data.write(to: url, options: [])
     }
 }
 
 public struct CloudKitState: JSONEncodable, JSONDecodable {
     
-    enum Error:Error {
+    enum Error:Swift.Error {
         case noSavedState(MPDatabasePackageController)
         case noPackageController
     }
@@ -93,12 +94,14 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
             throw Error.noPackageController
         }
         
-        guard let stateURL = URL(fileURLWithPath: packageController.path).appendingPathComponent("cloudkit-state.json"),
-            let statePath = stateURL.path, FileManager.default.fileExists(atPath: statePath) else {
+        let stateURL = URL(fileURLWithPath: packageController.path).appendingPathComponent("cloudkit-state.json")
+        let statePath = stateURL.path
+        
+        guard FileManager.default.fileExists(atPath: statePath) else {
                 throw Error.noSavedState(packageController)
         }
-        
-        var state = try CloudKitState(json:try JSON(data: try Data(contentsOfURL: stateURL, options:[])))
+
+        var state = try CloudKitState(json:try JSON(data: try Data(contentsOf: stateURL, options:[])))
         state.packageController = packageController
         
         return state
@@ -109,12 +112,10 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
             throw Error.noPackageController
         }
         
-        guard let url = URL(fileURLWithPath: packageController.path).appendingPathComponent("cloudkit-state.json") else {
-            preconditionFailure("File URL \(packageController.path) can't be appended to to create a file URL.")
-        }
+        let url = URL(fileURLWithPath: packageController.path).appendingPathComponent("cloudkit-state.json")
         
         let serializedData = try self.toJSON().serialize()
-        try serializedData.writeToURL(url, options: [])
+        try serializedData.write(to: url, options: [])
     }
     
     public func serverChangeToken(forZoneID recordZoneID:CKRecordZoneID) -> CKServerChangeToken? {
@@ -126,18 +127,19 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
     }
     
     public init(json: JSON) throws {
-        self.ownerName = try json.string("ownerName")
+        self.ownerName = try json.getString(at: "ownerName")
         
-        let items = try json.array("recordZones").flatMap { item -> (CKRecordZoneID, CKServerChangeToken)? in
-            let zoneID = try CKRecordZoneID(zoneName: item.string("zoneName"), ownerName:item.string("ownerName"))
+        let items = try json.getArray(at: "recordZones").flatMap { item -> (CKRecordZoneID, CKServerChangeToken)? in
+            let zoneID = try CKRecordZoneID(zoneName: item.getString(at: "zoneName"),
+                                            ownerName: item.getString(at: "ownerName"))
             
-            let tokenStr = try item.string("serverChangeToken")
+            let tokenStr = try item.getString(at: "serverChangeToken")
             
-            guard let data = NSData(base64EncodedString: tokenStr, options: []) else {
+            guard let data = Data(base64Encoded: tokenStr, options: []) else {
                 return nil
             }
             
-            guard let token = NSKeyedUnarchiver.unarchiveObjectWithData(data) as? CKServerChangeToken else {
+            guard let token = NSKeyedUnarchiver.unarchiveObject(with: data) as? CKServerChangeToken else {
                 return nil
             }
             
@@ -148,11 +150,13 @@ public struct CloudKitState: JSONEncodable, JSONDecodable {
     }
     
     public func toJSON() -> JSON {
-        return .Dictionary([
-                "ownerName": .String(self.ownerName),
-                "recordZones": .Array(self.recordZones.map { pair -> JSON in
-                    let tokenStr = NSKeyedArchiver.archivedDataWithRootObject(pair.1).base64EncodedStringWithOptions([])
-                    return .Dictionary(["zoneName":.String(pair.0.zoneName), "serverChangeToken":.String(tokenStr)])
+        return .dictionary([
+                "ownerName": .string(self.ownerName),
+                "recordZones": .array(self.recordZones.map { pair -> JSON in
+                    let tokenStr = NSKeyedArchiver.archivedData(withRootObject: pair.1)
+                                        .base64EncodedString()
+                    return .dictionary(["zoneName": .string(pair.0.zoneName),
+                                        "serverChangeToken": .string(tokenStr)])
                 })
             ])
     }

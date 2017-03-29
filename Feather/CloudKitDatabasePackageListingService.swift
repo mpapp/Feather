@@ -10,11 +10,11 @@ import Foundation
 import CloudKit
 import FeatherExtensions
 
-public struct CloudKitDatabasePackageListingService {
+public class CloudKitDatabasePackageListingService {
     
-    public indirect enum Error:Error {
+    public indirect enum Error:Swift.Error {
         case noPackageListSerializationURL
-        case underlyingError(Error)
+        case underlyingError(Swift.Error)
         case unexpectedNilResponseData
     }
     
@@ -42,9 +42,12 @@ public struct CloudKitDatabasePackageListingService {
         return CKRecordZoneID(zoneName: self.packageMetadataZoneName, ownerName: ownerName)
     }
 
-    public mutating func availableDatabasePackages(_ completionHandler:@escaping DatabasePackageMetadataListHandler, errorHandler:@escaping CloudKitSyncService.ErrorHandler) {
+    public func availableDatabasePackages(_ completionHandler:@escaping DatabasePackageMetadataListHandler,
+                                                   errorHandler:@escaping CloudKitSyncService.ErrorHandler) {
         CloudKitSyncService.ensureUserAuthenticated(container, completionHandler: { ownerID in
-            self._availableDatabasePackages(ownerID.recordName, completionHandler: completionHandler, errorHandler: errorHandler)
+            self._availableDatabasePackages(ownerID.recordName,
+                                            completionHandler: completionHandler,
+                                            errorHandler: errorHandler)
         }, errorHandler: errorHandler)
     }
     
@@ -55,12 +58,12 @@ public struct CloudKitDatabasePackageListingService {
             
             op.fetchRecordZonesCompletionBlock = { zoneMap, error in
                 if let error = error {
-                    completionHandler(deletedZoneIDs: [], errors:[.underlyingError(error)])
+                    completionHandler([], [.underlyingError(error)])
                     return
                 }
                 
                 guard let map = zoneMap else {
-                    completionHandler(deletedZoneIDs: [], errors:[.unexpectedNilResponseData])
+                    completionHandler([], [.unexpectedNilResponseData])
                     return
                 }
                 
@@ -95,11 +98,11 @@ public struct CloudKitDatabasePackageListingService {
                 }
                 
                 grp.notify(queue: DispatchQueue.main) {
-                    completionHandler(deletedZoneIDs: allDeletedIDs, errors: allErrors)
+                    completionHandler(allDeletedIDs, allErrors)
                 }
             }
         }) { error in
-            completionHandler(deletedZoneIDs:[], errors: [.underlyingError(error)])
+            completionHandler([], [.underlyingError(error)])
         }
     }
     
@@ -111,7 +114,9 @@ public struct CloudKitDatabasePackageListingService {
         return URL(fileURLWithPath:((appSupportFolder as NSString).appendingPathComponent(Bundle.main.bundleIdentifier!) as NSString).appendingPathComponent("database-package-list-\(self.container.containerIdentifier!)-\(self.container.privateCloudDatabase === self.database ? "private" : "public").json"))
     }
     
-    public mutating func _availableDatabasePackages(_ ownerName:String, completionHandler:@escaping DatabasePackageMetadataListHandler, errorHandler:@escaping CloudKitSyncService.ErrorHandler) {
+    public func _availableDatabasePackages(_ ownerName:String,
+                                           completionHandler:@escaping DatabasePackageMetadataListHandler,
+                                           errorHandler:@escaping CloudKitSyncService.ErrorHandler) {
         
         var packages:[DatabasePackageMetadata]
         
@@ -151,7 +156,9 @@ public struct CloudKitDatabasePackageListingService {
         
         let op = CKFetchRecordChangesOperation(recordZoneID: CloudKitDatabasePackageListingService.packageMetadataZoneID(ownerName), previousServerChangeToken: databasePackageChangeToken)
         
-        func fetchRecordChangesCompletion(_ serverChangeToken:CKServerChangeToken?, clientTokenData:Data?, error:NSError?) {
+        func fetchRecordChangesCompletion(_ serverChangeToken:CKServerChangeToken?,
+                                          clientTokenData:Data?,
+                                          error:Swift.Error?) {
             if let error = error {
                 errorHandler(.underlyingError(error))
                 return

@@ -9,9 +9,9 @@
 import Foundation
 
 public extension NSOutlineView {
-    public var allSelectedItems:[AnyObject] {
+    public var allSelectedItems:[Any] {
         return self.selectedRowIndexes.flatMap { index in
-            return self.itemAtRow(index)
+            return self.item(atRow: index)
         }
     }
     
@@ -20,12 +20,12 @@ public extension NSOutlineView {
             self.deselectAll(self)
         }
         
-        let row = self.rowForItem(item)
+        let row = self.row(forItem: item)
         if row < 0 {
             return
         }
         
-        self.selectRowIndexes(NSIndexSet(index:row), byExtendingSelection: true)
+        self.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: true)
     }
     
     public func selectItems(items:[AnyObject], byExtendingSelection:Bool) {
@@ -34,7 +34,7 @@ public extension NSOutlineView {
         }
         
         for item in items {
-            self.selectItem(item, byExtendingSelection: true)
+            self.selectItem(item: item, byExtendingSelection: true)
         }
     }
 }

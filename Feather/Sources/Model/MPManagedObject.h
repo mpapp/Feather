@@ -176,11 +176,9 @@ extern NSString * _Nonnull const MPPasteboardTypeManagedObjectIDArray;
 
 - (void)unlock;
 
-/** Saves and on failure posts an error notification on errors to the object's package controller's notification center. */
-- (BOOL)save;
-
-/** Synonymous to -save – done because -save and -saveWithError: end up being ambiguous in Swift (both map to save(), the error case mapping to a throwing method). */
-- (BOOL)saveObject;
+/** Saves and on failure posts an error notification on errors to the object's package controller's notification center, 
+    but without an error pointer. */
+- (BOOL)save NS_SWIFT_NAME(saveSilently());
 
 /** Saves the object, and all it’s embedded object typed properties, and managed object typed properties.
  * Also sends -deepSave: recursively to all managed and embedded objects referenced by the object. */

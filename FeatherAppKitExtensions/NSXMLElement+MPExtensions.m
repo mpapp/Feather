@@ -176,7 +176,7 @@ typedef NS_ENUM(NSInteger, MPXMLElementErrorCode) {
             *error = [NSError errorWithDomain:MPXMLElementErrorDomain
                                          code:MPXMLElementErrorCodeFailedToParseXMLString
                                      userInfo:@{NSLocalizedDescriptionKey:
-                                                    [NSString stringWithFormat:@"Bad XML string:\n", XMLString]
+                                                    [NSString stringWithFormat:@"Bad XML string:\n%@", XMLString]
                                                 }];
         }
         return nil;

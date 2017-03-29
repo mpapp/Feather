@@ -13,7 +13,7 @@ import Feather.MPManagedObject_Protected
 
 public struct CloudKitDeserializer {
     
-    public enum Error:Error {
+    public enum Error:Swift.Error {
         case unexpectedModelClass(String)
         case noControllerForModelClass(AnyClass)
     }
@@ -95,6 +95,6 @@ public struct CloudKitDeserializer {
         
         obj.cloudKitChangeTag = record.recordChangeTag
         
-        obj.save()
+        obj.saveSilently()
     }
 }

@@ -2068,7 +2068,6 @@
 					"$(CONFIGURATION_BUILD_DIR)",
 					"$(BUILT_PRODUCTS_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
-					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2260,7 +2259,6 @@
 					"$(CONFIGURATION_BUILD_DIR)",
 					"$(BUILT_PRODUCTS_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
-					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -2450,7 +2448,6 @@
 					"$(CONFIGURATION_BUILD_DIR)",
 					"$(BUILT_PRODUCTS_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
-					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2507,7 +2504,6 @@
 					"$(CONFIGURATION_BUILD_DIR)",
 					"$(BUILT_PRODUCTS_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
-					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -2560,7 +2556,6 @@
 					"$(CONFIGURATION_BUILD_DIR)",
 					"$(BUILT_PRODUCTS_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
-					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -2613,7 +2608,6 @@
 					"$(CONFIGURATION_BUILD_DIR)",
 					"$(BUILT_PRODUCTS_DIR)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
-					"$(PROJECT_DIR)/Carthage/Checkouts/couchbase-lite-ios/vendor/CocoaHTTPServer/Carthage/Build/Mac",
 				);
 				FRAMEWORK_VERSION = A;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;

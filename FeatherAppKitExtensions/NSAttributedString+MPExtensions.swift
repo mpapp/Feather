@@ -12,12 +12,13 @@ public extension NSAttributedString {
     func components(separatedBy string:String) -> [NSAttributedString] {
         let strRep = self.string
 
-        let separatedArray = strRep.componentsSeparatedByString(string)
+        let separatedArray = strRep.components(separatedBy:string)
         
         var start = 0
         return separatedArray.map { sub in
             let range = NSMakeRange(start, (sub as NSString).length)
-            let str = self.attributedSubstringFromRange(range)
+            
+            let str = self.attributedSubstring(from: range)
             start += range.length + (string as NSString).length
             
             return str

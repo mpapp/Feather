@@ -352,7 +352,8 @@
     NSData *stringData = [self dataUsingEncoding:NSMacOSRomanStringEncoding];
     
     UInt32 type, _type;
-    [stringData getBytes:&type];
+    //[stringData getBytes:&type];
+    [stringData getBytes:&type length:sizeof(UInt32)];
     
     _type = Endian32_Swap(type);
     return(_type);

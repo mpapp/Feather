@@ -12,7 +12,7 @@ import CocoaLumberjackSwift
 
 public struct CloudKitSerializer {
     
-    public enum Error: Error {
+    public enum Error: Swift.Error {
         case objectDeleted(MPManagedObject)
         case ownerDeleted(MPContributor)
         case documentUnavailable(MPManagedObject)
@@ -103,16 +103,16 @@ public struct CloudKitSerializer {
         case let embeddedValues as [MPEmbeddedObject]:
             //print("\(kvcKey) => \(embeddedValues) (class:\(embeddedValues.dynamicType))")
             let embeddedValuesString = try (embeddedValues as NSArray).jsonStringRepresentation()
-            record.setObject(embeddedValuesString, forKey: kvcKey)
+            record.setObject(embeddedValuesString as NSString as CKRecordValue, forKey: kvcKey)
             
         case let embeddedValueDict as [String:MPEmbeddedObject]:
             //print("\(kvcKey) => \(embeddedValueDict) (class:\(embeddedValueDict.dynamicType))")
             let embeddedValueDictString = try (embeddedValueDict as NSDictionary).jsonStringRepresentation()
-            record.setObject(embeddedValueDictString, forKey: kvcKey)
+            record.setObject(embeddedValueDictString as NSString as CKRecordValue, forKey: kvcKey)
             
         case let numberMap as [String:NSNumber]: // e.g. embeddedElementCounts, a map of document IDs to numbers
             let numberMapString = try (numberMap as NSDictionary).jsonStringRepresentation()
-            record.setObject(numberMapString, forKey: kvcKey)
+            record.setObject(numberMapString as NSString as CKRecordValue, forKey: kvcKey)
             
         case let valRecordValue as CKRecordValue:
             //print("\(kvcKey) => \(valRecordValue) (class:\(valRecordValue.dynamicType))")
