@@ -55,7 +55,7 @@ typedef enum MPManagedObjectsControllerErrorCode
  * -objectWith<Property>:
  * -objectBy<Property>:
  * */
-@interface MPManagedObjectsController<__covariant T:MPManagedObject *> : NSObject <MPCacheable, MPManagedObjectRecentChangeObserver>
+@interface MPManagedObjectsController : NSObject <MPCacheable, MPManagedObjectRecentChangeObserver>
 
 /** The MPDatabase whose objects this controller manages (not necessarily all of the objects in the database, just those with a matching class / objectType field).  */
 @property (readonly, strong, nonnull) MPDatabase *db;
@@ -139,16 +139,16 @@ typedef enum MPManagedObjectsControllerErrorCode
 #pragma mark Managed Object CRUD
 
 /** Returns a new managed object of type -managedObjectClass. */
-- (nonnull T)newObject;
+- (nonnull __kindof MPManagedObject *)newObject;
 
 /** If nil passed in as argument, -managedObjectClass is assumed to be the type. */
-- (nonnull T)newObjectOfClass:(nullable Class)cls;
+- (nonnull __kindof MPManagedObject *)newObjectOfClass:(nullable Class)cls;
 
 /** Returns a new managed object with the specified prototype. */
-- (nonnull T)newObjectWithPrototype:(nonnull MPManagedObject *)prototype documentID:(nullable NSString *)documentID;
+- (nonnull __kindof MPManagedObject *)newObjectWithPrototype:(nonnull MPManagedObject *)prototype documentID:(nullable NSString *)documentID;
 
 /** Objects derived from the specified prototype ID */
-- (nonnull NSArray<T> *)objectsWithPrototypeID:(nonnull NSString *)prototypeID;
+- (nonnull NSArray<__kindof MPManagedObject *> *)objectsWithPrototypeID:(nonnull NSString *)prototypeID;
 
 /** Initializes a MPManagedObjectsController. Not to be called directly on MPManagedObjectsController (an abstract class). Initialization calls -registerManagedObjectsController: on the database controller with self given as the argument.
  * @param packageController The database controller which is to own this managed objects controller.
@@ -166,7 +166,7 @@ typedef enum MPManagedObjectsControllerErrorCode
 - (void)configureViews __attribute__((objc_requires_super));
 
 /** Those objects for which userContributed = YES. */
-@property (readonly, strong, nonnull) NSArray<T> *userContributedObjects;
+@property (readonly, strong, nonnull) NSArray<__kindof MPManagedObject *> *userContributedObjects;
 
 /** The name of the view which returns all objects managed by this controller. */
 @property (readonly, copy, nonnull) NSString *allObjectsViewName;
@@ -185,13 +185,13 @@ typedef enum MPManagedObjectsControllerErrorCode
 - (void)viewNamed:(nonnull NSString *)name setMapBlock:(nonnull CBLMapBlock)block version:(nonnull NSString *)version;
 
 /** All objects managed by this controller. */
-@property (readonly, strong, nonnull) NSArray<T> *allObjects;
+@property (readonly, strong, nonnull) NSArray<__kindof MPManagedObject *> *allObjects;
 
 /** All objects managed by this controller, queried without wrapping to mp_dispatch_sync, and allowing for an error pointer. */
-- (nullable NSArray<T> *)allObjects:(NSError *__nullable *__nullable)error;
+- (nullable NSArray<__kindof MPManagedObject *> *)allObjects:(NSError *__nullable *__nullable)error;
 
 /** Synonymous with -allObjects, here just because in Swift -allObjects and -allObjects: are ambiguous. Expect deprecation of the ambiguous APIs will happen eventually. */
-@property (readonly, strong, nonnull) NSArray<T> *objects;
+@property (readonly, strong, nonnull) NSArray<__kindof MPManagedObject *> *objects;
 
 /** An optional resource name for a touchdb typed file in the app's Contents/Resources directory. If overridden with a non-nil value, the resource is loaded upon initialisation. */
 @property (readonly, copy, nonnull) NSString *bundledResourceDatabaseName;
@@ -216,12 +216,12 @@ typedef enum MPManagedObjectsControllerErrorCode
 @property (readonly, strong, nullable) NSString *bundledResourceExtension;
 
 /** Bundled JSON data derived objects. */
-@property (readonly, nullable) NSArray<T> *bundledJSONDerivedData;
+@property (readonly, nullable) NSArray<__kindof MPManagedObject *> *bundledJSONDerivedData;
 
 /** Gets an object managed by this managed objects controller from its cache, or from database, 
   * or in case it's not part of the shared package, 
   * from the shared package controller's database from its corresponding managed objects controller if one exists. */
-- (nullable T)objectWithIdentifier:(nonnull NSString *)identifier;
+- (nullable MPManagedObject *)objectWithIdentifier:(nonnull NSString *)identifier;
 
 /** Gets a document by documentID, allowing for depending on the allDocsMode argument for already deleted objects to be returned. */
 - (nullable CBLDocument *)documentWithIdentifier:(nonnull NSString *)identifier allDocsMode:(CBLAllDocsMode)allDocsMode;
@@ -232,31 +232,33 @@ typedef enum MPManagedObjectsControllerErrorCode
 @property (readonly) BOOL relaysFetchingByIdentifier;
 
 /** Objects with the given 'title' field value (meaningless for objects with no title field) */
-- (nonnull NSArray<T> *)objectsWithTitle:(nonnull NSString *)title;
+- (nonnull NSArray<__kindof MPManagedObject *> *)objectsWithTitle:(nonnull NSString *)title;
 
 /** Loads objects from the contents of an array JSON field. Each record in this array is validated to be a serialized MPManagedObject.
   * @param url The URL to load the objects from.
   * @param err An error pointer. */
-- (nullable NSArray<T> *)objectsFromContentsOfArrayJSONAtURL:(nonnull NSURL *)url error:(NSError *__nullable *__nullable)err;
+- (nullable NSArray<__kindof MPManagedObject *> *)objectsFromContentsOfArrayJSONAtURL:(nonnull NSURL *)url error:(NSError *__nullable *__nullable)err;
 
 /** Loads objects from JSON data. Each record in the array is validated to be a serialized MPManagedObject. */
-- (nullable NSArray<T> *)objectsFromArrayJSONData:(nonnull NSData *)objData error:(NSError *__autoreleasing __nullable * __nullable)err;
+- (nullable NSArray<__kindof MPManagedObject *> *)objectsFromArrayJSONData:(nonnull NSData *)objData error:(NSError *__autoreleasing __nullable * __nullable)err;
 
 /** Objects from JSON encodable object array. */
-- (nullable NSArray<T> *)objectsFromJSONEncodableObjectArray:(nonnull NSArray *)objs error:(NSError *__nonnull *__nonnull)err;
+- (nullable NSArray<__kindof MPManagedObject *> *)objectsFromJSONEncodableObjectArray:(nonnull NSArray *)objs error:(NSError *__nonnull *__nonnull)err;
 
 /** Loads a managed object from a JSON dictionary. Record is validated to be a serialized MPManagedObject. */
-- (nullable T)objectFromJSONDictionary:(nonnull NSDictionary *)d isExisting:(BOOL *__nullable)isExisting error:(NSError *__nullable *__nullable)err;
+- (nullable __kindof MPManagedObject *)objectFromJSONDictionary:(nonnull NSDictionary *)d
+                                                     isExisting:(BOOL *__nullable)isExisting
+                                                          error:(NSError *__nullable *__nullable)err;
 
 /** Load bundled objects from resource with specified name and extension from inside the application main bundle. If resource checksum matches already saved checksum, return preloadedObjects, otherwise save the objects from the file into DB and return them. */
-- (nullable NSArray<T> *)loadBundledObjectsFromResource:(nonnull NSString *)resourceName
-                                withExtension:(nonnull NSString *)extension
-                           matchedToObjects:(nonnull NSArray *)preloadedObjects
-                    dataChecksumMetadataKey:(nonnull NSString *)dataChecksumKey
-                                      error:(NSError *__nullable *__nullable)err;
+- (nullable NSArray<__kindof MPManagedObject *> *)loadBundledObjectsFromResource:(nonnull NSString *)resourceName
+                                                                   withExtension:(nonnull NSString *)extension
+                                                                matchedToObjects:(nonnull NSArray *)preloadedObjects
+                                                         dataChecksumMetadataKey:(nonnull NSString *)dataChecksumKey
+                                                                           error:(NSError *__nullable *__nullable)err;
 
 /** Query the given view with the given keys, with object prefetching enabled, and return managed object representations. */
-- (nonnull NSArray<T> *)objectsMatchingQueriedView:(nonnull NSString *)view keys:(nullable NSArray *)keys;
+- (nonnull NSArray<__kindof MPManagedObject *> *)objectsMatchingQueriedView:(nonnull NSString *)view keys:(nullable NSArray *)keys;
 
 @end
 

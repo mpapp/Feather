@@ -47,26 +47,26 @@ typedef enum MPReplicationEventType {
 @interface NSNotificationCenter (MPManagedObjectExtensions)
 
 - (void)addRecentChangeObserver:(id<MPManagedObjectRecentChangeObserver>)observer
-       forManagedObjectsOfClass:(Class)moClass;
+       forManagedObjectsOfClass:(Class)moClass NS_SWIFT_NAME(add(recentChangeObserver:forManagedObjectsOfClass:));
 
 - (void)addRecentChangeObserver:(id<MPManagedObjectRecentChangeObserver>)observer
        forManagedObjectsOfClass:(Class)moClass
                        hasAdded:(MPRecentChangeObserverCallback)didAddBlock
                      hasUpdated:(MPRecentChangeObserverCallback)didUpdateBlock
-                     hasRemoved:(MPRecentChangeObserverCallback)didRemoveBlock;
+                     hasRemoved:(MPRecentChangeObserverCallback)didRemoveBlock NS_SWIFT_NAME(add(RecentChangeObserver:forObjectsOfClass:hasAdded:hasUpdated:hasremoved:));
 
 /** Adds an observer for change notifications emitted by MPManagedObject instances.
   * @param observer The object which is to observe managed object notifications.
   * @param moClass The managed object class whose instances are to be observed by the sender. */
 - (void)addPastChangeObserver:(id<MPManagedObjectChangeObserver>)observer
-     forManagedObjectsOfClass:(Class)moClass;
+     forManagedObjectsOfClass:(Class)moClass NS_SWIFT_NAME(add(pastChangeObserver:forObjectsOfClass:));
 
 /** Adds an observer for past change notififications emitted by MPManagedObject instances. This is the hardcore version of -addPastChangeObserver:forManagedObjectsOfClass: which allows you to define the method default implementations in case the observer class doesn't define them. The defaultDidAddImplementation:, defaultDidUpdateImplementation:, defaultDidRemoveImplementation arguments are unused if the corresponding method is defined. */
 - (void)addPastChangeObserver:(id<MPManagedObjectChangeObserver>)observer
      forManagedObjectsOfClass:(Class)moClass
                        didAdd:(MPChangeObserverCallback)didAddBlock
                     didUpdate:(MPChangeObserverCallback)didUpdateBlock
-                    didRemove:(MPChangeObserverCallback)didRemoveBlock;
+                    didRemove:(MPChangeObserverCallback)didRemoveBlock NS_SWIFT_NAME(add(pastChangeObserver:forObjectsOfClass:didAdd:didUpdate:didRemove:));
 
 + (NSString *)notificationNameForRecentChangeOfType:(MPChangeType)changeType forManagedObjectClass:(Class)moClass;
 + (NSString *)notificationNameForPastChangeOfType:(MPChangeType)changeType forManagedObjectClass:(Class)moClass;
