@@ -13,7 +13,7 @@ import CocoaLumberjackSwift
 extension MPManagedObject {
     
     public class func recordType() -> String {
-        return (NSStringFromClass(self) as NSString).replacingOccurrences(ofRegex: "^MP", with: "")
+        return (NSStringFromClass(self) as NSString).replacing(occurrencesOfRegex: "^MP", with: "")
     }
     
     public class func recordZoneName() -> String {
@@ -24,7 +24,7 @@ extension MPManagedObject {
         }
         
         // TODO: Find a more robust way to get rid of the NSKVONotifying_ prefix.
-        let zoneName = (String(describing: equivalenceClass) as NSString).replacingOccurrences(ofRegex: "^MP", with: "").replacingOccurrences(of: "NSKVONotifying_", with: "")
+        let zoneName = (String(describing: equivalenceClass) as NSString).replacing(occurrencesOfRegex: "^MP", with: "").replacingOccurrences(of: "NSKVONotifying_", with: "")
         return zoneName
     }
 }

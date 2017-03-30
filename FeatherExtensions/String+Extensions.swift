@@ -42,8 +42,8 @@ public extension String {
                 throw LinkRelationParsingError.unexpectedSection(section)
             }
             
-            let url = (section[0] as NSString).replacingOccurrences(ofRegex: "<(.*)>", with: "$1")
-            let name = (section[1] as NSString).replacingOccurrences(ofRegex: "\\s+rel=\"(.*)\"", with: "$1")
+            let url = (section[0] as NSString).replacing(occurrencesOfRegex: "<(.*)>", with: "$1")
+            let name = (section[1] as NSString).replacing(occurrencesOfRegex: "\\s+rel=\"(.*)\"", with: "$1")
             links[name!] = url
         }
         
