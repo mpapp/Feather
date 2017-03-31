@@ -131,8 +131,10 @@ public struct CloudKitSerializer {
                     precondition(val is MPManagedObject)
                 }
             }
-            print("object:\(object), keyString:\(keyString) value:\(value) (\(type(of: value))), val:\(val) (\(type(of: val)))")
-
+            
+            #if DEBUG
+            print("object:\(object), keyString:\(keyString) value:\(value) (\(type(of: value))), val:\(val ?? "nil") (\(type(of: val)))")
+            #endif
             throw Error.unexpectedPropertyValue(key:kvcKey, propertyKey: keyString, value:value, valueType:type(of: value))
         }
     }

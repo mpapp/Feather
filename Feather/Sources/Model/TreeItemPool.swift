@@ -29,7 +29,11 @@ import Foundation
             guard let parentID = parent.identifier else {
                 preconditionFailure("Parent must be identifiable: \(parent)")
             }
-            return "\(parentID)/\(item.identifier)"
+            guard let identifier = item.identifier else {
+                preconditionFailure("Item must be identifiable: \(item)")
+            }
+            
+            return "\(parentID)/\(identifier)"
         }
         else {
             guard let identifier = item.identifier else {

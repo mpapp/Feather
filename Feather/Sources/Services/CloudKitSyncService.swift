@@ -260,7 +260,7 @@ public class CloudKitSyncService {
             
             // This block reports an error of type partialFailure when it saves or deletes only some of the records successfully. The userInfo dictionary of the error contains a CKPartialErrorsByItemIDKey key whose value is an NSDictionary object. The keys of that dictionary are the IDs of the records that were not saved or deleted, and the corresponding values are error objects containing information about what happened.
             save.modifyRecordsCompletionBlock = { savedRecords, deletedRecordIDs, error in
-                guard let err = error as? NSError else {
+                guard let nonNilErr = error else {
                     allSuccessfulSaves.append(contentsOf: savedRecords ?? [])
                     allSuccessfulDeletions.append(contentsOf: deletedRecordIDs ?? [])
                     completionHandler(savedRecords ?? [],
@@ -273,7 +273,9 @@ public class CloudKitSyncService {
                     return
                 }
                 
-                print("Error: \(err), \(err.userInfo), \(err.userInfo[CKPartialErrorsByItemIDKey])")
+                let err = nonNilErr as NSError
+                
+                print("Error: \(err), \(err.userInfo), \(err.userInfo[CKPartialErrorsByItemIDKey] ?? "(no partial errors)")")
                 if let partialErrorInfo = err.userInfo[CKPartialErrorsByItemIDKey] as? [CKRecordID:NSError] {
                     
                     print("Partial error info: \(partialErrorInfo)")

@@ -9,7 +9,7 @@
 #import "MPDatabasePackageController.h"
 #import "MPShoeboxPackageController.h"
 
-#import "MPManagedObject+MixIn.h"
+#import "MPManagedObject+Mixin.h"
 #import "Mixin.h"
 
 #import "MPManagedObjectsController+Protected.h"
