@@ -35,15 +35,15 @@ extern NS_ENUM(NSUInteger, MPFeatherNSFileManagerExtensionsErrorCode) {
 - (nullable NSString *)mimeTypeForFileAtURL:(nonnull NSURL *)url error:(NSError *_Nullable *_Nullable)err;
 
 - (nullable NSURL *)temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:(nullable NSString *)subdirectoryName
-                                                                        error:(NSError *_Nullable *_Nullable)outError;
+                                                                        error:(NSError *_Nullable *_Nullable)outError NS_SWIFT_NAME(temporaryApplicationCacheDirectoryURL(inSubdirectoryNamed:));
 
 
 - (nullable NSURL *)temporaryFileURLInApplicationCachesSubdirectoryNamed:(nullable NSString *)subdirectoryName
                                                            withExtension:(nonnull NSString *)pathExtension
-                                                                   error:(NSError *_Nullable *_Nullable)outError;
+                                                                   error:(NSError *_Nullable *_Nullable)outError NS_SWIFT_NAME(temporaryApplicationCacheFileURL(inSubdirectoryNamed:extension:));
 
-- (nullable NSURL *)temporaryDirectoryURLInGroupCachesSubdirectoryNamed:(nonnull NSString *)subdirectoryName error:(NSError *_Nonnull *_Nonnull)outError;
-- (nullable NSURL *)temporaryFileURLInGroupCachesSubdirectoryNamed:(nonnull NSString *)subdirectoryName withExtension:(nonnull NSString *)pathExtension error:(NSError *_Nonnull *_Nonnull)err;
+- (nullable NSURL *)temporaryDirectoryURLInGroupCachesSubdirectoryNamed:(nonnull NSString *)subdirectoryName error:(NSError *_Nonnull *_Nonnull)outError NS_SWIFT_NAME(temporaryGroupCacheDirectoryURL(inSubdirectoryNamed:));
+- (nullable NSURL *)temporaryFileURLInGroupCachesSubdirectoryNamed:(nonnull NSString *)subdirectoryName withExtension:(nonnull NSString *)pathExtension error:(NSError *_Nonnull *_Nonnull)err NS_SWIFT_NAME(temporaryGroupCacheFileURL(inSubdirectoryNamed:extension:));
 
 - (nullable NSURL *)sharedApplicationGroupCachesDirectoryURL;
 

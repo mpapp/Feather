@@ -10,7 +10,9 @@
 
 @import Feather.MPDatabasePackageController_Protected;
 
-@implementation MPFeatherTestPackageController
+@implementation MPFeatherTestPackageController {
+    NSUUID *_uuid;
+}
 
 + (void)load
 {
@@ -43,6 +45,14 @@
 - (BOOL)indexesObjectFullTextContents { return YES; }
 
 + (NSString *)primaryDatabaseName { return @"shared"; }
+
+- (NSString *)identifier {
+    if (!_uuid) {
+        _uuid = [NSUUID UUID];
+    }
+    
+    return _uuid.UUIDString;
+}
 
 @end
 

@@ -27,7 +27,7 @@
 - (NSString *)bundleVersionString
 {
     NSString *version = self.infoDictionary[(__bridge NSString *)kCFBundleVersionKey];
-    assert(version);
+    NSAssert(version, @"Bundle %@ is missing key %@", self, kCFBundleVersionKey);
     
     return version;
 }

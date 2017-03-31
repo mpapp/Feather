@@ -1229,8 +1229,8 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
 		NSBundle *bundle = [NSBundle appBundle];
         NSHost   *host = [NSHost currentHost];
         
-		NSDictionary *txtRecordDataDict = @{ @"appVersion"    : [[bundle bundleVersionString] dataUsingEncoding:NSUTF8StringEncoding],
-                                             @"appIdentifier" : [[bundle bundleIdentifier] dataUsingEncoding:NSUTF8StringEncoding],
+        NSDictionary *txtRecordDataDict = @{ @"appVersion"    : [[bundle bundleVersionString] dataUsingEncoding:NSUTF8StringEncoding] ?: @"(unknown version)",
+                                             @"appIdentifier" : [[bundle bundleIdentifier] dataUsingEncoding:NSUTF8StringEncoding] ?: @"(unknown ID)",
                                          @"packageIdentifier" : [[self identifier] dataUsingEncoding:NSUTF8StringEncoding]};
         
 		NSData *txtRecordData = [NSNetService dataFromTXTRecordDictionary:txtRecordDataDict];
@@ -1636,7 +1636,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
 
 - (void)didStartPackageListener
 {
-    @throw [MPAbstractMethodException exceptionWithSelector:_cmd];
+
 }
 
 // default implementation is no-op because the default notification center is used.

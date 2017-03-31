@@ -20,7 +20,7 @@ public extension NSAppleEventDescriptor {
         
         var workingDesc = self
         if count == 0 {
-            if let d = self.coerce(toDescriptorType:unsafeBitCast(typeAEList, to: DescType.self)) {
+            if let d = self.coerce(toDescriptorType:typeAEList) {
                 workingDesc = d
                 count = workingDesc.numberOfItems
             }
