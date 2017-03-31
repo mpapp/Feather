@@ -139,7 +139,14 @@ typedef enum MPDatabasePackageControllerErrorCode {
 - (nullable instancetype)initWithPath:(nonnull NSString *)path
                              readOnly:(BOOL)readOnly
                              delegate:(nullable id<MPDatabasePackageControllerDelegate>)delegate
-                                error:(NSError *__nonnull __autoreleasing *__nonnull)err;
+                                error:(NSError *__nonnull __autoreleasing *__nonnull)err NS_DESIGNATED_INITIALIZER;
+
+- (nullable instancetype)initWithFileURL:(nonnull NSURL *)fileURL
+                                readOnly:(BOOL)isReadOnly
+                                delegate:(nullable id<MPDatabasePackageControllerDelegate>)delegate
+                                   error:(NSError *_Nullable *_Nullable)error;
+
+- (nonnull instancetype)init NS_UNAVAILABLE;
 
 /** Closes all the database package's databases. */
 - (BOOL)close:(NSError *_Nullable *_Nullable)error;

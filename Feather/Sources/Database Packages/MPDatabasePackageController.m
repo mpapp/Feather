@@ -92,6 +92,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 @synthesize snapshotsDatabase = _snapshotsDatabase;
 @synthesize treeItemPool = _treeItemPool;
 
+- (instancetype)initWithFileURL:(NSURL *)fileURL readOnly:(BOOL)readOnly delegate:(id<MPDatabasePackageControllerDelegate>)delegate error:(NSError **)error {
+    return [self initWithPath:fileURL.path readOnly:readOnly delegate:delegate error:error];
+}
+
 - (instancetype)initWithPath:(NSString *)path
                     readOnly:(BOOL)readOnly
                     delegate:(id<MPDatabasePackageControllerDelegate>)delegate
