@@ -40,10 +40,17 @@ extern NS_ENUM(NSUInteger, MPFeatherNSFileManagerExtensionsErrorCode) {
 
 - (nullable NSURL *)temporaryFileURLInApplicationCachesSubdirectoryNamed:(nullable NSString *)subdirectoryName
                                                            withExtension:(nonnull NSString *)pathExtension
-                                                                   error:(NSError *_Nullable *_Nullable)outError NS_SWIFT_NAME(temporaryApplicationCacheFileURL(inSubdirectoryNamed:extension:));
+                                                                   error:(NSError *_Nullable *_Nullable)outError NS_SWIFT_NAME(temporaryApplicationCacheFileURL(inSubdirectoryNamed:pathExtension:));
 
-- (nullable NSURL *)temporaryDirectoryURLInGroupCachesSubdirectoryNamed:(nonnull NSString *)subdirectoryName error:(NSError *_Nonnull *_Nonnull)outError NS_SWIFT_NAME(temporaryGroupCacheDirectoryURL(inSubdirectoryNamed:));
-- (nullable NSURL *)temporaryFileURLInGroupCachesSubdirectoryNamed:(nonnull NSString *)subdirectoryName withExtension:(nonnull NSString *)pathExtension error:(NSError *_Nonnull *_Nonnull)err NS_SWIFT_NAME(temporaryGroupCacheFileURL(inSubdirectoryNamed:extension:));
+- (nullable NSURL *)temporaryDirectoryURLInGroupCachesSubdirectoryNamed:(nonnull NSString *)subdirectoryName error:(NSError *_Nonnull *_Nonnull)outError;
+- (nullable NSURL *)temporaryFileURLInGroupCachesSubdirectoryNamed:(nonnull NSString *)subdirectoryName withExtension:(nonnull NSString *)pathExtension error:(NSError *_Nonnull *_Nonnull)err;
+
+- (nullable NSURL *)temporaryURLInSubdirectoryNamed:(nonnull NSString *)subdirectoryName
+                                              atURL:(nonnull NSURL *)URL
+                                    createDirectory:(BOOL)createDirectory
+                                createIntermediates:(BOOL)createIntermediates
+                                          extension:(nonnull NSString *)pathExtension
+                                              error:(NSError *__autoreleasing _Nullable *_Nullable)outError;
 
 - (nullable NSURL *)sharedApplicationGroupCachesDirectoryURL;
 

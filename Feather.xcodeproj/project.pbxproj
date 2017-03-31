@@ -36,6 +36,7 @@
 		5F05A36C1CD0334B00FE80D8 /* NSXMLElement+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F05A3681CD0332A00FE80D8 /* NSXMLElement+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F05A36D1CD0334B00FE80D8 /* NSXMLElement+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F05A3691CD0332A00FE80D8 /* NSXMLElement+MPExtensions.m */; };
 		5F0EFA141CED1FA700A4CED0 /* CBLDocument+MPScriptingSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6414BA19A2A876007E5245 /* CBLDocument+MPScriptingSupport.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F1467841E8EF2D9008FA244 /* FileManager+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F1467831E8EF2D9008FA244 /* FileManager+Extensions.swift */; };
 		5F18505E1711B13900079040 /* MPEmbeddedObject+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293C20170E45D4001C2111 /* MPEmbeddedObject+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F18F20E1CD968D5008CE38D /* NSDateFormatter+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F18F20D1CD968D5008CE38D /* NSDateFormatter+MPExtensions.swift */; };
 		5F293B9B170CAD65001C2111 /* MPCacheableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293B99170CAD65001C2111 /* MPCacheableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -312,6 +313,7 @@
 		5F05A3681CD0332A00FE80D8 /* NSXMLElement+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSXMLElement+MPExtensions.h"; path = "FeatherAppKitExtensions/NSXMLElement+MPExtensions.h"; sourceTree = SOURCE_ROOT; };
 		5F05A3691CD0332A00FE80D8 /* NSXMLElement+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSXMLElement+MPExtensions.m"; path = "FeatherAppKitExtensions/NSXMLElement+MPExtensions.m"; sourceTree = SOURCE_ROOT; };
 		5F05A36E1CD0461000FE80D8 /* P2Core.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = P2Core.framework; path = Carthage/Build/Mac/P2Core.framework; sourceTree = "<group>"; };
+		5F1467831E8EF2D9008FA244 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "FileManager+Extensions.swift"; path = "FeatherExtensions/FileManager+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		5F18F20D1CD968D5008CE38D /* NSDateFormatter+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSDateFormatter+MPExtensions.swift"; path = "Sources/Categories/NSDateFormatter+MPExtensions.swift"; sourceTree = "<group>"; };
 		5F293B85170CAD53001C2111 /* MPCacheable.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MPCacheable.h; path = Sources/Model/MPCacheable.h; sourceTree = "<group>"; };
 		5F293B99170CAD65001C2111 /* MPCacheableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCacheableMixin.h; path = Sources/Model/MPCacheableMixin.h; sourceTree = "<group>"; };
@@ -931,6 +933,7 @@
 				D932296317268E37006880C2 /* NSTask+MPExtensions.m */,
 				5FD0E13118F082BD00789CC9 /* NSUUID+MPExtensions.h */,
 				5FD0E13218F082BD00789CC9 /* NSUUID+MPExtensions.m */,
+				5F1467831E8EF2D9008FA244 /* FileManager+Extensions.swift */,
 			);
 			name = "Foundation Categories";
 			path = ../Feather;
@@ -1431,6 +1434,7 @@
 				5FC4234B1AFF872E002234FB /* NSString+MPExtensions.m in Sources */,
 				5FC4234D1AFF872E002234FB /* NSSet+MPExtensions.m in Sources */,
 				5FC4235F1AFF872E002234FB /* NSUUID+MPExtensions.m in Sources */,
+				5F1467841E8EF2D9008FA244 /* FileManager+Extensions.swift in Sources */,
 				5F75C38A1C8BA2C700D67DA4 /* NSArray+MPExtensions.swift in Sources */,
 				5FC423491AFF872E002234FB /* NSError+MPExtensions.m in Sources */,
 				5FC4235B1AFF872E002234FB /* NSTask+MPExtensions.m in Sources */,
