@@ -322,7 +322,7 @@ typedef enum MPDatabasePackageControllerErrorCode {
 @property (strong, readwrite, nullable) MPDraft *activeDraft;
 
 /** Returns a managed object given the identifier. */
-- (nullable __kindof MPManagedObject *)objectWithIdentifier:(nonnull NSString *)identifier;
+- (nullable __kindof MPManagedObject *)objectWithIdentifier:(nonnull NSString *)identifier NS_SWIFT_NAME(object(withIdentifier:));
 
 /** WAL Checkpoints the specified databases. */
 - (BOOL)checkpointDatabases:(nonnull NSArray<MPDatabase *>*)databases error:(NSError *__nullable *__nullable)err;
