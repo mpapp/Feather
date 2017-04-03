@@ -8,9 +8,12 @@
 
 import Foundation
 
-// Needed because some objects that implement -presentError: are not subclassing NSResponder.
+/// Formalises the NSResponder-like behaviour of responding to -presentError: for objects that don't subclass NSResponder.
 public protocol ErrorPresenter {
     func presentError(_ error: Error) -> Bool
+}
+
+extension NSDocumentController: ErrorPresenter {
 }
 
 extension NSDocument: ErrorPresenter {
@@ -21,3 +24,4 @@ extension NSWindowController: ErrorPresenter {
 
 extension NSViewController: ErrorPresenter {
 }
+

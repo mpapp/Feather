@@ -15,7 +15,7 @@ public extension NSOutlineView {
         }
     }
     
-    public func selectItem(item:AnyObject?, byExtendingSelection:Bool) {
+    public func select(item:Any?, byExtendingSelection:Bool) {
         if (!byExtendingSelection) {
             self.deselectAll(self)
         }
@@ -28,12 +28,16 @@ public extension NSOutlineView {
         self.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: true)
     }
     
-    public func selectItems(items:[AnyObject], byExtendingSelection:Bool) {
-        if (!byExtendingSelection) {
+    public func select(items:[Any]?, byExtendingSelection:Bool) {
+        if (!byExtendingSelection || items == nil) {
             self.deselectAll(self)
         }
         
-        for item in items {
+        guard let nonNilItems = items else {
+            return
+        }
+        
+        for item in nonNilItems {
             self.selectItem(item: item, byExtendingSelection: true)
         }
     }
