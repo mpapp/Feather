@@ -145,9 +145,7 @@
 
 - (NSString *)stringByEscapingXMLEntities
 {
-    CFStringRef str
-        = CFXMLCreateStringByEscapingEntities(kCFAllocatorDefault, (__bridge CFStringRef)self, NULL);
-    
+    CFStringRef str = CFXMLCreateStringByEscapingEntities(kCFAllocatorDefault, (__bridge CFStringRef)self, NULL);
     return (__bridge_transfer NSString *)str;
 }
 
