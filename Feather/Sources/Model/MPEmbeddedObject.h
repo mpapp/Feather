@@ -7,8 +7,7 @@
 //
 
 @import CouchbaseLite.MYDynamicObject;
-
-#import "MPJSONRepresentable.h"
+@import FeatherExtensions.MPJSONRepresentable;
 
 #import "MPEmbeddedPropertyContainingMixin.h"
 

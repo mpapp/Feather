@@ -9,8 +9,7 @@
 @import Cocoa;
 @import Foundation;
 @import CouchbaseLite;
-
-#import "MPJSONRepresentable.h"
+@import FeatherExtensions.MPJSONRepresentable;
 
 #import "MPCacheable.h"
 
