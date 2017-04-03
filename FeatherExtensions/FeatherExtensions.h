@@ -44,3 +44,5 @@ FOUNDATION_EXPORT const unsigned char FeatherExtensionsVersionString[];
 #pragma mark -
 
 #import "NSData+MPExtensions.h"
+
+#import "MPJSONRepresentable.h"

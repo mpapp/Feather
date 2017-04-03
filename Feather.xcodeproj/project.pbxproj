@@ -58,12 +58,11 @@
 		5F2DA72E1CD04AFB00F0A3EB /* NSAttributedString+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB1F4918F8C84800B3290D /* NSAttributedString+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3765EB1A1AA1AA0068DA39 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F3765EA1A1AA1AA0068DA39 /* AddressBook.framework */; };
 		5F3A0B251D2840BF00205164 /* CloudKitRecordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3A0B241D2840BF00205164 /* CloudKitRecordRepository.swift */; };
-		5F3CD89B1D0F752D0003DF9B /* MPJSONRepresentable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */; };
+		5F3CD89B1D0F752D0003DF9B /* MPJSONRepresentable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3D380A1725D8A600D19D7C /* MPCategorizableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D38081725D8A600D19D7C /* MPCategorizableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D38091725D8A600D19D7C /* MPCategorizableMixin.m */; };
 		5F3D380E1725D8E000D19D7C /* MPBundlableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D380C1725D8E000D19D7C /* MPBundlableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3D380F1725D8E000D19D7C /* MPBundlableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D380D1725D8E000D19D7C /* MPBundlableMixin.m */; };
-		5F3D8C0C1AAD07C900D0D4A8 /* MPJSONRepresentable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F41633F1D0DF2E40017A57C /* NSAttributedString+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F41633E1D0DF2E40017A57C /* NSAttributedString+MPExtensions.swift */; };
 		5F42FC481B10C36900CD88AA /* MPDeepSaver.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F42FC461B10C36900CD88AA /* MPDeepSaver.h */; };
 		5F42FC491B10C36900CD88AA /* MPDeepSaver.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F42FC471B10C36900CD88AA /* MPDeepSaver.m */; };
@@ -1139,7 +1138,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FC423761AFF893F002234FB /* NSDictionary+MPManagedObjectExtensions.h in Headers */,
-				5F3D8C0C1AAD07C900D0D4A8 /* MPJSONRepresentable.h in Headers */,
 				5FDB3A3F1707992B0049EBB5 /* MPManagedObject.h in Headers */,
 				5FC802271B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.h in Headers */,
 				5FDB3A411707992B0049EBB5 /* MPManagedObject+Mixin.h in Headers */,
