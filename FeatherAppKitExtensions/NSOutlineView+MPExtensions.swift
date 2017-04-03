@@ -38,7 +38,7 @@ public extension NSOutlineView {
         }
         
         for item in nonNilItems {
-            self.selectItem(item: item, byExtendingSelection: true)
+            self.select(item: item, byExtendingSelection: true)
         }
     }
 }
