@@ -11,17 +11,18 @@
 @import XCTest;
 
 @class MPDatabasePackageController;
+@class MPManagedObject;
 
 @interface FeatherTests : XCTestCase <MPDatabasePackageControllerDelegate>
 
 /** A root path for a package controllers initialised for a test. Automatically created and deleted by the test suite in setup and teardown. */
-@property (copy) NSString *testPackageRootDirectory;
+@property (copy, nonnull) NSString *testPackageRootDirectory;
 
-@property (readonly, copy) NSString *bundleLoaderName;
+@property (readonly, copy, nonnull) NSString *bundleLoaderName;
 
 /** A utility method for loading bundled fixture objects from a JSON file of a given managed object type for a package controller. */
-- (NSArray *)loadFixturesForManagedObjectClass:(Class)cls
-                            toPackageController:(MPDatabasePackageController *)pkgc
-                              fromJSONResource:(NSString *)resource;
+- (nonnull NSArray<MPManagedObject *> *)loadFixturesForManagedObjectClass:(nonnull Class)cls
+                                                      toPackageController:(nonnull MPDatabasePackageController *)pkgc
+                                                         fromJSONResource:(nonnull NSString *)resource;
 
 @end
