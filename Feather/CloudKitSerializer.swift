@@ -17,7 +17,7 @@ public struct CloudKitSerializer {
         case ownerDeleted(MPContributor)
         case documentUnavailable(MPManagedObject)
         case unexpectedKey(NSObject)
-        case unexpectedPropertyValue(key:String, propertyKey:String, value:AnyObject, valueType:AnyClass)
+        case unexpectedPropertyValue(key:String, propertyKey:String, value:Any, valueType:Any.Type)
         case missingController(MPManagedObject)
         case unexpectedReferenceValue(String)
     }
@@ -42,13 +42,13 @@ public struct CloudKitSerializer {
                 continue
             }
             
-            try self.refresh(record:record, withObject: object, key: keyString, value:value as AnyObject)
+            try self.refresh(record:record, withObject: object, key: keyString, value:value as Any)
         }
         
         return record
     }
     
-    fileprivate func refresh(record:CKRecord, withObject object:MPManagedObject, key keyString:String, value:AnyObject) throws {
+    fileprivate func refresh(record:CKRecord, withObject object:MPManagedObject, key keyString:String, value: Any) throws {
         
         let kvcKey = object.valueCodingKey(forPersistedPropertyKey: keyString)
         
@@ -114,8 +114,10 @@ public struct CloudKitSerializer {
             let numberMapString = try (numberMap as NSDictionary).jsonStringRepresentation()
             record.setObject(numberMapString as NSString as CKRecordValue, forKey: kvcKey)
             
-        case let valRecordValue as CKRecordValue:
-            //print("\(kvcKey) => \(valRecordValue) (class:\(valRecordValue.dynamicType))")
+        case let valRecordValue as String:
+            record.setObject(valRecordValue as NSString, forKey: kvcKey)
+            
+        case let valRecordValue as NSNumber:
             record.setObject(valRecordValue, forKey: kvcKey)
             
         case _ as URL where type(of: object).class(ofProperty: kvcKey) is NSURL.Type:
@@ -124,7 +126,12 @@ public struct CloudKitSerializer {
             }
             
             record.setObject(valueString as CKRecordValue?, forKey: kvcKey)
+
+        case let valRecordValue as CKRecordValue:
+            //print("\(kvcKey) => \(valRecordValue) (class:\(valRecordValue.dynamicType))")
+            record.setObject(valRecordValue, forKey: kvcKey)
             
+
         default:
             if kvcKey == "prototype" {
                 if let val = val {
