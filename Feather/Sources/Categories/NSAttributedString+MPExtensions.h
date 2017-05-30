@@ -30,44 +30,44 @@ extern int gNSStringGeometricsTypesetterBehavior;
 - (float)widthForHeight:(float)height attributes:(NSDictionary*)attributes;
 
 // Measuring a String with a constant Font
-- (NSSize)sizeForWidth:(float)width height:(float)height font:(NSFont*)font;
-- (float)heightForWidth:(float)width font:(NSFont*)font;
-- (float)widthForHeight:(float)height font:(NSFont*)font;
+- (NSSize)sizeForWidth:(float)width height:(float)height font:(nonnull NSFont *)font;
+- (float)heightForWidth:(float)width font:(nonnull NSFont *)font;
+- (float)widthForHeight:(float)height font:(nonnull NSFont *)font;
 
 @end
 
 
 @interface NSAttributedString (MMRTFWithImages)
-- (NSString *)encodeRTFWithImages;
+- (nonnull NSString *)encodeRTFWithImages;
 @end
 
 @interface NSAttributedString (Manuscripts)
 
-+ (NSAttributedString *) attributedStringFromString:(NSString *)s attributes:(NSDictionary *)attributes;
++ (nonnull NSAttributedString *)attributedStringFromString:(nonnull NSString *)s attributes:(nullable NSDictionary *)attributes;
 
 @end
 
 @interface NSMutableAttributedString (Manuscripts)
 
-- (void) appendString:(NSString *)s;
-- (void) insertString:(NSString *)s atIndex:(NSUInteger)location;
+- (void)appendString:(nonnull NSString *)s;
+- (void)insertString:(nonnull NSString *)s atIndex:(NSUInteger)location;
 
 @end
 
 
 @interface NSDictionary (ManuscriptsAttributedString)
 
-+ (NSDictionary *) textAttributesWithFontNamed:(NSString *)fontName
-                                      fontSize:(CGFloat)fontSize
-                                          bold:(BOOL)bold
-                                        italic:(BOOL)italic
-                                         color:(NSColor *)color;
++ (nonnull NSDictionary *)textAttributesWithFontNamed:(nonnull NSString *)fontName
+                                             fontSize:(CGFloat)fontSize
+                                                 bold:(BOOL)bold
+                                               italic:(BOOL)italic
+                                                color:(nonnull NSColor *)color;
 
-+ (NSDictionary *) textAttributesWithSystemFontOfSize:(CGFloat)fontSize
-                                                 bold:(BOOL)bold;
++ (nonnull NSDictionary *)textAttributesWithSystemFontOfSize:(CGFloat)fontSize
+                                                        bold:(BOOL)bold;
 
 @end
 
 @interface NSAttributedString (Hyperlink)
-+(id)hyperlinkFromString:(NSString*)inString withURL:(NSURL*)aURL;
++(nonnull id)hyperlinkFromString:(nonnull NSString *)inString withURL:(nonnull NSURL *)aURL;
 @end
