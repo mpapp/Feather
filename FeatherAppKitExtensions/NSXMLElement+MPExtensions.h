@@ -223,9 +223,9 @@ typedef BOOL (^MPXMLNodeVisitor)(NSXMLNode *__nonnull node);
  @return Two-element array containing newly constructed head and tail XML elements, representing XML hierarchy before and after the given split location.
  
  */
-- (nonnull NSArray<NSXMLElement *> *)splitAtInnerXMLElementXPath:(nonnull NSString *)XPath
-                                               textContentOffset:(MPTextContentOffset)innerOffset
-                                                           error:(NSError *__nullable *__nullable)error;
+- (nullable NSArray<NSXMLElement *> *)splitAtInnerXMLElementXPath:(nonnull NSString *)XPath
+                                                textContentOffset:(MPTextContentOffset)innerOffset
+                                                            error:(NSError *__nullable *__nullable)error;
 
 /** Return text content offset within this XML element*/
 - (MPTextContentOffset)textContentOffsetForInnerXMLElement:(nonnull NSXMLElement *)innerElement
