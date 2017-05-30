@@ -25,9 +25,9 @@ extern int gNSStringGeometricsTypesetterBehavior;
 @interface NSString (MPExtensions)
 
 // Measuring a String With Attributes
-- (NSSize)sizeForWidth:(float)width height:(float)height attributes:(NSDictionary*)attributes;
-- (float)heightForWidth:(float)width attributes:(NSDictionary*)attributes;
-- (float)widthForHeight:(float)height attributes:(NSDictionary*)attributes;
+- (NSSize)sizeForWidth:(float)width height:(float)height attributes:(nullable NSDictionary *)attributes;
+- (float)heightForWidth:(float)width attributes:(nullable NSDictionary *)attributes;
+- (float)widthForHeight:(float)height attributes:(nullable NSDictionary *)attributes;
 
 // Measuring a String with a constant Font
 - (NSSize)sizeForWidth:(float)width height:(float)height font:(nonnull NSFont *)font;
