@@ -54,12 +54,12 @@ typedef BOOL (^MPXMLNodeVisitor)(NSXMLNode *__nonnull node);
  
  */
 + (nullable NSXMLElement *)XMLElementFromHTMLString:(nonnull NSString *)HTML
-                                       tidyDocument:(out NSXMLDocument *__nullable *__nullable)document
+                                       tidyDocument:(out NSXMLDocument *__nonnull *__nullable)document
                                               error:(NSError *__nullable __autoreleasing *__nullable)error;
 
 /** Parse a string into XML and return the root element of the fragment, plus any inner elements matching given optional XPath expressions. Returned inner elements array will contain the results in the same order as the `XPaths` argument. */
 + (nullable NSXMLElement *)XMLElementFromHTMLString:(nonnull NSString *)HTML
-                                      innerElements:(out NSArray<NSXMLElement *> *__nullable __autoreleasing* __nullable)innerElements
+                                      innerElements:(out NSArray<NSXMLElement *> *__nonnull __autoreleasing* __nullable)innerElements
                                           forXPaths:(nullable NSArray<NSString *>*)XPaths
                                               error:(out NSError *__nullable __autoreleasing * __nullable)error;
 
@@ -190,11 +190,11 @@ typedef BOOL (^MPXMLNodeVisitor)(NSXMLNode *__nonnull node);
 
 /** Starting at beginning of a given ancestor element, delete text nodes up to given offset *within this element* and split text node at given offset, deleting the leading part. */
 - (NSUInteger)deleteTextUpToOffset:(MPTextContentOffset)offset
-    fromBeginningOfAncestorElement:(nullable NSXMLElement *)rootElement;
+    fromBeginningOfAncestorElement:(nullable NSXMLElement *)rootElement NS_SWIFT_NAME(deleteText(upToOffset:fromBeginningOfAncestor:));
 
 /** Starting at the given offset *within this elemenet* delete text nodes up to the end of a given ancestor element, and split the text node at given offset, deleting the trailing part. */
 - (NSUInteger)deleteTextFromOffset:(MPTextContentOffset)offset
-            toEndOfAncestorElement:(nullable NSXMLElement *)rootElement;
+            toEndOfAncestorElement:(nullable NSXMLElement *)rootElement NS_SWIFT_NAME(deleteText(fromOffset:toEndOfAncestor:));
 
 /** Evaluate given XPath relative to this XML element, and return (via the out argument) the resulting XML element from this XML element's subtree, or `nil` if XPath yields no such result. Returns `YES` if there was no error, `NO` if an error occurred. */
 - (BOOL)innerXMLElement:(out NSXMLElement *__nullable * __nullable)innerElement
@@ -205,7 +205,7 @@ typedef BOOL (^MPXMLNodeVisitor)(NSXMLNode *__nonnull node);
 - (void)enforceExplicitPreservedSpace;
 
 /** Normalize whitespace and newline characters in contained text node contents, in-place. Explicit preserved space text nodes are also enforced. */
-- (void)normalizeWhitespaceAllowLeading:(BOOL)allowLeadingWhitespace trailing:(BOOL)allowTrailingWhitespace;
+- (void)normalizeWhitespaceAllowLeading:(BOOL)allowLeadingWhitespace trailing:(BOOL)allowTrailingWhitespace NS_SWIFT_NAME(normalizeWhitespace(allowLeading:trailing:));
 
 /** Replace given child node with another one. Return the index where the node was at, or `NSNotFound`. */
 - (NSUInteger)removeChild:(nonnull NSXMLNode *)node;
