@@ -59,7 +59,7 @@ typedef BOOL (^MPXMLNodeVisitor)(NSXMLNode *__nonnull node);
 
 /** Parse a string into XML and return the root element of the fragment, plus any inner elements matching given optional XPath expressions. Returned inner elements array will contain the results in the same order as the `XPaths` argument. */
 + (nullable NSXMLElement *)XMLElementFromHTMLString:(nonnull NSString *)HTML
-                                      innerElements:(out NSArray *__nullable __autoreleasing* __nullable)innerElements
+                                      innerElements:(out NSArray<NSXMLElement *> *__nullable __autoreleasing* __nullable)innerElements
                                           forXPaths:(nullable NSArray<NSString *>*)XPaths
                                               error:(out NSError *__nullable __autoreleasing * __nullable)error;
 
@@ -147,14 +147,14 @@ typedef BOOL (^MPXMLNodeVisitor)(NSXMLNode *__nonnull node);
                                 attributeValues:(nullable NSDictionary *)attributeValues;
 
 - (nullable NSXMLElement *)findXMLElementByName:(nonnull NSString *)elementName;
-- (nullable NSArray *)findXMLElementsByNames:(nonnull NSArray<NSString *>*)elementNames;
-- (nullable NSArray *)findXMLElementsByClass:(nonnull NSString *)hasClass;
+- (nullable NSArray<NSXMLElement *> *)findXMLElementsByNames:(nonnull NSArray<NSString *>*)elementNames;
+- (nullable NSArray<NSXMLElement *> *)findXMLElementsByClass:(nonnull NSString *)hasClass;
 - (nullable NSXMLElement *)findXMLElementByID:(nonnull NSString *)elementID;
 - (nullable NSXMLElement *)findXMLElementByClass:(nonnull NSString *)hasClass;
 - (nullable NSXMLElement *)findXMLElementByAttributeValues:(nonnull NSDictionary<NSString *, NSString *>*)attributeValues;
 
 /** Traverse element subtree of this element and return elements passing given test, until (optionally) stopped. */
-- (nullable NSArray *)findXMLElementsPassing:(_Nonnull MPMatchingXMLElementsTest)test;
+- (nullable NSArray<NSXMLElement *> *)findXMLElementsPassing:(_Nonnull MPMatchingXMLElementsTest)test;
 
 - (nullable NSXMLElement *)previousElementSibling;
 - (nullable NSXMLElement *)nextElementSibling;
@@ -214,7 +214,7 @@ typedef BOOL (^MPXMLNodeVisitor)(NSXMLNode *__nonnull node);
 - (NSUInteger)replaceChild:(nonnull NSXMLNode *)node withNode:(nonnull NSXMLNode *)replacingNode;
 
 /** Replace given child node with an array of new nodes. Return the index where the node was at, or `NSNotFound`. */
-- (NSUInteger)replaceChild:(nonnull NSXMLNode *)node withNodes:(nonnull NSArray *)nodes;
+- (NSUInteger)replaceChild:(nonnull NSXMLNode *)node withNodes:(nonnull NSArray<NSXMLNode *> *)nodes;
 
 /**
  
@@ -223,9 +223,9 @@ typedef BOOL (^MPXMLNodeVisitor)(NSXMLNode *__nonnull node);
  @return Two-element array containing newly constructed head and tail XML elements, representing XML hierarchy before and after the given split location.
  
  */
-- (nonnull NSArray *)splitAtInnerXMLElementXPath:(nonnull NSString *)XPath
-                               textContentOffset:(MPTextContentOffset)innerOffset
-                                           error:(NSError *__nullable *__nullable)error;
+- (nonnull NSArray<NSXMLElement *> *)splitAtInnerXMLElementXPath:(nonnull NSString *)XPath
+                                               textContentOffset:(MPTextContentOffset)innerOffset
+                                                           error:(NSError *__nullable *__nullable)error;
 
 /** Return text content offset within this XML element*/
 - (MPTextContentOffset)textContentOffsetForInnerXMLElement:(nonnull NSXMLElement *)innerElement
@@ -251,7 +251,7 @@ typedef BOOL (^MPXMLNodeVisitor)(NSXMLNode *__nonnull node);
  If this argument is `nil`, all attribute nodes encountered are cloned.
  
  */
-- (nonnull NSXMLElement *)XMLElementByFilteringDescendantElements:(nonnull NSArray<NSString *>*)allowedElementNames attributes:(nullable NSArray *)allowedAttributeNames;
+- (nonnull NSXMLElement *)XMLElementByFilteringDescendantElements:(nonnull NSArray<NSString *>*)allowedElementNames attributes:(nullable NSArray<NSString *> *)allowedAttributeNames;
 
 @end
 
