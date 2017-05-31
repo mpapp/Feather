@@ -12,28 +12,39 @@
 
 @implementation MPEmbeddedPropertyContainingMixin
 
+static NSMutableDictionary *embeddedPropertiesMaps;
+static dispatch_queue_t embeddedPropertyMapQueue;
+
++ (void)load {
+    [super load];
+    embeddedPropertyMapQueue = dispatch_queue_create("embedded.property.resolver", DISPATCH_QUEUE_SERIAL);
+    embeddedPropertiesMaps = [NSMutableDictionary new];
+}
+
 + (NSDictionary *)embeddedPropertiesMap
 {
-    static NSDictionary *embeddedPropertiesMap = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
+    __block id o = nil;
+    dispatch_sync(embeddedPropertyMapQueue, ^{
+        if ((o = embeddedPropertiesMaps[NSStringFromClass(self)])) {
+            return;
+        }
         
-        embeddedPropertiesMap =
-        [[self propertiesOfSubclassesForClass:self
-                                     matching:
-          ^BOOL(__unsafe_unretained Class cls, NSString *key)
-          {
-              Class propertyClass = [self classOfProperty:key];
-              
-              if ([propertyClass isSubclassOfClass:[MPEmbeddedObject class]])
-              { return YES; }
-              
-              return NO;
-          }] copy];
+        o = [[self propertiesOfSubclassesForClass:self
+                                         matching:
+              ^BOOL(__unsafe_unretained Class cls, NSString *key)
+              {
+                  Class propertyClass = [self classOfProperty:key];
+                  
+                  if ([propertyClass isSubclassOfClass:[MPEmbeddedObject class]])
+                  { return YES; }
+                  
+                  return NO;
+              }] copy];
         
+        embeddedPropertiesMaps[NSStringFromClass(self)] = o;
     });
     
-    return embeddedPropertiesMap;
+    return o;
 }
 
 + (NSSet *)embeddedProperties
