@@ -31,10 +31,19 @@
     return NSBundle.appBundle.bundleNameString;
 }
 
++ (Class)shoeboxControllerClass {
+    return [MPFeatherTestPackageController class];
+}
+
 - (void)setUp
 {
     [super setUp];
 
+    if (![[MPShoeboxPackageController sharedShoeboxPackageControllerClass] isSubclassOfClass:self.class.shoeboxControllerClass]) {
+        [MPShoeboxPackageController deregisterShoeboxPackageControllerClass];
+        [MPShoeboxPackageController registerShoeboxPackageControllerClass:self.class.shoeboxControllerClass];
+    }
+    
     NSString *sharedPackagePath = [MPShoeboxPackageController.sharedShoeboxPackageControllerClass sharedDatabasesPath];
     
     BOOL sharedPackageIsForTestBundle = [sharedPackagePath.lastPathComponent isEqualToString:self.bundleLoaderName] || [sharedPackagePath.lastPathComponent containsString:@"TestRunner"] || !self.bundleLoaderName;
