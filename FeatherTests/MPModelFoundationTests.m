@@ -67,17 +67,6 @@
 
 @implementation MPModelFoundationTests
 
-- (void)setUp
-{
-    [MPShoeboxPackageController deregisterShoeboxPackageControllerClass];
-    [MPShoeboxPackageController registerShoeboxPackageControllerClass:[MPFeatherTestPackageController class]];
-}
-
-- (void)tearDown
-{
-    [MPShoeboxPackageController deregisterShoeboxPackageControllerClass];
-}
-
 - (void)testNotifications
 {
     NSDictionary *notificationDict = [NSNotificationCenter managedObjectNotificationNameDictionary];

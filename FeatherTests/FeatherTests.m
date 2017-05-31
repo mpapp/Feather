@@ -44,6 +44,9 @@
         [MPShoeboxPackageController registerShoeboxPackageControllerClass:self.class.shoeboxControllerClass];
     }
     
+    MPShoeboxPackageController *sharedPackage = [MPShoeboxPackageController sharedShoeboxController];
+    XCTAssertTrue(sharedPackage != nil, @"A shared package controller initialized");
+    
     NSString *sharedPackagePath = [MPShoeboxPackageController.sharedShoeboxPackageControllerClass sharedDatabasesPath];
     
     BOOL sharedPackageIsForTestBundle = [sharedPackagePath.lastPathComponent isEqualToString:self.bundleLoaderName] || [sharedPackagePath.lastPathComponent containsString:@"TestRunner"] || !self.bundleLoaderName;
@@ -100,10 +103,6 @@
                 NSParameterAssert(fixtureAttachmentCopySuccess);
             }
         }
-
-        MPShoeboxPackageController *sharedPackage = [MPShoeboxPackageController sharedShoeboxController];
-        XCTAssertTrue(sharedPackage != nil, @"A shared package controller initialized");
-        
     } else if (!sharedPackageIsForTestBundle)
     {
         NSLog(@"Shared data is in an unexpected path or missing, don't dare to continue: %@",
@@ -197,10 +196,6 @@
 #endif
     
     [super tearDown];
-    
-    if ([[MPShoeboxPackageController sharedShoeboxPackageControllerClass] isSubclassOfClass:[MPFeatherTestPackageController class]]) {
-        [MPShoeboxPackageController deregisterShoeboxPackageControllerClass];
-    }
 }
 
 // test suites which need to act as a MPDatabasePackageControllerDelegate need to overload this.
