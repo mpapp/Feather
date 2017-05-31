@@ -45,8 +45,6 @@
 		5F293B9D170CAD8C001C2111 /* MPCacheable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293B85170CAD53001C2111 /* MPCacheable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F293BA0170CAECC001C2111 /* MPEmbeddedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293B9E170CAECC001C2111 /* MPEmbeddedObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F293BA1170CAECC001C2111 /* MPEmbeddedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293B9F170CAECC001C2111 /* MPEmbeddedObject.m */; };
-		5F293BF5170DFD4E001C2111 /* UICKeyChainStore.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293BF3170DFD4E001C2111 /* UICKeyChainStore.h */; };
-		5F293BF6170DFD4E001C2111 /* UICKeyChainStore.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F293BF4170DFD4E001C2111 /* UICKeyChainStore.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		5F293BF8170DFD77001C2111 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F293BF7170DFD77001C2111 /* Security.framework */; };
 		5F293C1F170E3B62001C2111 /* MPPlaceHolding.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F2AFA691C3DE8C900B37435 /* DiffMatchPatch.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F2AFA681C3DE8C900B37435 /* DiffMatchPatch.framework */; };
@@ -80,6 +78,8 @@
 		5F6857DB17287F0800FE06B0 /* MPRootSection.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F6857D917287F0800FE06B0 /* MPRootSection.m */; };
 		5F6857F017287F3100FE06B0 /* MPRootSection+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F6AFF4E1CD4D7D9002821B9 /* NSAppleEventDescriptor+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6AFF4D1CD4D7D9002821B9 /* NSAppleEventDescriptor+MPExtensions.swift */; };
+		5F6C4EB61EDE401E009F4BFB /* FeatherExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; };
+		5F6C4EC61EDE47F8009F4BFB /* FeatherExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6C4EC51EDE47F8009F4BFB /* FeatherExtensionTests.swift */; };
 		5F6C563C1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F6C563B1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift */; };
 		5F73DEA7170C6BA300DC411A /* MPShoeboxPackageController+Protected.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F75C38A1C8BA2C700D67DA4 /* NSArray+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F75C3891C8BA2C700D67DA4 /* NSArray+MPExtensions.swift */; };
@@ -238,6 +238,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5F6C4EB41EDE4008009F4BFB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5FDB32F91705CB950049EBB5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 5FC4230D1AFF8719002234FB;
+			remoteInfo = FeatherExtensions;
+		};
 		5F8942681CD04E4900A9DC07 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5FDB32F91705CB950049EBB5 /* Project object */;
@@ -361,6 +368,7 @@
 		5F6857D917287F0800FE06B0 /* MPRootSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPRootSection.m; path = Sources/Model/MPRootSection.m; sourceTree = "<group>"; };
 		5F6857EF17287F3100FE06B0 /* MPRootSection+Protected.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MPRootSection+Protected.h"; path = "Sources/Model/MPRootSection+Protected.h"; sourceTree = "<group>"; };
 		5F6AFF4D1CD4D7D9002821B9 /* NSAppleEventDescriptor+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSAppleEventDescriptor+MPExtensions.swift"; sourceTree = "<group>"; };
+		5F6C4EC51EDE47F8009F4BFB /* FeatherExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeatherExtensionTests.swift; sourceTree = "<group>"; };
 		5F6C563B1C5BDA2C00A2FE81 /* NSString+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSString+MPExtensions.swift"; sourceTree = "<group>"; };
 		5F73DEA6170C6B6700DC411A /* MPShoeboxPackageController+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPShoeboxPackageController+Protected.h"; path = "Sources/Database Packages/MPShoeboxPackageController+Protected.h"; sourceTree = "<group>"; };
 		5F75C3891C8BA2C700D67DA4 /* NSArray+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSArray+MPExtensions.swift"; sourceTree = "<group>"; };
@@ -567,6 +575,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5F6C4EB61EDE401E009F4BFB /* FeatherExtensions.framework in Frameworks */,
 				5FD0A4951E242ACC0012B195 /* CocoaHTTPServerKit.framework in Frameworks */,
 				5FD0A48C1E242A770012B195 /* MPTimer.framework in Frameworks */,
 				5FD0A45C1E2425CA0012B195 /* Feather.framework in Frameworks */,
@@ -784,6 +793,7 @@
 				5FD0A4711E2425F30012B195 /* MPModelFoundationTests.m */,
 				5FD0A45B1E2425CA0012B195 /* Info.plist */,
 				5FD0A4661E2425E80012B195 /* FeatherTests-Bridging-Header.h */,
+				5F6C4EC51EDE47F8009F4BFB /* FeatherExtensionTests.swift */,
 			);
 			path = FeatherTests;
 			sourceTree = "<group>";
@@ -1168,7 +1178,6 @@
 				5F293B9D170CAD8C001C2111 /* MPCacheable.h in Headers */,
 				5F0EFA141CED1FA700A4CED0 /* CBLDocument+MPScriptingSupport.h in Headers */,
 				5F293BA0170CAECC001C2111 /* MPEmbeddedObject.h in Headers */,
-				5F293BF5170DFD4E001C2111 /* UICKeyChainStore.h in Headers */,
 				5FC4238F1AFF8BDE002234FB /* NSNotificationCenter+MPManagedObjectExtensions.h in Headers */,
 				5F293C1F170E3B62001C2111 /* MPPlaceHolding.h in Headers */,
 				5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */,
@@ -1262,6 +1271,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				5F6C4EB51EDE4008009F4BFB /* PBXTargetDependency */,
 				5FD0A45E1E2425CA0012B195 /* PBXTargetDependency */,
 			);
 			name = FeatherTests;
@@ -1468,6 +1478,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5FD0A4691E2425E90012B195 /* FeatherTests.m in Sources */,
+				5F6C4EC61EDE47F8009F4BFB /* FeatherExtensionTests.swift in Sources */,
 				5FD0A4721E2425F30012B195 /* MPEmbeddedObjectsTests.m in Sources */,
 				5FD0A4731E2425F30012B195 /* MPExtensionTests.m in Sources */,
 				5FD0A4751E2425F30012B195 /* MPModelFoundationTests.m in Sources */,
@@ -1507,7 +1518,6 @@
 				5F293BA1170CAECC001C2111 /* MPEmbeddedObject.m in Sources */,
 				5FF745AB1D25518300B493D0 /* MPManagedObject-CloudKit.swift in Sources */,
 				5FC423771AFF8943002234FB /* NSDictionary+MPManagedObjectExtensions.m in Sources */,
-				5F293BF6170DFD4E001C2111 /* UICKeyChainStore.m in Sources */,
 				5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */,
 				5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */,
 				5FC802281B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.m in Sources */,
@@ -1526,6 +1536,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5F6C4EB51EDE4008009F4BFB /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 5FC4230D1AFF8719002234FB /* FeatherExtensions */;
+			targetProxy = 5F6C4EB41EDE4008009F4BFB /* PBXContainerItemProxy */;
+		};
 		5F8942691CD04E4900A9DC07 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 5FC4230D1AFF8719002234FB /* FeatherExtensions */;

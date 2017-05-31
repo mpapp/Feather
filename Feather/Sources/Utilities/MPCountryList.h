@@ -10,9 +10,9 @@
 
 @interface MPCountryList : NSObject
 
-+ (NSArray *)countryNames;
-+ (NSArray *)countryCodes;
-+ (NSDictionary *)countryNamesByCode;
-+ (NSDictionary *)countryCodesByName;
++ (nonnull NSArray<NSString *> *)countryNames;
++ (nonnull NSArray<NSString *> *)countryCodes;
++ (nonnull NSDictionary<NSString *, NSString *> *)countryNamesByCode;
++ (nonnull NSDictionary<NSString *, NSString *> *)countryCodesByName;
 
 @end

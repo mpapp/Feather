@@ -11,6 +11,8 @@
 
 #import "MPEmbeddedObjectsTests.h"
 
+@import FeatherExtensions.NSObject_MPExtensions;
+
 #import <Feather/MPEmbeddedObject+Protected.h>
 
 @implementation MPEmbeddedObjectsTests
@@ -38,7 +40,6 @@
     obj.contents = @"foobar";
     
     obj.embeddedTestObject = [[MPEmbeddedTestObject alloc] initWithEmbeddingObject:obj embeddingKey:@"embeddedTestObject"];
-    NSLog(@"%@", [obj propertiesToSave]);
     
     mp_dispatch_sync(obj.database.manager.dispatchQueue, [obj.controller.packageController serverQueueToken], ^{
         XCTAssertTrue(!obj.document.properties[@"embeddedTestObject"],
@@ -94,6 +95,8 @@
         
         NSError *err = nil;
         XCTAssertTrue([obj.embeddedTestObject save:&err], @"Embedded object saving succeeds.");
+        
+        XCTAssertTrue([[obj.class embeddedProperties] containsObject: @"embeddedTestObject"]);
         
         XCTAssertTrue(!obj.embeddedTestObject.needsSave, @"Managed object property value has been set and object doesn't need saving.");
         obj.embeddedTestObject.embeddedManagedObjectProperty = obj;

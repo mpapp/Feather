@@ -37,9 +37,9 @@
 
     NSString *sharedPackagePath = [MPShoeboxPackageController.sharedShoeboxPackageControllerClass sharedDatabasesPath];
     
-    BOOL sharedPackageIsForTestBundle = [sharedPackagePath.lastPathComponent isEqualToString:self.bundleLoaderName];
+    BOOL sharedPackageIsForTestBundle = [sharedPackagePath.lastPathComponent isEqualToString:self.bundleLoaderName] || [sharedPackagePath.lastPathComponent containsString:@"TestRunner"];
     XCTAssertTrue(sharedPackageIsForTestBundle,
-                 @"Test bundle name is the last path component of the shared package path.");
+                 @"Test bundle name is the last path component of the shared package path (%@ != %@).", sharedPackagePath.lastPathComponent, self.bundleLoaderName);
     
     NSFileManager *fm = [NSFileManager defaultManager];
     

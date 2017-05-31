@@ -79,8 +79,7 @@
     XCTAssertTrue([NSBundle inTestSuite], @"Correctly detected as being in a test suite.");
 }
 
-- (void)testSwizzling
-{
+- (void)testSwizzling {
     MPSwizzlingTestObject *obj = [[MPSwizzlingTestObject alloc] init];
     XCTAssertTrue([obj exampleMethod:YES],  @"Before swizzling should return YES when argument is YES");
     XCTAssertFalse([obj exampleMethod:NO],  @"Before swizzling should return NO when argument is NO");
@@ -88,7 +87,7 @@
     [MPSwizzlingTestObject replaceInstanceMethodWithSelector:@selector(exampleMethod:)
                                  implementationBlockProvider:^id(IMP originalImplementation) {
         return ^(MPSwizzlingTestObject* receiver, BOOL boolArgument) {
-            BOOL origValue = originalImplementation(receiver, @selector(exampleMethod:), boolArgument);
+            BOOL origValue = (BOOL)originalImplementation(receiver, @selector(exampleMethod:), boolArgument);
             BOOL retVal = !origValue;
             return retVal;
         };

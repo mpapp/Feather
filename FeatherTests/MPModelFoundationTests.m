@@ -102,6 +102,29 @@
     XCTAssertTrue([obj documentID], @"Object should still have a documentID after deletion: %@", obj);
 }
 
+- (void)testHumanReadableName {
+    MPFeatherTestPackageController *tpkg = [MPFeatherTestPackageController sharedPackageController];
+    MPTestObjectsController *ac = tpkg.testObjectsController;
+    MPTestObject *obj = [[MPFeatherTestE alloc] initWithNewDocumentForController:ac];
+
+    XCTAssertTrue([obj save], @"Save unexpectedly failed.");
+    
+    XCTAssertTrue([obj.documentID hasPrefix:@"MPFeatherTestE:"]);
+    XCTAssertTrue(![obj.prefixlessDocumentID hasPrefix:@"MPFeatherTestE:"]);
+    
+    XCTAssertTrue([obj.class humanReadableName], @"FeatherTestE");
+}
+
+- (void)testDictionaryRepresentations {
+    MPFeatherTestPackageController *tpkg = [MPFeatherTestPackageController sharedPackageController];
+    MPTestObjectsController *ac = tpkg.testObjectsController;
+    MPTestObject *obj = [[MPFeatherTestE alloc] initWithNewDocumentForController:ac];
+    
+    XCTAssertTrue([obj save], @"Save unexpectedly failed.");
+    
+    XCTAssertEqual([[obj propertiesToSave] managedObjectType], @"FeatherTestE");
+}
+
 - (void)testConcreteness
 {
     MPFeatherTestPackageController *tpkg = [MPFeatherTestPackageController sharedPackageController];

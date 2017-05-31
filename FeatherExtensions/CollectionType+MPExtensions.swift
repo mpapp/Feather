@@ -8,6 +8,7 @@
 
 public extension Collection {
     
+    /*
     public func first(predicate: (Self.Iterator.Element) throws -> Bool) rethrows -> Self.Iterator.Element? {
         for e in self {
             if try predicate(e) {
@@ -15,7 +16,7 @@ public extension Collection {
             }
         }
         return nil
-    }
+    }*/
     
     
     func chunks(withDistance distance: IndexDistance) -> [[SubSequence.Iterator.Element]] {

@@ -1,9 +1,6 @@
 [submodule "External/ObjectiveMixin"]
 	path = External/ObjectiveMixin
 	url = git@github.com:mz2/ObjectiveMixin.git
-[submodule "External/UICKeyChainStore"]
-	path = External/UICKeyChainStore
-	url = git@github.com:kishikawakatsumi/UICKeyChainStore.git
 [submodule "External/NSBundle-OBCodeSigningInfo"]
 	path = External/NSBundle-OBCodeSigningInfo
 	url = git@github.com:mpapp/NSBundle-OBCodeSigningInfo.git
