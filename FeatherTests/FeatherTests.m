@@ -189,8 +189,9 @@
     
     [super tearDown];
     
-    if ([[MPShoeboxPackageController sharedShoeboxPackageControllerClass] isSubclassOfClass:[MPFeatherTestPackageController class]])
+    if ([[MPShoeboxPackageController sharedShoeboxPackageControllerClass] isSubclassOfClass:[MPFeatherTestPackageController class]]) {
         [MPShoeboxPackageController deregisterShoeboxPackageControllerClass];
+    }
 }
 
 // test suites which need to act as a MPDatabasePackageControllerDelegate need to overload this.
