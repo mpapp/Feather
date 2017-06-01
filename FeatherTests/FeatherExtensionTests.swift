@@ -8,8 +8,9 @@
 
 import Foundation
 import FeatherExtensions
+import XCTest
 
-class FeatherExtensionTests {
+class FeatherExtensionTests: XCTestCase {
     
     func testStringAroundOccurrence() {
         XCTAssertEqual("foobar".stringAroundOccurrence(ofString: "oo", maxPadding: 1)!, "foob")

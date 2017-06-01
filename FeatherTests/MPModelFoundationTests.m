@@ -111,7 +111,9 @@
     
     XCTAssertTrue([obj save], @"Save unexpectedly failed.");
     
-    XCTAssertEqual([[obj propertiesToSave] managedObjectType], @"FeatherTestE");
+    XCTAssertTrue([[[obj propertiesToSave] managedObjectType] isEqualToString:@"MPFeatherTestE"]);
+    XCTAssertTrue([[[obj propertiesToSave] managedObjectDocumentID] isEqualToString:obj.documentID]);
+    XCTAssertTrue([[[obj propertiesToSave] managedObjectRevisionID] isEqualToString:obj.document.currentRevisionID]);
 }
 
 - (void)testConcreteness
