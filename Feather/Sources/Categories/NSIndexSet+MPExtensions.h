@@ -6,19 +6,20 @@
 //  Copyright (c) 2014 Matias Piipari. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+@import Foundation;
 
-@interface NSIndexSet <T> (MPExtensions)
+@interface NSIndexSet (MPExtensions)
 
-- (NSArray<T> *)mapAssociatedObjects:(NSArray<T> *)objects
+- (NSArray *)mapAssociatedObjects:(NSArray *)objects
                        usingBlock:(id(^)(id o, NSUInteger idx))mapBlock;
 
-- (T)firstAssociatedObject:(NSArray<T> *)objects matching:(BOOL(^)(id evalutedObject))patternBlock;
+- (id)firstAssociatedObject:(NSArray *)objects
+                   matching:(BOOL(^)(id evalutedObject))patternBlock;
 
-- (T)firstAssociatedObject:(NSArray<T> *)objects
-                  matching:(BOOL(^)(T evalutedObject))patternBlock
-                     index:(NSUInteger *)index;
+- (id)firstAssociatedObject:(NSArray *)objects
+                   matching:(BOOL(^)(id evalutedObject))patternBlock
+                      index:(NSUInteger *)index;
 
-- (NSArray<T> *)filteredAssociatedObject:(NSArray<T> *)objects matching:(BOOL(^)(T evalutedObject))patternBlock;
+- (NSArray *)filteredAssociatedObject:(NSArray *)objects matching:(BOOL(^)(id evalutedObject))patternBlock;
 
 @end
