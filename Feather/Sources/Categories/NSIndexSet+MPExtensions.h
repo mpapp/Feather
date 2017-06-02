@@ -8,18 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
-@interface NSIndexSet (MPExtensions)
+@interface NSIndexSet <T> (MPExtensions)
 
-- (NSArray *)mapAssociatedObjects:(NSArray *)objects
+- (NSArray<T> *)mapAssociatedObjects:(NSArray<T> *)objects
                        usingBlock:(id(^)(id o, NSUInteger idx))mapBlock;
 
-- (id)firstAssociatedObject:(NSArray *)objects
-                   matching:(BOOL(^)(id evalutedObject))patternBlock;
+- (T)firstAssociatedObject:(NSArray<T> *)objects matching:(BOOL(^)(id evalutedObject))patternBlock;
 
-- (id)firstAssociatedObject:(NSArray *)objects
-                   matching:(BOOL(^)(id evalutedObject))patternBlock
-                      index:(NSUInteger *)index;
+- (T)firstAssociatedObject:(NSArray<T> *)objects
+                  matching:(BOOL(^)(T evalutedObject))patternBlock
+                     index:(NSUInteger *)index;
 
-- (NSArray *)filteredAssociatedObject:(NSArray *)objects matching:(BOOL(^)(id evalutedObject))patternBlock;
+- (NSArray<T> *)filteredAssociatedObject:(NSArray<T> *)objects matching:(BOOL(^)(T evalutedObject))patternBlock;
 
 @end
