@@ -328,8 +328,6 @@
 		5F293B9A170CAD65001C2111 /* MPCacheableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCacheableMixin.m; path = Sources/Model/MPCacheableMixin.m; sourceTree = "<group>"; };
 		5F293B9E170CAECC001C2111 /* MPEmbeddedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPEmbeddedObject.h; path = Sources/Model/MPEmbeddedObject.h; sourceTree = "<group>"; };
 		5F293B9F170CAECC001C2111 /* MPEmbeddedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPEmbeddedObject.m; path = Sources/Model/MPEmbeddedObject.m; sourceTree = "<group>"; };
-		5F293BF3170DFD4E001C2111 /* UICKeyChainStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UICKeyChainStore.h; path = External/UICKeyChainStore/Lib/UICKeyChainStore.h; sourceTree = SOURCE_ROOT; };
-		5F293BF4170DFD4E001C2111 /* UICKeyChainStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UICKeyChainStore.m; path = External/UICKeyChainStore/Lib/UICKeyChainStore.m; sourceTree = SOURCE_ROOT; };
 		5F293BF7170DFD77001C2111 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPPlaceHolding.h; path = Sources/Model/MPPlaceHolding.h; sourceTree = "<group>"; };
 		5F293C20170E45D4001C2111 /* MPEmbeddedObject+Protected.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "MPEmbeddedObject+Protected.h"; path = "Sources/Model/MPEmbeddedObject+Protected.h"; sourceTree = "<group>"; };
@@ -408,7 +406,6 @@
 		5FC752E61746E287007818A0 /* NSDate+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSDate+MPExtensions.m"; path = "Sources/Categories/NSDate+MPExtensions.m"; sourceTree = "<group>"; };
 		5FC752FD1746E294007818A0 /* NSString+MPSearchIndex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+MPSearchIndex.h"; path = "Sources/Categories/NSString+MPSearchIndex.h"; sourceTree = "<group>"; };
 		5FC752FE1746E294007818A0 /* NSString+MPSearchIndex.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+MPSearchIndex.m"; path = "Sources/Categories/NSString+MPSearchIndex.m"; sourceTree = "<group>"; };
-		5FC753021746E2AA007818A0 /* MPSearchIndexController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPSearchIndexController.m; path = "Sources/Model Controllers/MPSearchIndexController.m"; sourceTree = "<group>"; };
 		5FC802251B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPDatabasePackageBackedDocument.h; path = "Sources/Model Controllers/MPDatabasePackageBackedDocument.h"; sourceTree = "<group>"; };
 		5FC802261B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPDatabasePackageBackedDocument.m; path = "Sources/Model Controllers/MPDatabasePackageBackedDocument.m"; sourceTree = "<group>"; };
 		5FCC021D170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSArray+MPManagedObjectExtensions.h"; path = "Sources/Categories/NSArray+MPManagedObjectExtensions.h"; sourceTree = "<group>"; };
@@ -674,15 +671,6 @@
 			path = ../FeatherExtensions;
 			sourceTree = "<group>";
 		};
-		5F293BF2170DFD3A001C2111 /* UICKeyChainStore */ = {
-			isa = PBXGroup;
-			children = (
-				5F293BF3170DFD4E001C2111 /* UICKeyChainStore.h */,
-				5F293BF4170DFD4E001C2111 /* UICKeyChainStore.m */,
-			);
-			name = UICKeyChainStore;
-			sourceTree = "<group>";
-		};
 		5F37CDF91B1CA4DF0022D865 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -696,7 +684,6 @@
 		5F95F2AF17397F2900E8C845 /* Full Text Search */ = {
 			isa = PBXGroup;
 			children = (
-				5FC753021746E2AA007818A0 /* MPSearchIndexController.m */,
 				5FC752FD1746E294007818A0 /* NSString+MPSearchIndex.h */,
 				5FC752FE1746E294007818A0 /* NSString+MPSearchIndex.m */,
 			);
@@ -902,7 +889,6 @@
 		5FDB33D61705D0F20049EBB5 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				5F293BF2170DFD3A001C2111 /* UICKeyChainStore */,
 				5FDB3A02170793130049EBB5 /* NSData+Base64 */,
 				5FDB35CC1705FCEA0049EBB5 /* ObjectiveMixin */,
 			);
