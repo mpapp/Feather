@@ -10,7 +10,6 @@
 		28526FB41C3511D600966551 /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; };
 		5F00787A1C95C4D400DDB296 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */; };
 		5F00787C1C95C4D400DDB296 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */; };
-		5F019E2A1D330C2C00424CDA /* CloudKitDatabasePackageListingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F019E291D330C2C00424CDA /* CloudKitDatabasePackageListingService.swift */; };
 		5F05A31B1CD02CC800FE80D8 /* FeatherAppKitExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F05A31A1CD02CC800FE80D8 /* FeatherAppKitExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F05A3371CD02D1200FE80D8 /* NSApplication+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F2EBAAC1780AA4E00BF3298 /* NSApplication+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F05A3381CD02D1200FE80D8 /* NSApplication+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2EBAAD1780AA4E00BF3298 /* NSApplication+MPExtensions.m */; };
@@ -55,7 +54,6 @@
 		5F2DA72D1CD04AF700F0A3EB /* NSAttributedString+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB1F4A18F8C84800B3290D /* NSAttributedString+MPExtensions.m */; };
 		5F2DA72E1CD04AFB00F0A3EB /* NSAttributedString+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB1F4918F8C84800B3290D /* NSAttributedString+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3765EB1A1AA1AA0068DA39 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F3765EA1A1AA1AA0068DA39 /* AddressBook.framework */; };
-		5F3A0B251D2840BF00205164 /* CloudKitRecordRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F3A0B241D2840BF00205164 /* CloudKitRecordRepository.swift */; };
 		5F3CD89B1D0F752D0003DF9B /* MPJSONRepresentable.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D8C0B1AAD07C900D0D4A8 /* MPJSONRepresentable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3D380A1725D8A600D19D7C /* MPCategorizableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F3D38081725D8A600D19D7C /* MPCategorizableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F3D38091725D8A600D19D7C /* MPCategorizableMixin.m */; };
@@ -96,8 +94,6 @@
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
 		5F9F226A1C792A0800244277 /* CollectionType+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9F22691C792A0800244277 /* CollectionType+MPExtensions.swift */; };
 		5FA29AC11D71ACF2000DB8C1 /* NSOutlineView+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA29AC01D71ACF2000DB8C1 /* NSOutlineView+MPExtensions.swift */; };
-		5FA9D02E1D29C74000C96CE1 /* CloudKitDeserializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA9D02D1D29C74000C96CE1 /* CloudKitDeserializer.swift */; };
-		5FAA0A681D2EA87800F18A2D /* CloudKitState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FAA0A671D2EA87800F18A2D /* CloudKitState.swift */; };
 		5FAA0A6A1D2EA96500F18A2D /* Freddy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAA0A691D2EA96500F18A2D /* Freddy.framework */; };
 		5FAC23BF19ABFE79000F188C /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAC23BE19ABFE79000F188C /* CoreServices.framework */; };
 		5FAF535A1D7F397600372EF5 /* RegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDED07E1C67A09A00769001 /* RegexKitLite.framework */; };
@@ -224,11 +220,8 @@
 		5FE2C0EB1B256B4C001DB163 /* MPTreeItemUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FE2C0E91B256B4C001DB163 /* MPTreeItemUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FE2C0EC1B256B4C001DB163 /* MPTreeItemUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FE2C0EA1B256B4C001DB163 /* MPTreeItemUtility.m */; };
 		5FEE14CE1D89552F0087924A /* MPContributorChangeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEE14CD1D89552F0087924A /* MPContributorChangeObserver.swift */; };
-		5FF745AB1D25518300B493D0 /* MPManagedObject-CloudKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF745AA1D25518300B493D0 /* MPManagedObject-CloudKit.swift */; };
-		5FF745B81D259BD100B493D0 /* CloudKitSyncService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF745B71D259BD100B493D0 /* CloudKitSyncService.swift */; };
 		5FF745BA1D259C3500B493D0 /* MPRateLimiter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF745B91D259C3500B493D0 /* MPRateLimiter.framework */; };
 		5FF745BC1D25A8F700B493D0 /* MPTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF745BB1D25A8F700B493D0 /* MPTimer.framework */; };
-		5FF745C21D26FCF000B493D0 /* CloudKitSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FF745C11D26FCF000B493D0 /* CloudKitSerializer.swift */; };
 		5FF745C41D26FD0A00B493D0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF745C31D26FD0A00B493D0 /* CloudKit.framework */; };
 		5FFC37701AEEF7AF0041FBED /* MPCountryList.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FFC376E1AEEF7AF0041FBED /* MPCountryList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FFC37711AEEF7AF0041FBED /* MPCountryList.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFC376F1AEEF7AF0041FBED /* MPCountryList.m */; };
@@ -1485,24 +1478,19 @@
 				5F8119481CEE32C3007018B8 /* TreeItemPool.swift in Sources */,
 				5FDB3A5C170799B30049EBB5 /* MPManagedObjectsController.m in Sources */,
 				5F81194C1CEE36A5007018B8 /* MPObjectWrappingSection.m in Sources */,
-				5F019E2A1D330C2C00424CDA /* CloudKitDatabasePackageListingService.swift in Sources */,
 				5FFD61B31AFFAF4000483D9C /* NSArray+MPManagedObjectExtensions.m in Sources */,
 				5FDB3A6B17079A750049EBB5 /* MPContributor.m in Sources */,
 				5FDB3A7417079ABB0049EBB5 /* MPSnapshotsController.m in Sources */,
 				5FDB3A7917079AEC0049EBB5 /* MPContributorsController.m in Sources */,
-				5FF745B81D259BD100B493D0 /* CloudKitSyncService.swift in Sources */,
 				5FDB3A7E17079B1E0049EBB5 /* MPSnapshot.m in Sources */,
 				5FDB3A8817079C020049EBB5 /* MPException.m in Sources */,
-				5FF745C21D26FCF000B493D0 /* CloudKitSerializer.swift in Sources */,
 				5FDB3A9317079DD10049EBB5 /* MPDatabase.m in Sources */,
 				5FDB3A9517079DD10049EBB5 /* MPDatabasePackageController.m in Sources */,
 				5F2CC7761B56E58900D9C714 /* MPFileObserver.m in Sources */,
 				5FDB3AA017079ED80049EBB5 /* MPShoeboxPackageController.m in Sources */,
-				5FA9D02E1D29C74000C96CE1 /* CloudKitDeserializer.swift in Sources */,
 				5F293B9C170CAD65001C2111 /* MPCacheableMixin.m in Sources */,
 				5F42FC491B10C36900CD88AA /* MPDeepSaver.m in Sources */,
 				5F293BA1170CAECC001C2111 /* MPEmbeddedObject.m in Sources */,
-				5FF745AB1D25518300B493D0 /* MPManagedObject-CloudKit.swift in Sources */,
 				5FC423771AFF8943002234FB /* NSDictionary+MPManagedObjectExtensions.m in Sources */,
 				5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */,
 				5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */,
@@ -1514,8 +1502,6 @@
 				5F6857DB17287F0800FE06B0 /* MPRootSection.m in Sources */,
 				5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */,
 				5FC753001746E294007818A0 /* NSString+MPSearchIndex.m in Sources */,
-				5F3A0B251D2840BF00205164 /* CloudKitRecordRepository.swift in Sources */,
-				5FAA0A681D2EA87800F18A2D /* CloudKitState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
