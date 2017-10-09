@@ -9,11 +9,11 @@
 import Foundation
 
 public extension NSArray {
-    public var uniqueValues: NSArray {
+    @objc public var uniqueValues: NSArray {
         return NSOrderedSet(array: self as [AnyObject]).array as NSArray
     }
         
-    public func containsAny(ofObjects objects:[AnyObject]) -> Bool {
+    @objc public func containsAny(ofObjects objects:[AnyObject]) -> Bool {
         let setSelf = NSSet(array:self as [AnyObject])
         
         for o in objects {

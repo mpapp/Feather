@@ -54,6 +54,16 @@
     return b;
 }
 
+static NSMutableDictionary *_bundleCodeSigned = nil;
+
++ (NSMutableDictionary *)bundleCodeSigned {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _bundleCodeSigned = [NSMutableDictionary new];
+    });
+    return _bundleCodeSigned;
+}
+
 static NSMutableDictionary *_bundleSandboxStates = nil;
 
 + (NSMutableDictionary *)bundleSandboxStates {
@@ -64,22 +74,45 @@ static NSMutableDictionary *_bundleSandboxStates = nil;
     return _bundleSandboxStates;
 }
 
+- (BOOL)isSigned {
+    BOOL isCodeSigned = NO;
+    
+    SecStaticCodeRef staticCode = NULL;
+    NSURL *bundleURL = self.bundleURL;
+    
+    if (self.class.bundleCodeSigned[bundleURL]) {
+        return [self.class.bundleCodeSigned[bundleURL] boolValue];
+    }
+    
+    if (SecStaticCodeCreateWithPath((__bridge CFURLRef)bundleURL, kSecCSDefaultFlags, &staticCode) == errSecSuccess) {
+        if (SecStaticCodeCheckValidityWithErrors(staticCode, kSecCSBasicValidateOnly, NULL, NULL) == errSecSuccess) {
+            OSStatus codeCheckResult = SecStaticCodeCheckValidityWithErrors(staticCode, kSecCSBasicValidateOnly, NULL, NULL);
+            if (codeCheckResult == errSecSuccess) {
+                isCodeSigned = YES;
+            }
+        }
+        CFRelease(staticCode);
+    }
+    
+    self.class.bundleCodeSigned[bundleURL] = @(isCodeSigned);
+    return isCodeSigned;
+}
+
 - (BOOL)isSandboxed {
     BOOL isSandboxed = NO;
     
     SecStaticCodeRef staticCode = NULL;
     NSURL *bundleURL = self.bundleURL;
     
-    if (_bundleSandboxStates[bundleURL]) {
-        return [_bundleSandboxStates[bundleURL] boolValue];
+    if (self.class.bundleSandboxStates[bundleURL]) {
+        return [self.class.bundleSandboxStates[bundleURL] boolValue];
     }
     
     if (SecStaticCodeCreateWithPath((__bridge CFURLRef)bundleURL, kSecCSDefaultFlags, &staticCode) == errSecSuccess) {
         if (SecStaticCodeCheckValidityWithErrors(staticCode, kSecCSBasicValidateOnly, NULL, NULL) == errSecSuccess) {
             SecRequirementRef sandboxRequirement;
             if (SecRequirementCreateWithString(CFSTR("entitlement[\"com.apple.security.app-sandbox\"] exists"), kSecCSDefaultFlags,
-                                               &sandboxRequirement) == errSecSuccess)
-            {
+                                               &sandboxRequirement) == errSecSuccess) {
                 OSStatus codeCheckResult = SecStaticCodeCheckValidityWithErrors(staticCode, kSecCSBasicValidateOnly, sandboxRequirement, NULL);
                 if (codeCheckResult == errSecSuccess) {
                     isSandboxed = YES;
@@ -89,7 +122,7 @@ static NSMutableDictionary *_bundleSandboxStates = nil;
         CFRelease(staticCode);
     }
     
-    _bundleSandboxStates[bundleURL] = @(isSandboxed);
+    self.class.bundleSandboxStates[bundleURL] = @(isSandboxed);
 
     return isSandboxed;
 }

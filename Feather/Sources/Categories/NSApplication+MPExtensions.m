@@ -21,7 +21,11 @@
 }
 
 - (BOOL)isSandboxed {
-    return [[NSBundle mainBundle] isSandboxed];
+    return NSBundle.mainBundle.isSandboxed;
+}
+
+- (BOOL)isSigned {
+    return NSBundle.mainBundle.isSigned;
 }
 
 @end

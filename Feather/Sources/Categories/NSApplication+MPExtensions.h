@@ -13,5 +13,6 @@
 - (void)beginSheet:(NSWindow *)sheet modalForWindow:(NSWindow *)docWindow didEndBlock:(void (^)(NSInteger returnCode))block;
 
 @property (readonly) BOOL isSandboxed;
+@property (readonly) BOOL isSigned;
 
 @end
