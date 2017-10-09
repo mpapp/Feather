@@ -15,7 +15,7 @@
 - (NSString *)bundleNameString
 {
     NSString *bundleName = self.infoDictionary[(__bridge NSString *)kCFBundleNameKey];
-    assert(bundleName);
+    NSAssert(bundleName, @"Bundle name unexpectedly nil");
     
     return bundleName;
 }
@@ -53,6 +53,47 @@
     BOOL b = [[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundlePackageType"] isEqualToString:@"XPC!"];
     return b;
 }
+
+static NSMutableDictionary *_bundleSandboxStates = nil;
+
++ (NSMutableDictionary *)bundleSandboxStates {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _bundleSandboxStates = [NSMutableDictionary new];
+    });
+    return _bundleSandboxStates;
+}
+
+- (BOOL)isSandboxed {
+    BOOL isSandboxed = NO;
+    
+    SecStaticCodeRef staticCode = NULL;
+    NSURL *bundleURL = self.bundleURL;
+    
+    if (_bundleSandboxStates[bundleURL]) {
+        return [_bundleSandboxStates[bundleURL] boolValue];
+    }
+    
+    if (SecStaticCodeCreateWithPath((__bridge CFURLRef)bundleURL, kSecCSDefaultFlags, &staticCode) == errSecSuccess) {
+        if (SecStaticCodeCheckValidityWithErrors(staticCode, kSecCSBasicValidateOnly, NULL, NULL) == errSecSuccess) {
+            SecRequirementRef sandboxRequirement;
+            if (SecRequirementCreateWithString(CFSTR("entitlement[\"com.apple.security.app-sandbox\"] exists"), kSecCSDefaultFlags,
+                                               &sandboxRequirement) == errSecSuccess)
+            {
+                OSStatus codeCheckResult = SecStaticCodeCheckValidityWithErrors(staticCode, kSecCSBasicValidateOnly, sandboxRequirement, NULL);
+                if (codeCheckResult == errSecSuccess) {
+                    isSandboxed = YES;
+                }
+            }
+        }
+        CFRelease(staticCode);
+    }
+    
+    _bundleSandboxStates[bundleURL] = @(isSandboxed);
+
+    return isSandboxed;
+}
+
 
 + (NSBundle *)appBundle
 {

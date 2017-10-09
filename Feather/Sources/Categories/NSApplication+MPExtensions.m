@@ -7,16 +7,21 @@
 //
 
 #import "NSApplication+MPExtensions.h"
+#import "NSBundle+MPExtensions.h"
 
 // http://stackoverflow.com/questions/4829529/beginsheet-block-alternative
 
-@implementation NSApplication (SheetAdditions)
+@implementation NSApplication (MPExtensions)
 
 - (void)beginSheet:(NSWindow *)sheet modalForWindow:(NSWindow *)docWindow didEndBlock:(void (^)(NSInteger returnCode))block
 {
     [docWindow beginSheet:sheet completionHandler:^(NSModalResponse returnCode) {
         block(returnCode);
     }];
+}
+
+- (BOOL)isSandboxed {
+    return [[NSBundle mainBundle] isSandboxed];
 }
 
 @end

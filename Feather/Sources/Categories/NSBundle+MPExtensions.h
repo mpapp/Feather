@@ -15,6 +15,8 @@
 @property (readonly, copy, nonnull) NSString *bundleShortVersionString;
 @property (readonly, copy, nonnull) NSString *bundleVersionString;
 
+@property (readonly) BOOL isSandboxed;
+
 /** Returns the main bundle for non-unit test targets, and the unit test bundle for the unit tests. */
 + (nonnull NSBundle *)appBundle;
 
