@@ -255,7 +255,7 @@ typedef enum MPManagedObjectsControllerErrorCode
                                                                    withExtension:(nonnull NSString *)extension
                                                                 matchedToObjects:(nonnull NSArray *)preloadedObjects
                                                          dataChecksumMetadataKey:(nonnull NSString *)dataChecksumKey
-                                                                           error:(NSError *__nullable *__nullable)err;
+                                                                           error:(NSError *__nullable __autoreleasing *__nullable)err;
 
 /** Query the given view with the given keys, with object prefetching enabled, and return managed object representations. */
 - (nonnull NSArray<__kindof MPManagedObject *> *)objectsMatchingQueriedView:(nonnull NSString *)view keys:(nullable NSArray *)keys;

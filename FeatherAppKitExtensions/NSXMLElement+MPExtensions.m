@@ -130,7 +130,7 @@ typedef NS_ENUM(NSInteger, MPXMLElementErrorCode) {
     return document.rootElement;
 }
 
-+ (NSXMLElement *)XMLElementFromHTMLString:(NSString *)HTML innerElements:(out NSArray *__autoreleasing *)innerElements forXPaths:(NSArray *)XPaths error:(NSError *__autoreleasing *)error
++ (NSXMLElement *)XMLElementFromHTMLString:(NSString *)HTML innerElements:(out NSArray<NSXMLElement *> *__autoreleasing  _Nonnull *)innerElements forXPaths:(NSArray<NSString *> *)XPaths error:(out NSError *__autoreleasing  _Nullable *)error
 {
     NSXMLDocument *document = nil;
     NSXMLElement *rootElement = [self XMLElementFromHTMLString:HTML tidyDocument:&document error:error];

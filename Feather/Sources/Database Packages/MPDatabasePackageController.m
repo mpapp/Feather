@@ -950,7 +950,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
 - (void)pullFromPackageFileURL:(nonnull NSURL *)versionURL
     allowMismatchingIdentifier:(BOOL)allowMismatchingIdentifier
            statusUpdateHandler:(void(^_Nullable)(NSUInteger completed, NSUInteger total))statusUpdateHandler
-             completionHandler:(void(^_Nonnull)())completionHandler
+             completionHandler:(void(^_Nonnull)(void))completionHandler
                   errorHandler:(void(^_Nonnull)(NSError *_Nonnull))errorHandler
 {
     MPDatabasePackageControllerBlockBasedDelegate *blockDelegate
@@ -1353,7 +1353,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
 
 #pragma mark - Snapshots
 
-- (MPSnapshot *)newSnapshotWithName:(NSString *)name error:(NSError **)err
+- (MPSnapshot *)newSnapshotWithName:(NSString *)name error:(NSError *__autoreleasing *)err
 {
     NSParameterAssert(name);
     NSParameterAssert(_managedObjectsControllers);
@@ -1383,7 +1383,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
     return snp;
 }
 
-- (BOOL)restoreFromSnapshotWithName:(NSString *)name error:(NSError **)err
+- (BOOL)restoreFromSnapshotWithName:(NSString *)name error:(NSError *__autoreleasing *)err
 {
     MPSnapshotsController *sc = [self snapshotsController];
     MPSnapshot *snapshot = [MPSnapshot modelForDocument:[sc.db.database documentWithID:name]];

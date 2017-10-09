@@ -331,7 +331,7 @@ NSString *const MPDatabasePackageBackedDocumentErrorDomain = @"MPDatabasePackage
     if (!_packageController) {
         NSLog(@"ERROR: Failed to open document at %@ (%@): %@", _temporaryManuscriptPath, _originalBundleFileURL, error);
         self.packageAccessError = error;
-        return NO;
+        return nil;
     }
     
     self.packageAccessError = nil;

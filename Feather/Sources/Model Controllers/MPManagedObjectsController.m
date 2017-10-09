@@ -9,6 +9,7 @@
 @import FeatherExtensions;
 
 #import <Feather/MPManagedObject+Protected.h>
+
 #import "MPManagedObjectsController+Protected.h"
 
 #import "MPDatabasePackageController.h"
@@ -27,6 +28,7 @@
 
 #import "Mixin.h"
 #import "MPCacheableMixin.h"
+
 
 extern NSComparisonResult CBLCompareRevIDs(NSString* revID1, NSString* revID2);
 
@@ -122,7 +124,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     SEL allObjectsForObjectSpecifierKeySel = NSSelectorFromString(allObjectsSpecifierKey);
 
     if (![self respondsToSelector:allObjectsForObjectSpecifierKeySel]) {
-        id (^allObjectsForObjectSpecifierKey)() = ^id() {
+        id (^allObjectsForObjectSpecifierKey)(void) = ^id() {
             return [self allObjects];
         };
         
@@ -1200,7 +1202,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                               withExtension:(NSString *)extension
                            matchedToObjects:(NSArray *)preloadedObjects
                     dataChecksumMetadataKey:(NSString *)dataChecksumKey
-                                      error:(NSError **)err
+                                      error:(NSError *__nullable __autoreleasing *__nullable)err
 {
     if ([NSBundle isXPCService] || [NSBundle isCommandLineTool])
         return preloadedObjects;
@@ -1229,7 +1231,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                 NSLog(@"ERROR! Could not load bundled data from resource %@%@:\n%@", resourceName, extension, *err);
                 [NSNotificationCenter.defaultCenter postErrorNotification:*err];
             }
-            return NO;
+            return nil;
         }
         else if (returnedObjects)
         {
@@ -1240,8 +1242,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
                 successfullySaved = [metadata save:err];
             });
             
-            if (!successfullySaved)
-                return NO;
+            if (!successfullySaved) {
+                return nil;
+            }
         }
     }
 

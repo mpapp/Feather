@@ -214,7 +214,7 @@ NSString *_Nonnull const MPArrayExtensionErrorDomain = @"@MPArrayExtensionErrorD
 }
 
 
-- (NSString *)JSONStringRepresentation:(NSError **)err
+- (NSString *)JSONStringRepresentation:(NSError *__autoreleasing *)err
 {
     NSArray *objs = [self mapObjectsUsingBlock:^id(id o, NSUInteger idx) {
         BOOL requiresJSONStringRep

@@ -567,7 +567,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 
-- (BOOL)deleteDocument:(NSError **)error {
+- (BOOL)deleteDocument:(NSError *__autoreleasing *)error {
     __block BOOL success = NO;
     
     

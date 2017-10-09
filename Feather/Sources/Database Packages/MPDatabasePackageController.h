@@ -206,7 +206,7 @@ typedef enum MPDatabasePackageControllerErrorCode {
 - (void)pullFromPackageFileURL:(nonnull NSURL *)url
     allowMismatchingIdentifier:(BOOL)allowMismatchingIdentifier
            statusUpdateHandler:(void(^_Nullable)(NSUInteger completed, NSUInteger total))statusUpdateHandler
-             completionHandler:(void(^_Nonnull)())completionHandler
+             completionHandler:(void(^_Nonnull)(void))completionHandler
                   errorHandler:(void(^_Nonnull)(NSError *_Nonnull))error;
 
 /** Pull and push asynchronously to a remote database package.
@@ -374,7 +374,7 @@ typedef enum MPDatabasePackageControllerErrorCode {
 
 #pragma mark -
 
-typedef NSURL *__nullable(^MPDatabasePackageControllerRootURLHandler)();
+typedef NSURL *__nullable(^MPDatabasePackageControllerRootURLHandler)(void);
 typedef void (^MPDatabasePackageControllerUpdateChangeCountHandler)(NSDocumentChangeType changeType);
 
 @interface MPDatabasePackageControllerBlockBasedDelegate : NSObject <MPDatabasePackageControllerDelegate>

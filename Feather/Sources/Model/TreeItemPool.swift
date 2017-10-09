@@ -14,7 +14,7 @@ import Foundation
     
     // exchanges the incoming item for an existing item with the same fully qualified identifier, or returns the same item.
     // for virtual sections such as root sections and object wrapping sections, you should no longer point at the item you passed to item(forItem:…) in the method where you did so. 
-    public func item(forItem item:MPTreeItem) -> MPTreeItem {
+    @objc public func item(forItem item:MPTreeItem) -> MPTreeItem {
         let existingItem = items[fullyQualifiedIdentifier(treeItem:item)]
         if let existingItem = existingItem {
             return existingItem

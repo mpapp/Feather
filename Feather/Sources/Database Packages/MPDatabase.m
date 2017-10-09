@@ -681,7 +681,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 @end
 
-typedef void (^CBLDatabaseDoAsyncHandler)();
+typedef void (^CBLDatabaseDoAsyncHandler)(void);
 
 @implementation CBLDatabase (Feather)
 
