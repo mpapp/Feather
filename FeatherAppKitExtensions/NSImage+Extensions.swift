@@ -16,7 +16,7 @@ public extension NSImage {
         
     }
     
-    func data(options: NSData.WritingOptions, type: NSBitmapImageFileType) throws -> Data {
+    func data(options: NSData.WritingOptions, type: NSBitmapImageRep.FileType) throws -> Data {
         guard let cgRef = self.cgImage(forProposedRect: nil, context: nil, hints: nil) else {
             throw ImageWritingError.cgImageCreationFailed
         }

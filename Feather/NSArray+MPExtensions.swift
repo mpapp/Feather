@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension NSArray {
+@objc public extension NSArray {
     @objc public var uniqueValues: NSArray {
         return NSOrderedSet(array: self as [AnyObject]).array as NSArray
     }
