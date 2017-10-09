@@ -38,6 +38,11 @@
                BlueprintName = "FeatherTests"
                ReferencedContainer = "container:Feather.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "FeatherTests">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <EnvironmentVariables>
