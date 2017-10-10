@@ -9,8 +9,9 @@
 import Foundation
 
 @objc public extension NSArray {
-    @objc public var uniqueValues: [Any] {
-        return NSOrderedSet(array: self as [AnyObject]).array
+    
+    @objc public var uniqueValues: [AnyObject] {
+        return NSOrderedSet(array: self as [AnyObject]).array as [AnyObject]
     }
         
     @objc public func containsAny(ofObjects objects:[AnyObject]) -> Bool {
@@ -24,4 +25,5 @@ import Foundation
         
         return false
     }
+    
 }
