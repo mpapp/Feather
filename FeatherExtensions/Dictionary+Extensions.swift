@@ -19,7 +19,7 @@ public extension Dictionary {
     
 }
 
-public extension Dictionary where Key: Hashable, Value: Hashable {
+public extension Dictionary where Value: Hashable {
     
     public func inverted() -> [Value: Key] {
         var dict = [Value:Key]()
