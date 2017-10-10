@@ -31,8 +31,8 @@ public extension Dictionary where Key: Hashable, Value: Hashable {
     
 }
 
-public extension NSDictionary {
-    public func invertedDictionary() -> NSDictionary {
+@objc public extension NSDictionary {
+    @objc public func invertedDictionary() -> NSDictionary {
         let dict = NSMutableDictionary()
         
         for key in self.allKeys {
