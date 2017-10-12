@@ -17,8 +17,8 @@ extern const MPTextContentOffset MPTextContentOffsetNotFound;
 extern const MPTextContentOffset MPTextContentOffsetBeginning;
 extern const MPTextContentOffset MPTextContentOffsetEnd;
 
-extern const NSUInteger MPDefaultXMLDocumentParsingOptions;
-extern const NSUInteger MPDefaultXMLDocumentOutputOptions;
+extern const NSXMLNodeOptions MPDefaultXMLDocumentParsingOptions;
+extern const NSXMLNodeOptions MPDefaultXMLDocumentOutputOptions;
 
 typedef NS_ENUM(NSInteger, MPXMLNodeFilteringResult)
 {

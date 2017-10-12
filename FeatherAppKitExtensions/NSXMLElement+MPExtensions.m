@@ -24,26 +24,26 @@ const NSString *_Nonnull MPXMLElementExtensionsErrorDomain = @"MPXMLElementExten
 // because including it causes valid documents with text nodes containing &lt; *and* the # character to expand
 // the < such that XMLString output from the document cannot then later be parsed again. Sigh.
 //
-const NSUInteger MPDefaultXMLDocumentParsingOptions = (NSXMLNodeLoadExternalEntitiesNever |
-                                                       NSXMLNodePreserveNamespaceOrder |
-                                                       NSXMLNodePreserveAttributeOrder |
-                                                       NSXMLNodePreserveEntities |
-                                                       NSXMLNodePreservePrefixes |
-                                                       NSXMLNodePreserveCDATA |
-                                                       NSXMLNodePreserveWhitespace |
-                                                       NSXMLNodePromoteSignificantWhitespace |
-                                                       NSXMLNodePreserveEmptyElements |
-                                                       NSXMLNodeUseDoubleQuotes);
+const NSXMLNodeOptions MPDefaultXMLDocumentParsingOptions = (NSXMLNodeLoadExternalEntitiesNever |
+                                                             NSXMLNodePreserveNamespaceOrder |
+                                                             NSXMLNodePreserveAttributeOrder |
+                                                             NSXMLNodePreserveEntities |
+                                                             NSXMLNodePreservePrefixes |
+                                                             NSXMLNodePreserveCDATA |
+                                                             NSXMLNodePreserveWhitespace |
+                                                             NSXMLNodePromoteSignificantWhitespace |
+                                                             NSXMLNodePreserveEmptyElements |
+                                                             NSXMLNodeOptionsNSXMLNodeUseDoubleQuotes);
 
-const NSUInteger MPDefaultXMLDocumentOutputOptions = (NSXMLNodePreserveNamespaceOrder |
-                                                      NSXMLNodePreserveAttributeOrder |
-                                                      NSXMLNodePreserveEntities |
-                                                      NSXMLNodePreservePrefixes |
-                                                      NSXMLNodePreserveCDATA |
-                                                      NSXMLNodePreserveWhitespace |
-                                                      NSXMLNodePromoteSignificantWhitespace |
-                                                      NSXMLNodePreserveEmptyElements |
-                                                      NSXMLNodeUseDoubleQuotes);
+const NSXMLNodeOptions MPDefaultXMLDocumentOutputOptions = (NSXMLNodePreserveNamespaceOrder |
+                                                            NSXMLNodePreserveAttributeOrder |
+                                                            NSXMLNodePreserveEntities |
+                                                            NSXMLNodePreservePrefixes |
+                                                            NSXMLNodePreserveCDATA |
+                                                            NSXMLNodePreserveWhitespace |
+                                                            NSXMLNodePromoteSignificantWhitespace |
+                                                            NSXMLNodePreserveEmptyElements |
+                                                            NSXMLNodeUseDoubleQuotes);
 
 NSString *const MPXMLElementErrorDomain = @"MPXMLElementErrorDomain";
 
