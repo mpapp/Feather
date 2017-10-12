@@ -89,7 +89,7 @@ typedef NS_ENUM(NSInteger, MPXMLElementErrorCode) {
 @implementation NSXMLElement (MPExtensions)
 
 + (NSXMLElement *)XMLElementFromHTMLString:(NSString *)HTML
-                              tidyDocument:(out NSXMLDocument *__autoreleasing*)outDocument
+                              tidyDocument:(out NSXMLDocument *__autoreleasing __nullable *__nullable)outDocument
                                      error:(NSError *__autoreleasing *)error
 {
     NSString *cleanXMLString = [HTML stringByRemovingInvalidUTF8EncodedXMLCharacters];

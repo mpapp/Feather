@@ -54,7 +54,7 @@ typedef BOOL (^MPXMLNodeVisitor)(NSXMLNode *__nonnull node);
  
  */
 + (nullable NSXMLElement *)XMLElementFromHTMLString:(nonnull NSString *)HTML
-                                       tidyDocument:(out NSXMLDocument *__nonnull *__nullable)document
+                                       tidyDocument:(out NSXMLDocument *__autoreleasing __nullable *__nullable)document
                                               error:(NSError *__nullable __autoreleasing *__nullable)error;
 
 /** Parse a string into XML and return the root element of the fragment, plus any inner elements matching given optional XPath expressions. Returned inner elements array will contain the results in the same order as the `XPaths` argument. */
