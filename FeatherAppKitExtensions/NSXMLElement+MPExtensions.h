@@ -304,7 +304,7 @@ typedef BOOL (^MPXMLNodeVisitor)(NSXMLNode *__nonnull node);
 
 /** Parse an XML string into an XML document. This implementation filters out invalid characters not allowed by the XML 1.0 specification, as well as sequences that aren't valid UTF-8, prior to parsing the input string. */
 + (nullable NSXMLDocument *)XMLDocumentFromString:(nonnull NSString *)XMLString
-                                          options:(NSUInteger)options
+                                          options:(NSXMLNodeOptions)options
                                             error:(NSError *__nullable *__nullable)error;
 
 /** Drops doctype and namespace definitions and returns the number of elements where a namespace was dropped. */
