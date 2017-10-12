@@ -20,12 +20,12 @@ inline id MPAnimatorOrConstraint(NSLayoutConstraint *constraint, BOOL animate)
     return (animate ? constraint.animator : constraint);
 }
 
-NSInteger MPBooleanToState(BOOL b)
+NSControlStateValue MPBooleanToState(BOOL b)
 {
     return b ? NSOnState : NSOffState;
 }
 
-BOOL MPStateToBoolean(NSInteger state)
+BOOL MPStateToBoolean(NSControlStateValue state)
 {
     return state != NSOffState;
 }

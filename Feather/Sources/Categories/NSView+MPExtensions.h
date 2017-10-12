@@ -12,9 +12,8 @@
 extern inline id _Nonnull MPAnimatorOrView(NSView *_Nonnull view, BOOL animate);
 extern inline id _Nonnull MPAnimatorOrConstraint(NSLayoutConstraint *_Nonnull constraint, BOOL animate);
 
-extern NSInteger MPBooleanToState(BOOL b);
-extern BOOL MPStateToBoolean(NSInteger state);
-
+extern NSControlStateValue MPBooleanToState(BOOL b);
+extern BOOL MPStateToBoolean(NSControlStateValue state);
 
 @interface NSView (MPExtensions)
 
