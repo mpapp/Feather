@@ -33,7 +33,7 @@ const NSXMLNodeOptions MPDefaultXMLDocumentParsingOptions = (NSXMLNodeLoadExtern
                                                              NSXMLNodePreserveWhitespace |
                                                              NSXMLNodePromoteSignificantWhitespace |
                                                              NSXMLNodePreserveEmptyElements |
-                                                             NSXMLNodeOptionsNSXMLNodeUseDoubleQuotes);
+                                                             NSXMLNodeUseDoubleQuotes);
 
 const NSXMLNodeOptions MPDefaultXMLDocumentOutputOptions = (NSXMLNodePreserveNamespaceOrder |
                                                             NSXMLNodePreserveAttributeOrder |
