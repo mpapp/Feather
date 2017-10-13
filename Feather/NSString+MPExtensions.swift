@@ -37,4 +37,44 @@ import Foundation
         }
         return false;
     }
+    
+    /**
+     
+     Fix for a mind-boggling NSXMLDocument (and looking like also WebKit XMLSerializer) behaviour, which is:
+     
+     ```
+     [[NSXMLDocument alloc] initWithXMLString:@"<html xmlns=\"http://www.w3.org/1999/xhtml\"><body><p>Hello world.</p></body></html>" options:MPDefaultXMLDocumentParsingOptions error:nil]);
+     ```
+     
+     ...when again printed out as an XML string will yield:
+     
+     ```
+     <?xml version="1.0" encoding="UTF-8" standalone="no"?><html xmlns="http://www.w3.org/1999/xhtml><body><p>Hello world.</p></body></html>
+     ```
+     
+     ...meaning: the closing double quote for the XHTML namespace will just get dropped.
+     */
+    @objc func stringByFixingPossiblyBrokenXMLNamespaces() -> String {
+        var HTML = self.replacingOccurrences(of: "xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math ", with: "xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" ")
+        HTML = HTML.replacingOccurrences(of: "xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math>", with: "xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\">")
+        HTML = HTML.replacingOccurrences(of: "xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math/>", with: "xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\"/>")
+        
+        HTML = HTML.replacingOccurrences(of: "xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main ", with: "xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\" ")
+        HTML = HTML.replacingOccurrences(of: "xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main>", with: "xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\">")
+        HTML = HTML.replacingOccurrences(of: "xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main/>", with: "xmlns:w=\"http://schemas.openxmlformats.org/wordprocessingml/2006/main\"/>")
+
+        HTML = HTML.replacingOccurrences(of: "xmlns:xlink=\"http://www.w3.org/1999/xlink ", with: "xmlns:xlink=\"http://www.w3.org/1999/xlink\" ")
+        HTML = HTML.replacingOccurrences(of: "xmlns:xlink=\"http://www.w3.org/1999/xlink>", with: "xmlns:xlink=\"http://www.w3.org/1999/xlink\">")
+        HTML = HTML.replacingOccurrences(of: "xmlns:xlink=\"http://www.w3.org/1999/xlink/>", with: "xmlns:xlink=\"http://www.w3.org/1999/xlink\"/>")
+
+        HTML = HTML.replacingOccurrences(of:"xmlns=\"http://www.w3.org/2000/svg ", with: "xmlns=\"http://www.w3.org/2000/svg\" ")
+        HTML = HTML.replacingOccurrences(of:"xmlns=\"http://www.w3.org/2000/svg>", with: "xmlns=\"http://www.w3.org/2000/svg\">")
+        HTML = HTML.replacingOccurrences(of:"xmlns=\"http://www.w3.org/2000/svg/>", with: "xmlns=\"http://www.w3.org/2000/svg\"/>")
+
+        HTML = HTML.replacingOccurrences(of: "xmlns=\"http://www.w3.org/1999/xhtml ", with: "xmlns=\"http://www.w3.org/1999/xhtml\" ")
+        HTML = HTML.replacingOccurrences(of: "xmlns=\"http://www.w3.org/1999/xhtml>", with: "xmlns=\"http://www.w3.org/1999/xhtml\">")
+        HTML = HTML.replacingOccurrences(of: "xmlns=\"http://www.w3.org/1999/xhtml/>", with: "xmlns=\"http://www.w3.org/1999/xhtml\"/>")
+
+        return HTML;
+    }
 }
