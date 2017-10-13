@@ -54,7 +54,7 @@ import Foundation
      
      ...meaning: the closing double quote for the XHTML namespace will just get dropped.
      */
-    @objc func stringByFixingPossiblyBrokenXMLNamespaces() -> String {
+    @objc func XMLStringByFixingPossiblyBrokenXMLNamespaces() -> String {
         var HTML = self.replacingOccurrences(of: "xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math ", with: "xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\" ")
         HTML = HTML.replacingOccurrences(of: "xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math>", with: "xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\">")
         HTML = HTML.replacingOccurrences(of: "xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math/>", with: "xmlns:m=\"http://schemas.openxmlformats.org/officeDocument/2006/math\"/>")
@@ -76,5 +76,9 @@ import Foundation
         HTML = HTML.replacingOccurrences(of: "xmlns=\"http://www.w3.org/1999/xhtml/>", with: "xmlns=\"http://www.w3.org/1999/xhtml\"/>")
 
         return HTML;
+    }
+    
+    @objc func XMLStringByRemovingXHTMLNamespace() -> String {
+        return self.replacingOccurrences(of: "xmlns=\"http://www.w3.org/1999/xhtml\"", with: "")
     }
 }
