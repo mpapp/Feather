@@ -92,7 +92,7 @@ typedef NS_ENUM(NSInteger, MPXMLElementErrorCode) {
                               tidyDocument:(out NSXMLDocument *__autoreleasing __nullable *__nullable)outDocument
                                      error:(NSError *__autoreleasing *)error
 {
-    NSString *cleanXMLString = [HTML stringByRemovingInvalidUTF8EncodedXMLCharacters];
+    NSString *cleanXMLString = [[HTML stringByRemovingInvalidUTF8EncodedXMLCharacters] XMLStringByFixingPossiblyBrokenXMLNamespaces];
     
     if (!cleanXMLString)
     {
