@@ -8,7 +8,6 @@
 
 #import "NSArray+MPManagedObjectExtensions.h"
 
-#import "MPManagedObject.h"
 #import "MPCategorizableMixin.h"
 
 @implementation NSArray (MPManagedObjectExtensions)
@@ -16,8 +15,8 @@
 - (NSArray *)sortedArrayUsingPriority
 {
     NSArray *sortedArray = [self sortedArrayUsingComparator:
-                            ^NSComparisonResult(MPManagedObject<MPCategorizable> *obj1,
-                                                MPManagedObject<MPCategorizable> *obj2)
+                            ^NSComparisonResult(id<MPCategorizable> obj1,
+                                                id<MPCategorizable> obj2)
                             {
                                 NSInteger priority1 = [obj1 priority];
                                 NSInteger priority2 = [obj2 priority];
