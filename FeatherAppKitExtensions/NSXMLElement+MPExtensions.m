@@ -2023,7 +2023,7 @@ typedef NS_ENUM(NSInteger, MPXMLElementErrorCode) {
 
 @implementation NSXMLDocument (MPXMLExtensions)
 
-+ (NSXMLDocument *)XMLDocumentFromString:(NSString *)XMLString options:(NSUInteger)options error:(NSError *__autoreleasing *)error
++ (NSXMLDocument *)XMLDocumentFromString:(NSString *)XMLString options:(NSXMLNodeOptions)options error:(NSError *__autoreleasing *)error
 {
     NSString *cleanXMLString = [XMLString stringByRemovingInvalidUTF8EncodedXMLCharacters];
     NSXMLDocument *document = [[NSXMLDocument alloc] initWithXMLString:cleanXMLString options:options error:error];
