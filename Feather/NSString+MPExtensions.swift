@@ -8,6 +8,27 @@
 
 import Foundation
 
+public enum NSStringFeatherExtensionsError: Int, Swift.Error, CustomNSError {
+    case conversionFailed = 1
+    
+    public static var errorDomain = "NSStringMPExtensionErrorDomain"
+    
+    public var errorCode: Int {
+        return self.rawValue
+    }
+    
+    /// The user-info dictionary.
+    public var errorUserInfo: [String : Any] {
+        switch self {
+        case .conversionFailed:
+            return [ NSLocalizedDescriptionKey: "Failed to convert data into any of suggested string encoding",
+                     NSLocalizedFailureReasonErrorKey: "Failed to convert data into any of suggested string encoding",
+                     NSLocalizedRecoverySuggestionErrorKey: "Please ensure that the input is encoded in one otf UTF8, UTF16, latin1, latin2 or ascii"
+            ]
+        }
+    }
+}
+
 @objc public extension NSString {
     @objc public func XMLStringByRemovingDuplicateXMLDeclarations() -> String {
         // the preceding character is included in the pattern, therefore captured and included in output.
@@ -36,6 +57,30 @@ import Foundation
             }
         }
         return false;
+    }
+    
+    @objc public class func string(data: Data, usedEncoding: UnsafeMutablePointer<UInt>?) throws -> NSString {
+        var convertedString: NSString? = nil
+        var lossyConversionUsed: ObjCBool = false
+        
+        let enc = NSString.stringEncoding(for: data,
+                                          encodingOptions: [ StringEncodingDetectionOptionsKey.allowLossyKey: NSNumber(value: true),
+                                                             StringEncodingDetectionOptionsKey.suggestedEncodingsKey: [ NSNumber(value: String.Encoding.utf8.rawValue),
+                                                                                                                        NSNumber(value: String.Encoding.utf16.rawValue),
+                                                                                                                        NSNumber(value: String.Encoding.isoLatin1.rawValue),
+                                                                                                                        NSNumber(value: String.Encoding.isoLatin2.rawValue),
+                                                                                                                        NSNumber(value: String.Encoding.ascii.rawValue) ] ],
+                                               convertedString: &convertedString,
+                                               usedLossyConversion: &lossyConversionUsed)
+        if let usedEncoding = usedEncoding {
+            usedEncoding.pointee = enc
+        }
+        
+        guard let string = convertedString else {
+            throw NSStringFeatherExtensionsError.conversionFailed
+        }
+        
+        return string
     }
     
     /**
