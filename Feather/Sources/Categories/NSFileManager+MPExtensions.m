@@ -75,6 +75,12 @@ NSString * __nonnull const MPFeatherNSFileManagerExtensionsErrorDomain = @"MPFea
 - (NSURL *)sharedApplicationGroupCachesDirectoryURL
 {
     NSString *groupIdentifier = [[NSBundle appBundle] objectForInfoDictionaryKey:@"MPSharedApplicationSecurityGroupIdentifier"];
+
+    // for test purposes
+    if (!groupIdentifier) {
+        groupIdentifier = NSProcessInfo.processInfo.environment[@"MPSharedApplicationSecurityGroupIdentifier"];
+    }
+
     NSAssert(groupIdentifier, @"Must set key 'MPSharedApplicationSecurityGroupIdentifier' in Info.plist (even if not sandboxed)"); // Shared security group identifier must be set in Info.plist
     
     NSURL *groupContainerURL = [[NSFileManager defaultManager] containerURLForSecurityApplicationGroupIdentifier:groupIdentifier];
