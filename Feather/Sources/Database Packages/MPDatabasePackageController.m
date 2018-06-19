@@ -107,7 +107,7 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     
     if (self = [super init])
     {
-        NSAssert(path, @"Expecting a non-nil path");
+        NSAssert(path, [NSString stringWithFormat:@"Expecting a non-nil path -- package controller type: @", NSStringFromClass([self class]));
         
         _path = path.copy;
         _fullyQualifiedIdentifier = [[_path stringByAppendingString:@"::"] stringByAppendingString:[[NSUUID UUID] UUIDString]];
