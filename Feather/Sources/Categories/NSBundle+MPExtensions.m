@@ -41,11 +41,18 @@
 {
     if ([self inTestSuite])
         return NO;
-    
-    BOOL b = ([NSBundle.mainBundle objectForInfoDictionaryKey:@"NSMainNibFile"] == nil
-              && [NSBundle.mainBundle objectForInfoDictionaryKey:@"NSMainStoryboardFile"] == nil);
-    
-    return b;
+
+    // If the Info.plist contains the `MPPrimaryApplication` key, return its value...
+    // If the Info.plist doesn't contain the `MPPrimaryApplication` key,
+    // return `YES` if both `NSMainNibFile` and `NSMainStoryboardFile` values are missing.
+    NSString *primaryAppInfoPlistValue = [NSBundle.mainBundle objectForInfoDictionaryKey:@"MPPrimaryApplication"];
+    if (primaryAppInfoPlistValue != nil)
+    {
+        return ([primaryAppInfoPlistValue boolValue] == NO);
+    } else {
+        return ([NSBundle.mainBundle objectForInfoDictionaryKey:@"NSMainNibFile"] == nil
+                && [NSBundle.mainBundle objectForInfoDictionaryKey:@"NSMainStoryboardFile"] == nil);
+    }
 }
 
 + (BOOL)isXPCService
