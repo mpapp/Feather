@@ -1036,8 +1036,8 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     NSString *attachmentsDirectoryName = MPStringF(@"%@ attachments", self.bundledResourceDatabaseName);
     NSString *bundledManuscriptDataDirectory = MPStringF(@"%@.manuscripts-data", self.bundledResourceDatabaseName);
     
-    NSString *bundledBundlesPath = [[NSBundle appBundle] pathForResource:self.bundledResourceDatabaseName ofType:@"cblite" inDirectory:bundledManuscriptDataDirectory];
-    NSString *bundledAttachmentsPath = [[NSBundle appBundle] pathForResource:attachmentsDirectoryName ofType:@"" inDirectory:bundledManuscriptDataDirectory];
+    NSString *bundledBundlesPath = [[self resourcesBundle] pathForResource:self.bundledResourceDatabaseName ofType:@"cblite" inDirectory:bundledManuscriptDataDirectory];
+    NSString *bundledAttachmentsPath = [[self resourcesBundle] pathForResource:attachmentsDirectoryName ofType:@"" inDirectory:bundledManuscriptDataDirectory];
     
     NSError *err = nil;
     NSURL *tempBundledBundlesDirURL = [fm temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:checksumKey error:&err];
@@ -1198,6 +1198,11 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 #pragma mark - Loading bundled objects
 
+- (NSBundle *)resourcesBundle
+{
+    return [NSBundle appBundle];    // can optionally override in subclasses, e.g. [NSBundle bundleForClass: self.class]
+}
+
 - (NSArray *)loadBundledObjectsFromResource:(NSString *)resourceName
                               withExtension:(NSString *)extension
                            matchedToObjects:(NSArray *)preloadedObjects
@@ -1210,7 +1215,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     NSArray *returnedObjects = nil;
     MPMetadata *metadata = [self.db metadata];
 
-    NSURL *jsonURL = [[NSBundle appBundle] URLForResource:resourceName withExtension:extension];
+    NSURL *jsonURL = [[self resourcesBundle] URLForResource:resourceName withExtension:extension];
     NSAssert(jsonURL, @"Could not find resource '%@' with extension '%@'", resourceName, extension);
     
     NSFileManager *fm = [NSFileManager defaultManager];

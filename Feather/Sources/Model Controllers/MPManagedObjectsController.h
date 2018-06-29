@@ -231,6 +231,9 @@ typedef enum MPManagedObjectsControllerErrorCode
   * Default NO, can be implemented in subclasses. */
 @property (readonly) BOOL relaysFetchingByIdentifier;
 
+/** Returns a @c NSBundle representing the bundle containing any resources that are required. By default this will be @c [NSBundle @c appBundle], however subclasses can override this as neccessary.*/
+- (nonnull NSBundle *)resourcesBundle;
+
 /** Objects with the given 'title' field value (meaningless for objects with no title field) */
 - (nonnull NSArray<__kindof MPManagedObject *> *)objectsWithTitle:(nonnull NSString *)title;
 
