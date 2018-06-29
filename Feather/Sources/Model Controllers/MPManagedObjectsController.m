@@ -1200,7 +1200,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (NSBundle *)resourcesBundle
 {
-    return [NSBundle appBundle];    // can optionally override in subclasses, e.g. [NSBundle bundleForClass: self.class]
+    return [NSBundle bundleForClass:self.class];    // can optionally override in subclasses
 }
 
 - (NSArray *)loadBundledObjectsFromResource:(NSString *)resourceName
