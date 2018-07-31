@@ -50,7 +50,7 @@ typedef enum MPDatabaseErrorCode
 @property (readonly, strong) MPMetadata *localMetadata;
 
 /** A weak back pointer to the database controller. Typed id to avoid casting -- MPDatabasePackageController is an abstract class and a concrete subclass  is needed in the application. */
-@property (readonly, weak) __kindof MPDatabasePackageController *packageController; // subclass of MPDatabasePackageController
+@property (nullable, readonly, weak) __kindof MPDatabasePackageController *packageController; // subclass of MPDatabasePackageController
 
 /**
  * @param server CouchServer from which the database is to be found. Should be one of the CouchServers owned by the database controller (2nd parameter).
@@ -128,16 +128,16 @@ typedef enum MPDatabaseErrorCode
 - (CBLFilterBlock)filterWithQualifiedName:(NSString *)name;
 
 /** The default replication URL for this database, used by -syncWithRemoteWithCompletionHandler: , -pushToRemoteWithCompletionHandler: and -pullFromremoteWithCompletionHandler: . Derived from database controller's remote URL and the database name. */
-@property (readonly, strong) NSURL *remoteDatabaseURL;
+@property (nullable, readonly, strong) NSURL *remoteDatabaseURL;
 
 /** The service resoure URL for this database (RESTful resource which allows creation / deletion). */
-@property (readonly, strong) NSURL *remoteServiceURL;
+@property (nullable, readonly, strong) NSURL *remoteServiceURL;
 
 /** The remote database exists. */
 @property (readonly) BOOL remoteDatabaseExists;
 
 /** Authentication credentials for the remote database. */
-@property (readonly, strong) NSURLCredential *remoteDatabaseCredentials;
+@property (nullable, readonly, strong) NSURLCredential *remoteDatabaseCredentials;
 
 @end
 
@@ -156,25 +156,25 @@ typedef enum MPDatabaseErrorCode
 @interface CBLDatabase (MPDatabase)
 
 /** A back pointer from a CBLDatabase to its MPDatabasePackageController. This is stored as an ObjC runtime associative reference. The method should only be called on a CBLDatabase owned by a MPDatabasePackageController, as the non-nilness of the database controller pointer is asserted. */
-@property (readonly, weak) id packageController;
+@property (nullable, readonly, weak) id packageController;
 
 @property (nonatomic, readonly) BOOL isOpen;
 
 /** Get managed object model objects for documents specified by the array of IDs from the database. */
-- (NSArray *)getManagedObjectsWithIDs:(NSArray *)ids;
+- (NSArray <MPManagedObject *> *_Nullable)getManagedObjectsWithIDs:(NSArray *_Nonnull)ids;
 
 /** A query enumerator to get documents with the specified IDs. */
-- (CBLQueryEnumerator *)getDocumentsWithIDs:(NSArray *)docIDs;
+- (CBLQueryEnumerator *_Nullable)getDocumentsWithIDs:(NSArray *_Nonnull)docIDs;
 
 /** Get plain JSON encodable objects for query enumerator. */
-- (NSArray *)plainObjectsFromQueryEnumeratorKeys:(CBLQueryEnumerator *)rows;
+- (NSArray <CBLQueryRow *> *_Nonnull)plainObjectsFromQueryEnumeratorKeys:(CBLQueryEnumerator *_Nonnull)rows;
 
 @end
 
 @interface CBLManager (MPDatabase)
 
 /** A back pointer from a CBLDatabase to its MPDatabasePackageController. This is stored as an ObjC runtime associative reference. The method should only be called on a CBLDatabase owned by a MPDatabasePackageController, as the non-nilness of the database controller pointer is asserted. */
-@property (readonly, weak) id packageController;
+@property (nullable, readonly, weak) id packageController;
 
 @end
 
@@ -182,7 +182,7 @@ typedef enum MPDatabaseErrorCode
 
 /** Runs a query, and returns a query enumerator if successful, and nil if unsuccessful.
  *  If error occurs, posts the error in an error notification to the database's package controller's notification center. */
-- (CBLQueryEnumerator *)run;
+- (nullable CBLQueryEnumerator *)run;
 
 @end
 
