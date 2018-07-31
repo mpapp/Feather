@@ -57,7 +57,9 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
                  ensureCreated:(BOOL)ensureCreated
                          error:(NSError **)err
 {
-    return [self initWithServer:server packageController:packageController name:name
+    return [self initWithServer:server
+              packageController:packageController
+                           name:name
                   ensureCreated:ensureCreated
                  pushFilterName:nil
                  pullFilterName:nil
@@ -265,13 +267,11 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 - (NSURL *)remoteDatabaseURL
 {
-    assert(_packageController);
     return [self.packageController remoteDatabaseURLForLocalDatabase:self];
 }
 
 - (NSURL *)remoteServiceURL
 {
-    assert(_packageController);
     return [self.packageController remoteServiceURLForLocalDatabase:self];
 }
 
@@ -799,11 +799,14 @@ typedef void (^CBLDatabaseDoAsyncHandler)(void);
 - (CBLQueryEnumerator *)run
 {
     __block CBLQueryEnumerator *qenum = nil;
-    mp_dispatch_sync(self.database.manager.dispatchQueue, [[self.database packageController] serverQueueToken], ^{
+    // Capture packageController locally here to avoid some race conditions if it is dealloc'd before the queue block is executed
+    id pkgc = [self.database packageController];
+
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [pkgc serverQueueToken], ^{
         NSError *err = nil;
         if (!(qenum = [self run:&err]))
         {
-            [[self.database.packageController notificationCenter] postErrorNotification:err];
+            [[pkgc notificationCenter] postErrorNotification:err];
         }
         
     });
@@ -818,8 +821,10 @@ typedef void (^CBLDatabaseDoAsyncHandler)(void);
 {
     __block NSError *err = nil;
     __block BOOL success = NO;
-    
-    mp_dispatch_sync(self.database.manager.dispatchQueue, [self.database.packageController serverQueueToken], ^{
+    // Capture packageController locally here to avoid some race conditions if it is dealloc'd before the queue block is executed
+    id pkgc = [self.database packageController];
+
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [pkgc serverQueueToken], ^{
         success = [self save:&err];
     });
     
@@ -832,7 +837,10 @@ typedef void (^CBLDatabaseDoAsyncHandler)(void);
 - (id)getValueOfProperty:(NSString *)property
 {
     __block id value = nil;
-    mp_dispatch_sync(self.database.manager.dispatchQueue, [[self.database packageController] serverQueueToken], ^{
+    // Capture packageController locally here to avoid some race conditions if it is dealloc'd before the queue block is executed
+    id pkgc = [self.database packageController];
+
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [pkgc serverQueueToken], ^{
         value = [super getValueOfProperty:property];
     });
     return value;
@@ -840,8 +848,10 @@ typedef void (^CBLDatabaseDoAsyncHandler)(void);
 
 - (NSString *)JSONStringRepresentation:(NSError *__autoreleasing *)error {
     __block NSData *data = nil;
-    
-    mp_dispatch_sync(self.database.manager.dispatchQueue, [[self.database packageController] serverQueueToken], ^{
+    // Capture packageController locally here to avoid some race conditions if it is dealloc'd before the queue block is executed
+    id pkgc = [self.database packageController];
+
+    mp_dispatch_sync(self.database.manager.dispatchQueue, [pkgc serverQueueToken], ^{
         data = [NSJSONSerialization dataWithJSONObject:self.propertiesToSave
                                                options:NSJSONWritingPrettyPrinted
                                                  error:error];
