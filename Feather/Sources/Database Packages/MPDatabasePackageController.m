@@ -235,9 +235,10 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         }
         
         if (requiresListener) {
+            __weak typeof(self) weakSelf = self;
             [self startListenerWithCompletionHandler:^(NSError *err)
             {
-                [self.notificationCenter postNotificationName:MPDatabasePackageListenerDidStartNotification object:self];
+                [weakSelf.notificationCenter postNotificationName:MPDatabasePackageListenerDidStartNotification object:self];
             }];
         }
         
@@ -1152,7 +1153,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
             e = nil;
             port += retries;
             
-            strongSelf.databaseListener = [[CBLListener alloc] initWithManager:_server port:port];
+            strongSelf.databaseListener = [[CBLListener alloc] initWithManager:strongSelf.server port:port];
             
             NSDictionary *txtDict = [strongSelf.databaseListener.TXTRecordDictionary mutableCopy];
             [txtDict setValue:@(port) forKey:@"port"];
