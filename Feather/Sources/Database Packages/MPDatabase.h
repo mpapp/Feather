@@ -161,7 +161,7 @@ typedef enum MPDatabaseErrorCode
 @property (nonatomic, readonly) BOOL isOpen;
 
 /** Get managed object model objects for documents specified by the array of IDs from the database. */
-- (NSArray <MPManagedObject *> *_Nullable)getManagedObjectsWithIDs:(NSArray *_Nonnull)ids;
+- (NSArray <MPManagedObject *> *_Nonnull)getManagedObjectsWithIDs:(NSArray *_Nonnull)ids;
 
 /** A query enumerator to get documents with the specified IDs. */
 - (CBLQueryEnumerator *_Nullable)getDocumentsWithIDs:(NSArray *_Nonnull)docIDs;
