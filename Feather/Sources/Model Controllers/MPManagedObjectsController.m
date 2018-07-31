@@ -124,8 +124,9 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     SEL allObjectsForObjectSpecifierKeySel = NSSelectorFromString(allObjectsSpecifierKey);
 
     if (![self respondsToSelector:allObjectsForObjectSpecifierKeySel]) {
+        __weak typeof(self) weakSelf = self;
         id (^allObjectsForObjectSpecifierKey)(void) = ^id() {
-            return [self allObjects];
+            return [weakSelf allObjects];
         };
         
         //NSLog(@"Implementing '%@'", allObjectsSpecifierKey);
