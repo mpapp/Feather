@@ -713,11 +713,10 @@ typedef void (^CBLDatabaseDoAsyncHandler)(void);
 - (id)packageController
 {
     MPDatabase *dbp = [self managedObjectDatabaseBackpointer];
-    if (!dbp)
-        return nil; // some databases don't have the backpointer set, for instance ones created through replication.
-    
-    assert(dbp.packageController);
-    assert([dbp.packageController isKindOfClass:MPDatabasePackageController.class]);
+    if (dbp.packageController) {
+        assert([dbp.packageController isKindOfClass:MPDatabasePackageController.class]);
+    }
+
     return dbp.packageController;
 }
 
