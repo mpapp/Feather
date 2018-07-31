@@ -10,7 +10,7 @@
 @import CouchbaseLite;
 @import FeatherExtensions.MPJSONRepresentable;
 
-extern NSString * const MPDatabaseErrorDomain;
+extern NSString * _Nonnull const MPDatabaseErrorDomain;
 
 typedef enum MPDatabaseErrorCode
 {
@@ -33,21 +33,21 @@ typedef enum MPDatabaseErrorCode
 //@property (readonly, copy) NSString *path;
 
 /** Name of the database, which is unique per MPDatabasePackageController, and used to derive the database's filesystem path and the remote URL. Immutable, readonly property set during instantiation. */
-@property (readonly, copy) NSString *name;
+@property (nonnull, readonly, copy) NSString *name;
 
 /** The CBLManager instance which owns this database (the server can have multiple databases and is itself managed by MPDatabasePackageController). */
-@property (readonly, weak) CBLManager *server;
+@property (nullable, readonly, weak) CBLManager *server;
 
 /** The CBLDatabase instance wrapped by the MPDatabase instance.  */
-@property (readonly, strong) CBLDatabase *database;
+@property (nonnull, readonly, strong) CBLDatabase *database;
 
 /** A metadata document stored in the database. Each document has one metadata document (found by its pre-defined identifier). It is intended to store a small number of key--value pairs which do not change regularly. */
-@property (readonly, strong) MPMetadata *metadata;
+@property (nonnull, readonly, strong) MPMetadata *metadata;
 
-@property (readonly, copy) NSString *identifier;
+@property (nonnull, readonly, copy) NSString *identifier;
 
 /** A local (non-replicated) metadata document stored in the database. */
-@property (readonly, strong) MPMetadata *localMetadata;
+@property (nonnull, readonly, strong) MPMetadata *localMetadata;
 
 /** A weak back pointer to the database controller. Typed id to avoid casting -- MPDatabasePackageController is an abstract class and a concrete subclass  is needed in the application. */
 @property (nullable, readonly, weak) __kindof MPDatabasePackageController *packageController; // subclass of MPDatabasePackageController
@@ -60,11 +60,11 @@ typedef enum MPDatabaseErrorCode
  *
  * A database is created for the CouchServer.
 */
-- (instancetype)initWithServer:(CBLManager *)server
-             packageController:(MPDatabasePackageController *)packageController
-                          name:(NSString *)name
-                 ensureCreated:(BOOL)ensureCreated
-                         error:(NSError **)err;
+- (instancetype _Nonnull )initWithServer:(CBLManager *_Nonnull)server
+                       packageController:(MPDatabasePackageController *_Nonnull)packageController
+                                    name:(NSString *_Nonnull)name
+                           ensureCreated:(BOOL)ensureCreated
+                                   error:(NSError *_Nonnull*_Nonnull)err;
 
 /**
  * @param server CouchServer from which the database is to be found. Should be one of the CouchServers owned by the database controller (2nd parameter).
@@ -74,58 +74,58 @@ typedef enum MPDatabaseErrorCode
  * @param pullFilterName is the name of the pull filter function. Optional parameter (can be nil).
  * @param err Error pointer.
 */
-- (instancetype)initWithServer:(CBLManager *)server
-             packageController:(MPDatabasePackageController *)packageController
-                          name:(NSString *)name
-                 ensureCreated:(BOOL)ensureCreated
-                pushFilterName:(NSString *)pushFilterName
-                pullFilterName:(NSString *)pullFilterName
-                         error:(NSError **)err;
+- (instancetype _Nonnull )initWithServer:(CBLManager *_Nonnull)server
+                       packageController:(MPDatabasePackageController *_Nonnull)packageController
+                                    name:(NSString *_Nonnull)name
+                           ensureCreated:(BOOL)ensureCreated
+                          pushFilterName:(NSString *_Nullable)pushFilterName
+                          pullFilterName:(NSString *_Nullable)pullFilterName
+                                   error:(NSError *_Nonnull*_Nonnull)err;
 
 /** Utility method for creating a string from a NSString which is safe to be used as a CouchDB database name (excludes certain forbidden characters).
- * @param string An input string, potentially containing characters not allowed in CouchDB database names. */
-+ (NSString *)sanitizedDatabaseIDWithString:(NSString *)string;
+ * @param string An input string, potentially containing characters not allowed in CouchDB database nam_Nonnulles. */
++ (NSString *_Nonnull)sanitizedDatabaseIDWithString:(NSString *_Nonnull)string;
 
 /** Start a continuous push replication with a remote database. */
-- (BOOL)pushToRemote:(CBLReplication **)replication
-               error:(NSError **)err;
+- (BOOL)pushToRemote:(CBLReplication *_Nullable*_Nullable)replication
+               error:(NSError *_Nonnull*_Nonnull)err;
 
 /** Start a continuous pull replication from a remote database. */
-- (BOOL)pullFromRemote:(CBLReplication **)replication
-                 error:(NSError **)err;
+- (BOOL)pullFromRemote:(CBLReplication *_Nullable*_Nullable)replication
+                 error:(NSError *_Nonnull*_Nonnull)err;
 
-- (BOOL)pullFromDatabaseAtURL:(NSURL *)url
-                  replication:(CBLReplication **)replication
-                        error:(NSError **)err;
+- (BOOL)pullFromDatabaseAtURL:(NSURL *_Nonnull)url
+                  replication:(CBLReplication *_Nonnull*_Nonnull)replication
+                        error:(NSError *_Nonnull*_Nonnull)err;
 
-- (BOOL)pushToDatabaseAtURL:(NSURL *)url
-                replication:(CBLReplication **)replication
-                      error:(NSError **)err;
+- (BOOL)pushToDatabaseAtURL:(NSURL *_Nonnull)url
+                replication:(CBLReplication *_Nonnull*_Nonnull)replication
+                      error:(NSError *_Nonnull*_Nonnull)err;
 
-- (BOOL)pullFromDatabaseAtPath:(NSString *)path
-                   replication:(CBLReplication **)replication
-                         error:(NSError **)err;
+- (BOOL)pullFromDatabaseAtPath:(NSString *_Nonnull)path
+                   replication:(CBLReplication *_Nonnull*_Nonnull)replication
+                         error:(NSError *_Nonnull*_Nonnull)err;
 
 /** Start a continuous, persistent pull and push replication with a remote database. */
-- (BOOL)syncWithRemote:(NSError **)error;
+- (BOOL)syncWithRemote:(NSError *_Nonnull*_Nonnull)error;
 
 /** Name of the filter function used to filter pulls to this database from a remote. */
-@property (readonly, copy) NSString *pullFilterName;
+@property (readonly, copy) NSString * _Nonnull pullFilterName;
 
 /** Name of the push filter function (a CouchbaseLite CBLFilterBlock) used to filter pushes from the local database to a remote. */
-@property (readonly, copy) NSString *pushFilterName;
+@property (readonly, copy) NSString * _Nonnull pushFilterName;
 
 /** The full name of the pull filter name, including the design document name. */
-@property (readonly, copy) NSString *qualifiedPullFilterName;
+@property (readonly, copy) NSString * _Nonnull qualifiedPullFilterName;
 
 /** The full name of the push filter name, including the design document name. */
-@property (readonly, copy) NSString *qualifiedPushFilterName;
+@property (readonly, copy) NSString * _Nonnull qualifiedPushFilterName;
 
 /** Define a new filter function to the database's internal design document (used only for ). Should be called only once per name. */
-- (void)defineFilterNamed:(NSString *)name block:(CBLFilterBlock)block;
+- (void)defineFilterNamed:(NSString *_Nonnull)name block:(CBLFilterBlock _Nonnull )block;
 
 /** Filter block with a given name, stored in the database's private design document. */
-- (CBLFilterBlock)filterWithQualifiedName:(NSString *)name;
+- (CBLFilterBlock _Nonnull )filterWithQualifiedName:(NSString *_Nonnull)name;
 
 /** The default replication URL for this database, used by -syncWithRemoteWithCompletionHandler: , -pushToRemoteWithCompletionHandler: and -pullFromremoteWithCompletionHandler: . Derived from database controller's remote URL and the database name. */
 @property (nullable, readonly, strong) NSURL *remoteDatabaseURL;
@@ -148,7 +148,7 @@ typedef enum MPDatabaseErrorCode
 
 /** Set values for keys using a dictionary. Allows bulk changes of CouchDynamicObject properties.
   * @param keyedValues A dictionary with property names as keys and and values representing the values to set the properties to. */
-- (void)setValuesForPropertiesWithDictionary:(NSDictionary *)keyedValues;
+- (void)setValuesForPropertiesWithDictionary:(NSDictionary *_Nonnull)keyedValues;
 
 @end
 
