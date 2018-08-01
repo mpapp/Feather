@@ -238,7 +238,8 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
             __weak typeof(self) weakSelf = self;
             [self startListenerWithCompletionHandler:^(NSError *err)
             {
-                [weakSelf.notificationCenter postNotificationName:MPDatabasePackageListenerDidStartNotification object:self];
+                __strong typeof(weakSelf) strongSelf = weakSelf;
+                [strongSelf.notificationCenter postNotificationName:MPDatabasePackageListenerDidStartNotification object:self];
             }];
         }
         
