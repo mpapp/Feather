@@ -49,4 +49,22 @@ public extension String {
         
         return links
     }
+
+    /// The number of occurences of a given string found within the receiver.
+    ///
+    /// - Parameter aString: The string to search for.
+    /// - Returns: The number of occurrences of `aString` found within the receiver. An empty string will result in a return value of `0`.
+    public func count(of aString: String) -> Int {
+        // (Modified from a solution here: https://stackoverflow.com/a/45073012)
+        if aString.isEmpty {
+            return 0
+        }
+        var count = 0
+        var searchRange: Range<String.Index>?
+        while let foundRange = range(of: aString, options: [], range: searchRange) {
+            count += 1
+            searchRange = Range(uncheckedBounds: (lower: foundRange.upperBound, upper: endIndex))
+        }
+        return count
+    }
 }
