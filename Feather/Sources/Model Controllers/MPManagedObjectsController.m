@@ -1042,7 +1042,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
     NSString *bundledAttachmentsPath = [[self resourcesBundle] pathForResource:attachmentsDirectoryName ofType:@"" inDirectory:bundledManuscriptDataDirectory];
     
     NSError *err = nil;
-    NSURL *tempBundledBundlesDirURL = [fm temporaryDirectoryURLInApplicationCachesSubdirectoryNamed:checksumKey error:&err];
+    NSURL *tempBundledBundlesDirURL = [fm temporaryDirectoryURLInGroupCachesSubdirectoryNamed:checksumKey error:&err];
     NSString *tempBundledBundlesPath = [tempBundledBundlesDirURL.path stringByAppendingPathComponent:[bundledBundlesPath lastPathComponent]];
     NSString *tempAttachmentsPath = [tempBundledBundlesDirURL.path stringByAppendingPathComponent:attachmentsDirectoryName];
     
