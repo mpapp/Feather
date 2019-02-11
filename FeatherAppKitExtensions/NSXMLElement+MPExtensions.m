@@ -1936,6 +1936,26 @@ typedef NS_ENUM(NSInteger, MPXMLElementErrorCode) {
     return s;
 }
 
+- (NSString *)stringByReplacingHTMLNamedEntitiesWithNumericEntities
+{
+    // Return early with the unmodified receiver if it doesn't contain any '&' characters
+    if ([self rangeOfString:@"&"].location == NSNotFound) {
+        return self;
+    }
+
+    __block NSString *s = nil;
+    // A map of named entities and their numeric entity equivalents
+    NSDictionary *entitiesToReplace = @{@"&nbsp;": @"&#xA0;",
+                                        };
+
+    // Replace all named entities in `entitiesToReplace` with their numeric entity equivalents
+    [entitiesToReplace enumerateKeysAndObjectsUsingBlock:^(NSString *namedEntity, NSString *numericEntity, BOOL *stop) {
+        s = [self stringByReplacingOccurrencesOfString:namedEntity withString:numericEntity];
+    }];
+
+    return s;
+}
+
 - (BOOL)appearsToContainSerialisedXML
 {
     if (self.length > 1 && (([self containsString:@"<"]  && [self containsString:@">"]) || ([self containsString:@"&"] && [self containsString:@";"]))) {

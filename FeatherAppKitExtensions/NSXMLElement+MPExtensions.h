@@ -270,6 +270,9 @@ typedef BOOL (^MPXMLNodeVisitor)(NSXMLNode *__nonnull node);
 /** Replace all solo ampersands (& characters) that aren't already part of either `&amp;`, `&quot;`, `&apos;`, `&lt;`, or `&gt;`, with `&amp;`.*/
 - (nonnull NSString *)stringByEscapingUnescapedAmpersands;
 
+/** Replace all HTML named entities (e.g. @c &nbsp;) with their numeric entity equivalents. */
+- (nonnull NSString *)stringByReplacingHTMLNamedEntitiesWithNumericEntities;
+
 /**
  
  Replace the characters &, ", ', < and > with their XML entity values:
