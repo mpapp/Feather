@@ -7,18 +7,7 @@
 //
 
 public extension Collection {
-    
-    /*
-    public func first(predicate: (Self.Iterator.Element) throws -> Bool) rethrows -> Self.Iterator.Element? {
-        for e in self {
-            if try predicate(e) {
-                return e
-            }
-        }
-        return nil
-    }*/
-    
-    
+
     func chunks(withDistance distance: IndexDistance) -> [[SubSequence.Iterator.Element]] {
         var index = startIndex
         let iterator: AnyIterator<Array<SubSequence.Iterator.Element>> = AnyIterator {
@@ -32,4 +21,15 @@ public extension Collection {
         return Array(iterator)
     }
     
+}
+
+extension Collection where Indices.Iterator.Element == Index {
+
+    /// Safely subscript a `Collection`. Returns either the object at the given index, or `nil` if the index would
+    /// otherwise cause an out-of-bounds exception.
+    ///
+    /// - Parameter index: The integer index of the object in the `Collection` to return.
+    subscript (ifExists index: Index) -> Iterator.Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
 }
