@@ -10,7 +10,7 @@ import Foundation
 
 public extension NSOutlineView {
     @objc public var allSelectedItems:[Any] {
-        return self.selectedRowIndexes.flatMap { index in
+        return self.selectedRowIndexes.compactMap { index in
             return self.item(atRow: index)
         }
     }

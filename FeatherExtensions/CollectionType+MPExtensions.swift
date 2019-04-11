@@ -8,7 +8,7 @@
 
 public extension Collection {
 
-    func chunks(withDistance distance: IndexDistance) -> [[SubSequence.Iterator.Element]] {
+    func chunks(withDistance distance: Int) -> [[SubSequence.Iterator.Element]] {
         var index = startIndex
         let iterator: AnyIterator<Array<SubSequence.Iterator.Element>> = AnyIterator {
             defer { index = self.index(index, offsetBy: distance, limitedBy: self.endIndex) ?? self.endIndex }

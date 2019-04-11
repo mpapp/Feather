@@ -14,14 +14,13 @@ public extension String {
         guard let range = self.range(of: str, options:options, range: nil, locale: nil) else {
             return nil
         }
-        
-        let charView = self.characters
+
         let p = Int(maxPadding)
-        let r = (charView.index(range.lowerBound, offsetBy: -p, limitedBy: self.startIndex) ?? charView.startIndex)
+        let r = (self.index(range.lowerBound, offsetBy: -p, limitedBy: self.startIndex) ?? self.startIndex)
                 ..<
-                (charView.index(range.upperBound, offsetBy: p, limitedBy: self.endIndex) ?? charView.endIndex)
+                (self.index(range.upperBound, offsetBy: p, limitedBy: self.endIndex) ?? self.endIndex)
         
-        return self.substring(with: r)
+        return String(self[r])
     }
     
     public enum LinkRelationParsingError: Error {
