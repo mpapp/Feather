@@ -24,7 +24,7 @@
 	url = ssh://git@github.com/mpapp/P2Core.git
 [submodule "Carthage/Checkouts/MPRateLimiter"]
 	path = Carthage/Checkouts/MPRateLimiter
-	url = ssh://git@github.com/mz2/MPRateLimiter.git
+	url = ssh://git@github.com/mpapp/MPRateLimiter.git
 [submodule "Carthage/Checkouts/MPTimer"]
 	path = Carthage/Checkouts/MPTimer
 	url = ssh://git@github.com/mpapp/MPTimer.git
@@ -36,4 +36,4 @@
 	url = ssh://git@github.com/mz2/MAKVONotificationCenter.git
 [submodule "Carthage/Checkouts/Freddy"]
 	path = Carthage/Checkouts/Freddy
-	url = ssh://git@github.com/bignerdranch/Freddy.git
+	url = ssh://git@github.com/mpapp/Freddy.git
