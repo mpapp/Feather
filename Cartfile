@@ -1,6 +1,5 @@
 github "mpapp/RegexKitLite" "master"
 github "mz2/couchbase-lite-ios" "master"
-github "mpapp/google-diff-match-patch-Objective-C" "master"
 github "mpapp/P2Core" "master"
 github "mpapp/MPRateLimiter" "1.1"
 github "mpapp/MPTimer" "1.2"
