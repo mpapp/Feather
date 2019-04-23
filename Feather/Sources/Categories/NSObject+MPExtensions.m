@@ -13,7 +13,6 @@
 
 @import CouchbaseLite;
 @import ObjectiveC;
-@import DiffMatchPatch;
 
 @implementation NSObject (Feather)
 
@@ -570,23 +569,3 @@ void mp_dispatch_async(dispatch_queue_t q, NSUInteger queueSpecificToken, dispat
 }
 
 @end
-
-@implementation NSString (NSStringDiff)
-- (NSString *)prettyHTMLDiffWithString:(NSString *)otherString
-{
-#if TARGET_OS_IPHONE
-    // iOS device
-#elif TARGET_IPHONE_SIMULATOR
-    // iOS Simulator
-#elif TARGET_OS_MAC
-    // Other kinds of Mac OS
-    DiffMatchPatch *diffObject = [[DiffMatchPatch alloc] init];
-    NSMutableArray *diffs = [diffObject diff_mainOfOldString:self andNewString:otherString];
-    return [diffObject diff_prettyHtml:diffs];
-#else
-    // Unsupported platform
-#endif
-    return nil;
-}
-@end
-
