@@ -10,7 +10,7 @@ import Foundation
 import RegexKitLite
 
 public extension String {
-    public func stringAroundOccurrence(ofString str:String, maxPadding:UInt, options:NSString.CompareOptions = []) -> String? {
+    func stringAroundOccurrence(ofString str:String, maxPadding:UInt, options:NSString.CompareOptions = []) -> String? {
         guard let range = self.range(of: str, options:options, range: nil, locale: nil) else {
             return nil
         }
@@ -23,12 +23,12 @@ public extension String {
         return String(self[r])
     }
     
-    public enum LinkRelationParsingError: Error {
+    enum LinkRelationParsingError: Error {
         case emptyString
         case unexpectedSection([String])
     }
     
-    public func linkRelations() throws -> [String:String] {
+    func linkRelations() throws -> [String:String] {
         if self.isEmpty {
             throw LinkRelationParsingError.emptyString
         }
@@ -53,7 +53,7 @@ public extension String {
     ///
     /// - Parameter aString: The string to search for.
     /// - Returns: The number of occurrences of `aString` found within the receiver. An empty string will result in a return value of `0`.
-    public func count(of aString: String) -> Int {
+    func count(of aString: String) -> Int {
         // (Modified from a solution here: https://stackoverflow.com/a/45073012)
         if aString.isEmpty {
             return 0

@@ -9,13 +9,13 @@
 import Foundation
 
 public extension NSOutlineView {
-    @objc public var allSelectedItems:[Any] {
+    @objc var allSelectedItems:[Any] {
         return self.selectedRowIndexes.compactMap { index in
             return self.item(atRow: index)
         }
     }
     
-    @objc(selectItem:byExtendingSelection:) public func select(item:Any?, byExtendingSelection:Bool) {
+    @objc(selectItem:byExtendingSelection:) func select(item:Any?, byExtendingSelection:Bool) {
         if (!byExtendingSelection) {
             self.deselectAll(self)
         }
@@ -28,7 +28,7 @@ public extension NSOutlineView {
         self.selectRowIndexes(IndexSet(integer: row), byExtendingSelection: true)
     }
     
-    @objc(selectItems:byExtendingSelection:) public func select(items:[Any]?, byExtendingSelection:Bool) {
+    @objc(selectItems:byExtendingSelection:) func select(items:[Any]?, byExtendingSelection:Bool) {
         if (!byExtendingSelection || items == nil) {
             self.deselectAll(self)
         }

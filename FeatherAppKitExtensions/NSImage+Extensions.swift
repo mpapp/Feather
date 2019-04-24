@@ -10,7 +10,7 @@ import Foundation
 
 public extension NSImage {
 
-    public enum ImageWritingError: Swift.Error {
+    enum ImageWritingError: Swift.Error {
         case cgImageCreationFailed
         case bitmapRepCreationFailed
         

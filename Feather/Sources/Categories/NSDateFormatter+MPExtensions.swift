@@ -9,7 +9,7 @@
 import Foundation
 
 public extension DateFormatter {
-    public class func ISO8601Formatter() -> DateFormatter {
+    class func ISO8601Formatter() -> DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.timeZone = TimeZone.autoupdatingCurrent

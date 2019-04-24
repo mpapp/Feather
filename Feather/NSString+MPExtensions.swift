@@ -30,7 +30,7 @@ public enum NSStringFeatherExtensionsError: Int, Swift.Error, CustomNSError {
 }
 
 @objc public extension NSString {
-    @objc public func XMLStringByRemovingDuplicateXMLDeclarations() -> String {
+    @objc func XMLStringByRemovingDuplicateXMLDeclarations() -> String {
         // the preceding character is included in the pattern, therefore captured and included in output.
         // the pattern below matches to <?xml…?> that is not at the very beginning of the document.
         let regex = try! NSRegularExpression(pattern:"(.)<\\?xml.*\\?>", options:NSRegularExpression.Options.caseInsensitive)
@@ -39,7 +39,7 @@ public enum NSStringFeatherExtensionsError: Int, Swift.Error, CustomNSError {
         return modifiedString
     }
     
-    @objc public func isUUIDLike() -> Bool {
+    @objc func isUUIDLike() -> Bool {
         return self.length == 36
             && self.substring(with: NSRange(location: 8,length: 1)) == "-"
             && self.substring(with: NSRange(location: 13,length: 1)) == "-"
@@ -59,7 +59,7 @@ public enum NSStringFeatherExtensionsError: Int, Swift.Error, CustomNSError {
         return false;
     }
     
-    @objc public class func string(data: Data, usedEncoding: UnsafeMutablePointer<UInt>?) throws -> NSString {
+    @objc class func string(data: Data, usedEncoding: UnsafeMutablePointer<UInt>?) throws -> NSString {
         var convertedString: NSString? = nil
         var lossyConversionUsed: ObjCBool = false
         

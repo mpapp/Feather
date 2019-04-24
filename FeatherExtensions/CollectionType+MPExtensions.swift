@@ -29,7 +29,7 @@ public extension Collection where Indices.Iterator.Element == Index {
     /// otherwise cause an out-of-bounds exception.
     ///
     /// - Parameter index: The integer index of the object in the `Collection` to return.
-    public subscript (ifExists index: Index) -> Iterator.Element? {
+    subscript (ifExists index: Index) -> Iterator.Element? {
         return indices.contains(index) ? self[index] : nil
     }
 }
