@@ -21,7 +21,7 @@ public extension Dictionary {
 
 public extension Dictionary where Value: Hashable {
     
-    public func inverted() -> [Value: Key] {
+    func inverted() -> [Value: Key] {
         var dict = [Value:Key]()
         for (key, value) in self {
             dict[value] = key
@@ -32,7 +32,7 @@ public extension Dictionary where Value: Hashable {
 }
 
 @objc public extension NSDictionary {
-    @objc public func invertedDictionary() -> NSDictionary {
+    @objc func invertedDictionary() -> NSDictionary {
         let dict = NSMutableDictionary()
         
         for key in self.allKeys {

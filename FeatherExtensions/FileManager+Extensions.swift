@@ -14,7 +14,7 @@ public extension FileManager {
         case noGroupCachesDirectory
     }
     
-    public func temporaryGroupCachesSubdirectoryURL(named name: String) throws -> URL {
+    func temporaryGroupCachesSubdirectoryURL(named name: String) throws -> URL {
         guard let groupCachesURL = self.sharedApplicationGroupCachesDirectoryURL() else {
             throw TemporaryFileCreationError.noGroupCachesDirectory
         }
@@ -26,7 +26,7 @@ public extension FileManager {
                                      extension: "")
     }
     
-    public func temporaryGroupCachesFileURL(inSubdirectoryNamed name: String, pathExtension: String) throws -> URL {
+    func temporaryGroupCachesFileURL(inSubdirectoryNamed name: String, pathExtension: String) throws -> URL {
         guard let groupCachesURL = self.sharedApplicationGroupCachesDirectoryURL() else {
             throw TemporaryFileCreationError.noGroupCachesDirectory
         }

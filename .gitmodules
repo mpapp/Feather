@@ -6,10 +6,7 @@
 	url = git@github.com:mpapp/NSBundle-OBCodeSigningInfo.git
 [submodule "Carthage/Checkouts/couchbase-lite-ios"]
 	path = Carthage/Checkouts/couchbase-lite-ios
-	url = ssh://git@github.com/mz2/couchbase-lite-ios.git
-[submodule "Carthage/Checkouts/google-diff-match-patch-Objective-C"]
-	path = Carthage/Checkouts/google-diff-match-patch-Objective-C
-	url = ssh://git@github.com/mpapp/google-diff-match-patch-Objective-C.git
+	url = ssh://git@github.com/mpapp/couchbase-lite-ios.git
 [submodule "Carthage/Checkouts/RegexKitLite"]
 	path = Carthage/Checkouts/RegexKitLite
 	url = ssh://git@github.com/mpapp/RegexKitLite.git
@@ -24,7 +21,7 @@
 	url = ssh://git@github.com/mpapp/P2Core.git
 [submodule "Carthage/Checkouts/MPRateLimiter"]
 	path = Carthage/Checkouts/MPRateLimiter
-	url = ssh://git@github.com/mz2/MPRateLimiter.git
+	url = ssh://git@github.com/mpapp/MPRateLimiter.git
 [submodule "Carthage/Checkouts/MPTimer"]
 	path = Carthage/Checkouts/MPTimer
 	url = ssh://git@github.com/mpapp/MPTimer.git
@@ -36,4 +33,4 @@
 	url = ssh://git@github.com/mz2/MAKVONotificationCenter.git
 [submodule "Carthage/Checkouts/Freddy"]
 	path = Carthage/Checkouts/Freddy
-	url = ssh://git@github.com/bignerdranch/Freddy.git
+	url = ssh://git@github.com/mpapp/Freddy.git

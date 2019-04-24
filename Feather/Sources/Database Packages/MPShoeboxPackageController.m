@@ -43,7 +43,7 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
         __block NSString *identifier = nil;
         
         dispatch_sync(self.server.dispatchQueue, ^{
-            identifier = [_sharedDatabase.metadata getValueOfProperty:@"identifier"];
+            identifier = [self->_sharedDatabase.metadata getValueOfProperty:@"identifier"];
         });
         //NSLog(@"%@", identifier);
         assert(_sharedDatabase.metadata);
@@ -54,7 +54,7 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
 
             __block BOOL savingSucceeded = NO;
             mp_dispatch_sync(self.server.dispatchQueue, self.serverQueueToken, ^{
-                savingSucceeded = [[_sharedDatabase metadata] save:err];
+                savingSucceeded = [[self->_sharedDatabase metadata] save:err];
             });
             
             if (!savingSucceeded)
@@ -80,8 +80,8 @@ NSString * const MPDefaultsKeySharedPackageUDID = @"MPDefaultsKeySharedPackageUD
                     
                     CBLReplication *pull = nil;
                     NSError *pullErr = nil;
-                    [_sharedDatabase pushToDatabaseAtURL:url replication:&push error:&pushErr];
-                    [_sharedDatabase pullFromDatabaseAtURL:url replication:&pull error:&pullErr];
+                    [self->_sharedDatabase pushToDatabaseAtURL:url replication:&push error:&pushErr];
+                    [self->_sharedDatabase pullFromDatabaseAtURL:url replication:&pull error:&pullErr];
                     
                     if (pushErr)
                         [self.notificationCenter postErrorNotification:pushErr];
