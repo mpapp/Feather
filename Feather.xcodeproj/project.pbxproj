@@ -1301,11 +1301,11 @@
 			};
 			buildConfigurationList = 5FDB32FC1705CB950049EBB5 /* Build configuration list for PBXProject "Feather" */;
 			compatibilityVersion = "Xcode 3.2";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				English,
 				en,
+				Base,
 			);
 			mainGroup = 5FDB32F71705CB950049EBB5;
 			productRefGroup = 5FDB33041705CB950049EBB5 /* Products */;
