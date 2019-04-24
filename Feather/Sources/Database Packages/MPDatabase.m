@@ -88,7 +88,7 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
         
         __block NSError *e = nil;
         mp_dispatch_sync(_server.dispatchQueue, packageController.serverQueueToken, ^{
-            _database = [_server databaseNamed:[MPDatabase sanitizedDatabaseIDWithString:name] error:&e];
+            self->_database = [self->_server databaseNamed:[MPDatabase sanitizedDatabaseIDWithString:name] error:&e];
         });
         
         if (!_database) {

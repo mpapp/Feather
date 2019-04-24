@@ -1367,7 +1367,7 @@ static const NSUInteger MPDatabasePackageListenerMaxRetryCount = 30;
         if (e)
             return;
         
-        for (MPManagedObjectsController *moc in _managedObjectsControllers) {
+        for (MPManagedObjectsController *moc in self->_managedObjectsControllers) {
             if (moc == sc) continue;
             for (MPManagedObject *mo in [moc allObjects])
             {

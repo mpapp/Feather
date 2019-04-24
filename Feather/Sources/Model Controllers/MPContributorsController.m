@@ -239,7 +239,7 @@ NSString * const MPContributorRoleTranslator = @"translator";
 - (void)hasRemovedContributor:(NSNotification *)notification
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        _cachedContributors = [_cachedContributors arrayByRemovingObject:notification.object];
+        self->_cachedContributors = [self->_cachedContributors arrayByRemovingObject:notification.object];
     });
 }
 

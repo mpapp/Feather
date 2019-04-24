@@ -869,7 +869,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
             MPManagedObject *modelObj = (id)[row.document modelObject];
 
             if (!modelObj) {
-                modelObj = _objectCache[row.document.documentID];
+                modelObj = self->_objectCache[row.document.documentID];
                 modelObj.document = row.document;
 
                 if (!modelObj) {
@@ -900,7 +900,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
             MPManagedObject *modelObj = (MPManagedObject *)[row.document modelObject];
             
             if (!modelObj) {
-                modelObj = _objectCache[row.document.documentID];
+                modelObj = self->_objectCache[row.document.documentID];
                 modelObj.document = row.document;
                 
                 if (!modelObj) {
@@ -1187,7 +1187,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
         [[self.packageController notificationCenter] postErrorNotification:replication.lastError];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            _loadingBundledDatabaseResources = NO;
+            self->_loadingBundledDatabaseResources = NO;
         });
     }
 }
