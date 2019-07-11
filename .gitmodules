@@ -31,6 +31,3 @@
 [submodule "Carthage/Checkouts/MAKVONotificationCenter"]
 	path = Carthage/Checkouts/MAKVONotificationCenter
 	url = ssh://git@github.com/mz2/MAKVONotificationCenter.git
-[submodule "Carthage/Checkouts/Freddy"]
-	path = Carthage/Checkouts/Freddy
-	url = ssh://git@github.com/mpapp/Freddy.git

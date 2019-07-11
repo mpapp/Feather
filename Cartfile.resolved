@@ -1,5 +1,4 @@
 github "mpapp/CocoaLumberjack" "99676dd160a3793fefc339ed8fd96a7a9435e306"
-github "mpapp/Freddy" "3.0.4"
 github "mpapp/MPRateLimiter" "1.1"
 github "mpapp/MPTimer" "1.2"
 github "mpapp/P2Core" "42b9318fcb72ec3968f0c1868bc7aa66248f3f90"

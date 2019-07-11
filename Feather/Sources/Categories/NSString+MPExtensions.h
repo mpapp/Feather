@@ -48,13 +48,6 @@ NS_INLINE  NSMutableString *_Nonnull MPMutableStringForString(NSString *_Nonnull
 
 - (nullable NSString *)substringUpToEndOfFirstOccurrenceOfString:(nonnull NSString *)s;
 
-- (nonnull NSString *)stringByTranslatingPresentToPastTense;
-
-- (nonnull NSString *)stringByMakingSentenceCase;
-
-@property (readonly, copy, nonnull) NSString *pluralizedString;
-@property (readonly, copy, nonnull) NSString *camelCasedString;
-
 @property (readonly, copy, nonnull) NSString *stringByRemovingWhitespace;
 
 @property (readonly, copy, nonnull) NSString *sentenceCasedString;

@@ -9,7 +9,6 @@
 
 #import "NSString+MPExtensions.h"
 
-@import RegexKitLite;
 @import CoreServices;
 
 @interface NSStringHTMLStripParser : NSObject<NSXMLParserDelegate> {
@@ -42,21 +41,6 @@
 
 - (BOOL)hasContent { return self.length > 0; }
 
-- (NSString *)stringByMakingSentenceCase
-{
-    NSMutableString *str = [[NSMutableString alloc] initWithString:self];
-    [str replaceOccurrencesOfRegex:@"^(.)"
-                        usingBlock:
-     ^NSString *(NSInteger captureCount,
-                 NSString *const __unsafe_unretained *capturedStrings,
-                 const NSRange *capturedRanges,
-                 volatile BOOL *const stop) {
-         assert(captureCount == 2);
-         return [capturedStrings[0] uppercaseString];
-    }];
-    return [str copy];
-}
-
 - (BOOL)containsSubstring:(NSString *)substring
 {
     return ([self rangeOfString:substring].location != NSNotFound);
@@ -69,35 +53,6 @@
         return nil;
     NSString *substring = [self substringToIndex:(r.location + r.length)];
     return substring;
-}
-
-- (NSString *)stringByTranslatingPresentToPastTense
-{
-    return [[self stringByReplacingOccurrencesOfRegex:@"e$" withString:@""] stringByAppendingString:@"ed"];
-}
-
-- (NSString *)pluralizedString
-{
-    if ([self isMatchedByRegex:@"y$"])
-    {
-        return [self stringByReplacingOccurrencesOfRegex:@"y$" withString:@"ies"];
-    }
-    return [self stringByAppendingString:@"s"];
-}
-
-- (NSString *)camelCasedString
-{
-    NSMutableString *str = [NSMutableString stringWithString:self];
-    [str replaceOccurrencesOfRegex:@"^(.)"
-                        usingBlock:^NSString *(NSInteger captureCount,
-                                               NSString *const __unsafe_unretained *capturedStrings,
-                                               const NSRange *capturedRanges,
-                                               volatile BOOL *const stop)
-    {
-        assert(captureCount > 0);
-        return [capturedStrings[0] lowercaseString];
-    }];
-    return [str copy];
 }
 
 // lifted from http://stackoverflow.com/questions/2432452/how-to-capitalize-the-first-word-of-the-sentence-in-objective-c

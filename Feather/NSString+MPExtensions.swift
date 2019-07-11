@@ -30,6 +30,28 @@ public enum NSStringFeatherExtensionsError: Int, Swift.Error, CustomNSError {
 }
 
 @objc public extension NSString {
+    
+    @objc func camelCasedString() -> String {
+        return (self as String).camelCased
+    }
+
+    @objc func stringByMakingSentenceCase() -> String {
+        return (self as String).sentenceCased
+    }
+
+    @objc func pluralizedString() -> String {
+        let str = self as String
+        if str.matches(regex: "y$").count > 0 {
+            return str.replacingOccurrences(of: "y$", with: "ies", options: .regularExpression,
+                                                  range: nil)
+        }
+        return self.appending("s")
+    }
+    
+    @objc func stringByTranslatingPresentToPastTense() -> String {
+        return (self as String).replacingOccurrences(of: "e$", with: "", options: .regularExpression, range: nil) + "ed"
+    }
+    
     @objc func XMLStringByRemovingDuplicateXMLDeclarations() -> String {
         // the preceding character is included in the pattern, therefore captured and included in output.
         // the pattern below matches to <?xml…?> that is not at the very beginning of the document.

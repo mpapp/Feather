@@ -16,7 +16,6 @@
 #import "MPException.h"
 
 @import FeatherExtensions;
-@import RegexKitLite;
 @import ObjectiveC;
 
 @implementation MPManagedObject (MPManagedObjectMixIn)

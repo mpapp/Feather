@@ -87,6 +87,7 @@
 		5F8192201E3279710033B843 /* NSImage+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FADC70118FAFBAD006F4119 /* NSImage+MPExtensions.m */; };
 		5F89426A1CD04E4E00A9DC07 /* FeatherExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; };
 		5F89426B1CD0531100A9DC07 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */; };
+		5F9592D122D736BB0098236A /* String+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9592D022D736BB0098236A /* String+MPExtensions.swift */; };
 		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
 		5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
@@ -94,7 +95,6 @@
 		5FA29AC11D71ACF2000DB8C1 /* NSOutlineView+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA29AC01D71ACF2000DB8C1 /* NSOutlineView+MPExtensions.swift */; };
 		5FAA0A6A1D2EA96500F18A2D /* Freddy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAA0A691D2EA96500F18A2D /* Freddy.framework */; };
 		5FAC23BF19ABFE79000F188C /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAC23BE19ABFE79000F188C /* CoreServices.framework */; };
-		5FAF535A1D7F397600372EF5 /* RegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDED07E1C67A09A00769001 /* RegexKitLite.framework */; };
 		5FBDCBF41CE9D691002DEAA7 /* ErrorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBDCBF31CE9D691002DEAA7 /* ErrorPresenter.swift */; };
 		5FC423131AFF8719002234FB /* FeatherExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC423121AFF8719002234FB /* FeatherExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FC4233C1AFF872E002234FB /* NSArray+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB382B170702CD0049EBB5 /* NSArray+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -163,8 +163,6 @@
 		5FD0A4851E2428F20012B195 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4831E2428F20012B195 /* CocoaLumberjackSwift.framework */; };
 		5FD0A4861E2428F70012B195 /* CocoaLumberjack.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4821E2428F20012B195 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FD0A4871E2428F70012B195 /* CocoaLumberjackSwift.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4831E2428F20012B195 /* CocoaLumberjackSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5FD0A4891E242A4E0012B195 /* RegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4881E242A4E0012B195 /* RegexKitLite.framework */; };
-		5FD0A48A1E242A500012B195 /* RegexKitLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4881E242A4E0012B195 /* RegexKitLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FD0A48C1E242A770012B195 /* MPTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A48B1E242A770012B195 /* MPTimer.framework */; };
 		5FD0A48D1E242A7D0012B195 /* MPTimer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A48B1E242A770012B195 /* MPTimer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FD0A48F1E242A9E0012B195 /* MPRateLimiter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A48E1E242A9E0012B195 /* MPRateLimiter.framework */; };
@@ -210,7 +208,6 @@
 		5FDB3AA91707ABBE0049EBB5 /* MPTreeItem.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2F4171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */; };
-		5FDED07F1C67A09A00769001 /* RegexKitLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDED07E1C67A09A00769001 /* RegexKitLite.framework */; };
 		5FE2C0EB1B256B4C001DB163 /* MPTreeItemUtility.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FE2C0E91B256B4C001DB163 /* MPTreeItemUtility.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FE2C0EC1B256B4C001DB163 /* MPTreeItemUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FE2C0EA1B256B4C001DB163 /* MPTreeItemUtility.m */; };
 		5FE4F7091F8BC4E200BCFB41 /* NSBundle+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3824170702990049EBB5 /* NSBundle+MPExtensions.m */; };
@@ -281,7 +278,6 @@
 				5FD0A4961E242ACE0012B195 /* CocoaHTTPServerKit.framework in Copy Frameworks */,
 				5FD0A4901E242AA50012B195 /* MPRateLimiter.framework in Copy Frameworks */,
 				5FD0A48D1E242A7D0012B195 /* MPTimer.framework in Copy Frameworks */,
-				5FD0A48A1E242A500012B195 /* RegexKitLite.framework in Copy Frameworks */,
 				5FD0A4861E2428F70012B195 /* CocoaLumberjack.framework in Copy Frameworks */,
 				5FD0A4871E2428F70012B195 /* CocoaLumberjackSwift.framework in Copy Frameworks */,
 				5FD0A4801E2426F60012B195 /* Feather.framework in Copy Frameworks */,
@@ -364,6 +360,7 @@
 		5F8119471CEE32C3007018B8 /* TreeItemPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TreeItemPool.swift; path = Sources/Model/TreeItemPool.swift; sourceTree = "<group>"; };
 		5F8119491CEE36A5007018B8 /* MPObjectWrappingSection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPObjectWrappingSection.h; path = Sources/Model/MPObjectWrappingSection.h; sourceTree = "<group>"; };
 		5F81194A1CEE36A5007018B8 /* MPObjectWrappingSection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPObjectWrappingSection.m; path = Sources/Model/MPObjectWrappingSection.m; sourceTree = "<group>"; };
+		5F9592D022D736BB0098236A /* String+MPExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+MPExtensions.swift"; sourceTree = "<group>"; };
 		5F95F2D71739A94300E8C845 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPIndexableMixin.h; path = Sources/Model/MPIndexableMixin.h; sourceTree = "<group>"; };
 		5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPIndexableMixin.m; path = Sources/Model/MPIndexableMixin.m; sourceTree = "<group>"; };
@@ -413,7 +410,6 @@
 		5FD0A4711E2425F30012B195 /* MPModelFoundationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPModelFoundationTests.m; sourceTree = "<group>"; };
 		5FD0A4821E2428F20012B195 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/Mac/CocoaLumberjack.framework; sourceTree = "<group>"; };
 		5FD0A4831E2428F20012B195 /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjackSwift.framework; path = Carthage/Build/Mac/CocoaLumberjackSwift.framework; sourceTree = "<group>"; };
-		5FD0A4881E242A4E0012B195 /* RegexKitLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RegexKitLite.framework; path = Carthage/Build/Mac/RegexKitLite.framework; sourceTree = "<group>"; };
 		5FD0A48B1E242A770012B195 /* MPTimer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MPTimer.framework; path = Carthage/Build/Mac/MPTimer.framework; sourceTree = "<group>"; };
 		5FD0A48E1E242A9E0012B195 /* MPRateLimiter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MPRateLimiter.framework; path = Carthage/Build/Mac/MPRateLimiter.framework; sourceTree = "<group>"; };
 		5FD0A4941E242ACC0012B195 /* CocoaHTTPServerKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaHTTPServerKit.framework; path = Carthage/Build/Mac/CocoaHTTPServerKit.framework; sourceTree = "<group>"; };
@@ -491,7 +487,6 @@
 		5FDB3AA117079FB80049EBB5 /* MPTreeItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MPTreeItem.h; path = Sources/Model/MPTreeItem.h; sourceTree = "<group>"; };
 		5FDCF2F2171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPEmbeddedPropertyContainingMixin.h; path = Sources/Model/MPEmbeddedPropertyContainingMixin.h; sourceTree = "<group>"; };
 		5FDCF2F3171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPEmbeddedPropertyContainingMixin.m; path = Sources/Model/MPEmbeddedPropertyContainingMixin.m; sourceTree = "<group>"; };
-		5FDED07E1C67A09A00769001 /* RegexKitLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RegexKitLite.framework; path = Carthage/Build/Mac/RegexKitLite.framework; sourceTree = "<group>"; };
 		5FE2C0E91B256B4C001DB163 /* MPTreeItemUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPTreeItemUtility.h; path = Sources/Utilities/MPTreeItemUtility.h; sourceTree = "<group>"; };
 		5FE2C0EA1B256B4C001DB163 /* MPTreeItemUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPTreeItemUtility.m; path = Sources/Utilities/MPTreeItemUtility.m; sourceTree = "<group>"; };
 		5FEA8B4F18A81E0100A7C14B /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
@@ -537,7 +532,6 @@
 			files = (
 				5FC423911AFF8CCA002234FB /* libz.dylib in Frameworks */,
 				5F89426B1CD0531100A9DC07 /* CocoaLumberjackSwift.framework in Frameworks */,
-				5FAF535A1D7F397600372EF5 /* RegexKitLite.framework in Frameworks */,
 				5FC423751AFF87FC002234FB /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -564,7 +558,6 @@
 				5FD0A48F1E242A9E0012B195 /* MPRateLimiter.framework in Frameworks */,
 				5FD0A4761E2426060012B195 /* MAKVONotificationCenter.framework in Frameworks */,
 				5FD0A4771E2426060012B195 /* Freddy.framework in Frameworks */,
-				5FD0A4891E242A4E0012B195 /* RegexKitLite.framework in Frameworks */,
 				5FD0A4781E2426090012B195 /* CouchbaseLite.framework in Frameworks */,
 				5FD0A4851E2428F20012B195 /* CocoaLumberjackSwift.framework in Frameworks */,
 				5FD0A4841E2428F20012B195 /* CocoaLumberjack.framework in Frameworks */,
@@ -584,7 +577,6 @@
 				5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */,
 				5FDB3A08170793B30049EBB5 /* libz.dylib in Frameworks */,
 				5F00787A1C95C4D400DDB296 /* CocoaLumberjackSwift.framework in Frameworks */,
-				5FDED07F1C67A09A00769001 /* RegexKitLite.framework in Frameworks */,
 				5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */,
 				5F4A48BF1C34079C0029DB3E /* CouchbaseLiteListener.framework in Frameworks */,
 				5FC4236A1AFF8775002234FB /* FeatherExtensions.framework in Frameworks */,
@@ -799,7 +791,6 @@
 				5FD0A4941E242ACC0012B195 /* CocoaHTTPServerKit.framework */,
 				5FD0A48E1E242A9E0012B195 /* MPRateLimiter.framework */,
 				5FD0A48B1E242A770012B195 /* MPTimer.framework */,
-				5FD0A4881E242A4E0012B195 /* RegexKitLite.framework */,
 				5FD0A4821E2428F20012B195 /* CocoaLumberjack.framework */,
 				5FD0A4831E2428F20012B195 /* CocoaLumberjackSwift.framework */,
 				5FD0A4511E2424C40012B195 /* MAKVONotificationCenter.framework */,
@@ -809,7 +800,6 @@
 				5FF745B91D259C3500B493D0 /* MPRateLimiter.framework */,
 				5F05A36E1CD0461000FE80D8 /* P2Core.framework */,
 				5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */,
-				5FDED07E1C67A09A00769001 /* RegexKitLite.framework */,
 				5F5084471C551804009D7211 /* CocoaLumberjack.framework */,
 				5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */,
 				5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */,
@@ -913,6 +903,7 @@
 				5FD0E13118F082BD00789CC9 /* NSUUID+MPExtensions.h */,
 				5FD0E13218F082BD00789CC9 /* NSUUID+MPExtensions.m */,
 				5F1467831E8EF2D9008FA244 /* FileManager+Extensions.swift */,
+				5F9592D022D736BB0098236A /* String+MPExtensions.swift */,
 			);
 			name = "Foundation Categories";
 			path = ../Feather;
@@ -1409,6 +1400,7 @@
 				5FE4F7091F8BC4E200BCFB41 /* NSBundle+MPExtensions.m in Sources */,
 				5F4ED85F1CECDB61003ED0B8 /* String+Extensions.swift in Sources */,
 				5F9F226A1C792A0800244277 /* CollectionType+MPExtensions.swift in Sources */,
+				5F9592D122D736BB0098236A /* String+MPExtensions.swift in Sources */,
 				5FC423411AFF872E002234FB /* NSNotificationCenter+ErrorNotification.m in Sources */,
 				5FC423551AFF872E002234FB /* NSFileManager+MPExtensions.m in Sources */,
 				5FC423451AFF872E002234FB /* NSDictionary+MPExtensions.m in Sources */,
