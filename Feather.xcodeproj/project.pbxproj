@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -88,6 +88,9 @@
 		5F89426A1CD04E4E00A9DC07 /* FeatherExtensions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; };
 		5F89426B1CD0531100A9DC07 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */; };
 		5F9592D122D736BB0098236A /* String+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9592D022D736BB0098236A /* String+MPExtensions.swift */; };
+		5F9592D422D9296C0098236A /* MPRateLimiter in Frameworks */ = {isa = PBXBuildFile; productRef = 5F9592D322D9296C0098236A /* MPRateLimiter */; };
+		5F9592D622D9298D0098236A /* MPRateLimiter in Frameworks */ = {isa = PBXBuildFile; productRef = 5F9592D522D9298D0098236A /* MPRateLimiter */; };
+		5F9592D922D92B860098236A /* MPTimer in Frameworks */ = {isa = PBXBuildFile; productRef = 5F9592D822D92B860098236A /* MPTimer */; };
 		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
 		5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
@@ -160,10 +163,6 @@
 		5FD0A4851E2428F20012B195 /* CocoaLumberjackSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4831E2428F20012B195 /* CocoaLumberjackSwift.framework */; };
 		5FD0A4861E2428F70012B195 /* CocoaLumberjack.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4821E2428F20012B195 /* CocoaLumberjack.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FD0A4871E2428F70012B195 /* CocoaLumberjackSwift.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4831E2428F20012B195 /* CocoaLumberjackSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5FD0A48C1E242A770012B195 /* MPTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A48B1E242A770012B195 /* MPTimer.framework */; };
-		5FD0A48D1E242A7D0012B195 /* MPTimer.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A48B1E242A770012B195 /* MPTimer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5FD0A48F1E242A9E0012B195 /* MPRateLimiter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A48E1E242A9E0012B195 /* MPRateLimiter.framework */; };
-		5FD0A4901E242AA50012B195 /* MPRateLimiter.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A48E1E242A9E0012B195 /* MPRateLimiter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FD0A4951E242ACC0012B195 /* CocoaHTTPServerKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4941E242ACC0012B195 /* CocoaHTTPServerKit.framework */; };
 		5FD0A4961E242ACE0012B195 /* CocoaHTTPServerKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4941E242ACC0012B195 /* CocoaHTTPServerKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
@@ -210,8 +209,6 @@
 		5FE4F7091F8BC4E200BCFB41 /* NSBundle+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3824170702990049EBB5 /* NSBundle+MPExtensions.m */; };
 		5FE4F70A1F8BC4E600BCFB41 /* NSBundle+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3823170702990049EBB5 /* NSBundle+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FEE14CE1D89552F0087924A /* MPContributorChangeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEE14CD1D89552F0087924A /* MPContributorChangeObserver.swift */; };
-		5FF745BA1D259C3500B493D0 /* MPRateLimiter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF745B91D259C3500B493D0 /* MPRateLimiter.framework */; };
-		5FF745BC1D25A8F700B493D0 /* MPTimer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF745BB1D25A8F700B493D0 /* MPTimer.framework */; };
 		5FF745C41D26FD0A00B493D0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF745C31D26FD0A00B493D0 /* CloudKit.framework */; };
 		5FFC37701AEEF7AF0041FBED /* MPCountryList.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FFC376E1AEEF7AF0041FBED /* MPCountryList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FFC37711AEEF7AF0041FBED /* MPCountryList.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFC376F1AEEF7AF0041FBED /* MPCountryList.m */; };
@@ -273,8 +270,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				5FD0A4961E242ACE0012B195 /* CocoaHTTPServerKit.framework in Copy Frameworks */,
-				5FD0A4901E242AA50012B195 /* MPRateLimiter.framework in Copy Frameworks */,
-				5FD0A48D1E242A7D0012B195 /* MPTimer.framework in Copy Frameworks */,
 				5FD0A4861E2428F70012B195 /* CocoaLumberjack.framework in Copy Frameworks */,
 				5FD0A4871E2428F70012B195 /* CocoaLumberjackSwift.framework in Copy Frameworks */,
 				5FD0A4801E2426F60012B195 /* Feather.framework in Copy Frameworks */,
@@ -405,8 +400,6 @@
 		5FD0A4711E2425F30012B195 /* MPModelFoundationTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPModelFoundationTests.m; sourceTree = "<group>"; };
 		5FD0A4821E2428F20012B195 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/Mac/CocoaLumberjack.framework; sourceTree = "<group>"; };
 		5FD0A4831E2428F20012B195 /* CocoaLumberjackSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjackSwift.framework; path = Carthage/Build/Mac/CocoaLumberjackSwift.framework; sourceTree = "<group>"; };
-		5FD0A48B1E242A770012B195 /* MPTimer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MPTimer.framework; path = Carthage/Build/Mac/MPTimer.framework; sourceTree = "<group>"; };
-		5FD0A48E1E242A9E0012B195 /* MPRateLimiter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MPRateLimiter.framework; path = Carthage/Build/Mac/MPRateLimiter.framework; sourceTree = "<group>"; };
 		5FD0A4941E242ACC0012B195 /* CocoaHTTPServerKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaHTTPServerKit.framework; path = Carthage/Build/Mac/CocoaHTTPServerKit.framework; sourceTree = "<group>"; };
 		5FD0E13118F082BD00789CC9 /* NSUUID+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSUUID+MPExtensions.h"; sourceTree = "<group>"; };
 		5FD0E13218F082BD00789CC9 /* NSUUID+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSUUID+MPExtensions.m"; sourceTree = "<group>"; };
@@ -488,8 +481,6 @@
 		5FEE14CD1D89552F0087924A /* MPContributorChangeObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MPContributorChangeObserver.swift; path = Sources/Model/MPContributorChangeObserver.swift; sourceTree = "<group>"; };
 		5FF745AA1D25518300B493D0 /* MPManagedObject-CloudKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "MPManagedObject-CloudKit.swift"; path = "Sources/Model/MPManagedObject-CloudKit.swift"; sourceTree = "<group>"; };
 		5FF745B71D259BD100B493D0 /* CloudKitSyncService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CloudKitSyncService.swift; path = Sources/Services/CloudKitSyncService.swift; sourceTree = "<group>"; };
-		5FF745B91D259C3500B493D0 /* MPRateLimiter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MPRateLimiter.framework; path = Carthage/Build/Mac/MPRateLimiter.framework; sourceTree = "<group>"; };
-		5FF745BB1D25A8F700B493D0 /* MPTimer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MPTimer.framework; path = Carthage/Build/Mac/MPTimer.framework; sourceTree = "<group>"; };
 		5FF745C11D26FCF000B493D0 /* CloudKitSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitSerializer.swift; sourceTree = "<group>"; };
 		5FF745C31D26FD0A00B493D0 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		5FFC376E1AEEF7AF0041FBED /* MPCountryList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCountryList.h; path = Sources/Utilities/MPCountryList.h; sourceTree = "<group>"; };
@@ -548,9 +539,8 @@
 			files = (
 				5F6C4EB61EDE401E009F4BFB /* FeatherExtensions.framework in Frameworks */,
 				5FD0A4951E242ACC0012B195 /* CocoaHTTPServerKit.framework in Frameworks */,
-				5FD0A48C1E242A770012B195 /* MPTimer.framework in Frameworks */,
+				5F9592D622D9298D0098236A /* MPRateLimiter in Frameworks */,
 				5FD0A45C1E2425CA0012B195 /* Feather.framework in Frameworks */,
-				5FD0A48F1E242A9E0012B195 /* MPRateLimiter.framework in Frameworks */,
 				5FD0A4761E2426060012B195 /* MAKVONotificationCenter.framework in Frameworks */,
 				5FD0A4781E2426090012B195 /* CouchbaseLite.framework in Frameworks */,
 				5FD0A4851E2428F20012B195 /* CocoaLumberjackSwift.framework in Frameworks */,
@@ -568,6 +558,8 @@
 				5F4A48BE1C34079C0029DB3E /* CouchbaseLite.framework in Frameworks */,
 				5F5084481C551804009D7211 /* CocoaLumberjack.framework in Frameworks */,
 				5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */,
+				5F9592D922D92B860098236A /* MPTimer in Frameworks */,
+				5F9592D422D9296C0098236A /* MPRateLimiter in Frameworks */,
 				5FDB3A08170793B30049EBB5 /* libz.dylib in Frameworks */,
 				5F00787A1C95C4D400DDB296 /* CocoaLumberjackSwift.framework in Frameworks */,
 				5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */,
@@ -575,9 +567,7 @@
 				5FC4236A1AFF8775002234FB /* FeatherExtensions.framework in Frameworks */,
 				5F3765EB1A1AA1AA0068DA39 /* AddressBook.framework in Frameworks */,
 				5FAC23BF19ABFE79000F188C /* CoreServices.framework in Frameworks */,
-				5FF745BC1D25A8F700B493D0 /* MPTimer.framework in Frameworks */,
 				5F293BF8170DFD77001C2111 /* Security.framework in Frameworks */,
-				5FF745BA1D259C3500B493D0 /* MPRateLimiter.framework in Frameworks */,
 				5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -782,14 +772,10 @@
 			isa = PBXGroup;
 			children = (
 				5FD0A4941E242ACC0012B195 /* CocoaHTTPServerKit.framework */,
-				5FD0A48E1E242A9E0012B195 /* MPRateLimiter.framework */,
-				5FD0A48B1E242A770012B195 /* MPTimer.framework */,
 				5FD0A4821E2428F20012B195 /* CocoaLumberjack.framework */,
 				5FD0A4831E2428F20012B195 /* CocoaLumberjackSwift.framework */,
 				5FD0A4511E2424C40012B195 /* MAKVONotificationCenter.framework */,
 				5FF745C31D26FD0A00B493D0 /* CloudKit.framework */,
-				5FF745BB1D25A8F700B493D0 /* MPTimer.framework */,
-				5FF745B91D259C3500B493D0 /* MPRateLimiter.framework */,
 				5F05A36E1CD0461000FE80D8 /* P2Core.framework */,
 				5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */,
 				5F5084471C551804009D7211 /* CocoaLumberjack.framework */,
@@ -1225,6 +1211,9 @@
 				5FD0A45E1E2425CA0012B195 /* PBXTargetDependency */,
 			);
 			name = FeatherTests;
+			packageProductDependencies = (
+				5F9592D522D9298D0098236A /* MPRateLimiter */,
+			);
 			productName = FeatherTests;
 			productReference = 5FD0A4571E2425C90012B195 /* FeatherTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -1245,6 +1234,10 @@
 				5FC423691AFF8768002234FB /* PBXTargetDependency */,
 			);
 			name = Feather;
+			packageProductDependencies = (
+				5F9592D322D9296C0098236A /* MPRateLimiter */,
+				5F9592D822D92B860098236A /* MPTimer */,
+			);
 			productName = Feather;
 			productReference = 5FDB33031705CB950049EBB5 /* Feather.framework */;
 			productType = "com.apple.product-type.framework";
@@ -1291,6 +1284,10 @@
 				Base,
 			);
 			mainGroup = 5FDB32F71705CB950049EBB5;
+			packageReferences = (
+				5F9592D222D9296C0098236A /* XCRemoteSwiftPackageReference "MPRateLimiter" */,
+				5F9592D722D92B850098236A /* XCRemoteSwiftPackageReference "MPTimer" */,
+			);
 			productRefGroup = 5FDB33041705CB950049EBB5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1558,7 +1555,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = FeatherAppKitExtensions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
@@ -1610,7 +1611,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = FeatherAppKitExtensions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -1662,7 +1667,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = FeatherAppKitExtensions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -1715,7 +1724,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = FeatherAppKitExtensions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -1767,7 +1780,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = FeatherAppKitExtensions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -1777,7 +1794,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.manuscriptsapp.FeatherAppKitExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1819,7 +1837,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = FeatherAppKitExtensions/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -1829,7 +1851,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.manuscriptsapp.FeatherAppKitExtensions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2123,7 +2146,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = FeatherScripting/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
@@ -2181,7 +2208,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				SDKROOT = macosx;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = AppStoreRelease;
@@ -2227,7 +2255,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = framework;
 			};
@@ -2278,7 +2307,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -2315,7 +2345,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = FeatherScripting/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -2325,7 +2359,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2636,7 +2671,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -2676,7 +2712,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = FeatherScripting/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
@@ -2724,7 +2764,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = FeatherScripting/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -2773,7 +2817,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = FeatherScripting/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -2821,7 +2869,11 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				INFOPLIST_FILE = FeatherScripting/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
@@ -2831,7 +2883,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.manuscriptsapp.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2863,7 +2916,11 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = FeatherTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piipari.FeatherTests;
@@ -2900,7 +2957,11 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = FeatherTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piipari.FeatherTests;
@@ -2936,7 +2997,11 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = FeatherTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piipari.FeatherTests;
@@ -2972,7 +3037,11 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = FeatherTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piipari.FeatherTests;
@@ -3008,7 +3077,11 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = FeatherTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piipari.FeatherTests;
@@ -3043,7 +3116,11 @@
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				INFOPLIST_FILE = FeatherTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piipari.FeatherTests;
@@ -3145,7 +3222,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				SDKROOT = macosx;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
@@ -3238,7 +3316,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 				WRAPPER_EXTENSION = framework;
 			};
@@ -3326,6 +3405,43 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		5F9592D222D9296C0098236A /* XCRemoteSwiftPackageReference "MPRateLimiter" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mpapp/MPRateLimiter";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		5F9592D722D92B850098236A /* XCRemoteSwiftPackageReference "MPTimer" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mpapp/MPTimer";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		5F9592D322D9296C0098236A /* MPRateLimiter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5F9592D222D9296C0098236A /* XCRemoteSwiftPackageReference "MPRateLimiter" */;
+			productName = MPRateLimiter;
+		};
+		5F9592D522D9298D0098236A /* MPRateLimiter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5F9592D222D9296C0098236A /* XCRemoteSwiftPackageReference "MPRateLimiter" */;
+			productName = MPRateLimiter;
+		};
+		5F9592D822D92B860098236A /* MPTimer */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5F9592D722D92B850098236A /* XCRemoteSwiftPackageReference "MPTimer" */;
+			productName = MPTimer;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5FDB32F91705CB950049EBB5 /* Project object */;
 }

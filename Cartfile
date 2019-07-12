@@ -1,6 +1,3 @@
-github "mpapp/RegexKitLite" "master"
 github "mpapp/couchbase-lite-ios" "master"
 github "mpapp/P2Core" "master"
-github "mpapp/MPRateLimiter" "1.1"
-github "mpapp/MPTimer" "1.2"
 github "mz2/MAKVONotificationCenter" "master"

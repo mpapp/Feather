@@ -1,0 +1,25 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "MPRateLimiter",
+        "repositoryURL": "https://github.com/mpapp/MPRateLimiter",
+        "state": {
+          "branch": "master",
+          "revision": "d3335e4a7feaeb851e427463255449acb9551735",
+          "version": null
+        }
+      },
+      {
+        "package": "MPTimer",
+        "repositoryURL": "https://github.com/mpapp/MPTimer",
+        "state": {
+          "branch": "master",
+          "revision": "36e3b52fcfa179a59d776b7c9b6059be1f587b0f",
+          "version": null
+        }
+      }
+    ]
+  },
+  "version": 1
+}
