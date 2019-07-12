@@ -1,3 +1,2 @@
 github "mpapp/couchbase-lite-ios" "master"
-github "mpapp/P2Core" "master"
 github "mz2/MAKVONotificationCenter" "master"

@@ -39,6 +39,77 @@
 
 @implementation NSString (Feather)
 
+- (NSString *)substringAfter:(NSString *)s
+{
+    NSRange r = [self rangeOfString:s];
+    if (r.location == NSNotFound)
+        return nil;
+    NSString *substring = [self substringFromIndex:(r.location + r.length)];
+    return substring;
+}
+
+- (NSString *)substringBefore:(NSString *)s
+{
+    NSRange r = [self rangeOfString:s];
+    if (r.location == NSNotFound)
+        return nil;
+    NSString *substring = [self substringToIndex:r.location];
+    return substring;
+}
+
+- (NSString *)stringByTrimmingWhitespace
+{
+    static NSCharacterSet *characters = nil;
+    if (!characters)
+        characters = [NSCharacterSet whitespaceCharacterSet];
+    return [self stringByTrimmingCharactersInSet:characters];
+}
+
+- (NSString *)stringByTrimmingWhitespaceAndNewlines
+{
+    static NSCharacterSet *characters = nil;
+    if (!characters)
+        characters = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    return [self stringByTrimmingCharactersInSet:characters];
+}
+
+- (NSString *)stringByNormalizingWhitespace
+{
+    return [self stringByNormalizingWhitespaceAllowLeading:NO trailingWhitespace:NO];
+}
+
+- (NSString *)stringByNormalizingWhitespaceAllowLeading:(BOOL)allowLeadingWhitespace
+                                     trailingWhitespace:(BOOL)allowTrailingWhitespace
+{
+    if (self.length < 1) {
+        return self;
+    }
+    
+    NSString *s = [self stringByTrimmingWhitespaceAndNewlines];
+    NSArray *components = [s componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    components = [components filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  object, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return ![object isEqualToString:@""];
+    }]];
+    
+    NSString *normalized = [components componentsJoinedByString:@" "];
+    
+    BOOL restoreLeadingWhitespace = allowLeadingWhitespace && [[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[self characterAtIndex:0]];
+    BOOL restoreTrailingWhitespace = allowTrailingWhitespace && [[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[self characterAtIndex:(self.length - 1)]];
+    
+    if (restoreLeadingWhitespace && restoreTrailingWhitespace) {
+        normalized = [NSString stringWithFormat: @" %@ ", normalized];
+    }
+    else if (restoreLeadingWhitespace) {
+        normalized = [NSString stringWithFormat: @" %@", normalized];
+    }
+    else if (restoreTrailingWhitespace) {
+        normalized = [NSString stringWithFormat: @"%@ ", normalized];
+    }
+    
+    return normalized;
+}
+
 - (BOOL)hasContent { return self.length > 0; }
 
 - (BOOL)containsSubstring:(NSString *)substring

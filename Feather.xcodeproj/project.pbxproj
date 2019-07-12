@@ -48,7 +48,6 @@
 		5F293C1F170E3B62001C2111 /* MPPlaceHolding.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F293C1E170E3B62001C2111 /* MPPlaceHolding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F2CC7751B56E58900D9C714 /* MPFileObserver.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F2CC7731B56E58900D9C714 /* MPFileObserver.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F2CC7761B56E58900D9C714 /* MPFileObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F2CC7741B56E58900D9C714 /* MPFileObserver.m */; };
-		5F2DA72C1CD0469500F0A3EB /* P2Core.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F05A36E1CD0461000FE80D8 /* P2Core.framework */; };
 		5F2DA72D1CD04AF700F0A3EB /* NSAttributedString+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB1F4A18F8C84800B3290D /* NSAttributedString+MPExtensions.m */; };
 		5F2DA72E1CD04AFB00F0A3EB /* NSAttributedString+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB1F4918F8C84800B3290D /* NSAttributedString+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F3765EB1A1AA1AA0068DA39 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F3765EA1A1AA1AA0068DA39 /* AddressBook.framework */; };
@@ -294,7 +293,6 @@
 		5F05A3651CD0323900FE80D8 /* NSMenuItem+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSMenuItem+MPExtensions.m"; sourceTree = "<group>"; };
 		5F05A3681CD0332A00FE80D8 /* NSXMLElement+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSXMLElement+MPExtensions.h"; path = "FeatherAppKitExtensions/NSXMLElement+MPExtensions.h"; sourceTree = SOURCE_ROOT; };
 		5F05A3691CD0332A00FE80D8 /* NSXMLElement+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSXMLElement+MPExtensions.m"; path = "FeatherAppKitExtensions/NSXMLElement+MPExtensions.m"; sourceTree = SOURCE_ROOT; };
-		5F05A36E1CD0461000FE80D8 /* P2Core.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = P2Core.framework; path = Carthage/Build/Mac/P2Core.framework; sourceTree = "<group>"; };
 		5F1467831E8EF2D9008FA244 /* FileManager+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "FileManager+Extensions.swift"; path = "FeatherExtensions/FileManager+Extensions.swift"; sourceTree = SOURCE_ROOT; };
 		5F14678F1E8F0626008FA244 /* NSImage+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSImage+Extensions.swift"; sourceTree = "<group>"; };
 		5F18F20D1CD968D5008CE38D /* NSDateFormatter+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "NSDateFormatter+MPExtensions.swift"; path = "Sources/Categories/NSDateFormatter+MPExtensions.swift"; sourceTree = "<group>"; };
@@ -508,7 +506,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F89426A1CD04E4E00A9DC07 /* FeatherExtensions.framework in Frameworks */,
-				5F2DA72C1CD0469500F0A3EB /* P2Core.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -776,7 +773,6 @@
 				5FD0A4831E2428F20012B195 /* CocoaLumberjackSwift.framework */,
 				5FD0A4511E2424C40012B195 /* MAKVONotificationCenter.framework */,
 				5FF745C31D26FD0A00B493D0 /* CloudKit.framework */,
-				5F05A36E1CD0461000FE80D8 /* P2Core.framework */,
 				5F0078791C95C4D400DDB296 /* CocoaLumberjackSwift.framework */,
 				5F5084471C551804009D7211 /* CocoaLumberjack.framework */,
 				5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */,
