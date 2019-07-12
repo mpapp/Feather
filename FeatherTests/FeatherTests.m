@@ -15,7 +15,6 @@
 #import "MPFeatherTestClasses.h"
 
 @import FeatherExtensions;
-@import RegexKitLite;
 
 @interface FeatherTests () 
 @end
@@ -162,8 +161,7 @@
         NSString *name = [url lastPathComponent];
         
         Class cls =
-            NSClassFromString(
-                [[name componentsMatchedByRegex:@"(\\S+)-fixtures.json" capture:1] firstObject]);
+            NSClassFromString([[name captureComponentsMatchedByRegex: @"(\\S+)-fixtures.json"] firstObject]);
         
         if ([cls isSubclassOfClass:[MPManagedObject class]])
         {
