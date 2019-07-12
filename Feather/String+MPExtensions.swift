@@ -11,12 +11,22 @@ import Foundation
 fileprivate let badChars = CharacterSet.alphanumerics.inverted
 
 public extension String {
-    func matches(regex: String, caseSensitively: Bool = false) -> [String] {
+    func matches(regex: String, caseSensitively: Bool) -> [String] {
         guard let regex = try? NSRegularExpression(pattern: regex, options: caseSensitively ? [] : [.caseInsensitive]) else { return [] }
         let matches  = regex.matches(in: self, options: [], range: NSMakeRange(0, self.count))
         return matches.map { match in
             return String(self[Range(match.range, in: self)!])
         }
+    }
+
+    func stringByReplacingOccurrences(ofRegex pattern: String, withTemplate replacement: String, caseSensitively: Bool) throws -> String {
+        let pattern = try NSRegularExpression(pattern: pattern, options: caseSensitively ? [] : .caseInsensitive)
+        return pattern.stringByReplacingMatches(in: self, options: [],
+                                                range: NSMakeRange(0, self.count), withTemplate: replacement)
+    }
+
+    func isMatched(byRegex pattern: String, caseSensitively: Bool = false) -> Bool {
+        return self.matches(regex: pattern, caseSensitively: caseSensitively).count > 0
     }
     
     var uppercasingFirst: String {
@@ -42,5 +52,30 @@ public extension String {
 
     var sentenceCased: String {
         return prefix(1).capitalized + dropFirst()
+    }
+    
+    func capturedGroups(withRegex pattern: String, caseSensitively: Bool) -> [String] {
+        var results = [String]()
+        
+        var regex: NSRegularExpression
+        do {
+            regex = try NSRegularExpression(pattern: pattern, options: caseSensitively ? [] : .caseInsensitive)
+        } catch {
+            return results
+        }
+        let matches = regex.matches(in: self, options: [], range: NSRange(location:0, length: self.count))
+        
+        guard let match = matches.first else { return results }
+        
+        let lastRangeIndex = match.numberOfRanges - 1
+        guard lastRangeIndex >= 1 else { return results }
+        
+        for i in 1...lastRangeIndex {
+            let capturedGroupIndex = match.range(at: i)
+            let matchedString = (self as NSString).substring(with: capturedGroupIndex)
+            results.append(matchedString)
+        }
+        
+        return results
     }
 }

@@ -41,7 +41,7 @@ public enum NSStringFeatherExtensionsError: Int, Swift.Error, CustomNSError {
 
     @objc func pluralizedString() -> String {
         let str = self as String
-        if str.matches(regex: "y$").count > 0 {
+        if str.matches(regex: "y$", caseSensitively: false).count > 0 {
             return str.replacingOccurrences(of: "y$", with: "ies", options: .regularExpression,
                                                   range: nil)
         }
@@ -104,7 +104,21 @@ public enum NSStringFeatherExtensionsError: Int, Swift.Error, CustomNSError {
         
         return string
     }
-    
+
+    @objc func isMatchedByRegex(_ pattern: String) -> Bool {
+        return (self as String).isMatched(byRegex: pattern, caseSensitively: true)
+    }
+
+    @objc func captureComponentsMatchedByRegex(_ pattern: String) -> [String] {
+        return (self as String).capturedGroups(withRegex: pattern, caseSensitively: true)
+    }
+
+    @objc func stringByReplacingOccurrencesOfRegex(_ pattern: String, withTemplate replacement: String) throws -> String {
+        return try (self as String).stringByReplacingOccurrences(ofRegex: pattern,
+                                                                 withTemplate: replacement,
+                                                                 caseSensitively: true)
+    }
+
     /**
      
      Fix for a mind-boggling NSXMLDocument (and looking like also WebKit XMLSerializer) behaviour, which is:

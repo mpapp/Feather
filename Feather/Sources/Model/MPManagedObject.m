@@ -21,11 +21,8 @@
 #import "MPCacheableMixin.h"
 
 @import FeatherExtensions;
-@import RegexKitLite;
 @import CouchbaseLite;
 @import ObjectiveC;
-
-
 
 NSString * const MPManagedObjectErrorDomain = @"MPManagedObjectErrorDomain";
 
@@ -378,7 +375,7 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 + (NSString *)humanReadableName
 {
     NSString *className = NSStringFromClass(self);
-    return [[className componentsMatchedByRegex:@"MP(.*)" capture:1] firstObject];
+    return [[className captureComponentsMatchedByRegex:@"MP(.*)"] firstObject];
 }
 
 - (NSString *)idForNewDocumentInDatabase:(CBLDatabase *)db {
@@ -1206,7 +1203,9 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 #pragma mark - Singular and plural strings
 
 + (NSString *)singular {
-    return [[NSStringFromClass(self) stringByReplacingOccurrencesOfRegex:@"^MP" withString:@""] camelCasedString];
+    return [[NSStringFromClass(self) stringByReplacingOccurrencesOfRegex: @"^MP"
+                                                            withTemplate: @""
+                                                                   error: nil] camelCasedString];
 }
 
 + (NSString *)plural {
@@ -1265,7 +1264,9 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     const char *name = sel_getName(sel);
     
     if (isEffectiveGetter(name)) {
-        SEL realSelector = NSSelectorFromString([[NSStringFromSelector(sel) stringByReplacingOccurrencesOfRegex:@"^effective" withString:@""] camelCasedString]);
+        SEL realSelector = NSSelectorFromString([[NSStringFromSelector(sel) stringByReplacingOccurrencesOfRegex:@"^effective"
+                                                                                                   withTemplate:@""
+                                                                                                          error: nil] camelCasedString]);
         
         BOOL success = [self resolveInstanceMethod:realSelector];
         NSAssert(success, @"Failed to resolve effective selector '%@' to selector '%@'",
@@ -1312,8 +1313,9 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     id p = effectiveReceiver;
     
     // TODO: assert if you find two consecutive capital letters.
-    NSString *adjustedProperty = [[property stringByReplacingOccurrencesOfRegex:@"^effective"
-                                                                     withString:@""] camelCasedString];
+    NSString *adjustedProperty = [[property stringByReplacingOccurrencesOfRegex: @"^effective"
+                                                                   withTemplate: @""
+                                                                          error: nil] camelCasedString];
     
     // follow parent relation as long as there is a parent (as long as you reach the root).
     do {
@@ -1741,8 +1743,9 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
 
 + (NSString *)objectSpecifierKey {
     NSString *specKey = [@"all" stringByAppendingString:
-                         [[NSStringFromClass(self.class) stringByReplacingOccurrencesOfRegex:@"^MP"
-                                                                                  withString:@""] pluralizedString]];
+                         [[NSStringFromClass(self.class) stringByReplacingOccurrencesOfRegex: @"^MP"
+                                                                                withTemplate: @""
+                                                                                       error: nil] pluralizedString]];
     return specKey;
 }
 
@@ -1774,10 +1777,10 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
             continue;
         
         if ([k hasSuffix:@"IDs"])
-            k = [k stringByReplacingOccurrencesOfRegex:@"IDs$" withString:@"s"];
+            k = [k stringByReplacingOccurrencesOfRegex: @"IDs$" withTemplate: @"s" error: nil];
         
         if ([k hasSuffix:@"ID"])
-            k = [k stringByReplacingOccurrencesOfRegex:@"ID$" withString:@""];
+            k = [k stringByReplacingOccurrencesOfRegex: @"ID$" withTemplate: @"" error: nil];
         
         id v = [self valueForKey:k];
         

@@ -93,7 +93,6 @@
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
 		5F9F226A1C792A0800244277 /* CollectionType+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9F22691C792A0800244277 /* CollectionType+MPExtensions.swift */; };
 		5FA29AC11D71ACF2000DB8C1 /* NSOutlineView+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FA29AC01D71ACF2000DB8C1 /* NSOutlineView+MPExtensions.swift */; };
-		5FAA0A6A1D2EA96500F18A2D /* Freddy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAA0A691D2EA96500F18A2D /* Freddy.framework */; };
 		5FAC23BF19ABFE79000F188C /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAC23BE19ABFE79000F188C /* CoreServices.framework */; };
 		5FBDCBF41CE9D691002DEAA7 /* ErrorPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FBDCBF31CE9D691002DEAA7 /* ErrorPresenter.swift */; };
 		5FC423131AFF8719002234FB /* FeatherExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FC423121AFF8719002234FB /* FeatherExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -149,11 +148,9 @@
 		5FD0A4741E2425F30012B195 /* MPFeatherTestClasses.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD0A46F1E2425F30012B195 /* MPFeatherTestClasses.m */; };
 		5FD0A4751E2425F30012B195 /* MPModelFoundationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD0A4711E2425F30012B195 /* MPModelFoundationTests.m */; };
 		5FD0A4761E2426060012B195 /* MAKVONotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4511E2424C40012B195 /* MAKVONotificationCenter.framework */; };
-		5FD0A4771E2426060012B195 /* Freddy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAA0A691D2EA96500F18A2D /* Freddy.framework */; };
 		5FD0A4781E2426090012B195 /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
 		5FD0A4791E2426090012B195 /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; };
 		5FD0A47B1E2426EF0012B195 /* MAKVONotificationCenter.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD0A4511E2424C40012B195 /* MAKVONotificationCenter.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		5FD0A47C1E2426EF0012B195 /* Freddy.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FAA0A691D2EA96500F18A2D /* Freddy.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FD0A47D1E2426EF0012B195 /* CloudKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF745C31D26FD0A00B493D0 /* CloudKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FD0A47E1E2426EF0012B195 /* CouchbaseLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FD0A47F1E2426EF0012B195 /* CouchbaseLiteListener.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -283,7 +280,6 @@
 				5FD0A4801E2426F60012B195 /* Feather.framework in Copy Frameworks */,
 				5FD0A4811E2426F60012B195 /* FeatherExtensions.framework in Copy Frameworks */,
 				5FD0A47B1E2426EF0012B195 /* MAKVONotificationCenter.framework in Copy Frameworks */,
-				5FD0A47C1E2426EF0012B195 /* Freddy.framework in Copy Frameworks */,
 				5FD0A47D1E2426EF0012B195 /* CloudKit.framework in Copy Frameworks */,
 				5FD0A47E1E2426EF0012B195 /* CouchbaseLite.framework in Copy Frameworks */,
 				5FD0A47F1E2426EF0012B195 /* CouchbaseLiteListener.framework in Copy Frameworks */,
@@ -370,7 +366,6 @@
 		5FA29AC01D71ACF2000DB8C1 /* NSOutlineView+MPExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSOutlineView+MPExtensions.swift"; sourceTree = "<group>"; };
 		5FA9D02D1D29C74000C96CE1 /* CloudKitDeserializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitDeserializer.swift; sourceTree = "<group>"; };
 		5FAA0A671D2EA87800F18A2D /* CloudKitState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudKitState.swift; sourceTree = "<group>"; };
-		5FAA0A691D2EA96500F18A2D /* Freddy.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Freddy.framework; path = Carthage/Build/Mac/Freddy.framework; sourceTree = "<group>"; };
 		5FAC23B819ABFA94000F188C /* MPScriptingDefinitionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPScriptingDefinitionManager.h; path = ../Feather/Sources/Scripting/MPScriptingDefinitionManager.h; sourceTree = "<group>"; };
 		5FAC23B919ABFA94000F188C /* MPScriptingDefinitionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPScriptingDefinitionManager.m; path = ../Feather/Sources/Scripting/MPScriptingDefinitionManager.m; sourceTree = "<group>"; };
 		5FAC23BC19ABFE5C000F188C /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = System/Library/Frameworks/Carbon.framework; sourceTree = SDKROOT; };
@@ -557,7 +552,6 @@
 				5FD0A45C1E2425CA0012B195 /* Feather.framework in Frameworks */,
 				5FD0A48F1E242A9E0012B195 /* MPRateLimiter.framework in Frameworks */,
 				5FD0A4761E2426060012B195 /* MAKVONotificationCenter.framework in Frameworks */,
-				5FD0A4771E2426060012B195 /* Freddy.framework in Frameworks */,
 				5FD0A4781E2426090012B195 /* CouchbaseLite.framework in Frameworks */,
 				5FD0A4851E2428F20012B195 /* CocoaLumberjackSwift.framework in Frameworks */,
 				5FD0A4841E2428F20012B195 /* CocoaLumberjack.framework in Frameworks */,
@@ -569,7 +563,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FAA0A6A1D2EA96500F18A2D /* Freddy.framework in Frameworks */,
 				5FD0A4521E2424C40012B195 /* MAKVONotificationCenter.framework in Frameworks */,
 				5FF745C41D26FD0A00B493D0 /* CloudKit.framework in Frameworks */,
 				5F4A48BE1C34079C0029DB3E /* CouchbaseLite.framework in Frameworks */,
@@ -794,7 +787,6 @@
 				5FD0A4821E2428F20012B195 /* CocoaLumberjack.framework */,
 				5FD0A4831E2428F20012B195 /* CocoaLumberjackSwift.framework */,
 				5FD0A4511E2424C40012B195 /* MAKVONotificationCenter.framework */,
-				5FAA0A691D2EA96500F18A2D /* Freddy.framework */,
 				5FF745C31D26FD0A00B493D0 /* CloudKit.framework */,
 				5FF745BB1D25A8F700B493D0 /* MPTimer.framework */,
 				5FF745B91D259C3500B493D0 /* MPRateLimiter.framework */,

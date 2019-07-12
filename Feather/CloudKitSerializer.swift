@@ -8,7 +8,6 @@
 
 import Foundation
 import CloudKit
-import CocoaLumberjackSwift
 
 public struct CloudKitSerializer {
     

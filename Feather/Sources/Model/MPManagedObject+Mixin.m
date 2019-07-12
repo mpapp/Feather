@@ -114,7 +114,9 @@
         else if ([propType isEqualToString:@"NSArray"])
         {
             assert([propNameStr isMatchedByRegex:@"s$"]); // has 's' as suffix (plural)
-            NSString *propStoredNameStr = [propNameStr stringByReplacingOccurrencesOfRegex:@"s$" withString:@"IDs"];
+            NSString *propStoredNameStr = [propNameStr stringByReplacingOccurrencesOfRegex: @"s$"
+                                                                              withTemplate: @"IDs"
+                                                                                     error: nil];
             
             [self implementPropertyWithName:propNameStr
                        getterImplementation:

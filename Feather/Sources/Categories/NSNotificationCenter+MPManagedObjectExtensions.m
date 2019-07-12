@@ -11,7 +11,6 @@
 #import "MPDatabasePackageController.h"
 #import "MPManagedObjectsController.h"
 
-@import RegexKitLite;
 @import ObjectiveC;
 @import FeatherExtensions;
 
@@ -82,7 +81,7 @@ NSString * const MPNotificationNameMultipleDetailSelection = @"MPNotificationNam
                 
                 NSString *unprefixedSubclassName =
                     [closestModelClassName stringByReplacingOccurrencesOfRegex:
-                        [NSString stringWithFormat:@"^%@", MPManagedObjectClassPrefix] withString:@""];
+                     [NSString stringWithFormat:@"^%@", MPManagedObjectClassPrefix] withTemplate:@"" error:nil];
                 
                 changeTypesForClass[NSStringFromClass(subclass)] =
                 @{

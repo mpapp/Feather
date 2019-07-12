@@ -22,7 +22,6 @@
 
 #import "MPShoeboxPackageController.h"
 
-@import RegexKitLite;
 @import CouchbaseLite;
 @import ObjectiveC;
 
@@ -1432,7 +1431,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 #pragma mark - Scripting support
 
 - (NSString *)objectSpecifierKey {
-    return [[NSStringFromClass(self.class) stringByReplacingOccurrencesOfRegex:@"^MP" withString:@""] camelCasedString];
+    return [[NSStringFromClass(self.class) stringByReplacingOccurrencesOfRegex: @"^MP" withTemplate: @"" error: nil] camelCasedString];
 }
 
 - (NSScriptObjectSpecifier *)objectSpecifier {

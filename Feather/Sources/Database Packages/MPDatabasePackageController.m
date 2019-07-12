@@ -23,7 +23,6 @@
 
 #import "MPRootSection.h"
 
-@import RegexKitLite;
 @import CouchbaseLite;
 
 #import <CouchbaseLiteListener/CBLListener.h>
@@ -287,7 +286,9 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
         NSString *moduleNameFreeRootSectionClassName = [rootSectionClassName componentsSeparatedByString:@"."].lastObject;
         
         // "MPManuscriptRootSection" => "ManucriptRootSection"
-        NSString *classPrefixlessStr = [moduleNameFreeRootSectionClassName stringByReplacingOccurrencesOfRegex:@"MP" withString:@""];
+        NSString *classPrefixlessStr = [moduleNameFreeRootSectionClassName stringByReplacingOccurrencesOfRegex: @"MP"
+                                                                                                  withTemplate: @""
+                                                                                                         error: nil];
         // "ManuscriptRootSection"   => "manuscriptRootSection"
         NSString *propertyName = [classPrefixlessStr camelCasedString];
         
@@ -461,13 +462,16 @@ NSString * const MPDatabasePackageControllerErrorDomain = @"MPDatabasePackageCon
     
     NSString *className = NSStringFromClass(cls);
     return [NSString stringWithFormat:@"%@Controller",
-            [[[className stringByReplacingOccurrencesOfRegex:
-               @"^MP" withString:@""] pluralizedString] camelCasedString]];
+            [[[className stringByReplacingOccurrencesOfRegex: @"^MP"
+                                                withTemplate:@""
+                                                       error:nil] pluralizedString] camelCasedString]];
 }
 
 + (NSString *)controllerPropertyNameForManagedObjectControllerClass:(Class)cls {
     assert([cls isSubclassOfClass:MPManagedObjectsController.class]);
-    return [[NSStringFromClass(cls) stringByReplacingOccurrencesOfRegex:@"^MP" withString:@""] camelCasedString];
+    return [[NSStringFromClass(cls) stringByReplacingOccurrencesOfRegex: @"^MP"
+                                                           withTemplate: @""
+                                                                  error: nil] camelCasedString];
 }
 
 - (MPManagedObjectsController *)controllerForManagedObjectClass:(Class)class

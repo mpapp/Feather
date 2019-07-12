@@ -10,7 +10,6 @@ import Foundation
 import CloudKit
 import RegexKitLite
 import MPRateLimiter
-import CocoaLumberjackSwift
 import FeatherExtensions
 
 public class CloudKitSyncService {
