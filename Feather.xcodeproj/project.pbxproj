@@ -158,7 +158,6 @@
 		5FD0A4751E2425F30012B195 /* MPModelFoundationTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FD0A4711E2425F30012B195 /* MPModelFoundationTests.m */; };
 		5FD0A4781E2426090012B195 /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; };
 		5FD0A4791E2426090012B195 /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; };
-		5FD0A47D1E2426EF0012B195 /* CloudKit.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF745C31D26FD0A00B493D0 /* CloudKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FD0A47E1E2426EF0012B195 /* CouchbaseLite.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BC1C34079C0029DB3E /* CouchbaseLite.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FD0A47F1E2426EF0012B195 /* CouchbaseLiteListener.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5F4A48BD1C34079C0029DB3E /* CouchbaseLiteListener.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5FD0A4801E2426F60012B195 /* Feather.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33031705CB950049EBB5 /* Feather.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -213,7 +212,6 @@
 		5FE4F7091F8BC4E200BCFB41 /* NSBundle+MPExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3824170702990049EBB5 /* NSBundle+MPExtensions.m */; };
 		5FE4F70A1F8BC4E600BCFB41 /* NSBundle+MPExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3823170702990049EBB5 /* NSBundle+MPExtensions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FEE14CE1D89552F0087924A /* MPContributorChangeObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEE14CD1D89552F0087924A /* MPContributorChangeObserver.swift */; };
-		5FF745C41D26FD0A00B493D0 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FF745C31D26FD0A00B493D0 /* CloudKit.framework */; };
 		5FFC37701AEEF7AF0041FBED /* MPCountryList.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FFC376E1AEEF7AF0041FBED /* MPCountryList.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FFC37711AEEF7AF0041FBED /* MPCountryList.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FFC376F1AEEF7AF0041FBED /* MPCountryList.m */; };
 		5FFD61B31AFFAF4000483D9C /* NSArray+MPManagedObjectExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FCC021E170C14D80091BEAC /* NSArray+MPManagedObjectExtensions.m */; };
@@ -326,7 +324,6 @@
 				5FD0A4871E2428F70012B195 /* CocoaLumberjackSwift.framework in Copy Frameworks */,
 				5FD0A4801E2426F60012B195 /* Feather.framework in Copy Frameworks */,
 				5FD0A4811E2426F60012B195 /* FeatherExtensions.framework in Copy Frameworks */,
-				5FD0A47D1E2426EF0012B195 /* CloudKit.framework in Copy Frameworks */,
 				5FD0A47E1E2426EF0012B195 /* CouchbaseLite.framework in Copy Frameworks */,
 				5FD0A47F1E2426EF0012B195 /* CouchbaseLiteListener.framework in Copy Frameworks */,
 			);
@@ -614,7 +611,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FF745C41D26FD0A00B493D0 /* CloudKit.framework in Frameworks */,
 				5F4A48BE1C34079C0029DB3E /* CouchbaseLite.framework in Frameworks */,
 				5F5084481C551804009D7211 /* CocoaLumberjack.framework in Frameworks */,
 				5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */,
@@ -3283,7 +3279,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = SJK358RN87;
@@ -3324,7 +3320,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = SJK358RN87;
@@ -3365,7 +3361,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = SJK358RN87;
@@ -3406,7 +3402,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = SJK358RN87;
@@ -3447,7 +3443,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = SJK358RN87;
@@ -3487,7 +3483,7 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_IDENTITY = "Apple Development";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = SJK358RN87;
