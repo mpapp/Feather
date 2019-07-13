@@ -14,8 +14,6 @@
 
 #import <zlib.h>
 
-#import "NSData+Base64.h"
-
 // FIXME: Find the source for these.
 
 @implementation NSData (MPExtensions)
@@ -52,7 +50,9 @@
 
 - (NSString *)sha1HMacStringWithKey:(NSString *)key
 {
-	return [[self sha1HMacWithKey:key] base64EncodingWithLineLength:-1];
+    return [[[self sha1HMacStringWithKey:key]
+             dataUsingEncoding:NSUTF8StringEncoding]
+                base64EncodedStringWithOptions:0];
 }
 
 - (NSData *)sha1HMacWithKey:(NSString *)key
@@ -70,7 +70,7 @@
 
 - (NSString *)sha256HMacStringWithKey:(NSString *)key
 {
-	return [[self sha256HMacWithKey:key] base64EncodingWithLineLength:-1];
+	return [[self sha256HMacWithKey:key] base64EncodedStringWithOptions:0];
 }
 
 - (NSData *)sha256HMacWithKey:(NSString *)key
