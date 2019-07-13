@@ -201,14 +201,6 @@ typedef enum MPDatabasePackageControllerErrorCode {
  **/
 - (void)pullFromRemoteWithErrorDictionary:(NSDictionary<NSString *, NSError *> *__nullable *__nullable)errorDict;
 
-/** Pulls from all the databases of the package at the specified file URL. 
-  * Returns NO and an error if pulling failed to _start_ (errors may happen during the pull too). */
-- (void)pullFromPackageFileURL:(nonnull NSURL *)url
-    allowMismatchingIdentifier:(BOOL)allowMismatchingIdentifier
-           statusUpdateHandler:(void(^_Nullable)(NSUInteger completed, NSUInteger total))statusUpdateHandler
-             completionHandler:(void(^_Nonnull)(void))completionHandler
-                  errorHandler:(void(^_Nonnull)(NSError *_Nonnull))error;
-
 /** Pull and push asynchronously to a remote database package.
    * @param errorDict A dictionary of errors for *starting* replications (i.e. there can be errors during the asynchronous replication that are not captured here), keys being database names. */
 - (BOOL)syncWithRemote:(NSDictionary<NSString *, NSError *> *__nullable *__nullable)errorDict;

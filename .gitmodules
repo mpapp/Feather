@@ -1,9 +1,6 @@
 [submodule "External/ObjectiveMixin"]
 	path = External/ObjectiveMixin
 	url = git@github.com:mz2/ObjectiveMixin.git
-[submodule "External/NSBundle-OBCodeSigningInfo"]
-	path = External/NSBundle-OBCodeSigningInfo
-	url = git@github.com:mpapp/NSBundle-OBCodeSigningInfo.git
 [submodule "Carthage/Checkouts/couchbase-lite-ios"]
 	path = Carthage/Checkouts/couchbase-lite-ios
 	url = ssh://git@github.com/mpapp/couchbase-lite-ios.git
@@ -13,6 +10,3 @@
 [submodule "Carthage/Checkouts/CocoaHTTPServer"]
 	path = Carthage/Checkouts/CocoaHTTPServer
 	url = ssh://git@github.com/mz2/CocoaHTTPServer.git
-[submodule "Carthage/Checkouts/MAKVONotificationCenter"]
-	path = Carthage/Checkouts/MAKVONotificationCenter
-	url = ssh://git@github.com/mz2/MAKVONotificationCenter.git
