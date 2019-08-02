@@ -70,6 +70,10 @@
 		5F4B351D22D9CD1900C0D282 /* FeatherExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5FC4230E1AFF8719002234FB /* FeatherExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5F4B351E22D9CD1900C0D282 /* FeatherScripting.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5FC423971AFF8CF5002234FB /* FeatherScripting.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		5F4B351F22D9CD1900C0D282 /* FeatherAppKitExtensions.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 5F05A3181CD02CC800FE80D8 /* FeatherAppKitExtensions.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		5F4B353922DA624100C0D282 /* CachedProperty.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4B353822DA624100C0D282 /* CachedProperty.swift */; };
+		5F4B353B22DA6AB000C0D282 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4B353A22DA6AB000C0D282 /* Model.swift */; };
+		5F4B353D22DA6DB000C0D282 /* MPManagedObject-Enums.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F4B353C22DA6D9600C0D282 /* MPManagedObject-Enums.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5F4B353F22DA6F4100C0D282 /* ModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4B353E22DA6F4100C0D282 /* ModelController.swift */; };
 		5F4ED85F1CECDB61003ED0B8 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F4ED85E1CECDB61003ED0B8 /* String+Extensions.swift */; };
 		5F5084481C551804009D7211 /* CocoaLumberjack.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5084471C551804009D7211 /* CocoaLumberjack.framework */; };
 		5F5C5B551D2EC84800CD99BD /* Dictionary+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5C5B541D2EC84800CD99BD /* Dictionary+Extensions.swift */; };
@@ -171,10 +175,6 @@
 		5FDB33071705CB950049EBB5 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33061705CB950049EBB5 /* Cocoa.framework */; };
 		5FDB33111705CB950049EBB5 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5FDB330F1705CB950049EBB5 /* InfoPlist.strings */; };
 		5FDB33D81705D1380049EBB5 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB33D71705D1380049EBB5 /* libicucore.dylib */; };
-		5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB34361705D90A0049EBB5 /* Mixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		5FDB34391705D90A0049EBB5 /* Mixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB34371705D90A0049EBB5 /* Mixin.m */; };
-		5FDB3A05170793550049EBB5 /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3A03170793550049EBB5 /* NSData+Base64.h */; };
-		5FDB3A06170793550049EBB5 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A04170793550049EBB5 /* NSData+Base64.m */; settings = {COMPILER_FLAGS = "-w"; }; };
 		5FDB3A08170793B30049EBB5 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FDB3A07170793B20049EBB5 /* libz.dylib */; };
 		5FDB3A3F1707992B0049EBB5 /* MPManagedObject.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FDB3A3A1707992B0049EBB5 /* MPManagedObject.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5FDB3A401707992B0049EBB5 /* MPManagedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 5FDB3A3B1707992B0049EBB5 /* MPManagedObject.m */; };
@@ -381,6 +381,10 @@
 		5F4B350622D9CC2800C0D282 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		5F4B350822D9CC2800C0D282 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5F4B350922D9CC2800C0D282 /* TestRunner.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TestRunner.entitlements; sourceTree = "<group>"; };
+		5F4B353822DA624100C0D282 /* CachedProperty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedProperty.swift; sourceTree = "<group>"; };
+		5F4B353A22DA6AB000C0D282 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		5F4B353C22DA6D9600C0D282 /* MPManagedObject-Enums.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MPManagedObject-Enums.h"; sourceTree = "<group>"; };
+		5F4B353E22DA6F4100C0D282 /* ModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelController.swift; sourceTree = "<group>"; };
 		5F4ED85E1CECDB61003ED0B8 /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		5F5084471C551804009D7211 /* CocoaLumberjack.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CocoaLumberjack.framework; path = Carthage/Build/Mac/CocoaLumberjack.framework; sourceTree = "<group>"; };
 		5F5C5B541D2EC84800CD99BD /* Dictionary+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Dictionary+Extensions.swift"; sourceTree = "<group>"; };
@@ -469,8 +473,6 @@
 		5FDB33131705CB950049EBB5 /* Feather.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Feather.h; sourceTree = "<group>"; };
 		5FDB33C21705CF260049EBB5 /* libcommonCrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcommonCrypto.dylib; path = usr/lib/system/libcommonCrypto.dylib; sourceTree = SDKROOT; };
 		5FDB33D71705D1380049EBB5 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
-		5FDB34361705D90A0049EBB5 /* Mixin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mixin.h; path = External/ObjectiveMixin/ObjectiveMixin/Mixin.h; sourceTree = SOURCE_ROOT; };
-		5FDB34371705D90A0049EBB5 /* Mixin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Mixin.m; path = External/ObjectiveMixin/ObjectiveMixin/Mixin.m; sourceTree = SOURCE_ROOT; };
 		5FDB3817170702470049EBB5 /* NSError+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSError+MPExtensions.h"; path = "Sources/Categories/NSError+MPExtensions.h"; sourceTree = "<group>"; };
 		5FDB3818170702470049EBB5 /* NSError+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSError+MPExtensions.m"; path = "Sources/Categories/NSError+MPExtensions.m"; sourceTree = "<group>"; };
 		5FDB381B170702650049EBB5 /* NSString+MPExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+MPExtensions.h"; path = "Sources/Categories/NSString+MPExtensions.h"; sourceTree = "<group>"; };
@@ -493,8 +495,6 @@
 		5FDB383C1707038F0049EBB5 /* NSData+MPExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+MPExtensions.m"; path = "Sources/Categories/NSData+MPExtensions.m"; sourceTree = "<group>"; };
 		5FDB383F170703EC0049EBB5 /* NSNotificationCenter+MPManagedObjectExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSNotificationCenter+MPManagedObjectExtensions.h"; path = "Sources/Categories/NSNotificationCenter+MPManagedObjectExtensions.h"; sourceTree = "<group>"; };
 		5FDB3840170703EC0049EBB5 /* NSNotificationCenter+MPManagedObjectExtensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSNotificationCenter+MPManagedObjectExtensions.m"; path = "Sources/Categories/NSNotificationCenter+MPManagedObjectExtensions.m"; sourceTree = "<group>"; };
-		5FDB3A03170793550049EBB5 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "External/NSData+Base64/NSData+Base64.h"; sourceTree = SOURCE_ROOT; };
-		5FDB3A04170793550049EBB5 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+Base64.m"; path = "External/NSData+Base64/NSData+Base64.m"; sourceTree = SOURCE_ROOT; };
 		5FDB3A07170793B20049EBB5 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		5FDB3A3A1707992B0049EBB5 /* MPManagedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPManagedObject.h; path = Sources/Model/MPManagedObject.h; sourceTree = "<group>"; };
 		5FDB3A3B1707992B0049EBB5 /* MPManagedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPManagedObject.m; path = Sources/Model/MPManagedObject.m; sourceTree = "<group>"; };
@@ -907,8 +907,6 @@
 		5FDB33D61705D0F20049EBB5 /* External */ = {
 			isa = PBXGroup;
 			children = (
-				5FDB3A02170793130049EBB5 /* NSData+Base64 */,
-				5FDB35CC1705FCEA0049EBB5 /* ObjectiveMixin */,
 			);
 			name = External;
 			sourceTree = "<group>";
@@ -956,24 +954,6 @@
 			path = ../Feather;
 			sourceTree = "<group>";
 		};
-		5FDB35CC1705FCEA0049EBB5 /* ObjectiveMixin */ = {
-			isa = PBXGroup;
-			children = (
-				5FDB34361705D90A0049EBB5 /* Mixin.h */,
-				5FDB34371705D90A0049EBB5 /* Mixin.m */,
-			);
-			name = ObjectiveMixin;
-			sourceTree = "<group>";
-		};
-		5FDB3A02170793130049EBB5 /* NSData+Base64 */ = {
-			isa = PBXGroup;
-			children = (
-				5FDB3A03170793550049EBB5 /* NSData+Base64.h */,
-				5FDB3A04170793550049EBB5 /* NSData+Base64.m */,
-			);
-			name = "NSData+Base64";
-			sourceTree = "<group>";
-		};
 		5FDB3A8017079B220049EBB5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -1009,6 +989,10 @@
 				5F8119471CEE32C3007018B8 /* TreeItemPool.swift */,
 				5FF745AA1D25518300B493D0 /* MPManagedObject-CloudKit.swift */,
 				5FEE14CD1D89552F0087924A /* MPContributorChangeObserver.swift */,
+				5F4B353822DA624100C0D282 /* CachedProperty.swift */,
+				5F4B353A22DA6AB000C0D282 /* Model.swift */,
+				5F4B353C22DA6D9600C0D282 /* MPManagedObject-Enums.h */,
+				5F4B353E22DA6F4100C0D282 /* ModelController.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -1172,8 +1156,6 @@
 				5FDB3A9417079DD10049EBB5 /* MPDatabasePackageController.h in Headers */,
 				5FDB3A9617079DD10049EBB5 /* MPDatabasePackageController+Protected.h in Headers */,
 				5FDB3A9F17079ED80049EBB5 /* MPShoeboxPackageController.h in Headers */,
-				5FDB34381705D90A0049EBB5 /* Mixin.h in Headers */,
-				5FDB3A05170793550049EBB5 /* NSData+Base64.h in Headers */,
 				5FDB3AA81707A36D0049EBB5 /* Feather.h in Headers */,
 				D9FE2FFD19D6F0A000CD224D /* MPAssert.h in Headers */,
 				5FDB3AA91707ABBE0049EBB5 /* MPTreeItem.h in Headers */,
@@ -1189,6 +1171,7 @@
 				5F81194B1CEE36A5007018B8 /* MPObjectWrappingSection.h in Headers */,
 				5F18505E1711B13900079040 /* MPEmbeddedObject+Protected.h in Headers */,
 				5F3D380A1725D8A600D19D7C /* MPCategorizableMixin.h in Headers */,
+				5F4B353D22DA6DB000C0D282 /* MPManagedObject-Enums.h in Headers */,
 				5F3D380E1725D8E000D19D7C /* MPBundlableMixin.h in Headers */,
 				5F6857A01727C38900FE06B0 /* MPVirtualSection.h in Headers */,
 				5F6857A21727C38900FE06B0 /* MPVirtualSection+Protected.h in Headers */,
@@ -1554,9 +1537,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5FDB34391705D90A0049EBB5 /* Mixin.m in Sources */,
 				5FFC37711AEEF7AF0041FBED /* MPCountryList.m in Sources */,
-				5FDB3A06170793550049EBB5 /* NSData+Base64.m in Sources */,
 				5FC423901AFF8BE3002234FB /* NSNotificationCenter+MPManagedObjectExtensions.m in Sources */,
 				5FDB3A401707992B0049EBB5 /* MPManagedObject.m in Sources */,
 				5FDB3A421707992B0049EBB5 /* MPManagedObject+Mixin.m in Sources */,
@@ -1568,6 +1549,7 @@
 				5FDB3A7417079ABB0049EBB5 /* MPSnapshotsController.m in Sources */,
 				5FDB3A7917079AEC0049EBB5 /* MPContributorsController.m in Sources */,
 				5FDB3A7E17079B1E0049EBB5 /* MPSnapshot.m in Sources */,
+				5F4B353922DA624100C0D282 /* CachedProperty.swift in Sources */,
 				5FDB3A8817079C020049EBB5 /* MPException.m in Sources */,
 				5FDB3A9317079DD10049EBB5 /* MPDatabase.m in Sources */,
 				5FDB3A9517079DD10049EBB5 /* MPDatabasePackageController.m in Sources */,
@@ -1580,11 +1562,13 @@
 				5FDCF2F5171080AC0039DAED /* MPEmbeddedPropertyContainingMixin.m in Sources */,
 				5F3D380B1725D8A600D19D7C /* MPCategorizableMixin.m in Sources */,
 				5FC802281B4FB93000AEEFE5 /* MPDatabasePackageBackedDocument.m in Sources */,
+				5F4B353F22DA6F4100C0D282 /* ModelController.swift in Sources */,
 				5FEE14CE1D89552F0087924A /* MPContributorChangeObserver.swift in Sources */,
 				5F3D380F1725D8E000D19D7C /* MPBundlableMixin.m in Sources */,
 				5F6857A11727C38900FE06B0 /* MPVirtualSection.m in Sources */,
 				5FE2C0EC1B256B4C001DB163 /* MPTreeItemUtility.m in Sources */,
 				5F6857DB17287F0800FE06B0 /* MPRootSection.m in Sources */,
+				5F4B353B22DA6AB000C0D282 /* Model.swift in Sources */,
 				5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */,
 				5FC753001746E294007818A0 /* NSString+MPSearchIndex.m in Sources */,
 			);

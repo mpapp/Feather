@@ -11,8 +11,6 @@
 
 @import FeatherExtensions;
 #import <Feather/MPDatabasePackageController.h>
-#import "Mixin.h"
-
 #import <Feather/MPVirtualSection.h>
 #import <Feather/MPCacheableMixin.h>
 
@@ -30,7 +28,7 @@ NSString *const MPPasteboardTypeRootSection = @"com.piipari.root-section.id.plis
 
 + (void)load
 {
-    [self mixinFrom:[MPCacheableMixin class] followInheritance:NO force:NO];
+    // [self mixinFrom:[MPCacheableMixin class] followInheritance:NO force:NO];
 }
 
 + (BOOL)hasMainThreadIsolatedCachedProperties {

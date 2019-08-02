@@ -17,7 +17,6 @@
 
 #import "NSString+MPSearchIndex.h"
 #import "MPDeepSaver.h"
-#import "Mixin.h"
 #import "MPCacheableMixin.h"
 
 @import FeatherExtensions;
@@ -42,19 +41,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 }
 
 @property (readwrite) BOOL isNewObject;
-
 @property (readwrite, strong) NSMutableDictionary *embeddedObjectCache;
-
 @property (readonly, copy) NSString *deletedDocumentID;
-
 @property (readwrite) NSString *sessionID;
 @property (readwrite) NSString *cachedCloudKitChangeTag;
 
 @end
-
-@implementation MPReferencableObjectMixin
-@end
-
 
 @implementation MPManagedObject
 
@@ -64,12 +56,12 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 @synthesize deletedDocumentID = _deletedDocumentID;
 @synthesize cachedCloudKitChangeTag = _cachedCloudKitChangeTag;
 
-@dynamic isModerated, isRejected, isAccepted, creator, prototype, sessionID;
+@dynamic creator, prototype, sessionID;
 
 + (void)load
 {
-    [self mixinFrom:[MPCacheableMixin class]];
-    [self mixinFrom:[MPEmbeddedPropertyContainingMixin class]];
+    // [self mixinFrom:[MPCacheableMixin class]];
+    // [self mixinFrom:[MPEmbeddedPropertyContainingMixin class]];
         
 #if MP_DEBUG_ZOMBIE_MODELS
     _modelObjectByIdentifierMap = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsStrongMemory
@@ -882,67 +874,6 @@ static NSMapTable *_modelObjectByIdentifierMap = nil;
 
 - (NSArray *)editors {
     return [self getValueOfObjectIdentifierArrayProperty:@"editorIDs"];
-}
-
-- (void)setShared:(BOOL)shared {
-    BOOL prevValue = [self isShared];
-    if (prevValue == shared) return;
-    if (!shared) assert(!prevValue); // object cannot be un-shared
-    
-    [self setValue:@(shared) ofProperty:@"shared"];
-    if (shared)
-    {
-        NSNotificationCenter *nc = [[[self controller] packageController] notificationCenter];
-        assert(nc);
-        [nc postNotificationForSharingManagedObject:self];
-    }
-}
-
-- (BOOL)isShared {
-    return [[self getValueOfProperty:@"shared"] boolValue];
-}
-
-- (BOOL)shareWithError:(NSError *__autoreleasing *)err
-{
-    MPContributor *me = [[self.controller.db.packageController contributorsController] me];
-    
-    if (![self.creator.document.documentID isEqualToString:me.document.documentID])
-    {
-        if (err)
-            *err = [NSError errorWithDomain:MPManagedObjectErrorDomain
-                                       code:MPManagedObjectErrorCodeUserNotCreator
-                                   userInfo:@{NSLocalizedDescriptionKey :
-            [NSString stringWithFormat:@"%@ != %@", self.creator.document.documentID, me.document.documentID] }];
-        return NO;
-    }
-    assert(!self.isShared);
-    [self setShared:YES];
-    
-    return YES;
-}
-
-- (void)setModerationState:(MPManagedObjectModerationState)moderationState
-{
-    [self setValue:@(moderationState) ofProperty:@"moderationState"];
-}
-- (MPManagedObjectModerationState)moderationState
-{
-    return [[self getValueOfProperty:@"moderationState"] intValue];
-}
-
-- (BOOL)moderated { return self.moderationState != MPManagedObjectModerationStateUnmoderated; }
-- (BOOL)accepted { return self.moderationState == MPManagedObjectModerationStateAccepted; }
-- (BOOL)rejected { return self.moderationState == MPManagedObjectModerationStateRejected; }
-
-- (void)accept
-{
-    assert(self.moderationState != MPManagedObjectModerationStateAccepted);
-    [self setModerationState:MPManagedObjectModerationStateAccepted];
-}
-- (void)reject
-{
-    assert(self.moderationState != MPManagedObjectModerationStateRejected);
-    [self setModerationState:MPManagedObjectModerationStateRejected];
 }
 
 + (NSArray *)cloudKitIgnoredKeys {

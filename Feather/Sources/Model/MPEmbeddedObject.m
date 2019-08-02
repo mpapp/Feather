@@ -19,7 +19,7 @@
 
 #import "MPDeepSaver.h"
 
-#import "Mixin.h"
+// #import "Mixin.h"
 
 @import CouchbaseLite;
 @import ObjectiveC;
@@ -59,7 +59,7 @@ NSString *const MPPasteboardTypeEmbeddedObjectIDArray = @"com.piipari.eo.id.arra
 
 + (void)load
 {
-    [self mixinFrom:[MPEmbeddedPropertyContainingMixin class] followInheritance:NO force:NO];
+    // [self mixinFrom:[MPEmbeddedPropertyContainingMixin class] followInheritance:NO force:NO];
 }
 
 - (instancetype)init

@@ -10,7 +10,6 @@
 #import "MPShoeboxPackageController.h"
 
 #import "MPManagedObject+Mixin.h"
-#import "Mixin.h"
 
 #import "MPManagedObjectsController+Protected.h"
 #import "MPException.h"
@@ -81,7 +80,7 @@
         NSString *classString = [NSString stringWithFormat:@"%@Mixin", protocolName];
         Class cls = NSClassFromString(classString);
         assert(cls); // the Mixin is required
-        [self mixinFrom:cls followInheritance:YES force:YES];
+        // [self mixinFrom:cls followInheritance:YES force:YES];
     }
 }
 

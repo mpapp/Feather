@@ -18,8 +18,6 @@
 
 // publicly read-only
 @property (weak, readwrite, nullable) MPManagedObjectsController *controller;
-@property (readwrite, getter=isShared, setter=setShared:) BOOL isShared;
-@property (readwrite) MPManagedObjectModerationState moderationState;
 @property (readwrite, nullable) MPManagedObject *prototype;
 
 - (void)setEmbeddedObjectArray:(nullable NSArray *)value ofProperty:(nonnull NSString *)property;

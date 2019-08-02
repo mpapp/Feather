@@ -9,8 +9,6 @@
 #import <Feather/MPVirtualSection.h>
 #import "MPVirtualSection+Protected.h"
 
-#import "Mixin.h"
-
 @import FeatherExtensions;
 #import <Feather/MPException.h>
 
@@ -21,7 +19,7 @@
 
 + (void)load
 {
-    [self mixinFrom:[MPCacheableMixin class] followInheritance:NO force:NO];
+    // [self mixinFrom:[MPCacheableMixin class] followInheritance:NO force:NO];
 }
 
 + (BOOL)hasMainThreadIsolatedCachedProperties {

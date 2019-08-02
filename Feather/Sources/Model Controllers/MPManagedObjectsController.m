@@ -25,9 +25,7 @@
 @import CouchbaseLite;
 @import ObjectiveC;
 
-#import "Mixin.h"
 #import "MPCacheableMixin.h"
-
 
 extern NSComparisonResult CBLCompareRevIDs(NSString* revID1, NSString* revID2);
 
@@ -53,7 +51,7 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 + (void)load
 {
-    [self mixinFrom:[MPCacheableMixin class] followInheritance:NO force:NO];
+    // [self mixinFrom:[MPCacheableMixin class] followInheritance:NO force:NO];
 }
 
 + (BOOL)hasMainThreadIsolatedCachedProperties {
@@ -1568,19 +1566,6 @@ NSString * const MPManagedObjectsControllerLoadedBundledResourcesNotification = 
 
 - (void)insertValue:(id)value inPropertyWithKey:(NSString *)key {
     // needed, otherwise scripting system will attempt to use KVC to modify the property with the key, which is in all cases nonsensical.
-}
-
-- (id)newScriptingObjectOfClass:(Class)objectClass forValueForKey:(NSString *)key withContentsValue:(id)contentsValue properties:(NSDictionary *)properties
-{
-    // note that managed objects controllers
-    // with multiple concrete subclasses of objects to manage will need a specific element to be able to create them. For instance 'tell styles controller to make new managed object' would not work as styles controller has multiple managed object types it manages, same thing with elements controller. would instead want to do 'tell styles controller to make new paragraph style'
-    assert([objectClass isSubclassOfClass:self.managedObjectClass]);
-    MPManagedObject *obj = [[objectClass alloc] initWithNewDocumentForController:self properties:@{} documentID:nil];
-    
-    [obj setScriptingDerivedProperties:properties];
-    [obj save];
-    
-    return obj;
 }
 
 @end
