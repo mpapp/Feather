@@ -45,15 +45,16 @@ NS_INLINE  NSMutableString *_Nonnull MPMutableStringForString(NSString *_Nonnull
 @interface NSString (Feather)
 
 - (BOOL)containsSubstring:(nonnull NSString *)substring;
+- (nonnull NSString *)substringAfter:(nonnull NSString *)s;
+- (nonnull NSString *)substringBefore:(nonnull NSString *)s;
+
+@property (readonly, copy, nonnull) NSString *stringByTrimmingWhitespace;
+@property (readonly, copy, nonnull) NSString *stringByNormalizingWhitespace;
+
+- (nonnull NSString *)stringByNormalizingWhitespaceAllowLeading:(BOOL)allowLeadingWhitespace
+                                             trailingWhitespace:(BOOL)allowTrailingWhitespace;
 
 - (nullable NSString *)substringUpToEndOfFirstOccurrenceOfString:(nonnull NSString *)s;
-
-- (nonnull NSString *)stringByTranslatingPresentToPastTense;
-
-- (nonnull NSString *)stringByMakingSentenceCase;
-
-@property (readonly, copy, nonnull) NSString *pluralizedString;
-@property (readonly, copy, nonnull) NSString *camelCasedString;
 
 @property (readonly, copy, nonnull) NSString *stringByRemovingWhitespace;
 

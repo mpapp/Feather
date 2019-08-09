@@ -8,7 +8,6 @@
 
 import Foundation
 import RegexKitLite
-import CocoaLumberjackSwift
 
 extension MPManagedObject {
     

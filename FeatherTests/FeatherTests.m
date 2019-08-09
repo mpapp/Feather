@@ -15,7 +15,6 @@
 #import "MPFeatherTestClasses.h"
 
 @import FeatherExtensions;
-@import RegexKitLite;
 
 @interface FeatherTests () 
 @end
@@ -51,7 +50,8 @@
     
     BOOL sharedPackageIsForTestBundle = [sharedPackagePath.lastPathComponent isEqualToString:self.bundleLoaderName] || [sharedPackagePath.lastPathComponent containsString:@"TestRunner"] || !self.bundleLoaderName;
     XCTAssertTrue(sharedPackageIsForTestBundle,
-                 @"Test bundle name is the last path component of the shared package path (%@ != %@).", sharedPackagePath.lastPathComponent, self.bundleLoaderName);
+                 @"Test bundle name is the last path component of the shared package path (%@ != %@).",
+                  sharedPackagePath.lastPathComponent, self.bundleLoaderName);
     
     NSFileManager *fm = [NSFileManager defaultManager];
     
@@ -162,8 +162,7 @@
         NSString *name = [url lastPathComponent];
         
         Class cls =
-            NSClassFromString(
-                [[name componentsMatchedByRegex:@"(\\S+)-fixtures.json" capture:1] firstObject]);
+            NSClassFromString([[name captureComponentsMatchedByRegex: @"(\\S+)-fixtures.json"] firstObject]);
         
         if ([cls isSubclassOfClass:[MPManagedObject class]])
         {

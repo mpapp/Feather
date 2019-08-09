@@ -10,7 +10,6 @@
 #import "NSXMLElement+MPExtensions.h"
 
 @import FeatherExtensions;
-@import P2Core.NSString_P2Extensions;
 
 const MPTextContentOffset MPTextContentOffsetError = NSIntegerMin;
 const MPTextContentOffset MPTextContentOffsetNotFound = -1;

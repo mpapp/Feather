@@ -11,7 +11,6 @@
 
 @import FeatherExtensions;
 #import <Feather/MPDatabasePackageController.h>
-#import <RegexKitLite/RegexKitLiteFramework.h>
 #import "Mixin.h"
 
 #import <Feather/MPVirtualSection.h>
@@ -43,7 +42,8 @@ NSString *const MPPasteboardTypeRootSection = @"com.piipari.root-section.id.plis
     // the module name may be part of the class name as a prefix.
     NSString *clsName = [NSStringFromClass(self) componentsSeparatedByString:@"."].lastObject;
     NSString *className = [clsName stringByReplacingOccurrencesOfRegex:@"RootSection$"
-                                                            withString:@""];
+                                                          withTemplate:@""
+                                                                 error:nil];
     
     Class class = NSClassFromString(className);
     NSAssert([class isSubclassOfClass:[MPManagedObject class]], @"%@ is not a subclass of MPManagedObject.", class);
@@ -194,8 +194,7 @@ NSString *const MPPasteboardTypeRootSection = @"com.piipari.root-section.id.plis
 - (Class)representedObjectClass
 {
     NSString *className = NSStringFromClass([self class]);
-    NSString *representedClassName =
-        [className stringByReplacingOccurrencesOfRegex:@"RootSection$" withString:@""];
+    NSString *representedClassName = [className stringByReplacingOccurrencesOfRegex:@"RootSection$" withTemplate:@"" error: nil];
     Class representedClass = NSClassFromString(representedClassName);
     NSAssert(representedClass, @"Could not resolve represented class for %@ (%@)", self, self.class);
     return representedClass;

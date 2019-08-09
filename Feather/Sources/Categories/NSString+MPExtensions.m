@@ -9,7 +9,6 @@
 
 #import "NSString+MPExtensions.h"
 
-@import RegexKitLite;
 @import CoreServices;
 
 @interface NSStringHTMLStripParser : NSObject<NSXMLParserDelegate> {
@@ -40,22 +39,78 @@
 
 @implementation NSString (Feather)
 
-- (BOOL)hasContent { return self.length > 0; }
-
-- (NSString *)stringByMakingSentenceCase
+- (NSString *)substringAfter:(NSString *)s
 {
-    NSMutableString *str = [[NSMutableString alloc] initWithString:self];
-    [str replaceOccurrencesOfRegex:@"^(.)"
-                        usingBlock:
-     ^NSString *(NSInteger captureCount,
-                 NSString *const __unsafe_unretained *capturedStrings,
-                 const NSRange *capturedRanges,
-                 volatile BOOL *const stop) {
-         assert(captureCount == 2);
-         return [capturedStrings[0] uppercaseString];
-    }];
-    return [str copy];
+    NSRange r = [self rangeOfString:s];
+    if (r.location == NSNotFound)
+        return nil;
+    NSString *substring = [self substringFromIndex:(r.location + r.length)];
+    return substring;
 }
+
+- (NSString *)substringBefore:(NSString *)s
+{
+    NSRange r = [self rangeOfString:s];
+    if (r.location == NSNotFound)
+        return nil;
+    NSString *substring = [self substringToIndex:r.location];
+    return substring;
+}
+
+- (NSString *)stringByTrimmingWhitespace
+{
+    static NSCharacterSet *characters = nil;
+    if (!characters)
+        characters = [NSCharacterSet whitespaceCharacterSet];
+    return [self stringByTrimmingCharactersInSet:characters];
+}
+
+- (NSString *)stringByTrimmingWhitespaceAndNewlines
+{
+    static NSCharacterSet *characters = nil;
+    if (!characters)
+        characters = [NSCharacterSet whitespaceAndNewlineCharacterSet];
+    return [self stringByTrimmingCharactersInSet:characters];
+}
+
+- (NSString *)stringByNormalizingWhitespace
+{
+    return [self stringByNormalizingWhitespaceAllowLeading:NO trailingWhitespace:NO];
+}
+
+- (NSString *)stringByNormalizingWhitespaceAllowLeading:(BOOL)allowLeadingWhitespace
+                                     trailingWhitespace:(BOOL)allowTrailingWhitespace
+{
+    if (self.length < 1) {
+        return self;
+    }
+    
+    NSString *s = [self stringByTrimmingWhitespaceAndNewlines];
+    NSArray *components = [s componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    components = [components filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id  object, NSDictionary<NSString *,id> * _Nullable bindings) {
+        return ![object isEqualToString:@""];
+    }]];
+    
+    NSString *normalized = [components componentsJoinedByString:@" "];
+    
+    BOOL restoreLeadingWhitespace = allowLeadingWhitespace && [[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[self characterAtIndex:0]];
+    BOOL restoreTrailingWhitespace = allowTrailingWhitespace && [[NSCharacterSet whitespaceAndNewlineCharacterSet] characterIsMember:[self characterAtIndex:(self.length - 1)]];
+    
+    if (restoreLeadingWhitespace && restoreTrailingWhitespace) {
+        normalized = [NSString stringWithFormat: @" %@ ", normalized];
+    }
+    else if (restoreLeadingWhitespace) {
+        normalized = [NSString stringWithFormat: @" %@", normalized];
+    }
+    else if (restoreTrailingWhitespace) {
+        normalized = [NSString stringWithFormat: @"%@ ", normalized];
+    }
+    
+    return normalized;
+}
+
+- (BOOL)hasContent { return self.length > 0; }
 
 - (BOOL)containsSubstring:(NSString *)substring
 {
@@ -69,35 +124,6 @@
         return nil;
     NSString *substring = [self substringToIndex:(r.location + r.length)];
     return substring;
-}
-
-- (NSString *)stringByTranslatingPresentToPastTense
-{
-    return [[self stringByReplacingOccurrencesOfRegex:@"e$" withString:@""] stringByAppendingString:@"ed"];
-}
-
-- (NSString *)pluralizedString
-{
-    if ([self isMatchedByRegex:@"y$"])
-    {
-        return [self stringByReplacingOccurrencesOfRegex:@"y$" withString:@"ies"];
-    }
-    return [self stringByAppendingString:@"s"];
-}
-
-- (NSString *)camelCasedString
-{
-    NSMutableString *str = [NSMutableString stringWithString:self];
-    [str replaceOccurrencesOfRegex:@"^(.)"
-                        usingBlock:^NSString *(NSInteger captureCount,
-                                               NSString *const __unsafe_unretained *capturedStrings,
-                                               const NSRange *capturedRanges,
-                                               volatile BOOL *const stop)
-    {
-        assert(captureCount > 0);
-        return [capturedStrings[0] lowercaseString];
-    }];
-    return [str copy];
 }
 
 // lifted from http://stackoverflow.com/questions/2432452/how-to-capitalize-the-first-word-of-the-sentence-in-objective-c

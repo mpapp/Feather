@@ -7,17 +7,35 @@
 //
 
 import Foundation
-import Freddy
 import CloudKit
 import FeatherExtensions
 
-public struct DatabasePackageMetadata {
-    let recordID:CKRecordID
+public struct DatabasePackageMetadata: Codable {
     let title:String?
     let changeTag:String?
+    private let zoneName: String
+    private let ownerName: String
+    private let recordName: String
+
+    enum CodingKeys: String, CodingKey, CaseEnumerable {
+        case title
+        case changeTag
+        case zoneName
+        case ownerName
+        case recordName
+    }
+
+    lazy let zoneID: CKRecordZoneID  = {
+        return CKRecordZoneID(zoneName: try package.getString(at: "zoneName"),
+                               ownerName: try package.getString(at: "ownerName"))
+    }
+
+    lazy let recordID: CKRecordID = {
+        return CKRecordID(recordName: recordName, zoneID: zoneID)
+    }
 }
 
-public struct CloudKitDatabasePackageList: JSONEncodable, JSONDecodable {
+public struct CloudKitDatabasePackageList: Codable {
     public let packages:[DatabasePackageMetadata]
     
     public init(contentsOfURL url:URL) throws {
@@ -27,35 +45,6 @@ public struct CloudKitDatabasePackageList: JSONEncodable, JSONDecodable {
     
     public init(packages:[DatabasePackageMetadata]) {
         self.packages = packages
-    }
-    
-    public init(json: JSON) throws {
-        self.packages = try json.getArray(at: "packages").map { package -> DatabasePackageMetadata in
-            let packageMetadataZoneID = CKRecordZoneID(zoneName: try package.getString(at: "zoneName"),
-                                                       ownerName: try package.getString(at: "ownerName"))
-            let recordID = CKRecordID(recordName: try package.getString(at: "recordName"), zoneID: packageMetadataZoneID)
-            
-            var title:String? = try package.getString(at: "title", alongPath: [.missingKeyBecomesNil])
-            if title == "" {
-                title = nil
-            }
-            
-            var changeTag:String? = try package.getString(at: "changeTag", alongPath: [.missingKeyBecomesNil])
-            if changeTag == "" {
-                changeTag = nil
-            }
-            
-            return DatabasePackageMetadata(recordID: recordID, title: title, changeTag: changeTag)
-        }
-    }
-    
-    public func toJSON() -> JSON {
-        return .array(self.packages.map { package -> JSON in
-             [ "recordName":.string(package.recordID.recordName),
-                    "title":.string(package.title ?? ""),
-                 "zoneName":.string(package.recordID.zoneID.zoneName),
-                "ownerName":.string(package.recordID.zoneID.ownerName),
-                "changeTag":.string(package.changeTag ?? "")] })
     }
     
     public func serialize(toURL url:URL) throws {
@@ -71,16 +60,15 @@ public struct CloudKitDatabasePackageList: JSONEncodable, JSONDecodable {
     }
 }
 
-public struct CloudKitState: JSONEncodable, JSONDecodable {
+public struct CloudKitState: Codable {
     
-    enum Error:Swift.Error {
+    enum Error: Swift.Error {
         case noSavedState(MPDatabasePackageController)
         case noPackageController
     }
     
-    fileprivate var recordZones:[CKRecordZoneID:CKServerChangeToken] = [CKRecordZoneID:CKServerChangeToken]()
-    
-    fileprivate let ownerName:String
+    private var recordZones:[CKRecordZoneID: CKServerChangeToken] = [CKRecordZoneID:CKServerChangeToken]()
+    private let ownerName:String
     
     fileprivate(set) public weak var packageController:MPDatabasePackageController?
     

@@ -30,6 +30,28 @@ public enum NSStringFeatherExtensionsError: Int, Swift.Error, CustomNSError {
 }
 
 @objc public extension NSString {
+    
+    @objc func camelCasedString() -> String {
+        return (self as String).camelCased
+    }
+
+    @objc func stringByMakingSentenceCase() -> String {
+        return (self as String).sentenceCased
+    }
+
+    @objc func pluralizedString() -> String {
+        let str = self as String
+        if str.matches(regex: "y$", caseSensitively: false).count > 0 {
+            return str.replacingOccurrences(of: "y$", with: "ies", options: .regularExpression,
+                                                  range: nil)
+        }
+        return self.appending("s")
+    }
+    
+    @objc func stringByTranslatingPresentToPastTense() -> String {
+        return (self as String).replacingOccurrences(of: "e$", with: "", options: .regularExpression, range: nil) + "ed"
+    }
+    
     @objc func XMLStringByRemovingDuplicateXMLDeclarations() -> String {
         // the preceding character is included in the pattern, therefore captured and included in output.
         // the pattern below matches to <?xml…?> that is not at the very beginning of the document.
@@ -82,7 +104,21 @@ public enum NSStringFeatherExtensionsError: Int, Swift.Error, CustomNSError {
         
         return string
     }
-    
+
+    @objc func isMatchedByRegex(_ pattern: String) -> Bool {
+        return (self as String).isMatched(byRegex: pattern, caseSensitively: true)
+    }
+
+    @objc func captureComponentsMatchedByRegex(_ pattern: String) -> [String] {
+        return (self as String).capturedGroups(withRegex: pattern, caseSensitively: true)
+    }
+
+    @objc func stringByReplacingOccurrencesOfRegex(_ pattern: String, withTemplate replacement: String) throws -> String {
+        return try (self as String).stringByReplacingOccurrences(ofRegex: pattern,
+                                                                 withTemplate: replacement,
+                                                                 caseSensitively: true)
+    }
+
     /**
      
      Fix for a mind-boggling NSXMLDocument (and looking like also WebKit XMLSerializer) behaviour, which is:

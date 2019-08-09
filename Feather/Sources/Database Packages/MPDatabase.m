@@ -20,7 +20,6 @@
 #import "MPException.h"
 
 @import FeatherExtensions;
-@import RegexKitLite;
 @import CouchbaseLite;
 @import CouchbaseLite.Logging;
 @import ObjectiveC;
@@ -262,7 +261,9 @@ NSString * const MPDatabaseReplicationFilterNameAcceptedObjects = @"accepted"; /
 
 + (NSString *)sanitizedDatabaseIDWithString:(NSString *)string
 {
-    return [string stringByReplacingOccurrencesOfRegex:@"\\.*" withString:@""];
+    return [string stringByReplacingOccurrencesOfRegex: @"\\.*"
+                                          withTemplate: @""
+                                                 error: nil];
 }
 
 - (NSURL *)remoteDatabaseURL

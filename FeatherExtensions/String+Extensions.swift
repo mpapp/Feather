@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RegexKitLite
 
 public extension String {
     func stringAroundOccurrence(ofString str:String, maxPadding:UInt, options:NSString.CompareOptions = []) -> String? {
@@ -40,10 +39,18 @@ public extension String {
             if section.count != 2 {
                 throw LinkRelationParsingError.unexpectedSection(section)
             }
+
+            let urlStr = section[0]
+            let urlPattern = try NSRegularExpression(pattern: "<(.*)>", options: [])
+            let url = urlPattern.stringByReplacingMatches(in: urlStr, options: NSRegularExpression.MatchingOptions(),
+                                                          range: NSMakeRange(0, urlStr.count), withTemplate: "$1")
             
-            let url = (section[0] as NSString).replacingOccurrences(ofRegex: "<(.*)>", with: "$1")
-            let name = (section[1] as NSString).replacingOccurrences(ofRegex: "\\s+rel=\"(.*)\"", with: "$1")
-            links[name!] = url
+            let nameStr = section[1]
+            let namePattern = try NSRegularExpression(pattern: "\\s+rel=\"(.*)\"", options: [])
+            let name = namePattern.stringByReplacingMatches(in: nameStr, options: NSRegularExpression.MatchingOptions(),
+                                                            range: NSMakeRange(0, nameStr.count),
+                                                            withTemplate: "$1")
+            links[name] = url
         }
         
         return links
@@ -53,7 +60,7 @@ public extension String {
     ///
     /// - Parameter aString: The string to search for.
     /// - Returns: The number of occurrences of `aString` found within the receiver. An empty string will result in a return value of `0`.
-    func count(of aString: String) -> Int {
+    func count(occurrencesOf aString: String) -> Int {
         // (Modified from a solution here: https://stackoverflow.com/a/45073012)
         if aString.isEmpty {
             return 0
