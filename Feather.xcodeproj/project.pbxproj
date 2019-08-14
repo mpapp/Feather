@@ -97,7 +97,6 @@
 		5F9592D122D736BB0098236A /* String+MPExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9592D022D736BB0098236A /* String+MPExtensions.swift */; };
 		5F9592D422D9296C0098236A /* MPRateLimiter in Frameworks */ = {isa = PBXBuildFile; productRef = 5F9592D322D9296C0098236A /* MPRateLimiter */; };
 		5F9592D622D9298D0098236A /* MPRateLimiter in Frameworks */ = {isa = PBXBuildFile; productRef = 5F9592D522D9298D0098236A /* MPRateLimiter */; };
-		5F9592D922D92B860098236A /* MPTimer in Frameworks */ = {isa = PBXBuildFile; productRef = 5F9592D822D92B860098236A /* MPTimer */; };
 		5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F95F2D71739A94300E8C845 /* libsqlite3.dylib */; };
 		5F95F2FE173A7A3800E8C845 /* MPIndexableMixin.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F95F2FC173A7A3800E8C845 /* MPIndexableMixin.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		5F95F2FF173A7A3800E8C845 /* MPIndexableMixin.m in Sources */ = {isa = PBXBuildFile; fileRef = 5F95F2FD173A7A3800E8C845 /* MPIndexableMixin.m */; };
@@ -614,7 +613,6 @@
 				5F4A48BE1C34079C0029DB3E /* CouchbaseLite.framework in Frameworks */,
 				5F5084481C551804009D7211 /* CocoaLumberjack.framework in Frameworks */,
 				5F95F2D81739A94300E8C845 /* libsqlite3.dylib in Frameworks */,
-				5F9592D922D92B860098236A /* MPTimer in Frameworks */,
 				5F9592D422D9296C0098236A /* MPRateLimiter in Frameworks */,
 				5FDB3A08170793B30049EBB5 /* libz.dylib in Frameworks */,
 				5F00787A1C95C4D400DDB296 /* CocoaLumberjackSwift.framework in Frameworks */,
@@ -1328,7 +1326,6 @@
 			name = Feather;
 			packageProductDependencies = (
 				5F9592D322D9296C0098236A /* MPRateLimiter */,
-				5F9592D822D92B860098236A /* MPTimer */,
 			);
 			productName = Feather;
 			productReference = 5FDB33031705CB950049EBB5 /* Feather.framework */;
@@ -1382,7 +1379,6 @@
 			mainGroup = 5FDB32F71705CB950049EBB5;
 			packageReferences = (
 				5F9592D222D9296C0098236A /* XCRemoteSwiftPackageReference "MPRateLimiter" */,
-				5F9592D722D92B850098236A /* XCRemoteSwiftPackageReference "MPTimer" */,
 			);
 			productRefGroup = 5FDB33041705CB950049EBB5 /* Products */;
 			projectDirPath = "";
@@ -3811,14 +3807,6 @@
 				minimumVersion = 1.2.0;
 			};
 		};
-		5F9592D722D92B850098236A /* XCRemoteSwiftPackageReference "MPTimer" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/mpapp/MPTimer";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.0;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -3831,11 +3819,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 5F9592D222D9296C0098236A /* XCRemoteSwiftPackageReference "MPRateLimiter" */;
 			productName = MPRateLimiter;
-		};
-		5F9592D822D92B860098236A /* MPTimer */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 5F9592D722D92B850098236A /* XCRemoteSwiftPackageReference "MPTimer" */;
-			productName = MPTimer;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
