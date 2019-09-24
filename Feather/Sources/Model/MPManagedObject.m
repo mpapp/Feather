@@ -1732,7 +1732,7 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
         // Use BOOL -> NSNumber literals to ensure true/false JSON serialization
         // (See "Objective-C Runtime Programming Guide" for type encodings and property
         // attribute description examples).
-        if ([typeInfo isEqualToString:@"TB"]) {
+        if ([typeInfo isEqualToString:@"c"]) {
             BOOL currentBoolValue = [props[property] boolValue];
             props[property] = (currentBoolValue ? @YES : @NO);
         }
