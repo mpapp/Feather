@@ -1762,9 +1762,8 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
         objc_property_t property = properties[i];
         const char *propName = property_getName(property);
         if(propName) {
-            const char *propType = getPropertyType(property);
+            NSString *propertyType = [self getPropertyType:property];
             NSString *propertyName = [NSString stringWithUTF8String:propName];
-            NSString *propertyType = [NSString stringWithUTF8String:propType];
             [results setObject:propertyType forKey:propertyName];
         }
     }
@@ -1773,31 +1772,24 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     return [NSDictionary dictionaryWithDictionary:results];
 }
 
-static const char * getPropertyType(objc_property_t property) {
+- (NSString *)getPropertyType:(objc_property_t)property {
     const char *attributes = property_getAttributes(property);
-    char buffer[1 + strlen(attributes)];
-    strcpy(buffer, attributes);
-    char *state = buffer, *attribute;
-    while ((attribute = strsep(&state, ",")) != NULL) {
-        if (attribute[0] == 'T' && attribute[1] != '@') {
-            // it's a C primitive type:
-            /*
-                if you want a list of what will be returned for these primitives, search online for
-                "objective-c" "Property Attribute Description Examples"
-                apple docs list plenty of examples of what you get for int "i", long "l", unsigned "I", struct, etc.
-            */
-            return (const char *)[[NSData dataWithBytes:(attribute + 1) length:strlen(attribute) - 1] bytes];
-        }
-        else if (attribute[0] == 'T' && attribute[1] == '@' && strlen(attribute) == 2) {
-            // it's an ObjC id type:
-            return "id";
-        }
-        else if (attribute[0] == 'T' && attribute[1] == '@') {
-            // it's another ObjC object type:
-            return (const char *)[[NSData dataWithBytes:(attribute + 3) length:strlen(attribute) - 4] bytes];
-        }
+    NSString *attributesString = [NSString stringWithCString:attributes encoding:NSUTF8StringEncoding];
+    NSArray<NSString *> *attributesArray = [attributesString componentsSeparatedByString:@","];
+    NSString *typeInfo = attributesArray[0];
+
+    if ([typeInfo isEqualToString:@"T@"]) {
+        // Obj-C `id` type
+        return @"id";
+    } else if ([typeInfo hasPrefix:@"T@"]) {
+        // some other Obj-C type
+        return [typeInfo componentsSeparatedByString:@"\""][1];
+    } else if ([typeInfo hasPrefix:@"T"]) {
+        // C primitive type
+        return [[typeInfo componentsSeparatedByString:@"\""][0] substringFromIndex:1];
     }
-    return "";
+
+    return @"";
 }
 
 
