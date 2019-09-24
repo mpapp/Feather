@@ -1723,8 +1723,20 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
         return nil;
     }
     
-    NSDictionary *props = self.JSONEncodableDictionaryRepresentation;
+    NSMutableDictionary *props = [self.JSONEncodableDictionaryRepresentation mutableCopy];
     NSAssert(props, @"Expecting non-nil properties dictionary for %@", self);
+
+    // Ensure Booleans are represented as true / false in JSON string (rather than potentially as 0 / 1)
+    // by introspecting the type information of the properties of the MPManagedObject in question
+    [[self typesForObjectProperties] enumerateKeysAndObjectsUsingBlock:^(NSString *property, NSString *typeInfo, BOOL *stop) {
+        // Use BOOL -> NSNumber literals to ensure true/false JSON serialization
+        // (See "Objective-C Runtime Programming Guide" for type encodings and property
+        // attribute description examples).
+        if ([typeInfo isEqualToString:@"TB"]) {
+            BOOL currentBoolValue = [props[property] boolValue];
+            props[property] = (currentBoolValue ? @YES : @NO);
+        }
+    }];
     
     NSData *data = [CBLJSON dataWithJSONObject:props options:NSJSONWritingPrettyPrinted error:err];
 
@@ -1735,6 +1747,58 @@ NS_INLINE BOOL isEffectiveGetter(const char* name) {
     return str;
 }
 
+
+#pragma mark - MPManagedObject properties description
+
+// Courtesy of: https://stackoverflow.com/a/8380836
+
+- (NSDictionary<NSString *, NSString *> *)typesForObjectProperties
+{
+    NSMutableDictionary *results = [NSMutableDictionary new];
+
+    unsigned int outCount, i;
+    objc_property_t *properties = class_copyPropertyList([self class], &outCount);
+    for (i = 0; i < outCount; i++) {
+        objc_property_t property = properties[i];
+        const char *propName = property_getName(property);
+        if(propName) {
+            const char *propType = getPropertyType(property);
+            NSString *propertyName = [NSString stringWithUTF8String:propName];
+            NSString *propertyType = [NSString stringWithUTF8String:propType];
+            [results setObject:propertyType forKey:propertyName];
+        }
+    }
+    free(properties);
+
+    return [NSDictionary dictionaryWithDictionary:results];
+}
+
+static const char * getPropertyType(objc_property_t property) {
+    const char *attributes = property_getAttributes(property);
+    char buffer[1 + strlen(attributes)];
+    strcpy(buffer, attributes);
+    char *state = buffer, *attribute;
+    while ((attribute = strsep(&state, ",")) != NULL) {
+        if (attribute[0] == 'T' && attribute[1] != '@') {
+            // it's a C primitive type:
+            /*
+                if you want a list of what will be returned for these primitives, search online for
+                "objective-c" "Property Attribute Description Examples"
+                apple docs list plenty of examples of what you get for int "i", long "l", unsigned "I", struct, etc.
+            */
+            return (const char *)[[NSData dataWithBytes:(attribute + 1) length:strlen(attribute) - 1] bytes];
+        }
+        else if (attribute[0] == 'T' && attribute[1] == '@' && strlen(attribute) == 2) {
+            // it's an ObjC id type:
+            return "id";
+        }
+        else if (attribute[0] == 'T' && attribute[1] == '@') {
+            // it's another ObjC object type:
+            return (const char *)[[NSData dataWithBytes:(attribute + 3) length:strlen(attribute) - 4] bytes];
+        }
+    }
+    return "";
+}
 
 
 #pragma mark - Scripting support
