@@ -65,6 +65,13 @@
 + (BOOL)isConcrete { return YES; }
 @end
 
+@interface MPFeatherTestBoolean : MPTestObject
+@property (readwrite, nonatomic) BOOL someBooleanProperty;
+@end
+@implementation MPFeatherTestBoolean
+@dynamic someBooleanProperty;
+@end
+
 @implementation MPModelFoundationTests
 
 - (void)testNotifications
@@ -114,6 +121,27 @@
     XCTAssertTrue([[[obj propertiesToSave] managedObjectType] isEqualToString:@"MPFeatherTestE"]);
     XCTAssertTrue([[[obj propertiesToSave] managedObjectDocumentID] isEqualToString:obj.documentID]);
     XCTAssertTrue([[[obj propertiesToSave] managedObjectRevisionID] isEqualToString:obj.document.currentRevisionID]);
+}
+
+- (void)testBooleanSerializationFormat {
+    MPFeatherTestPackageController *tpkg = [MPFeatherTestPackageController sharedPackageController];
+    MPTestObjectsController *ac = tpkg.testObjectsController;
+    MPFeatherTestBoolean *obj = [[MPFeatherTestBoolean alloc] initWithNewDocumentForController:ac];
+
+    XCTAssertTrue([obj save], @"Save unexpectedly failed.");
+
+    NSError *error = nil;
+    NSString *stringRepresentation = nil;
+
+    obj.someBooleanProperty = YES;
+    stringRepresentation = [obj JSONStringRepresentation:&error];
+
+    XCTAssertTrue([stringRepresentation containsString:@"\"someBooleanProperty\" : true"]);
+
+    obj.someBooleanProperty = NO;
+    stringRepresentation = [obj JSONStringRepresentation:&error];
+
+    XCTAssertTrue([stringRepresentation containsString:@"\"someBooleanProperty\" : false"]);
 }
 
 - (void)testConcreteness
